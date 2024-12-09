@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ezen.books.repository.ProductMapper">
+
+    <!-- 테스트 데이터 입력 (book) -->
+    <insert id="registerTestBookVO">
+        insert into book (isbn, title, link, image, author, discount, publisher, pubdate, description)
+        VALUES (#{isbn}, #{title}, #{link}, #{image}, #{author}, #{discount}, #{publisher}, #{pubdate}, #{description});
+    </insert>
+
+    <!-- isbn 제공하고 이미 있는지 확인 (book) -->
+    <select id="isValid" resultType="int">
+        select count(isbn) from book where isbn = ${isbn};
+    </select>
+
+    <!-- 테스트 데이터 입력 (product) -->
+    <insert id="registerTestProductVO">
+        insert into product (isbn, stock, profile_link, detail_link, primary_ctg, secondary_ctg)
+        VALUES (#{isbn}, #{stock}, #{profileLink}, #{detailLink}, #{primaryCtg}, #{secondaryCtg});
+    </insert>
+
+    <insert id="registerBookVO">
+        insert into book (isbn, title, link, image, author, discount, publisher, pubdate, description)
+        VALUES (#{isbn}, #{title}, #{link}, #{image}, #{author}, #{discount}, #{publisher}, #{pubdate}, #{description});
+    </insert>
+
+    <insert id="registerProductVO">
+        insert into product (isbn, stock, discount_rate, profile_link, detail_link, primary_ctg, secondary_ctg)
+        VALUES (#{isbn}, #{stock}, #{discountRate}, #{profileLink}, #{detailLink}, #{primaryCtg}, #{secondaryCtg});
+    </insert>
+
+</mapper>

@@ -35,6 +35,10 @@ dependencies {
 	implementation 'org.apache.tika:tika-core:2.4.1'
 	implementation 'org.apache.tika:tika-parsers:2.4.1'
 	implementation 'net.coobird:thumbnailator:0.4.17'
+	/* 웹 스크래핑 관련 */
+	implementation 'org.jsoup:jsoup:1.15.4'
+	/* JSON 변환 관련 */
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.0'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.mysql:mysql-connector-j'
