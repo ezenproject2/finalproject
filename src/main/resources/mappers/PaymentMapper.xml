@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ezen.books.repository.PaymentMapper">
+    <insert id="addCart">
+        insert into cart(mno, prno, book_qty)
+        values(#{mno}, #{prno}, #{bookQty})
+    </insert>
+
+    <select id="getAllCartItems" resultType="com.ezen.books.domain.CartDto">
+        select * from cart
+        where mno = #{mno}
+    </select>
+</mapper>

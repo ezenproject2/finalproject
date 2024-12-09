@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Shopping Cart</title>
+</head>
+
+<div layout:fragment="content" class="container-md">
+    <!-- /* 쇼핑카트 상품 목록 */ -->
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col">mno</th>
+            <th scope="col">prno</th> <!--/* 책 제목이 들어와야 함.*/-->
+            <th scope="col">bookQty</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr scope="row" th:each="cartDto:${cartList}">
+            <td><input type="checkbox"></td>
+            <td><a>[[${cartDto.mno}]]</a></td>
+            <td th:href="@{/payment/payout}">[[${cartDto.prno}]]</td>
+            <td>[[${cartDto.bookQty}]]</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!--/* 내역 전부를 주문하는 것으로 하고, 아직 쇼핑카트 내역 중 일부만 주문하는 것은 구현하지 않음. */-->
+    <!--/* 오류 발생함. */-->
+    <a th:href="@{/payment/payout(mno=${mno})}"><button type="button">주문하기</button></a>
+</div>
+
+</html>
