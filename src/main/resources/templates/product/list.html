@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<div layout:fragment="content">
+
+  <!--/* 카테고리 주소 예시 */-->
+  <a th:href="@{/product/list(pageNo=1, primaryCtg='소설')}">소설</a>
+  <a th:href="@{/product/list(pageNo=1, primaryCtg='컴퓨터/IT')}">컴퓨터/IT</a>
+  <a th:href="@{/product/list(pageNo=1, primaryCtg='소설', secondaryCtg='한국소설')}">소설 > 한국소설</a>
+  <a th:href="@{/product/list(pageNo=1, primaryCtg='컴퓨터/IT', secondaryCtg='오피스활용도서')}">컴퓨터/IT > 오피스활용도서</a>
+
+  <!--/* 검색 틀 */-->
+  <div>
+    <form action="/product/list" method="get">
+      <select name="type">
+        <option value="tap" th:selected="${ph.pgvo.type eq 'tap'? true : false }">전체</option>
+        <option value="t" th:selected="${ph.pgvo.type eq 't'? true : false }">제목</option>
+        <option value="a" th:selected="${ph.pgvo.type eq 'a'? true : false }">저자</option>
+        <option value="p" th:selected="${ph.pgvo.type eq 'p'? true : false }">출판사</option>
+      </select>
+      <input type="search" name="keyword" th:value="${ph.pgvo.keyword}" placeholder="검색어 입력...">
+      <input type="hidden" name="pageNo" th:value="1">
+      <input type="hidden" name="qty" th:value="${ph.pgvo.qty }">
+      <button type="submit">검색</button>
+    </form>
+  </div>
+
+  <!--/* 최신순, 별점높은순, 높은가격순, 낮은가격순 정렬 버튼 예시 */-->
+  <a th:href="@{/product/list(pageNo=1, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword}, order='new')}">최신순</a>
+  <a th:href="@{/product/list(pageNo=1, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword}, order='topRating')}">별점높은순</a>
+  <a th:href="@{/product/list(pageNo=1, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword}, order='topPrice')}">가격높은순</a>
+  <a th:href="@{/product/list(pageNo=1, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword}, order='lowPrice')}">가격낮은순</a>
+
+  <!--/* 리스트 */-->
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <th scope="col">이미지</th>
+      <th scope="col">제목</th>
+      <th scope="col">가격</th>
+      <th scope="col">별점</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="bookProductDTO:${list}">
+      <td><img th:src="${bookProductDTO.bookVO.image}" alt="Book Image" height="150px"></td>
+      <td><a th:href="@{/product/detail(prno=${bookProductDTO.productVO.prno})}" style="text-decoration: none; font-weight: bold; color: inherit;">
+        [[${bookProductDTO.bookVO.title}]]
+      </a></td>
+      <td>[[${bookProductDTO.bookVO.discount}]]</td>
+      <td>[[${bookProductDTO.productVO.reviewAvg}]]</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!--/* 페이지네이션 */-->
+  <div>
+    <ul>
+      <!--/* 클래스명에 disabled가 있다면 안눌리도록 설정해야함 지금은 눌림! */-->
+      <li><a th:classappend="${ph.prev? '' : 'disabled'}" th:href="@{/product/list(pageNo=${ph.startPage-1}, qty=10, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword})}">
+          <span aria-hidden="true">이전</span>
+      </a></li>
+      <th:block th:each="i:${#numbers.sequence(ph.startPage, ph.endPage)}">
+        <li><a th:href="@{/product/list(pageNo=${i}, qty=10, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword})}">
+          [[${i}]]
+        </a></li>
+      </th:block>
+      <li><a th:classappend="${ph.next? '' : 'disabled'}" th:href="@{/product/list(pageNo=${ph.endPage+1}, qty=10, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword})}">
+          <span aria-hidden="true">다음</span>
+      </a></li>
+    </ul>
+  </div>
+
+</div>

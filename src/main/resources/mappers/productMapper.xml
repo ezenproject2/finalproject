@@ -21,14 +21,132 @@
         VALUES (#{isbn}, #{stock}, #{profileLink}, #{detailLink}, #{primaryCtg}, #{secondaryCtg});
     </insert>
 
+    <!-- 상품 등록 페이지 (book) -->
     <insert id="registerBookVO">
         insert into book (isbn, title, link, image, author, discount, publisher, pubdate, description)
         VALUES (#{isbn}, #{title}, #{link}, #{image}, #{author}, #{discount}, #{publisher}, #{pubdate}, #{description});
     </insert>
 
+    <!-- 상품 등록 페이지 (product) -->
     <insert id="registerProductVO">
         insert into product (isbn, stock, discount_rate, profile_link, detail_link, primary_ctg, secondary_ctg)
         VALUES (#{isbn}, #{stock}, #{discountRate}, #{profileLink}, #{detailLink}, #{primaryCtg}, #{secondaryCtg});
     </insert>
+
+    <select id="getList" resultType="com.ezen.books.domain.ProductVO">
+        select p.* from product p
+        join book b on p.isbn = b.isbn
+
+        <!-- 동적 WHERE 절 -->
+        <where>
+            <!-- 항상 존재하는 조건: 삭제된 항목 제외 -->
+            p.is_del = 'N'
+
+            <!-- 검색 타입(type)과 키워드(keyword)에 대한 조건 -->
+            <if test="type != null and keyword != null">
+                <trim prefix="and (" suffix=")" suffixOverrides="or">
+                    <foreach collection="typeToArray" item="splitType">
+                        <trim suffix="or">
+                            <choose>
+                                <when test="splitType == 't'.toString()">
+                                    b.title like concat('%', #{keyword}, '%')
+                                </when>
+                                <when test="splitType == 'a'.toString()">
+                                    b.author like concat('%', #{keyword}, '%')
+                                </when>
+                                <when test="splitType == 'p'.toString()">
+                                    b.publisher like concat('%', #{keyword}, '%')
+                                </when>
+                            </choose>
+                        </trim>
+                    </foreach>
+                </trim>
+            </if>
+
+            <!-- primaryCtg 필터 -->
+            <if test="primaryCtg != null and primaryCtg != ''">
+                and p.primary_ctg = #{primaryCtg}
+            </if>
+
+            <!-- secondaryCtg 필터 -->
+            <if test="secondaryCtg != null and secondaryCtg != ''">
+                and p.secondary_ctg = #{secondaryCtg}
+            </if>
+        </where>
+
+        <!-- 동적 ORDER BY 절 -->
+        <choose>
+            <when test="order == 'new'">
+                order by p.prno desc
+            </when>
+            <when test="order == 'topRating'">
+                order by p.review_avg desc
+            </when>
+            <when test="order == 'topPrice'">
+                order by b.discount desc
+            </when>
+            <when test="order == 'lowPrice'">
+                order by b.discount asc
+            </when>
+            <otherwise>
+                order by p.prno desc
+            </otherwise>
+        </choose>
+
+        <!-- 페이징 처리 -->
+        limit #{startIndex}, #{qty};
+    </select>
+
+
+    <!-- 페이징 조건을 위한 단락 -->
+    <select id="getTotalCount" resultType="int">
+        select count(*) from product p
+        join book b on p.isbn = b.isbn
+        <!-- 동적 WHERE 절 -->
+        <where>
+            <!-- 항상 존재하는 조건: 삭제된 항목 제외 -->
+            p.is_del = 'N'
+
+            <!-- 검색 타입(type)과 키워드(keyword)에 대한 조건 -->
+            <if test="type != null and keyword != null and type != ''">
+                <trim prefix="and (" suffix=")" suffixOverrides="or">
+                    <foreach collection="typeToArray" item="splitType">
+                        <trim suffix="or">
+                            <choose>
+                                <when test="splitType == 't'.toString()">
+                                    b.title like concat('%', #{keyword}, '%')
+                                </when>
+                                <when test="splitType == 'a'.toString()">
+                                    b.author like concat('%', #{keyword}, '%')
+                                </when>
+                                <when test="splitType == 'p'.toString()">
+                                    b.publisher like concat('%', #{keyword}, '%')
+                                </when>
+                            </choose>
+                        </trim>
+                    </foreach>
+                </trim>
+            </if>
+
+            <!-- primaryCtg 필터 -->
+            <if test="primaryCtg != null and primaryCtg != ''">
+                and p.primary_ctg = #{primaryCtg}
+            </if>
+
+            <!-- secondaryCtg 필터 -->
+            <if test="secondaryCtg != null and secondaryCtg != ''">
+                and p.secondary_ctg = #{secondaryCtg}
+            </if>
+        </where>
+    </select>
+
+    <!-- ProductVO의 isbn(외래키)를 통해 BookVO 가져옴 -->
+    <select id="getBookVO" resultType="com.ezen.books.domain.BookVO">
+        select * from book where isbn = #{isbn};
+    </select>
+
+    <select id="getDetail" resultType="com.ezen.books.domain.ProductVO">
+        select * from product where prno = #{prno}
+    </select>
 
 </mapper>

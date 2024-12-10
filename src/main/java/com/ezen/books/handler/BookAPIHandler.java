@@ -1,5 +1,6 @@
 package com.ezen.books.handler;
 
+import com.ezen.books.domain.BookInfo;
 import com.ezen.books.domain.BookProductDTO;
 import com.ezen.books.domain.BookVO;
 import com.ezen.books.domain.ProductVO;
@@ -10,6 +11,7 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
@@ -183,6 +185,48 @@ public class BookAPIHandler {
         }
 
         return productVO;
+    }
+
+    public BookInfo getDetailDate(String url) throws IOException {
+        Document document = Jsoup.connect(url).get();
+
+        // BookInfo 객체 생성
+        BookInfo bookInfo = new BookInfo();
+
+        // 책 소개 (책 소개는 "책 소개" 제목을 기준으로 찾기)
+        extractSectionInfo(document, "책 소개", bookInfo::setBookIntroTitle, bookInfo::setBookIntroContent);
+
+        // 출판사 서평 (출판사 서평은 "출판사 서평" 제목을 기준으로 찾기)
+        extractSectionInfo(document, "출판사 서평", bookInfo::setPublisherReviewTitle, bookInfo::setPublisherReviewContent);
+
+        // 목차 (목차는 "목차" 제목을 기준으로 찾기)
+        extractSectionInfo(document, "목차", bookInfo::setTableOfContentsTitle, bookInfo::setTableOfContentsContent);
+
+        return bookInfo;
+    }
+
+    // 특정 섹션의 제목과 내용을 추출하는 함수
+    private void extractSectionInfo(Document document, String sectionTitle,
+                                    java.util.function.Consumer<String> setTitle, java.util.function.Consumer<String> setContent) {
+        // 섹션의 제목을 기준으로 해당 제목을 찾기
+        Elements titles = document.select(".infoItem_title_area__5Xml_ h3");
+
+        for (Element titleElement : titles) {
+            if (titleElement.text().equals(sectionTitle)) {
+                // 해당 제목에 해당하는 내용을 찾기
+                Element contentElement = titleElement.closest(".infoItem_info_item__eaYqw")
+                        .select(".infoItem_data_text__m9_Az").first();
+
+                // 제목과 내용이 존재한다면 세팅
+                setTitle.accept(titleElement.text());
+                if (contentElement != null) {
+                    setContent.accept(contentElement.html());  // html()을 사용하여 HTML 태그를 유지
+                } else {
+                    setContent.accept("");  // 내용이 없으면 빈 문자열을 세팅
+                }
+                break;
+            }
+        }
     }
 
     public List<String> getTitles(String url) throws IOException {
