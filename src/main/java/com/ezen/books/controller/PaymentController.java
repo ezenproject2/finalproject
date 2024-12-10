@@ -1,6 +1,6 @@
 package com.ezen.books.controller;
 
-import com.ezen.books.domain.CartDto;
+import com.ezen.books.domain.CartDTO;
 import com.ezen.books.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,10 +22,15 @@ public class PaymentController {
     @GetMapping("/shoppingcart")
     public String showCartItems(Model model) {
         long mno = 13; // 현재 로그인한 사용자의 mno를 가져와야 하지만, 일단은 임시로 값을 주었음.
-        List<CartDto> cartList = paymentService.getAllCartItems(mno);
+        List<CartDTO> cartList = paymentService.getAllCartItems(mno);
         log.info("cartList: {}", cartList);
         model.addAttribute("cartList", cartList);
         model.addAttribute("mno", mno);
         return "payment/shoppingcart";
+    }
+
+    @GetMapping("/payout")
+    public String goToPayout() {
+        return "/payment/payout";
     }
 }

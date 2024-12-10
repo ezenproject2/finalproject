@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrdersDto {
+public class OrdersDTO {
     private long orno;
     private long mno;
     private OrdersStatus ordersStatus;

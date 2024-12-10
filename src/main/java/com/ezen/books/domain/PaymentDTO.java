@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class PaymentDto {
+public class PaymentDTO {
     private long pano;
     private long orno;
     private String measure;

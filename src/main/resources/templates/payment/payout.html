@@ -5,20 +5,22 @@
 <head>
   <meta charset="UTF-8">
   <title>Payout</title>
-  <!--/* 포트원 결제 전용 js와 연결. 결제창 연동을 진행할 주문 페이지에 추가한다. */-->
+  <!--/* 결제 api와 연결하기 위한 js파일. */-->
   <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 </head>
 
 <div layout:fragment="content" class="container-md">
   <h3>대한민국의 주권은 국민에게 있고, 모든 권력은 국민으로부터 나온다.</h3>
 
-  <form action="/order/payout" method="post">
-    <button type="button" id="creditCard" class="pay-btn credit-card-btn">Credit Card</button>
+  <div id="payBtnContainer">
+    <button type="button" id="creditCard" class="pay-btn credit-card-btn">Credit Card, 미지원</button>
     <button type="button" id="phone" class="pay-btn phone-btn">Phone</button>
-    <button type="button" id="naverpay" class="pay-btn naverpay-btn">Naver Pay</button>
+    <button type="button" id="naverpay" class="pay-btn naverpay-btn">Naver Pay, 미지원</button>
     <button type="button" id="kakaopay" class="pay-btn kakaopay-btn">Kakao Pay</button>
     <button type="button" id="tosspay" class="pay-btn tosspay-btn">Toss Pay</button>
-  </form>
+    <br>
+    <button type="button" id="orderBtn">주문하기</button>
+  </div>
 
   <a th:href="@{/}">Go to index.html</a>
 </div>

@@ -1,13 +1,13 @@
 package com.ezen.books.repository;
 
-import com.ezen.books.domain.CartDto;
+import com.ezen.books.domain.CartDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 @Mapper
 public interface PaymentMapper {
-    int addCart(CartDto cartDto);
+    int addCart(CartDTO cartDto);
 
-    List<CartDto> getAllCartItems(long mno);
+    List<CartDTO> getAllCartItems(long mno);
 }

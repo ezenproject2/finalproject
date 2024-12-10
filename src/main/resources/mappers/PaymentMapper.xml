@@ -8,7 +8,7 @@
         values(#{mno}, #{prno}, #{bookQty})
     </insert>
 
-    <select id="getAllCartItems" resultType="com.ezen.books.domain.CartDto">
+    <select id="getAllCartItems" resultType="com.ezen.books.domain.CartDTO">
         select * from cart
         where mno = #{mno}
     </select>

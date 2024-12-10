@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CartDto {
+public class CartDTO {
     private long mno;
     private long prno;
     private int bookQty;

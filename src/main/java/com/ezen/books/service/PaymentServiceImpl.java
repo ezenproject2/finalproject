@@ -1,6 +1,6 @@
 package com.ezen.books.service;
 
-import com.ezen.books.domain.CartDto;
+import com.ezen.books.domain.CartDTO;
 import com.ezen.books.repository.PaymentMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,7 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentMapper paymentMapper;
 
     @Override
-    public List<CartDto> getAllCartItems(long mno) {
+    public List<CartDTO> getAllCartItems(long mno) {
         return paymentMapper.getAllCartItems(mno);
     }
 }
