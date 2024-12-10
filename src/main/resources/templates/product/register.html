@@ -21,37 +21,57 @@
   <button type="button" id="searchBtn">검색하기</button>
   <p id="printEl">등록한 상품이 없습니다. (검색 결과로 바뀔 예정)</p>
 
-  <table>
-      <tr>
-        <td>isbn</td>
-        <td><input type="text" name="isbn" id="isbnEl"></td>
-      </tr>
-      <tr>
-        <td>재고</td>
-        <td><input type="text" name="stock" id="stockEl">권</td>
-      </tr>
-      <tr>
-        <td>할인율</td>
-        <td><input type="text" name="discountRate" id="discountRateEl">%</td>
-      </tr>
-      <tr>
-        <td>프로필 이미지 링크</td>
-        <td><input type="text" name="profileLink" id="profileLinkEl"></td>
-      </tr>
-      <tr>
-        <td>상세 이미지 링크</td>
-        <td><input type="text" name="detailLink" id="detailLinkEl"></td>
-      </tr>
-      <tr>
-        <td>카테고리(대)</td>
-        <td><input type="text" name="primaryCtg" id="primaryCtgEl"></td>
-      </tr>
-      <tr>
-        <td>카테고리(중)</td>
-        <td><input type="text" name="secondaryCtg" id="secondaryCtgEl"></td>
-      </tr>
-  </table>
-  <button type="button" id="regBtn">저장</button>
+  <form action="/product/register" method="post">
+      <table>
+          <tr>
+            <td>isbn</td>
+            <td><input type="text" name="isbn" id="isbnEl"></td>
+          </tr>
+          <tr>
+              <td>제목</td>
+              <td><input type="text" name="title" id="titleEl"></td>
+          </tr>
+          <tr>
+              <td>저자</td>
+              <td><input type="text" name="author" id="authorEl"></td>
+          </tr>
+          <tr>
+              <td>가격</td>
+              <td><input type="text" name="discount" id="discountEl"></td>
+          </tr>
+          <tr>
+              <td>출판사</td>
+              <td><input type="text" name="publisher" id="publisherEl"></td>
+          </tr>
+          <tr>
+              <td>출판일</td>
+              <td><input type="text" name="pubdate" id="pubdateEl"></td>
+          </tr>
+          <tr>
+              <td>설명</td>
+              <td><textarea name="description" id="descriptionEl"></textarea></td>
+          </tr>
+          <tr>
+            <td>재고</td>
+            <td><input type="text" name="stock" id="stockEl">권</td>
+          </tr>
+          <tr>
+            <td>할인율</td>
+            <td><input type="text" name="discountRate" id="discountRateEl">%</td>
+          </tr>
+          <tr>
+            <td>카테고리(대)</td>
+            <td><input type="text" name="primaryCtg" id="primaryCtgEl"></td>
+          </tr>
+          <tr>
+            <td>카테고리(중)</td>
+            <td><input type="text" name="secondaryCtg" id="secondaryCtgEl"></td>
+          </tr>
+      </table>
+        <input type="hidden" name="link" id="linkEl">
+        <input type="hidden" name="image" id="imageEl">
+      <button type="submit" id="regBtn">저장</button>
+  </form>
 
 
   <script th:src="@{/js/productRegister.js}"></script>

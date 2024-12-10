@@ -1,15 +1,13 @@
 package com.ezen.books.controller;
 
 import com.ezen.books.domain.BookInfo;
-import com.ezen.books.domain.BookProductDTO;
-import com.ezen.books.domain.BookVO;
+import com.ezen.books.domain.ProductVO;
 import com.ezen.books.domain.PagingVO;
 import com.ezen.books.handler.BookAPIHandler;
 import com.ezen.books.handler.PagingHandler;
 import com.ezen.books.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,25 +28,24 @@ public class ProductController {
     @GetMapping("/register")
     public void register(){}
 
-    @ResponseBody
     @PostMapping("/register")
-    public String register(@RequestBody BookProductDTO bookProductDTO){
-        log.info(">>>> bookProductDTO > {}", bookProductDTO);
-        int isOk = productService.register(bookProductDTO);
-        return isOk>0? "1" : "0";
+    public String register(ProductVO productVO){
+        log.info(">>>> productVO > {}", productVO);
+        int isOk = productService.register(productVO);
+        log.info(">>>> 상품 등록 > {}", (isOk>0? "성공" : "실패"));
+        return "redirect:/product/list";
     }
 
     @ResponseBody
     @GetMapping(value = "/search/{keyword}")
-    public BookVO search(@PathVariable("keyword") String keyword) {
+    public ProductVO search(@PathVariable("keyword") String keyword) {
         String res = bookAPIHandler.search(keyword);
-        BookVO bookVO = bookAPIHandler.getBookVO(res);
-        JSONObject jsonObject = null;
+        ProductVO productVO = bookAPIHandler.getProductVO(res);
 
-        int isValid = productService.isValid(bookVO.getIsbn());
-        bookVO.setIsValid(isValid);
+        int isValid = productService.isValid(productVO.getIsbn());
+        productVO.setIsValid(isValid);
 
-        return bookVO;
+        return productVO;
     }
 
     @GetMapping("/list")
@@ -56,24 +53,25 @@ public class ProductController {
         log.info(">>>> pagingVO > {}", pagingVO);
         int totalCount = productService.getTotalCount(pagingVO);
         PagingHandler ph = new PagingHandler(pagingVO, totalCount);
-        List<BookProductDTO> list = productService.getList(pagingVO);
+        List<ProductVO> list = productService.getList(pagingVO);
 
         model.addAttribute("ph", ph);
         model.addAttribute("list", list);
     }
 
     @GetMapping("/detail")
-    public void detail(Model model, @RequestParam("prno") long prno){
-        log.info(">>>> prno > {}", prno);
-        BookProductDTO bookProductDTO = productService.getDetail(prno);
+    public void detail(Model model, @RequestParam("isbn") String isbn){
+        log.info(">>>> isbn > {}", isbn);
+        ProductVO productVO = productService.getDetail(isbn);
+
         BookInfo bookInfo = null;
         try {
-            bookInfo = bookAPIHandler.getDetailDate(bookProductDTO.getBookVO().getLink());
+            bookInfo = bookAPIHandler.getDetailDate(productVO.getLink());
             log.info(">>>> detail > {}", bookInfo);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        model.addAttribute("bookProductDTO", bookProductDTO);
+        model.addAttribute("productVO", productVO);
     }
 
 }

@@ -1,21 +1,21 @@
 package com.ezen.books.service;
 
-import com.ezen.books.domain.BookProductDTO;
 import com.ezen.books.domain.PagingVO;
+import com.ezen.books.domain.ProductVO;
 
 import java.util.List;
 
 public interface ProductService {
 
-    void testDataInsert(BookProductDTO bookProductDTO);
+    void testDataInsert(ProductVO productVO);
 
     int isValid(String isbn);
 
-    int register(BookProductDTO bookProductDTO);
+    int register(ProductVO productVO);
 
-    List<BookProductDTO> getList(PagingVO pagingVO);
+    List<ProductVO> getList(PagingVO pagingVO);
 
     int getTotalCount(PagingVO pagingVO);
 
-    BookProductDTO getDetail(long prno);
+    ProductVO getDetail(String isbn);
 }

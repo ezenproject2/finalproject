@@ -16,10 +16,10 @@
   <div>
     <form action="/product/list" method="get">
       <select name="type">
-        <option value="tap" th:selected="${ph.pgvo.type eq 'tap'? true : false }">전체</option>
-        <option value="t" th:selected="${ph.pgvo.type eq 't'? true : false }">제목</option>
-        <option value="a" th:selected="${ph.pgvo.type eq 'a'? true : false }">저자</option>
-        <option value="p" th:selected="${ph.pgvo.type eq 'p'? true : false }">출판사</option>
+        <option value="tap" >전체</option>
+        <option value="t" >제목</option>
+        <option value="a" >저자</option>
+        <option value="p" >출판사</option>
       </select>
       <input type="search" name="keyword" th:value="${ph.pgvo.keyword}" placeholder="검색어 입력...">
       <input type="hidden" name="pageNo" th:value="1">
@@ -45,13 +45,13 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="bookProductDTO:${list}">
-      <td><img th:src="${bookProductDTO.bookVO.image}" alt="Book Image" height="150px"></td>
-      <td><a th:href="@{/product/detail(prno=${bookProductDTO.productVO.prno})}" style="text-decoration: none; font-weight: bold; color: inherit;">
-        [[${bookProductDTO.bookVO.title}]]
+    <tr th:each="productVO:${list}">
+      <td><img th:src="${productVO.image}" alt="Book Image" height="150px"></td>
+      <td><a th:href="@{/product/detail(isbn=${productVO.isbn})}" style="text-decoration: none; font-weight: bold; color: inherit;">
+        [[${productVO.title}]]
       </a></td>
-      <td>[[${bookProductDTO.bookVO.discount}]]</td>
-      <td>[[${bookProductDTO.productVO.reviewAvg}]]</td>
+      <td>[[${productVO.discount}]]</td>
+      <td>[[${productVO.reviewAvg}]]</td>
     </tr>
     </tbody>
   </table>

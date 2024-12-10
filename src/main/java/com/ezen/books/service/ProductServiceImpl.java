@@ -1,9 +1,7 @@
 package com.ezen.books.service;
 
-import com.ezen.books.domain.BookProductDTO;
-import com.ezen.books.domain.BookVO;
-import com.ezen.books.domain.PagingVO;
 import com.ezen.books.domain.ProductVO;
+import com.ezen.books.domain.PagingVO;
 import com.ezen.books.repository.ProductMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,13 +20,10 @@ public class ProductServiceImpl implements ProductService{
 
     @Transactional
     @Override
-    public void testDataInsert(BookProductDTO bookProductDTO) {
-        int valid = productMapper.isValid(bookProductDTO.getBookVO().getIsbn());
+    public void testDataInsert(ProductVO productVO) {
+        int valid = productMapper.isValid(productVO.getIsbn());
         if(valid == 0){
-            int isOk = productMapper.registerTestBookVO(bookProductDTO.getBookVO());
-            if(isOk>0){
-                productMapper.registerTestProductVO(bookProductDTO.getProductVO());
-            }
+            int isOk = productMapper.registerTestData(productVO);
         }
     }
 
@@ -37,25 +32,16 @@ public class ProductServiceImpl implements ProductService{
         return productMapper.isValid(isbn);
     }
 
-    @Transactional
     @Override
-    public int register(BookProductDTO bookProductDTO) {
-        int isOk = productMapper.registerBookVO(bookProductDTO.getBookVO());
-        if(isOk>0){
-            isOk *= productMapper.registerProductVO(bookProductDTO.getProductVO());
-        }
+    public int register(ProductVO productVO) {
+        int isOk = productMapper.register(productVO);
         return isOk;
     }
 
     @Override
-    public List<BookProductDTO> getList(PagingVO pagingVO) {
-        List<ProductVO> voList = productMapper.getList(pagingVO);
-        List<BookProductDTO> dtoList = new ArrayList<>();
-        for(ProductVO productVO : voList){
-            BookVO bookVO = productMapper.getBookVO(productVO.getIsbn());
-            dtoList.add(new BookProductDTO(bookVO, productVO));
-        }
-        return dtoList;
+    public List<ProductVO> getList(PagingVO pagingVO) {
+        List<ProductVO> list = productMapper.getList(pagingVO);
+        return list;
     }
 
     @Override
@@ -64,9 +50,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public BookProductDTO getDetail(long prno) {
-        ProductVO productVO = productMapper.getDetail(prno);
-        BookVO bookVO = productMapper.getBookVO(productVO.getIsbn());
-        return new BookProductDTO(bookVO,productVO);
+    public ProductVO getDetail(String isbn) {
+        return productMapper.getDetail(isbn);
     }
 }

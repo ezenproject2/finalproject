@@ -5,42 +5,34 @@
 <mapper namespace="com.ezen.books.repository.ProductMapper">
 
     <!-- 테스트 데이터 입력 (book) -->
-    <insert id="registerTestBookVO">
-        insert into book (isbn, title, link, image, author, discount, publisher, pubdate, description)
-        VALUES (#{isbn}, #{title}, #{link}, #{image}, #{author}, #{discount}, #{publisher}, #{pubdate}, #{description});
+    <insert id="registerTestData">
+        INSERT INTO product ( isbn, title, author, discount, publisher,
+        pubdate, description, stock, primary_ctg, secondary_ctg, link, image, discount_rate)
+        VALUES ( #{isbn}, #{title}, #{author}, #{discount}, #{publisher},
+        #{pubdate}, #{description}, #{stock}, #{primaryCtg}, #{secondaryCtg}, #{link}, #{image}, ${discountRate})
     </insert>
 
     <!-- isbn 제공하고 이미 있는지 확인 (book) -->
     <select id="isValid" resultType="int">
-        select count(isbn) from book where isbn = ${isbn};
+        select count(isbn) from product where isbn = ${isbn};
     </select>
 
-    <!-- 테스트 데이터 입력 (product) -->
-    <insert id="registerTestProductVO">
-        insert into product (isbn, stock, profile_link, detail_link, primary_ctg, secondary_ctg)
-        VALUES (#{isbn}, #{stock}, #{profileLink}, #{detailLink}, #{primaryCtg}, #{secondaryCtg});
+    <insert id="register">
+        INSERT INTO product ( isbn, title, author, discount, publisher,
+        pubdate, description, stock, discount_rate,
+        primary_ctg, secondary_ctg, link, image)
+        VALUES ( #{isbn}, #{title}, #{author}, #{discount},
+        #{publisher}, #{pubdate}, #{description}, #{stock},
+        #{discountRate}, #{primaryCtg}, #{secondaryCtg}, #{link}, #{image})
     </insert>
 
-    <!-- 상품 등록 페이지 (book) -->
-    <insert id="registerBookVO">
-        insert into book (isbn, title, link, image, author, discount, publisher, pubdate, description)
-        VALUES (#{isbn}, #{title}, #{link}, #{image}, #{author}, #{discount}, #{publisher}, #{pubdate}, #{description});
-    </insert>
-
-    <!-- 상품 등록 페이지 (product) -->
-    <insert id="registerProductVO">
-        insert into product (isbn, stock, discount_rate, profile_link, detail_link, primary_ctg, secondary_ctg)
-        VALUES (#{isbn}, #{stock}, #{discountRate}, #{profileLink}, #{detailLink}, #{primaryCtg}, #{secondaryCtg});
-    </insert>
 
     <select id="getList" resultType="com.ezen.books.domain.ProductVO">
-        select p.* from product p
-        join book b on p.isbn = b.isbn
-
+        select * from product
         <!-- 동적 WHERE 절 -->
         <where>
             <!-- 항상 존재하는 조건: 삭제된 항목 제외 -->
-            p.is_del = 'N'
+            is_del = 'N'
 
             <!-- 검색 타입(type)과 키워드(keyword)에 대한 조건 -->
             <if test="type != null and keyword != null">
@@ -49,13 +41,13 @@
                         <trim suffix="or">
                             <choose>
                                 <when test="splitType == 't'.toString()">
-                                    b.title like concat('%', #{keyword}, '%')
+                                    title like concat('%', #{keyword}, '%')
                                 </when>
                                 <when test="splitType == 'a'.toString()">
-                                    b.author like concat('%', #{keyword}, '%')
+                                    author like concat('%', #{keyword}, '%')
                                 </when>
                                 <when test="splitType == 'p'.toString()">
-                                    b.publisher like concat('%', #{keyword}, '%')
+                                    publisher like concat('%', #{keyword}, '%')
                                 </when>
                             </choose>
                         </trim>
@@ -65,31 +57,31 @@
 
             <!-- primaryCtg 필터 -->
             <if test="primaryCtg != null and primaryCtg != ''">
-                and p.primary_ctg = #{primaryCtg}
+                and primary_ctg = #{primaryCtg}
             </if>
 
             <!-- secondaryCtg 필터 -->
             <if test="secondaryCtg != null and secondaryCtg != ''">
-                and p.secondary_ctg = #{secondaryCtg}
+                and secondary_ctg = #{secondaryCtg}
             </if>
         </where>
 
         <!-- 동적 ORDER BY 절 -->
         <choose>
             <when test="order == 'new'">
-                order by p.prno desc
+                order by prno desc
             </when>
             <when test="order == 'topRating'">
-                order by p.review_avg desc
+                order by review_avg desc
             </when>
             <when test="order == 'topPrice'">
-                order by b.discount desc
+                order by discount desc
             </when>
             <when test="order == 'lowPrice'">
-                order by b.discount asc
+                order by discount asc
             </when>
             <otherwise>
-                order by p.prno desc
+                order by prno desc
             </otherwise>
         </choose>
 
@@ -100,12 +92,11 @@
 
     <!-- 페이징 조건을 위한 단락 -->
     <select id="getTotalCount" resultType="int">
-        select count(*) from product p
-        join book b on p.isbn = b.isbn
+        select count(isbn) from product
         <!-- 동적 WHERE 절 -->
         <where>
             <!-- 항상 존재하는 조건: 삭제된 항목 제외 -->
-            p.is_del = 'N'
+            is_del = 'N'
 
             <!-- 검색 타입(type)과 키워드(keyword)에 대한 조건 -->
             <if test="type != null and keyword != null and type != ''">
@@ -114,13 +105,13 @@
                         <trim suffix="or">
                             <choose>
                                 <when test="splitType == 't'.toString()">
-                                    b.title like concat('%', #{keyword}, '%')
+                                    title like concat('%', #{keyword}, '%')
                                 </when>
                                 <when test="splitType == 'a'.toString()">
-                                    b.author like concat('%', #{keyword}, '%')
+                                    author like concat('%', #{keyword}, '%')
                                 </when>
                                 <when test="splitType == 'p'.toString()">
-                                    b.publisher like concat('%', #{keyword}, '%')
+                                    publisher like concat('%', #{keyword}, '%')
                                 </when>
                             </choose>
                         </trim>
@@ -130,23 +121,18 @@
 
             <!-- primaryCtg 필터 -->
             <if test="primaryCtg != null and primaryCtg != ''">
-                and p.primary_ctg = #{primaryCtg}
+                and primary_ctg = #{primaryCtg}
             </if>
 
             <!-- secondaryCtg 필터 -->
             <if test="secondaryCtg != null and secondaryCtg != ''">
-                and p.secondary_ctg = #{secondaryCtg}
+                and secondary_ctg = #{secondaryCtg}
             </if>
         </where>
     </select>
 
-    <!-- ProductVO의 isbn(외래키)를 통해 BookVO 가져옴 -->
-    <select id="getBookVO" resultType="com.ezen.books.domain.BookVO">
-        select * from book where isbn = #{isbn};
-    </select>
-
     <select id="getDetail" resultType="com.ezen.books.domain.ProductVO">
-        select * from product where prno = #{prno}
+        select * from product where isbn = #{isbn}
     </select>
 
 </mapper>

@@ -1,8 +1,6 @@
 package com.ezen.books.handler;
 
 import com.ezen.books.domain.BookInfo;
-import com.ezen.books.domain.BookProductDTO;
-import com.ezen.books.domain.BookVO;
 import com.ezen.books.domain.ProductVO;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -61,9 +59,9 @@ public class BookAPIHandler {
         return responseBody;
     }
 
-    public BookVO getBookVO(String responseBody){
+    public ProductVO getProductVO(String responseBody){
         // 관리자의 상품 등록 페이지에서 사용할 메서드
-        BookVO bookVO = new BookVO();
+        ProductVO productVO = new ProductVO();
 
         try {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -72,16 +70,16 @@ public class BookAPIHandler {
 
             // items가 존재하면? (= 검색 결과가 존재한다면?) List로 변환
             if (itemsNode.isArray()) {
-                List<BookVO> items = objectMapper
-                        .readValue(itemsNode.toString(), objectMapper.getTypeFactory().constructCollectionType(List.class, BookVO.class));
+                List<ProductVO> items = objectMapper
+                        .readValue(itemsNode.toString(), objectMapper.getTypeFactory().constructCollectionType(List.class, ProductVO.class));
 
-                // BookVO가 잘 변환되었다면?
+                // productVO 잘 변환되었다면?
                 if (!items.isEmpty()) {
-                    // bookVO 객체!
-                    bookVO = items.get(0);
-                    log.info(">>>> bookVO > {}", bookVO);
+                    // productVO 객체!
+                    productVO = items.get(0);
+                    log.info(">>>> productVO > {}", productVO);
 
-                    return bookVO;
+                    return productVO;
                 }
             }
         } catch (Exception e) {
@@ -90,37 +88,31 @@ public class BookAPIHandler {
         return null;
     }
 
-    public BookProductDTO getDetail(String responseBody){
+    public ProductVO getTestData(String responseBody){
         // API를 통해 가져온 responseBody(책 정보 데이터)를 활용해 BookProductDTO를 제공
         // 화면 X, 테스트 코드에서 사용할 것.
         // 수정 시 테스트 코드 변동 위험 있음.
 
-        BookVO bookVO = new BookVO();
         ProductVO productVO = new ProductVO();
 
         try {
-            // JSON 응답에서 items만 List<BookVO>로 변환
+            // JSON 응답에서 items만 List<productVO>로 변환
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode rootNode = objectMapper.readTree(responseBody);
             JsonNode itemsNode = rootNode.path("items");
 
             // items가 존재하면? (= 검색 결과가 존재한다면?) List로 변환
             if (itemsNode.isArray()) {
-                List<BookVO> items = objectMapper
-                        .readValue(itemsNode.toString(), objectMapper.getTypeFactory().constructCollectionType(List.class, BookVO.class));
+                List<ProductVO> items = objectMapper
+                        .readValue(itemsNode.toString(), objectMapper.getTypeFactory().constructCollectionType(List.class, ProductVO.class));
 
-                // BookVO가 잘 변환되었다면?
+                // productVO 잘 변환되었다면?
                 if (!items.isEmpty()) {
-                    // bookVO 객체!
-                    bookVO = items.get(0);
-                    log.info(">>>> bookVO > {}", bookVO);
-
                     // productVO 객체!
-                    // bookVO 객체를 통해 productVO 객체 생성
-//                    productVO = getProductData(bookVO);
+                    productVO = items.get(0);
+                    log.info(">>>> productVO > {}", productVO);
 
-                    BookProductDTO bookProductDTO = new BookProductDTO(bookVO, productVO);
-                    return bookProductDTO;
+                    return productVO;
                 }
             }
         } catch (Exception e) {
@@ -129,24 +121,21 @@ public class BookAPIHandler {
         return null;
     }
 
-    public ProductVO getProductData(BookVO bookVO) throws IOException {
-        // bookVO 객체를 통해 productVO 객체 생성
+    public ProductVO getProductData(ProductVO productVO) throws IOException {
+        // productVO 객체를 통해 productVO 객체 생성
 
         // User-Agent를 변경하여 웹 브라우저처럼 보이게 함
-        Connection connection = Jsoup.connect(bookVO.getLink())
+        Connection connection = Jsoup.connect(productVO.getLink())
                 .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3");
 
         // 연결 시도 및 HTML 파싱
         Document document = connection.get();
 
         // (웹 스크래핑) 도서 정보에서 가져온 link를 통한 상세 페이지 접속
-//        Document document = Jsoup.connect(bookVO.getLink()).get();
+//        Document document = Jsoup.connect(productVO.getLink()).get();
 
         // isbn, 재고 설정
-        ProductVO productVO = ProductVO.builder()
-                .isbn(bookVO.getIsbn())
-                .stock(1000)
-                .build();
+        productVO.setStock(1000);
 
         // 대분류, 소분류
         List<String> categories = document.select(".bookCatalogTop_category__DkzRk")
@@ -164,25 +153,6 @@ public class BookAPIHandler {
         }
 
         productVO.setSecondaryCtg(categories.get(2));
-
-        // 제품 표지 이미지 정보
-        Element imgElement1 = document.selectFirst("div.bookImage_img_wrap__lEXb2 img"); // img 태그 선택
-        if (imgElement1 != null) {
-            String imageSrc1 = imgElement1.attr("src");  // src 속성 추출
-            productVO.setProfileLink(imageSrc1);
-        } else {
-            log.info(">>>> Image not found!");
-        }
-
-        // 제품 상세 이미지 정보
-        Element imgElement2 = document.selectFirst("div.detailImage_image__4yD9v img"); // img 태그 선택
-        if (imgElement2 != null) {
-            // src 속성 추출
-            String imageSrc2 = imgElement2.attr("src");
-            productVO.setDetailLink(imageSrc2);
-        } else {
-            log.info(">>>> Image not found!");
-        }
 
         return productVO;
     }
