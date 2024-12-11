@@ -1,61 +1,139 @@
 package com.ezen.books.controller;
 
+import com.ezen.books.domain.IamportAccessTokenVO;
 import com.ezen.books.service.PaymentService;
-import com.ezen.books.service.PaymentServiceImpl;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.siot.IamportRestClient.IamportClient;
-import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.response.AccessToken;
-import com.siot.IamportRestClient.response.IamportResponse;
-import com.siot.IamportRestClient.response.Payment;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
+import java.io.*;
+import java.net.*;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.util.Optional;
 
 @Slf4j
 @RequestMapping("/payment/*")
 @RestController
 @RequiredArgsConstructor
+@PropertySource("classpath:application-secrets.properties")
 public class PaymentRestController {
+
+    private String iamportApiKey;
+
+    private String iamportApiSecret;
 
     private final IamportClient iamportClient;
     private PaymentService paymentService;
 
-    //생성자를 통해 REST API 와 REST API secret 입력
+
     @Autowired
-    public PaymentRestController(PaymentServiceImpl paymentService, @Value("${iamport_rest_api_key}") String apiKey, @Value("${iamport_rest_api_secret}") String apiSecret) {
-        this.iamportClient = new IamportClient(apiKey, apiSecret);
+    public PaymentRestController(
+            @Value("${iamport_rest_api_key}") String iamportApiKey,
+            @Value("${iamport_rest_api_secret}") String iamportApiSecret) {
+        this.iamportApiKey = iamportApiKey;
+        this.iamportApiSecret = iamportApiSecret;
+        this.iamportClient = new IamportClient(iamportApiKey, iamportApiSecret);
     }
 
     @PostMapping("/verify-iamport/webhook")
-    public ResponseBody verifyByWebhook(HttpServletRequest request) throws IOException {
-        // 웹훅을 수신하고 반드시 결제내역 단건조회 API를 통해 결제건을 조회하여 웹훅의 내용을 검증해야 합니다.
-        // 웹훅이 수신되지 않은 경우에도 결제 취소를 하기 이전에 결제내역 단건조회 API를 통해 결제건의 상태를 조회하여, 결제 상태에 따라 취소 처리를 해야 합니다.
-        String body = StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8);
-        // The body: {"imp_uid":"imp_669033532600","merchant_uid":"15f2c13a-55bc-48d5-8356-8fc03ba9f41b"}
-        log.info("The body: {}", body);
+    public void verifyByWebhook(HttpServletRequest request)
+            throws IOException, URISyntaxException, InterruptedException {
+        log.info("PaymentRestController: vefiryByWebhook start.");
+
+       String requestBody = StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8);
+        log.info("The request body: {}", requestBody);
+
+        try{
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode bodyNode = objectMapper.readTree(requestBody);
+
+            String impUid = bodyNode.get("imp_uid").asText();
+            String merchantUid = bodyNode.get("merchant_uid").asText();
+            log.info(">> verifyByWebhook: The imp_uid: {}", impUid);
+            log.info(">> verifyByWebhook: The merchant_uid: {}", merchantUid);
+        } catch (Exception e) {
+            log.info("Exception occurred in verifyByWebhook, content: {}", e);
+        }
 
         // 토큰 발급받기
-//        getIamportAccessToken();
-        return null;
+        IamportAccessTokenVO iamportToken = getIamportToken();
     }
 
-    private AccessToken getIamportAccessToken(@Value("${iamport_rest_api_key}") String apiKey, String imp_uid) {
-        RestTemplate restTemplate = new RestTemplate();
-        // restTemplate.exchange()가 비동기 요청을 하는 메서드인 듯.
-        String url = "https://api.portone.io/v2/signin/api-key";
-        return null;
+
+    private IamportAccessTokenVO getIamportToken()
+            throws IOException, URISyntaxException, InterruptedException {
+        log.info(">> PaymentRestController: getIamportToken start.");
+        HttpClient httpClient = HttpClient.newHttpClient();
+
+        String requestJson = "{" +
+                "\"imp_key\": \"" + iamportApiKey + "\", " +
+                "\"imp_secret\": \"" + iamportApiSecret + "\"" +
+                "}";
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(new URI("https://api.iamport.kr/users/getToken"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(requestJson))
+                .build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        log.info(">> Response Code: {}", response.statusCode());
+
+        // 응답 body 문자열을 json으로 파싱 후 토큰에 접근
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode responseJson = objectMapper.readTree(response.body());
+
+        IamportAccessTokenVO iamportToken = new IamportAccessTokenVO();
+        iamportToken.setToken(responseJson.get("response").get("access_token").asText());
+        iamportToken.setNow(responseJson.get("response").get("now").asInt());
+        iamportToken.setExpiredAt(responseJson.get("response").get("expired_at").asInt());
+
+        return iamportToken;
+    }
+
+    // JavaScript에게 주기 위한 용도라는 점을 빼면 위의 getIamportToken과 똑같다.
+    @GetMapping("/get-token")
+    public IamportAccessTokenVO giveTokenToJS()
+            throws IOException, URISyntaxException, InterruptedException {
+        log.info("PaymentRestController: giveTokenToJS start.");
+        HttpClient httpClient = HttpClient.newHttpClient();
+
+        String requestJson = "{" +
+                "\"imp_key\": \"" + iamportApiKey + "\", " +
+                "\"imp_secret\": \"" + iamportApiSecret + "\"" +
+                "}";
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(new URI("https://api.iamport.kr/users/getToken"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(requestJson))
+                .build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        log.info("Response Code: {}", response.statusCode());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode responseJson = objectMapper.readTree(response.body());
+
+        IamportAccessTokenVO iamportToken = new IamportAccessTokenVO();
+        iamportToken.setToken(responseJson.get("response").get("access_token").asText());
+        iamportToken.setNow(responseJson.get("response").get("now").asInt());
+        iamportToken.setExpiredAt(responseJson.get("response").get("expired_at").asInt());
+
+        return iamportToken;
     }
 
 
