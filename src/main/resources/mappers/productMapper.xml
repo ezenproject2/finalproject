@@ -26,7 +26,6 @@
         #{discountRate}, #{primaryCtg}, #{secondaryCtg}, #{link}, #{image})
     </insert>
 
-
     <select id="getList" resultType="com.ezen.books.domain.ProductVO">
         select * from product
         <!-- 동적 WHERE 절 -->
@@ -134,5 +133,11 @@
     <select id="getDetail" resultType="com.ezen.books.domain.ProductVO">
         select * from product where isbn = #{isbn}
     </select>
+
+    <update id="updateReviewAvg">
+        update product p join ( select prno, round(avg(rating), 1) as avg_rating
+        from review where prno = #{prno} group by prno ) r on p.prno = r.prno
+        set p.review_avg = r.avg_rating;
+    </update>
 
 </mapper>

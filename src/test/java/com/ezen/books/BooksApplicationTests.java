@@ -24,21 +24,21 @@ class BooksApplicationTests {
 	void contextLoads() {
 
 		List<DataUrlDTO> dataUrlList = new ArrayList<>();
-		dataUrlList.add(new DataUrlDTO("소설", "세계 각국 소설", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50005568&goodsType=PAPER&pageIndex=2&pageSize=40&sort=REL"));
-		dataUrlList.add(new DataUrlDTO("소설", "고전/문학", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50005569&goodsType=PAPER&pageIndex=2&pageSize=40&sort=REL"));
-		dataUrlList.add(new DataUrlDTO("소설", "장르소설", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50005570&goodsType=PAPER&pageIndex=2&pageSize=40&sort=REL"));
-		dataUrlList.add(new DataUrlDTO("소설", "테마문학", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50005571&goodsType=PAPER&pageIndex=2&pageSize=40&sort=REL"));
-		dataUrlList.add(new DataUrlDTO("소설", "한국소설", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50010002&goodsType=PAPER&pageIndex=2&pageSize=40&sort=REL"));
-		dataUrlList.add(new DataUrlDTO("시/에세이", "한국시", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50011720&goodsType=PAPER&pageIndex=2&pageSize=40&sort=REL"));
-		dataUrlList.add(new DataUrlDTO("시/에세이", "외국시", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50011740&goodsType=PAPER&pageIndex=2&pageSize=40&sort=REL"));
-		dataUrlList.add(new DataUrlDTO("시/에세이", "그림/사진 에세이", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50005579&goodsType=PAPER&pageIndex=2&pageSize=40&sort=REL"));
-		dataUrlList.add(new DataUrlDTO("시/에세이", "독서 에세이", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50005577&goodsType=PAPER&pageIndex=2&pageSize=40&sort=REL"));
-		dataUrlList.add(new DataUrlDTO("시/에세이", "명상 에세이", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50005578&goodsType=PAPER&pageIndex=2&pageSize=40&sort=REL"));
-		dataUrlList.add(new DataUrlDTO("컴퓨터/IT", "그래픽/멀티미디어", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50005692&goodsType=PAPER&pageIndex=2&pageSize=40&sort=REL"));
-		dataUrlList.add(new DataUrlDTO("컴퓨터/IT", "오피스활용도서", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50005693&goodsType=PAPER&pageIndex=2&pageSize=40&sort=REL"));
-		dataUrlList.add(new DataUrlDTO("컴퓨터/IT", "웹사이트", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50010881&goodsType=PAPER&pageIndex=2&pageSize=40&sort=REL"));
-		dataUrlList.add(new DataUrlDTO("컴퓨터/IT", "컴퓨터 입문/활용", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50010702&goodsType=PAPER&pageIndex=2&pageSize=40&sort=REL"));
-		dataUrlList.add(new DataUrlDTO("컴퓨터/IT", "게임", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50010862&goodsType=PAPER&pageIndex=2&pageSize=40&sort=REL"));
+		dataUrlList.add(new DataUrlDTO("소설", "세계 각국 소설", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50005568&goodsType=PAPER&pageIndex=3&pageSize=40&sort=REL"));
+		dataUrlList.add(new DataUrlDTO("소설", "고전/문학", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50005569&goodsType=PAPER&pageIndex=3&pageSize=40&sort=REL"));
+		dataUrlList.add(new DataUrlDTO("소설", "장르소설", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50005570&goodsType=PAPER&pageIndex=3&pageSize=40&sort=REL"));
+		dataUrlList.add(new DataUrlDTO("소설", "테마문학", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50005571&goodsType=PAPER&pageIndex=3&pageSize=40&sort=REL"));
+		dataUrlList.add(new DataUrlDTO("소설", "한국소설", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50010002&goodsType=PAPER&pageIndex=3&pageSize=40&sort=REL"));
+		dataUrlList.add(new DataUrlDTO("시/에세이", "한국시", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50011720&goodsType=PAPER&pageIndex=3&pageSize=40&sort=REL"));
+		dataUrlList.add(new DataUrlDTO("시/에세이", "외국시", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50011740&goodsType=PAPER&pageIndex=3&pageSize=40&sort=REL"));
+		dataUrlList.add(new DataUrlDTO("시/에세이", "그림/사진 에세이", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50005579&goodsType=PAPER&pageIndex=3&pageSize=40&sort=REL"));
+		dataUrlList.add(new DataUrlDTO("시/에세이", "독서 에세이", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50005577&goodsType=PAPER&pageIndex=3&pageSize=40&sort=REL"));
+		dataUrlList.add(new DataUrlDTO("시/에세이", "명상 에세이", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50005578&goodsType=PAPER&pageIndex=3&pageSize=40&sort=REL"));
+		dataUrlList.add(new DataUrlDTO("컴퓨터/IT", "그래픽/멀티미디어", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50005692&goodsType=PAPER&pageIndex=3&pageSize=40&sort=REL"));
+		dataUrlList.add(new DataUrlDTO("컴퓨터/IT", "오피스활용도서", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50005693&goodsType=PAPER&pageIndex=3&pageSize=40&sort=REL"));
+		dataUrlList.add(new DataUrlDTO("컴퓨터/IT", "웹사이트", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50010881&goodsType=PAPER&pageIndex=3&pageSize=40&sort=REL"));
+		dataUrlList.add(new DataUrlDTO("컴퓨터/IT", "컴퓨터 입문/활용", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50010702&goodsType=PAPER&pageIndex=3&pageSize=40&sort=REL"));
+		dataUrlList.add(new DataUrlDTO("컴퓨터/IT", "게임", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50010862&goodsType=PAPER&pageIndex=3&pageSize=40&sort=REL"));
 
 
 

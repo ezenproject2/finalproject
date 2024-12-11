@@ -26,6 +26,7 @@ public class ProductVO {
 
 //    변경 후
 //    CREATE TABLE book (
+//    prno BIGINT NOT NULL AUTO_INCREMENT,
 //    isbn VARCHAR(20) NOT NULL,
 //    stock INT DEFAULT 0,
 //    discount_rate INT DEFAULT 10,
@@ -42,9 +43,10 @@ public class ProductVO {
 //    publisher VARCHAR(100),
 //    pubdate VARCHAR(20),
 //    description TEXT,
-//    PRIMARY KEY (isbn)
+//    PRIMARY KEY (prno)
 //    );
 
+    private long prno;               // 고유번호
     private String isbn;             // ISBN
     private String title;            // 책 제목
     private String link;             // 링크
@@ -59,8 +61,9 @@ public class ProductVO {
     private int discountRate;        // 할인율 (기본값: 10)
     private String primaryCtg;       // 주요 카테고리
     private String secondaryCtg;     // 세부 카테고리
-    private int reviewAvg;           // 리뷰 평균 (기본값: 0)
+    private double reviewAvg;           // 리뷰 평균 (기본값: 0)
     private int saleQty;             // 판매 수량 (기본값: 0)
 
+    // 테이블 외 변수
     private int isValid;
 }

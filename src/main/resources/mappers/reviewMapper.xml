@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ezen.books.repository.ReviewMapper">
+
+    <insert id="register">
+        insert into review (prno, mno, content, rating, file_addr)
+        values (#{prno}, #{mno}, #{content}, #{rating}, #{fileAddr});
+    </insert>
+
+    <select id="getTotalCount" resultType="int">
+        select count(rno) from review where is_del = 'N' and prno = #{prno}
+    </select>
+
+    <select id="getList" resultType="com.ezen.books.domain.ReviewVO">
+        select * from review where is_del = 'N' and prno = #{prno} order by rno desc limit #{startIndex}, #{qty};
+    </select>
+
+    <select id="isLike" resultType="int">
+        select count(*) from likes where rno = #{rno} and mno = ${mno};
+    </select>
+
+</mapper>

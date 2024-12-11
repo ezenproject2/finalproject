@@ -21,4 +21,5 @@ public interface ProductMapper {
 
     ProductVO getDetail(String isbn);
 
+    void updateReviewAvg(long prno);
 }
