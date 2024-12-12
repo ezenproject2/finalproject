@@ -25,25 +25,52 @@ repositories {
 }
 
 dependencies {
+	// Spring Boot Starter Libraries
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+	// Thymeleaf Layout Dialect
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.3.0'
+
+	// MyBatis
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.4'
-	/* 타임리프 관련 - 레이아웃 */
-	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
-	/* 파일 업로드 관련 */
+
+	// File Upload Libraries
 	implementation 'org.apache.tika:tika-core:2.4.1'
 	implementation 'org.apache.tika:tika-parsers:2.4.1'
 	implementation 'net.coobird:thumbnailator:0.4.17'
+
+	// JWT Libraries
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+	// Lombok (Compile time code generation)
 	compileOnly 'org.projectlombok:lombok'
+
+	// Development Tools
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	// MySQL Connector
 	runtimeOnly 'com.mysql:mysql-connector-j'
+
+	// Annotation Processors
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	annotationProcessor 'org.projectlombok:lombok'
-	/*providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'*/
+
+	// Spring Security (Thymeleaf + Security)
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+
+	// Testing Libraries
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.4'
+	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
 }
 
 tasks.named('test') {

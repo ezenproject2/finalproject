@@ -1,0 +1,339 @@
+.login_content {
+    margin : 50px 0;
+}
+
+.login_wrap, .join_wrap {
+    width: 500px;
+    margin: 50px auto;
+}
+
+.login_menu_wrap {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.login_menu_item {
+    position: relative;
+    display: table-cell;
+    vertical-align: top;
+}
+
+.login_menu_item div {
+    display: block;
+    position: relative;
+    height: 65px;
+    padding-top: 17px;
+    border: 1px solid #C6C6C6;
+    border-bottom: 0;
+    border-radius: 12px 12px 0 0;
+    background-color: #F0F0F0;
+    text-align: center;
+    z-index: 1;
+}
+
+.login_menu_item div.on {
+    background-color: #fff;
+    z-index: 6;
+}
+.login_member.on {
+    border-right: none;
+}
+.login_non_member.on {
+    border-left: none;
+}
+
+.login_content {
+    border-right: 0;
+    border-radius: 12px 0;
+}
+
+.panel_wrap {
+    position: relative;
+    z-index: 5;
+    margin-top: -10px;
+    background-color: #fff;
+    border: 1px solid #C6C6C6;
+    border-radius: 12px;
+}
+.panel_inner {
+    padding: 24px;
+}
+.login_form {
+    position: relative;
+}
+.input_item {
+    position: relative;
+    padding: 27px 15px 8px;
+    border: 1px solid #D8D8D8;
+    z-index: 1;
+}
+.input_item.id {
+    height: 60px;
+    border-radius: 8px 8px 0 0;
+}
+
+.input_id, .input_pw {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 22px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -.2px;
+    z-index: 5;
+}
+.text_label {
+    display: inline-block;
+    position: absolute;
+    bottom: 18px;
+    left: 15px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -.2px;
+    transition: all .3s cubic-bezier(.4,0,.2,1);
+    color: #C6C6C6;
+    pointer-events: none;
+    box-sizing: border-box;
+    z-index: 3;
+}
+.btn_delete {
+    position: absolute;
+    top: 10px;
+    right: 3px;
+    width: 40px;
+    height: 40px;
+    z-index: 7;
+}
+.input_item .ic_delete, .input_item .ic_view, .input_item .ic_view.hide {
+    width: 22px;
+    height: 22px;
+}
+
+.input_item.pw {
+    height: 59px;
+    border-top: 0;
+    border-radius: 0 0 8px 8px;
+}
+.btn_view {
+    position: absolute;
+    top: 10px;
+    right: 36px;
+    width: 40px;
+    height: 40px;
+    z-index: 7;
+}
+
+.btn_delete, .btn_view {
+    display: none; /* 초기에는 숨김 */
+  }
+  .input_item.on .btn_delete,
+  .input_item.on .btn_view {
+    display: inline-block; /* on 클래스가 있을 때만 보임 */
+  }  
+
+.input_item.id.focus::after {
+    border-radius: 8px 8px 0 0
+}
+.input_item.pw.focus::after {
+    border-radius: 0 0 8px 8px
+}
+.input_item.focus::after {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    border: 2px solid #39553F;
+    transition: all .2.5s cubic-bezier(.4,0,.2,1);
+    z-index: 2
+}
+
+.input_item.focus .text_label, .input_item.on .text_label {
+    left: 7px;
+    bottom: 30px;
+    font-size: 12px;
+    padding: 0 8px;
+    letter-spacing: -.8px;
+    white-space: nowrap;
+    width: auto
+}
+
+.login_sub_wrap {
+    position: relative;
+    margin-top: 12px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.keep_check{
+    position: relative;
+    padding-left: 26px;
+}
+.keep_check .input_keep {
+    position: absolute;
+    top: 2px;
+    left: 3px;
+    width: 15px;
+    height: 15px;
+    z-index: 5;
+}
+.keep_check .keep_text {
+    display: inline-block;
+    font-weight: 400;
+    line-height: 20px;
+    color: #C6C6C6;
+}
+.keep_check .keep_text::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-image: url("/image/svg/checkbox-off.svg");
+    width: 20px;
+    height: 20px;
+    background-color: #fff;
+}
+.keep_check input:checked+.keep_text::before {
+    background-image: url("/image/svg/checkbox-on.svg");
+    width: 20px;
+    height: 20px;
+}
+.keep_check input:checked+.keep_text {
+    color: #555555;
+}
+.login_find {
+    display: flex;
+    justify-content: center; /* 가운데 정렬 */
+    align-items: center;
+  }
+  
+  .login_find a {
+    position: relative;
+    padding: 0 7px; /* 텍스트 간격 조정 */
+    color: #555; /* 글자색 */
+    text-decoration: none; /* 밑줄 제거 */
+  }
+  
+  .login_find a:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    right: 0; /* 선을 오른쪽에 추가 */
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: #C6C6C6; /* 선 색상 */
+  }
+
+  .login_btn_wrap {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .btn_login {
+    display: block;
+    width: 100%;
+    padding: 13px 20px;
+    border-radius: 8px;
+    background-color: #497248;
+    margin : 20px 0 40px 0;
+  }
+  .btn_login .btn_text {
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: -.4px;
+    color: #fff;
+  }
+
+.sns_login_box {
+    padding : 10px 0;
+}
+.sns_login_line {
+    position: relative;
+    width: 100%;
+    height: 1px;
+    background-color: #C6C6C6;
+}
+.sns_login_line span {
+    padding: 0 16px;
+    position: absolute;
+    width: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* 완벽한 중앙 정렬 */
+    background-color: #fff;
+    white-space: nowrap;
+}
+.sns_login_list {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+.sns_login {
+    display: flex;
+    justify-content: center; /* 자식 요소를 중앙 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    width: auto; /* i 태그 크기를 따름 */
+    height: auto; /* i 태그 크기를 따름 */
+}
+.sns_login i {
+    width: 65px;
+    height: 65px;
+}
+
+.ic_naver {
+    background-image: url("/image/login/naver.png");
+}
+.ic_kakao {
+    background-image: url("/image/login/kakao.png");
+}
+.ic_google {
+    background-image: url("/image/login/google.png");
+}
+
+.join_wrap {
+    border-top: 1px solid #D8D8D8;
+    padding-top: 30px;
+}
+.join_text {
+    margin-bottom: 30px;
+}
+.join_text p {
+    text-align: center;
+    line-height: 30px;
+}
+.join_title {
+    font-size: 1.2rem;
+}
+
+.join_btn_box {
+    margin-top: 20px;
+    width: 90%; /* 부모 컨테이너의 넓이 */
+    text-align: center; /* 버튼을 가운데 정렬 */
+    margin: 0 auto; /* 수평 가운데 정렬 */
+  }
+  
+  .join_btn {
+    width: 90%; /* 버튼 넓이 */
+    padding: 20px 0; /* 버튼 높이 조정 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+    font-size: 16px; /* 글자 크기 */
+    color: #39553F; /* 글자색 */
+    background-color: #fff; /* 배경색 */
+    border: 1.5px solid #39553F; /* 테두리 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    transition: all 0.3s ease; /* 부드러운 전환 효과 */
+  }
+  
+  .join_btn:hover {
+    background-color: #39553F; /* 호버 시 배경색 */
+    color: #fff !important; /* 호버 시 글자색 */
+    border-color: #39553F; /* 호버 시 테두리 색상 */
+  }

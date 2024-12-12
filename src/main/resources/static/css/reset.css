@@ -1,0 +1,131 @@
+/* reset.css */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap');
+
+*, *::after, *::before {
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+    font-family: 'Noto Sans', sans-serif;
+    scroll-behavior: smooth;
+}
+
+.container {
+    min-width: 1280px;
+    height: 100%;
+    position: relative;
+    overflow: scroll;
+}
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video, select, input, button {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    color: #555555;
+    vertical-align: baseline;
+    background: 0 0;
+    outline: none;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+    display: block;
+    width: 100%;
+}
+body {
+    width: 100%;
+    height: 100vh;
+    justify-content: center;
+    font-display: swap;
+    font-size: 1rem;
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+a, a:focus, a:active, a:hover, select {
+    text-decoration: none;
+    outline: none;
+}
+
+.inner {
+    width: 1060px;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.header .inner {
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+}
+
+button, input, select, textarea {
+    border-radius: 0;
+    border: none;
+    background: 0 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    outline: 0;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s;
+    overflow: visible;
+    background-color: transparent;
+}
+
+.ic {
+    display: inline-block;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.ic_delete {
+    background-image: url("/image/svg/x.svg");
+}
+.ic_view {
+    background-image: url("/image/svg/visibility.svg");
+}
+.ic_view.hide {
+    background-image: url("/image/svg/visibility-off.svg");
+}
+.ic_error {
+    background-image: url("/image/svg/error.svg");
+}
+strong {
+    font-weight: 700;
+}
+footer {
+    overflow: scroll;
+}

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+    <title> 이젠문고 </title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="/css/reset.css"/>
+    <link rel="stylesheet" href="/css/join.css"/>
+</head>
+<div layout:fragment="content">
+<body>
+    <div class="container">
+        <main>
+            <div class="inner">
+                <form action="/member/join" method="post">
+                    <div class="join_content">
+                        <em>*</em> <span class="essential">필수입력항목</span>
+                        <div class="join_terms_box">
+                            <div class="join_title join_terms_title">
+                                <span>약관동의</span>
+                            </div>
+                            <div class="join_terms_wrap">
+                                <div class="join_terms_info">
+                                    <div class="info_img_area">
+                                        <img src="/image/login/join_terms.png" alt="join_terms" width="100px" height="auto">
+                                    </div>
+                                    <div class="info_text">
+                                        <p>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                                <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3" />
+                                            </svg>
+                                            필수 수집 개인정보는 서비스 이용에 필요한 최소한의 정보이며, 동의를 해주셔야만 서비스를 이용하실 수 있습니다.
+                                        </p>
+                                        <p>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                                <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3" />
+                                            </svg>
+                                            선택적 수집 항목에 대한 동의 없이도 회원가입, 상품구매 등 기본 서비스 이용 가능합니다. 단, 일부 서비스 이용은 제한될 수 있습니다.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="join_terms_list">
+                                    <ul>
+                                        <li class="join_terms_item all">
+                                            <div class="join_terms_check all">
+                                                <input type="checkbox" class="input_check all">
+                                                <label for="check" class="check_text all">모든 약관에 동의합니다.</label>
+                                            </div>
+                                        </li>
+                                        <li class="join_terms_item">
+                                            <div class="join_terms_check">
+                                                <input type="checkbox" class="input_check essential_check">
+                                                <label for="check" class="check_text">이젠문고 서비스 이용약관 <em>*</em></label>
+                                            </div>
+                                            <button type="button" class="join_terms_ex">
+                                                <span>전문보기</span>
+                                            </button>
+                                        </li>
+                                        <li class="join_terms_item">
+                                            <div class="join_terms_check">
+                                                <input type="checkbox" class="input_check essential_check">
+                                                <label for="check" class="check_text">개인정보 수집 및 이용안내 <em>*</em></label>
+                                            </div>
+                                            <button type="button" class="join_terms_ex">
+                                                <span>전문보기</span>
+                                            </button>
+                                        </li>
+                                        <li class="join_terms_item">
+                                            <div class="join_terms_check">
+                                                <input type="checkbox" class="input_check">
+                                                <label for="check" class="check_text">프로모션 정보 수신 동의</label>
+                                            </div>
+                                            <button type="button" class="join_terms_ex">
+                                                <span>전문보기</span>
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="join_data_box">
+                            <div class="join_title">
+                                <span>회원가입</span>
+                            </div>
+                            <div class="join_data_wrap">
+                                <table class="form_table">
+                                    <tr>
+                                        <td class="form_table_label">아이디 <em>*</em></td>
+                                        <td class="form_data id">
+                                            <div class="form_id_wrap">
+                                                <div class="form_item id">
+                                                    <input type="text" id="id" class="input_id" maxlength="20" name="loginId">
+                                                </div>
+                                                <span class="error_message"></span>
+                                            </div>
+                                            <button type="button" class="id_check">중복확인</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="form_table_label">비밀번호 <em>*</em></td>
+                                        <td class="form_data">
+                                            <div class="form_item pw">
+                                                <input type="password" id="pw" class="input_pw" maxlength="16" name="password">
+                                                <button type="button" class="btn btn_view">
+                                                    <i class="ic ic_view hide"></i>
+                                                </button>
+                                            </div>
+                                            <span class="error_message"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="form_table_label">비밀번호 확인 <em>*</em></td>
+                                        <td class="form_data">
+                                            <div class="form_item pw">
+                                                <input type="password" id="pwCheck" class="input_pw_check" maxlength="16" name="passwordCheck">
+                                                <button type="button" class="btn btn_view">
+                                                    <i class="ic ic_view hide"></i>
+                                                </button>
+                                            </div>
+                                            <span class="error_message"></span><span id="errorMessage"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="form_table_label">이메일 <em>*</em></td>
+                                        <td class="form_data">
+                                            <div class="form_item email">
+                                                <input type="text" id="email" class="input_email" maxlength="20" name="email">
+                                            </div>
+                                            <span class="error_message"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="form_table_label">이름 <em>*</em></td>
+                                        <td class="form_data">
+                                            <div class="form_item name">
+                                                <input type="text" id="name" class="input_name" maxlength="6" name="name">
+                                            </div>
+                                            <span class="error_message"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="form_table_label">전화번호 <em>*</em></td>
+                                        <td class="form_data">
+                                            <div class="form_item number">
+                                                <input type="text" id="number" class="input_number" maxlength="11" name="phoneNumber">
+                                            </div>
+                                            <span class="error_message"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="form_table_label">주소 <em>*</em></td>
+                                        <td class="form_data address">
+                                            <div class="form_addr1">
+                                                <div class="form_item addressform" style="width: 241px;">
+                                                    <input type="text" class="postcode address" id="postcode" readonly name="address">
+                                                </div>
+                                                <button type="button" onclick="execDaumPostcode()" class="addrBtn" id="non_member_addrBtn">주소 찾기</button>
+                                            </div>
+                                            <div class="form_addr2" style="margin-bottom: 15px;">
+                                                <div class="form_item addr1">
+                                                    <input type="text" class="homeAddress addressform" id="homeAddress" readonly>
+                                                </div>
+                                                <div class="form_item addr2">
+                                                    <input type="text" class="detailAddress addressform" id="detailAddress" placeholder="상세 주소를 입력해 주세요.">
+                                                </div>
+                                            </div>
+                                            <span class="error_message" style="margin-top: -20px; margin-bottom: 15px;"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="form_table_label">닉네임  <em>*</em></td>
+                                        <td class="form_data">
+                                            <div class="form_item nickName">
+                                                <input type="text" id="nickName" class="input_nickName" name="nickName">
+                                            </div>
+                                            <span class="error_message"></span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-area">
+                        <button type="submit" class="btn join_btn"><span class="btn_text">회 원 가 입</span></button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+    <script src="/js/join.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script src="/js/private_address.js"></script>
+</body>
+</html>

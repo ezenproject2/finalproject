@@ -1,0 +1,268 @@
+.join_content {
+    margin : 50px 0;
+}
+em {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #E7B343;
+}
+.essential {
+    font-weight: 700;
+}
+.join_terms_box, .join_data_box {
+    width: 100%;
+    position: relative;
+    border-top: 1px solid #C6C6C6;
+    display: flex;
+}
+.join_terms_box {
+    margin: 15px 0 0 0;
+}
+.join_data_box {
+    border-bottom: 1px solid #C6C6C6;
+}
+.join_title {
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #C6C6C6;
+    padding: 0;
+}
+.join_terms_wrap, .join_data_wrap {
+    width: 80%;
+    padding: 30px 0 30px 45px;
+}
+.join_terms_info {
+    display: flex;
+    border: 2px solid #39553F;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    background-color: #fff;
+}
+.info_img_area {
+    margin-right: 3px;
+}
+.info_text p {
+    position: relative;
+    margin: 0;
+    padding-left: 24px; /* svg 공간 확보 */
+    line-height: 1.5; /* 줄 간격 */
+    font-size: 16px;
+}
+.info_text p:first-child {
+    margin-bottom: 5px;
+}
+.info_text svg {
+    position: absolute;
+    left: 0; /* svg를 p 태그 안의 가장 왼쪽에 고정 */
+    top: 0;
+    color: #E7B343;
+}
+.join_terms_item {
+    position: relative;
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.join_terms_item.all {
+    padding: 15px 0;
+    border-bottom: 1px solid #C6C6C6;
+    margin-bottom: 15px;
+}
+.join_terms_check {
+    position: relative;
+    display: flex;
+}
+.input_check {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 15px;
+    height: 15px;
+    z-index: 5;
+}
+.input_check.all {
+    width: 20px;
+    height: 20px;
+}
+.check_text {
+    padding-left: 35px;
+    display: inline-block;
+    font-weight: 400;
+    line-height: 20px;
+}
+.check_text.all {
+    color: #555;
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 25px;
+    padding-left: 40px;
+}
+.check_text::before {
+    content: '';
+    position: absolute;
+    top: 50%; /* 부모 요소의 세로 중앙 기준 */
+    left: 0; /* 부모 요소의 가장 왼쪽 */
+    transform: translateY(-50%); /* 세로 축 기준으로 중앙 정렬 */
+    background-image: url("/image/svg/checkbox-off.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 25px;
+    height: 25px;
+    background-color: #fff;
+}
+.check_text.all::before {
+    width: 30px;
+    height: 30px;
+}
+.input_check:checked+.check_text::before {
+    background-image: url("/image/svg/checkbox-on.svg");
+    width: 25px;
+    height: 25px;
+}
+.input_check:checked+.check_text.all::before {
+    background-image: url("/image/svg/checkbox-on.svg");
+    width: 30px;
+    height: 30px;
+}
+.join_terms_ex {
+    background-color: #F8F8F8;
+    border: 0.5px solid #C6C6C6;
+    border-radius: 7px;
+    padding: 3px 5px;
+}
+.join_terms_ex span {
+    color: #000B17;
+    font-size: small;
+}
+.join_data {
+    width: 100%;
+    border-top: 1px solid #C6C6C6;
+}
+.form_table {
+    width: 100%;
+}
+.form_table tr {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 0;
+}
+.form_table td {
+    text-align :start;
+    height: 70px;
+}
+.form_table_label {
+    width: 20%;
+}
+.form_id_wrap {
+    width: 500px;
+}
+.form_data {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.form_data.id {
+    display: flex;
+    flex-direction: row;
+    align-items :center;
+    justify-content: space-between;
+}
+.id_check, .addrBtn {
+    width: 80px;
+    height: 30px;
+    background: #39553F;
+    border-radius: 6px;
+    color: white;
+    margin: auto 15px;
+}
+.form_item {
+    display: flex;
+    align-items: center;
+    position: relative;
+    box-sizing: border-box;
+    max-width: 500px;
+    min-height: 50px;
+    padding: 0 10px 0 45px;
+    border: 1px solid #C6C6C6;
+    border-radius: 6px;
+}
+.form_item:focus {
+    border: 2px solid #717171;
+}
+.form_table input {
+    flex: 1 1 auto;
+    width: 100%;
+    font-size: 16px;
+    line-height: 22px;
+    color: #222;
+}
+.btn_view, .btn_view.hide {
+    margin-left: 4px;
+    vertical-align: middle;
+}
+.ic_view, .ic_view.hide {
+    width: 30px;
+    height: 30px;
+}
+.btn-area {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.join_btn {
+    width: 50%;
+    display: block;
+    padding: 13px 20px;
+    border-radius: 8px;
+    background-color: #4972487c;
+    margin: 20px 0 40px 0;
+    
+}
+.join_btn .btn_text {
+    font-size: 17px;
+    line-height: 24px;
+    letter-spacing: -.4px;
+    color: #fff;
+}
+.form_item:focus-within {
+    border: 2px solid #717171;
+}
+.form_item.error {
+    border: 2px solid #EB003B;
+}
+.ic_error {
+    width: 15px;
+    height: 15px;
+    margin-right: 3px;
+}
+.error_message {
+    color: #EB003B;
+    display: none;
+    font-size: 0.8rem;
+    align-items: center;
+}
+
+.form_data.address {
+    height: auto;
+    gap: 10px;
+}
+.form_data.address .form_item {
+    padding: 0 20px;
+}
+.form_addr1, .form_addr2 {
+    display: flex;
+    flex-direction: row;
+}
+.form_addr2 {
+    justify-content: space-between;
+}
+.form_item.addr1 {
+    width: 241px;
+    margin-right: 10px;
+}
+.form_addr2 .addr2 {
+    width: 60%;
+}
