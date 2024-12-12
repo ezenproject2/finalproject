@@ -18,5 +18,5 @@ public class DeliveryDTO {
     private String addrDetail;
     private String addrName;
     private String memo;
-    private DeliveryStatus deliveryStatus;
+    private DeliveryStatus status;
 }

@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class OrdersDTO {
     private long orno;
     private long mno;
-    private OrdersStatus ordersStatus;
+    private OrdersStatus status;
     private int totalPrice;
     private LocalDateTime orderAt;
     private String isPickup;

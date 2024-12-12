@@ -15,8 +15,8 @@ public class PaymentDTO {
     private long orno;
     private String measure;
     private int price;
-    private PaymentStatus paymentStatus;
+    private PaymentStatus status;
     private LocalDateTime regAt;
     private String cardName;
-    private String imp_uid;
+    private String impUid;
 }

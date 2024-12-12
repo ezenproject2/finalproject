@@ -16,7 +16,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addResourceLocations(uploadPath);
     }
 
-    /* 결제 api에서 토큰 받아올 때 필요함 */
+    /* 결제 api에서 HTTP 요청을 할 때 필요함 */
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();

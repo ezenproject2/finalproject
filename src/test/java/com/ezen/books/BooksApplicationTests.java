@@ -86,8 +86,7 @@ class BooksApplicationTests {
 		JsonNode jsonNode = objectMapper.readTree(response.body());
 
 		String token = jsonNode.get("response").get("access_token").asText();
-		log.info("The response json is: {}", jsonNode.get("response"));
-		IamportAccessTokenVO iamportToken = objectMapper.readValue(jsonNode.get("response").asText(), IamportAccessTokenVO.class);
+		log.info("The token is: {}", token);
 
 		// 응답 body를 받으면 자동적으로 Java 클래스와 mapping 되게 하고 싶었는데 왠지 안 됨. 나중에 도전해볼 것.
 //		IamportAccessTokenVO iamportToken = objectMapper.readValue(jsonNode.get("response").asText(), IamportAccessTokenVO.class);

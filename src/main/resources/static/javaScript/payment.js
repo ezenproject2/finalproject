@@ -24,6 +24,7 @@ function identifyPayBtn(targetClassList) {
         channelKeyVal: ""
     }
 
+    // TODO: channelKey는 서버에서 제공할 것.
     if(targetClassList.contains('credit-card-btn')) {
         pgData.pgVal = "페이팔, pg 상점 아이디 필요";
         pgData.payMethodVal = "card";
@@ -52,8 +53,8 @@ function identifyPayBtn(targetClassList) {
 }
 
 async function payWithIamport(pgData) {
-    // 주문의 UUID 정보를 가져와야 하지만
-    // 주문이 구현되지 않아서 임시로 UUID를 생성했음.
+    // TODO: 결제 진행 시 서버에서 uuid 생성할 것.
+    // 현재 해당 기능이 구현되어 있지 않아서 여기서 생성 중.
     let merchantUuid = crypto.randomUUID();
 
     // 고객 정보 및 상품 정보 테스트용 입력값임.
@@ -68,72 +69,110 @@ async function payWithIamport(pgData) {
         buyer_name : "박준희",
         buyer_tel : "01071882723",
         notice_url: "http://localhost:8087/payment/verify-iamport/webhook", // 웹훅을 수신할 url 주소
-        m_redirect_url: "http://localhost:8087" // 결제 완료 페이지로 payment/complete를 만들어야 할 듯?
+        m_redirect_url: "http://localhost:8087" // 모바일 전용 리디렉트 프로퍼티. 결제 완료 페이지로 payment/complete를 만들어야 할 듯?
     }
 
     IMP.init('imp73014361'); // iamport_customer_verification_code의 값이다.
-    IMP.request_pay(paymentData, function (response) {
-        if(response.success) {
-            // 결제 데이터 저장 전에 수행되는 검증 로직.
-            console.log("Payment completed.");
+    IMP.request_pay(paymentData, function (impResponse) {
+        console.log("Payment completed.");
+        if(impResponse.success) {
             console.log("Start payment information verification.");
-            getIamportToken();
-            // handleIamportResult(response);
-            verifyPaymentInfo(response.imp_uid);
-        } else if (response.error_code != null) {
-            alert("Fail -> code(" + response.error_code + ") / Message(" + response.error_msg + ")");
+            // 결제 데이터를 DB에 저장하기 전에 검증 먼저 실행.
+            // 결제 검증 1. 결제할 액수와 결제 결과로 반환된 결제 액수 동등성 비교.
+            const verifyOneResult = comparePayment(paymentData.amount, impResponse.paid_amount);
+            // 결제 검증 2. 포트원의 "결제 단건 조회" API를 통해 imp_uid와 액수 비교.
+            let verifyTwoResult = false;
+            if(verifyOneResult) {
+                verifyTwoResult = sendPaymentResultToServer(impResponse);
+            }
+            // 모든 검증 후 DB에 결제 자료 입력
+            preservePaymentInfoToServer(impResponse);
+        } else if (impResponse.error_code != null) {
+            alert("Fail -> code(" + impResponse.error_code + ") / Message(" + impResponse.error_msg + ")");
         }
     });
 }
 
-// 검증을 백엔에서 하려고 했는데, 프엔에서 하는 걸로 바꿈.
-// 그래서 얘를 안씀.
-// async function handleIamportResult(response) {
-//     // const url = `/payment/verify-iamport/${response.imp_uid}`;
-//     const url = `/payment/verify-iamport/webhook`;
-//     const config = {
-//         method: "POST",
-//         headers: { "Content-Type": "application/json" },
-//         // imp_uid와 merchant_uid, 주문 정보를 서버에 전달
-//         body: JSON.stringify({
-//             imp_uid: response.imp_uid,
-//             merchant_uid: response.merchant_uid
-//         })
-//     };
 
-//     const verifiedResult = await fetch(url, config);
-//     const result = await verifiedResult.text();
-//     console.log("The result is " + result);
-//     return verifiedResult;
-// }
-
-async function getIamportToken() {
-    try {
-        const url = "/payment/get-token";
-        const config = {
-            method: "get",
-            headers: {
-                'Content-Type': 'application/json; charset=utf-8'
-            }
-        };
-        const response = await fetch(url, config);
-        const result = await response.text();
-        const iamportToken = JSON.parse(result);
-        console.log("The token is: " + iamportToken.token);
-        return iamportToken;
-    } catch (error) {
-        console.log(error);
+function comparePayment (supposeAmount, actualAmount) {
+    if(supposeAmount == actualAmount) {
+        console.log("Verification 1: Pass");
+        return true;
+    } else if (supposeAmount != actualAmount) {
+        console.log("Verification 1: Fail");
+        return false;
+    } else {
+        console.log("Verification 1: Unknown");
+        return null;
     }
 }
 
-async function verifyPaymentInfo(imp_uid) {
-    const url = `https://api.iamport.kr//payments/${imp_uid}`;
+async function sendPaymentResultToServer(impResponse) {
+    console.log("sendPaymentResultToServer operating.")
+
+    const url = `/payment/result`;
     const config = {
-        headers: {
-            'Content-Type': 'application/json'
-        }
+        method: "POST",
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        body: JSON.stringify({
+            imp_uid: impResponse.imp_uid,
+            paid_amount: impResponse.paid_amount
+        })
     };
+
     const response = await fetch(url, config);
     const result = await response.text();
+    if(result == "1") {
+        console.log("Verification 2: Pass");
+        return true;
+    } else if (result == "0") {
+        console.log("Verification 2: Fail");
+        return false;
+    } else {
+        console.log("Verification 2: Unknown");
+        return null;
+    }
+}
 
+async function preservePaymentInfoToServer(impResponse) {
+    const url = `/payment/preserve`;
+    const sendData = {
+        orno: impResponse.merchant_uid,
+        measure: impResponse.pay_method,
+        price: impResponse.paid_amount,
+        status: "",
+        // DB의 reg_at은 mapper에서 now()로 설정할 예정.
+        cardName: impResponse.card_name,
+        impUid: impResponse.imp_uid
+    };
+    sendData.status = selectStatus(impResponse.status);
+    const config = {
+        method: "POST",
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        body: JSON.stringify(sendData)
+    };
+
+    const response = await fetch(url, config);
+    const result = await response.text();
+    console.log("The result: " + result);
+}
+
+// impResponse의 status에 따라 DB에 저장할 status의 값을 결정함
+function selectStatus(impResponseStatus) {
+    let status = "";
+    switch(impResponseStatus) {
+        case "ready":
+            status = "pending";
+            break;
+        case "failed":
+            status = "failed";
+            break;
+        case "paid":
+            status = "completed";
+            break;
+        default:
+            status = "unknown";
+            break;
+    }
+    return status;
 }
