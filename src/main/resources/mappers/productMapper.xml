@@ -140,4 +140,8 @@
         set p.review_avg = r.avg_rating;
     </update>
 
+    <update id="updateReviewCnt">
+        update product set review_cnt = review_cnt + #{num} where prno = #{prno};
+    </update>
+
 </mapper>

@@ -38,3 +38,6 @@ out/
 
 # API 시크릿 키
 application-secrets.properties
+
+# 자바스크립트 시크릿 키
+apikey.js

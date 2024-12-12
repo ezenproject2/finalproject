@@ -3,6 +3,7 @@ package com.ezen.books.repository;
 import com.ezen.books.domain.ProductVO;
 import com.ezen.books.domain.PagingVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -22,4 +23,6 @@ public interface ProductMapper {
     ProductVO getDetail(String isbn);
 
     void updateReviewAvg(long prno);
+
+    void updateReviewCnt(@Param("prno") long prno, @Param("num") int i);
 }

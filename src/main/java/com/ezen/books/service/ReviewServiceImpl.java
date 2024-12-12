@@ -8,6 +8,7 @@ import com.ezen.books.repository.ReviewMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,11 +20,13 @@ public class ReviewServiceImpl implements ReviewService{
     private final ReviewMapper reviewMapper;
     private final ProductMapper productMapper;
 
+    @Transactional
     @Override
     public int register(ReviewVO reviewVO) {
         int isOk = reviewMapper.register(reviewVO);
         if(isOk>0){
             productMapper.updateReviewAvg(reviewVO.getPrno());
+            productMapper.updateReviewCnt(reviewVO.getPrno(), 1);
         }
         return isOk;
     }
@@ -40,13 +43,31 @@ public class ReviewServiceImpl implements ReviewService{
             // member 연결하면 넣을 예정
 //            reviewVO.setName(reviewMapper.getName(reviewVO.getMno()));
             reviewVO.setName("홍길동");
+            reviewVO.setIsLike(reviewMapper.isLike(reviewVO.getRno(), pagingVO.getMno()));
         }
         return list;
     }
 
+    @Transactional
     @Override
-    public int isLike(long rno, long mno) {
-        int isOk = reviewMapper.isLike(rno, mno);
+    public int doLike(long rno, long mno) {
+        // 좋아요
+        int isOk = reviewMapper.doLike(rno, mno);
+        if(isOk>0){
+            // 동작 후 리뷰에 좋아요 수 업데이트
+            isOk *= reviewMapper.updateCnt(rno, 1);
+        }
         return isOk;
     }
+
+    @Transactional
+    @Override
+    public int cancel(long rno, long mno) {
+        int isOk = reviewMapper.cancel(rno, mno);
+        if(isOk>0){
+            isOk *= reviewMapper.updateCnt(rno, -1);
+        }
+        return isOk;
+    }
+
 }

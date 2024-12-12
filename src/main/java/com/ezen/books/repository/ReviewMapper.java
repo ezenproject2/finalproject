@@ -19,4 +19,10 @@ public interface ReviewMapper {
     List<ReviewVO> getList(PagingVO pagingVO);
 
     int isLike(@Param("rno") long rno, @Param("mno") long mno);
+
+    int doLike(@Param("rno") long rno, @Param("mno") long mno);
+
+    int cancel(@Param("rno") long rno, @Param("mno") long mno);
+
+    int updateCnt(@Param("rno") long rno, @Param("num") int i);
 }

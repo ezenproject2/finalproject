@@ -14,5 +14,7 @@ public interface ReviewService {
 
     List<ReviewVO> getList(PagingVO pagingVO);
 
-    int isLike(long rno, long mno);
+    int doLike(long rno, long mno);
+
+    int cancel(long rno, long mno);
 }

@@ -50,9 +50,9 @@
     let mno = 1;
   </script>
   <!--/* 리뷰 등록 관련 스크립트 */-->
-  <script th:src="@{/js/reviewRegister.js}"></script>
-  <script th:src="@{/js/reviewDetail.js}"></script>
+  <script th:src="@{/js/review/reviewRegister.js}"></script>
+  <script th:src="@{/js/review/reviewDetail.js}"></script>
   <script th:inline="javascript">
-    printReviewBox([[${productVO.prno}]]);
+    printReviewBox([[${productVO.prno}]], 1, mno);
   </script>
 </div>

@@ -27,11 +27,12 @@ public class PagingVO {
 
     // 리뷰를 위한 멤버변수
     private long prno;
+    private long mno;
 
     // 기본생성자는 커스텀이 필요하므로 @NoArgsConstructor는 붙이지 않았음
     public PagingVO(){
         this.pageNo = 1;
-        this.qty = 10;
+        this.qty = 8;
     }
 
     public PagingVO(int pageNo, int qty){
@@ -39,10 +40,12 @@ public class PagingVO {
         this.qty = qty;
     }
 
-    public PagingVO(int pageNo, int qty, long prno){
+    // 리뷰를 위한 생성자
+    public PagingVO(int pageNo, int qty, long prno, long mno){
         this.pageNo = pageNo;
         this.qty = qty;
         this.prno = prno;
+        this.mno = mno;
     }
 
     // limit 번지,개수에서 번지를 구해줄 메서드

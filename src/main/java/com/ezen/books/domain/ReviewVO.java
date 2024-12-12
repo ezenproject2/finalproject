@@ -38,5 +38,6 @@ public class ReviewVO {
 
     // 테이블 외 변수
     private String name;
+    private int isLike;
 
 }

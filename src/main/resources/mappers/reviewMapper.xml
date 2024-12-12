@@ -21,4 +21,16 @@
         select count(*) from likes where rno = #{rno} and mno = ${mno};
     </select>
 
+    <insert id="doLike">
+        insert into likes(rno, mno) values(#{rno}, #{mno});
+    </insert>
+
+    <delete id="cancel">
+        delete from likes where rno = #{rno} and mno = #{mno};
+    </delete>
+
+    <update id="updateCnt">
+        update review set like_cnt = like_cnt + #{num} where rno = #{rno}
+    </update>
+
 </mapper>

@@ -61,8 +61,9 @@ public class ProductVO {
     private int discountRate;        // 할인율 (기본값: 10)
     private String primaryCtg;       // 주요 카테고리
     private String secondaryCtg;     // 세부 카테고리
-    private double reviewAvg;           // 리뷰 평균 (기본값: 0)
+    private double reviewAvg;        // 리뷰 평균 (기본값: 0)
     private int saleQty;             // 판매 수량 (기본값: 0)
+    private long reviewCnt;          // 리뷰 개수 (기본값: 0)
 
     // 테이블 외 변수
     private int isValid;

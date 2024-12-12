@@ -53,9 +53,13 @@ public class ReviewController {
     }
 
     @ResponseBody
-    @GetMapping(value = "list/{prno}/{pageNo}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ReviewPagingDTO getList(@PathVariable("prno") long prno, @PathVariable("pageNo") int pageNo){
-        PagingVO pagingVO = new PagingVO(pageNo, 5, prno);
+    @GetMapping(value = "list/{prno}/{pageNo}/{mno}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ReviewPagingDTO getList(@PathVariable("prno") long prno,
+                                   @PathVariable("pageNo") int pageNo,
+                                   @PathVariable("mno") long mno){
+        // 리뷰 출력을 위한 메서드
+        // 상품 상세페이지에서 해당 상품의 리뷰를 출력한다. 페이징 있음
+        PagingVO pagingVO = new PagingVO(pageNo, 5, prno, mno);
         int totalCount = reviewService.getTotalCount(pagingVO);
         PagingHandler pagingHandler = new PagingHandler(pagingVO, totalCount);
         List<ReviewVO> list = reviewService.getList(pagingVO);
@@ -64,11 +68,22 @@ public class ReviewController {
     }
 
     @ResponseBody
-    @GetMapping(value = "/isLike/{rno}/{mno}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String isLike(@PathVariable("rno") long rno, @PathVariable("mno") long mno){
-        int isLike = reviewService.isLike(rno, mno);
-        log.info(">>>> isLike > {}", isLike);
-        return isLike>0? "1" : "0";
+    @GetMapping(value = "/doLike/{rno}/{mno}")
+    public String doLike(@PathVariable("rno") long rno, @PathVariable("mno") long mno){
+        // 좋아요 ㄱㄱ 메서드
+        int isOk = reviewService.doLike(rno, mno);
+
+        return isOk>0? "1" : "0";
     }
+
+    @ResponseBody
+    @GetMapping(value = "/cancel/{rno}/{mno}")
+    public String cancel(@PathVariable("rno") long rno, @PathVariable("mno") long mno){
+        // 좋아요 취소 메서드
+        int isOk = reviewService.cancel(rno, mno);
+
+        return isOk>0? "1" : "0";
+    }
+
 
 }
