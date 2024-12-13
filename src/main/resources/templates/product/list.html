@@ -4,77 +4,208 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout}">
 
-<div layout:fragment="content">
+<head>
+  <meta charset="UTF-8">
+  <title>EzenBooks</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/productList.css}" />
+</head>
 
-  <!--/* 카테고리 주소 예시 */-->
-  <a th:href="@{/product/list(pageNo=1, primaryCtg='소설')}">소설</a>
-  <a th:href="@{/product/list(pageNo=1, primaryCtg='컴퓨터/IT')}">컴퓨터/IT</a>
-  <a th:href="@{/product/list(pageNo=1, primaryCtg='소설', secondaryCtg='한국소설')}">소설 > 한국소설</a>
-  <a th:href="@{/product/list(pageNo=1, primaryCtg='컴퓨터/IT', secondaryCtg='오피스활용도서')}">컴퓨터/IT > 오피스활용도서</a>
-  <a th:href="@{/product/list(pageNo=1, primaryCtg='시/에세이', secondaryCtg='독서 에세이')}">시/에세이 > 독서 에세이</a>
+<main layout:fragment="content">
+  <div class="inner">
+    <section class="breadcrumb_wrap">
+      <ul class="breadcrumb_list">
+        <li class="breadcrumb_item">
+          <a href="/"><i class="ic ic_home"></i></a>
+        </li>
+        <li class="breadcrumb_item">
+          <a th:href="@{/product/list}" class="primary_ctg">전체</a> <i class="ic ic_carousel_up_white"></i>
+          <div class="sub_depth">
+            <ul class="primary_list">
+              <li class="primary_option" data-category="소설"><a th:href="@{/product/list(pageNo=1, primaryCtg='소설')}">소설</a></li>
+              <li class="primary_option" data-category="시/에세이"><a th:href="@{/product/list(pageNo=1, primaryCtg='시/에세이')}">시/에세이</a></li>
+              <li class="primary_option" data-category="경제/경영"><a th:href="@{/product/list(pageNo=1, primaryCtg='경제/경영')}">경제/경영</a></li>
+              <li class="primary_option" data-category="자기계발"><a th:href="@{/product/list(pageNo=1, primaryCtg='자기계발')}">자기계발</a></li>
+              <li class="primary_option" data-category="인문"><a th:href="@{/product/list(pageNo=1, primaryCtg='인문')}">인문</a></li>
+              <li class="primary_option" data-category="역사"><a th:href="@{/product/list(pageNo=1, primaryCtg='역사')}">역사</a></li>
+              <li class="primary_option" data-category="사회/정치"><a th:href="@{/product/list(pageNo=1, primaryCtg='사회/정치')}">사회/정치</a></li>
+              <li class="primary_option" data-category="자연/과학"><a th:href="@{/product/list(pageNo=1, primaryCtg='자연/과학')}">자연/과학</a></li>
+              <li class="primary_option" data-category="예술/대중문화"><a th:href="@{/product/list(pageNo=1, primaryCtg='예술/대중문화')}">예술/대중문화</a></li>
+              <li class="primary_option" data-category="종교"><a th:href="@{/product/list(pageNo=1, primaryCtg='종교')}">종교</a></li>
+              <li class="primary_option" data-category="유아/어린이"><a th:href="@{/product/list(pageNo=1, primaryCtg='유아/어린이')}">유아/어린이</a></li>
+              <li class="primary_option" data-category="가정/요리"><a th:href="@{/product/list(pageNo=1, primaryCtg='가정/요리')}">가정/요리</a></li>
+              <li class="primary_option" data-category="여행"><a th:href="@{/product/list(pageNo=1, primaryCtg='여행')}">여행</a></li>
+              <li class="primary_option" data-category="언어"><a th:href="@{/product/list(pageNo=1, primaryCtg='언어')}">언어</a></li>
+              <li class="primary_option" data-category="컴퓨터/IT"><a th:href="@{/product/list(pageNo=1, primaryCtg='컴퓨터/IT')}">컴퓨터/IT</a></li>
+              <li class="primary_option" data-category="청소년"><a th:href="@{/product/list(pageNo=1, primaryCtg='청소년')}">청소년</a></li>
+              <li class="primary_option" data-category="수험서/자격증"><a th:href="@{/product/list(pageNo=1, primaryCtg='수험서/자격증')}">수험서/자격증</a></li>
+              <li class="primary_option" data-category="만화"><a th:href="@{/product/list(pageNo=1, primaryCtg='만화')}">만화</a></li>
+              <li class="primary_option" data-category="잡지"><a th:href="@{/product/list(pageNo=1, primaryCtg='잡지')}">잡지</a></li>
+              <li class="primary_option" data-category="건강/취미"><a th:href="@{/product/list(pageNo=1, primaryCtg='건강/취미')}">건강/취미</a></li>
+            </ul>
+          </div>
+        </li>
+        <li class="breadcrumb_item">
+          <a href="/" class="secondary_ctg">전체</a> <i class="ic ic_carousel_up_white"></i>
+          <div class="sub_depth">
+            <ul class="secondary_list">
+              <!-- 동적으로 추가됨(주석 삭제 가능) -->
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </section>
 
+    <section class="contents">
+      <aside class="aside_menu">
+        <div class="aside_header"> <h2 class="aside_title"></h2> </div>
+        <div class="aside_body">
+          <ul class="aside_list">
+            <!-- 동적으로 추가됨, 추후 li 삭제 가능 -->
+          </ul>
+        </div>
+      </aside>
 
-  <!--/* 검색 틀 */-->
-  <div>
-    <form action="/product/list" method="get">
-      <select name="type">
-        <option value="tap" >전체</option>
-        <option value="t" >제목</option>
-        <option value="a" >저자</option>
-        <option value="p" >출판사</option>
-      </select>
-      <input type="search" name="keyword" th:value="${ph.pgvo.keyword}" placeholder="검색어 입력...">
-      <input type="hidden" name="pageNo" th:value="1">
-      <button type="submit">검색</button>
-    </form>
+      <section class="content">
+        <div class="list_menu">
+          <div class="list_menu_item" data-order="new"><a th:href="@{/product/list(pageNo=1, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword}, order='new')}">최근 출판</a></div>
+          <div class="list_menu_item" data-order="topRating"><a th:href="@{/product/list(pageNo=1, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword}, order='topRating')}">높은 평점</a></div>
+          <div class="list_menu_item" data-order="topPrice"><a th:href="@{/product/list(pageNo=1, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword}, order='topPrice')}">높은 가격</a></div>
+          <div class="list_menu_item" data-order="lowPrice"><a th:href="@{/product/list(pageNo=1, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword}, order='lowPrice')}">낮은 가격</a></div>
+        </div>
+
+        <div class="book_list">
+          <!--/* 책 리스트 반복 */-->
+          <div class="book_item" th:each="productVO:${list}">
+            <a th:href="@{/product/detail(isbn=${productVO.isbn})}" class="book_img_wrap">
+              <img th:src="${productVO.image}" alt="bookImage" class="book_list_thum_img">
+            </a>
+
+            <div class="book_content">
+              <div class="book_title_wrap flex">
+                <span class="book_title">[[${productVO.title}]]</span>
+              </div>
+
+              <div class="book_write">
+                <span class="book_writer">[[${productVO.author}]] 저</span>
+                <span class="book_publisher">[[${productVO.publisher}]]</span>
+              </div>
+
+              <div class="book_info">
+                <div class="book_price_wrap">
+                  <span class="book_price">[[${productVO.discount}]]</span>
+                  <span class="won">원</span>
+                </div>
+                <div class="book_discount"> <span class="discount">[[${productVO.discountRate}]]%</span> </div>
+              </div>
+
+              <div class="book_score">
+                <div class="book_rating_wrap">
+                  <i class="ic ic_star star-3" th:class="'ic ic_star star-' + ${#numbers.formatDecimal(productVO.reviewAvg, 1, '0')}" data-score="[[${productVO.reviewAvg}]]"></i>
+                  <!--
+                      i 태그 클래스명 예시 : <i th:class="'ic ic_star star-' + ${book.score.toString().replace('.', '_')}"></i>
+                      이런 식으로 별점을 문자열로 변환, 소수점을 언더바로 바꿔서 클래스명에 넣어야 이미지가 바뀜!
+                  -->
+                  <span class="book_rating" th:text="${productVO.reviewAvg}"></span>
+                </div>
+                <div class="book_reivew_wrap"> <span>(리뷰 [[${productVO.reviewCnt}]]개)</span> </div>
+              </div>
+            </div>
+          </div>
+
+        <div class="pagenation_area">
+          <div class="pagenation">
+            <a th:href="@{/product/list(pageNo=${ph.startPage-1}, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword})}"><i class="ic ic_carousel_left_white"></i></a>
+            <ul class="pagenation_num">
+              <th:block th:each="i:${#numbers.sequence(ph.startPage, ph.endPage)}">
+              <li th:classappend="${ph.pgvo.pageNo == i} ? ' present' : ''"><a th:href="@{/product/list(pageNo=${i}, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword})}">[[${i}]]</a></li>
+              </th:block>
+            </ul>
+            <a th:href="@{/product/list(pageNo=${ph.endPage+1}, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword})}"><i class="ic ic_carousel_right_white"></i></a>
+          </div>
+        </div>
+      </section>
+    </section>
   </div>
 
-  <!--/* 최신순, 별점높은순, 높은가격순, 낮은가격순 정렬 버튼 예시 */-->
-  <a th:href="@{/product/list(pageNo=1, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword}, order='new')}">최신순</a>
-  <a th:href="@{/product/list(pageNo=1, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword}, order='topRating')}">별점높은순</a>
-  <a th:href="@{/product/list(pageNo=1, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword}, order='topPrice')}">가격높은순</a>
-  <a th:href="@{/product/list(pageNo=1, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword}, order='lowPrice')}">가격낮은순</a>
+  <script th:inline="javascript">
+    let order = [[${ph.pgvo.order}]];
+    let primaryCtgData = [[${ph.pgvo.primaryCtg}]];
+    let secondaryCtgData = [[${ph.pgvo.secondaryCtg}]];
+  </script>
+  <script th:src="@{/js/productList.js}"></script>
+</main>
 
-  <!--/* 리스트 */-->
-  <table class="table table-hover">
-    <thead>
-    <tr>
-      <th scope="col">이미지</th>
-      <th scope="col">제목</th>
-      <th scope="col">가격</th>
-      <th scope="col">별점</th>
-      <th scope="col">리뷰수</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="productVO:${list}">
-      <td><img th:src="${productVO.image}" alt="Book Image" height="150px"></td>
-      <td><a th:href="@{/product/detail(isbn=${productVO.isbn})}" style="text-decoration: none; font-weight: bold; color: inherit;">
-        [[${productVO.title}]]
-      </a></td>
-      <td>[[${productVO.discount}]]</td>
-      <td>[[${productVO.reviewAvg}]]</td>
-      <td>[[${productVO.reviewCnt}]]</td>
-    </tr>
-    </tbody>
-  </table>
+<!--<div layout:fragment="content">-->
 
-  <!--/* 페이지네이션 */-->
-  <div>
-    <ul>
-      <!--/* 클래스명에 disabled가 있다면 안눌리도록 설정해야함 지금은 눌림! */-->
-      <li><a th:classappend="${ph.prev? '' : 'disabled'}" th:href="@{/product/list(pageNo=${ph.startPage-1}, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword})}">
-          <span aria-hidden="true">이전</span>
-      </a></li>
-      <th:block th:each="i:${#numbers.sequence(ph.startPage, ph.endPage)}">
-        <li><a th:href="@{/product/list(pageNo=${i}, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword})}">
-          [[${i}]]
-        </a></li>
-      </th:block>
-      <li><a th:classappend="${ph.next? '' : 'disabled'}" th:href="@{/product/list(pageNo=${ph.endPage+1}, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword})}">
-          <span aria-hidden="true">다음</span>
-      </a></li>
-    </ul>
-  </div>
+<!--  &lt;!&ndash;/* 카테고리 주소 예시 */&ndash;&gt;-->
+<!--  <a th:href="@{/product/list(pageNo=1, primaryCtg='소설')}">소설</a>-->
+<!--  <a th:href="@{/product/list(pageNo=1, primaryCtg='컴퓨터/IT')}">컴퓨터/IT</a>-->
+<!--  <a th:href="@{/product/list(pageNo=1, primaryCtg='소설', secondaryCtg='한국소설')}">소설 > 한국소설</a>-->
+<!--  <a th:href="@{/product/list(pageNo=1, primaryCtg='컴퓨터/IT', secondaryCtg='오피스활용도서')}">컴퓨터/IT > 오피스활용도서</a>-->
+<!--  <a th:href="@{/product/list(pageNo=1, primaryCtg='시/에세이', secondaryCtg='독서 에세이')}">시/에세이 > 독서 에세이</a>-->
 
-</div>
+
+<!--  &lt;!&ndash;/* 검색 틀 */&ndash;&gt;-->
+<!--  <div>-->
+<!--    <form action="/product/list" method="get">-->
+<!--      <select name="type">-->
+<!--        <option value="tap" >전체</option>-->
+<!--        <option value="t" >제목</option>-->
+<!--        <option value="a" >저자</option>-->
+<!--        <option value="p" >출판사</option>-->
+<!--      </select>-->
+<!--      <input type="search" name="keyword" th:value="${ph.pgvo.keyword}" placeholder="검색어 입력...">-->
+<!--      <input type="hidden" name="pageNo" th:value="1">-->
+<!--      <button type="submit">검색</button>-->
+<!--    </form>-->
+<!--  </div>-->
+
+<!--  &lt;!&ndash;/* 최신순, 별점높은순, 높은가격순, 낮은가격순 정렬 버튼 예시 */&ndash;&gt;-->
+<!--  <a th:href="@{/product/list(pageNo=1, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword}, order='new')}">최신순</a>-->
+<!--  <a th:href="@{/product/list(pageNo=1, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword}, order='topRating')}">별점높은순</a>-->
+<!--  <a th:href="@{/product/list(pageNo=1, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword}, order='topPrice')}">가격높은순</a>-->
+<!--  <a th:href="@{/product/list(pageNo=1, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword}, order='lowPrice')}">가격낮은순</a>-->
+
+<!--  &lt;!&ndash;/* 리스트 */&ndash;&gt;-->
+<!--  <table class="table table-hover">-->
+<!--    <thead>-->
+<!--    <tr>-->
+<!--      <th scope="col">이미지</th>-->
+<!--      <th scope="col">제목</th>-->
+<!--      <th scope="col">가격</th>-->
+<!--      <th scope="col">별점</th>-->
+<!--      <th scope="col">리뷰수</th>-->
+<!--    </tr>-->
+<!--    </thead>-->
+<!--    <tbody>-->
+<!--    <tr th:each="productVO:${list}">-->
+<!--      <td><img th:src="${productVO.image}" alt="Book Image" height="150px"></td>-->
+<!--      <td><a th:href="@{/product/detail(isbn=${productVO.isbn})}" style="text-decoration: none; font-weight: bold; color: inherit;">-->
+<!--        [[${productVO.title}]]-->
+<!--      </a></td>-->
+<!--      <td>[[${productVO.discount}]]</td>-->
+<!--      <td>[[${productVO.reviewAvg}]]</td>-->
+<!--      <td>[[${productVO.reviewCnt}]]</td>-->
+<!--    </tr>-->
+<!--    </tbody>-->
+<!--  </table>-->
+
+<!--  &lt;!&ndash;/* 페이지네이션 */&ndash;&gt;-->
+<!--  <div>-->
+<!--    <ul>-->
+<!--      &lt;!&ndash;/* 클래스명에 disabled가 있다면 안눌리도록 설정해야함 지금은 눌림! */&ndash;&gt;-->
+<!--      <li><a th:classappend="${ph.prev? '' : 'disabled'}" th:href="@{/product/list(pageNo=${ph.startPage-1}, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword})}">-->
+<!--          <span aria-hidden="true">이전</span>-->
+<!--      </a></li>-->
+<!--      <th:block th:each="i:${#numbers.sequence(ph.startPage, ph.endPage)}">-->
+<!--        <li><a th:href="@{/product/list(pageNo=${i}, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword})}">-->
+<!--          [[${i}]]-->
+<!--        </a></li>-->
+<!--      </th:block>-->
+<!--      <li><a th:classappend="${ph.next? '' : 'disabled'}" th:href="@{/product/list(pageNo=${ph.endPage+1}, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword})}">-->
+<!--          <span aria-hidden="true">다음</span>-->
+<!--      </a></li>-->
+<!--    </ul>-->
+<!--  </div>-->
+
+<!--</div>-->

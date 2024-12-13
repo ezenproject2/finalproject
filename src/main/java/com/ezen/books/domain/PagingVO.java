@@ -32,7 +32,7 @@ public class PagingVO {
     // 기본생성자는 커스텀이 필요하므로 @NoArgsConstructor는 붙이지 않았음
     public PagingVO(){
         this.pageNo = 1;
-        this.qty = 8;
+        this.qty = 10;
     }
 
     public PagingVO(int pageNo, int qty){
