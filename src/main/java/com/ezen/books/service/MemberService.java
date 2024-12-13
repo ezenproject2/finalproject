@@ -8,4 +8,8 @@ public interface MemberService {
     boolean checkLoginIdDuplicate(@NotBlank(message = "ID를 입력하세요.") String loginId);
 
     void insert(MemberVO memberVO);
+
+    int updateMember(MemberVO memberVO);
+
+    int deleteMember(String loginId);
 }

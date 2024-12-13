@@ -6,11 +6,11 @@
 <head>
     <title> 이젠문고 </title>
     <meta charset="UTF-8"/>
-    <link rel="stylesheet" href="/css/reset.css"/>
-    <link rel="stylesheet" href="/css/login.css"/>
+    <link rel="stylesheet" href="/css/memberReset.css"/>
+    <link rel="stylesheet" href="/css/memberLogin.css"/>
 </head>
-<div layout:fragment="content">
 <body>
+<div layout:fragment="main">
     <div class="container">
         <main>
             <div class="inner">
@@ -46,7 +46,7 @@
                                                         <i class="ic ic_delete"></i>
                                                     </button>
                                                 </div>
-        
+
                                                 <div class="input_item pw" id="input_item_pw">
                                                     <input type="password" id="pw" class="input_pw" name="password">
                                                     <label for="pw" class="text_label" id="pw_label">비밀번호</label>
@@ -70,7 +70,7 @@
                                                 <a href="">비밀번호 찾기</a>
                                             </div>
                                         </div>
-                                        
+
                                         <!-- error 메세지 컬러: #D50136
                                         <div class="login_error_wrap" id="err_empty_id" style="display: none;">
                                             <div class="error_message">
@@ -96,9 +96,9 @@
                                                     <span> 간편하게 로그인 </span>
                                                 </div>
                                                 <ul class="sns_login_list">
-                                                    <li class="sns_login naver"><a href=""><i class="ic ic_naver"></i></a></li>
-                                                    <li class="sns_login kakao"><a href=""><i class="ic ic_kakao"></i></a></li>
-                                                    <li class="sns_login google"><a href=""><i class="ic ic_google"></i></a></li>
+                                                    <li class="sns_login naver"><a href="http://localhost:8087/oauth2/authorization/naver?redirect_uri=http://localhost:8087&mode=login"><i class="ic ic_naver"></i></a></li>
+                                                    <li class="sns_login kakao"><a href="http://localhost:8087/oauth2/authorization/kakao?redirect_uri=http://localhost:8087&mode=login"><i class="ic ic_kakao"></i></a></li>
+                                                    <li class="sns_login google"><a href="http://localhost:8087/oauth2/authorization/google?redirect_uri=http://localhost:8087&mode=login"><i class="ic ic_google"></i></a></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -115,14 +115,14 @@
                         </div>
 
                         <div class="join_btn_box">
-                            <a href="" class="btn join_btn"> 회 원 가 입 </a>
+                            <a href="/member/join" class="btn join_btn"> 회 원 가 입 </a>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
     </div>
-    
-    <script src="/js/login.js"> </script>
+
+    <script src="/js/memberLogin.js"> </script>
 </body>
 </html>

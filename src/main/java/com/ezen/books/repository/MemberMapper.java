@@ -13,4 +13,9 @@ public interface MemberMapper {
 
     MemberVO findByLoginId(String username);
 
+    void saveTokens(MemberVO memberVO);
+
+    int updateMember(MemberVO memberVO);
+
+    int deleteMember(String loginId);
 }

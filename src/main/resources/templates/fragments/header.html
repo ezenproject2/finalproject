@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <div th:fragment="header">
     <h3>Header Area!!</h3>
@@ -8,13 +9,21 @@
     <li class="nav-item">
         <a class="nav-link" href="/">Home</a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" sec:authorize="isAnonymous()">
         <a class="nav-link" href="/member/join">Join</a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" sec:authorize="isAnonymous()">
         <a class="nav-link" href="/member/login">Login</a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" sec:authorize="isAuthenticated()">
+        <a class="nav-link" href="/member/modify">
+            ([[${#authentication.name}]])UserModify
+        </a>
+    </li>
+    <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+        <a class="nav-link" href="/member/list">UserList</a>
+    </li>
+    <li class="nav-item" sec:authorize="isAuthenticated()">
         <a class="nav-link" href="/member/logout">Logout</a>
     </li>
 

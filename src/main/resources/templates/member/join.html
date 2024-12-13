@@ -6,10 +6,10 @@
 <head>
     <title> 이젠문고 </title>
     <meta charset="UTF-8"/>
-    <link rel="stylesheet" href="/css/reset.css"/>
-    <link rel="stylesheet" href="/css/join.css"/>
+    <link rel="stylesheet" href="/css/memberReset.css"/>
+    <link rel="stylesheet" href="/css/memberJoin.css"/>
 </head>
-<div layout:fragment="content">
+<div layout:fragment="main">
 <body>
     <div class="container">
         <main>
@@ -70,7 +70,7 @@
                                         <li class="join_terms_item">
                                             <div class="join_terms_check">
                                                 <input type="checkbox" class="input_check">
-                                                <label for="check" class="check_text">프로모션 정보 수신 동의</label>
+                                                <label for="check" class="check_text">프로모션 정보 수신 동의 <em>*</em></label>
                                             </div>
                                             <button type="button" class="join_terms_ex">
                                                 <span>전문보기</span>
@@ -189,8 +189,8 @@
             </div>
         </main>
     </div>
-    <script src="/js/join.js"></script>
+    <script src="/js/memberJoin.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <script src="/js/private_address.js"></script>
+    <script src="/js/privateAddress.js"></script>
 </body>
 </html>

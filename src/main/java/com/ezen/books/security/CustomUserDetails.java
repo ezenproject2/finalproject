@@ -10,14 +10,14 @@ import java.util.Collection;
 import java.util.List;
 
 @Getter
-public class AuthUser extends User {
+public class CustomUserDetails extends User {
     private MemberVO memberVO;
 
-    public AuthUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
+    public CustomUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
     }
 
-    public AuthUser(MemberVO memberVO){
+    public CustomUserDetails(MemberVO memberVO){
         super(memberVO.getLoginId(), memberVO.getPassword(),
                 List.of(new SimpleGrantedAuthority(memberVO.getAuth().name()))
         );

@@ -201,4 +201,40 @@ document.addEventListener("DOMContentLoaded", () => {
     inputs.forEach((input) => {
       input.addEventListener("focus", () => clearError(input));
     });
+
+
+
+
+
+
+    // -----------------------------------------------------------------
+    // 서버쪽
+
+   // ID 중복 체크 - 여기서부터 다시!!!
+    document.querySelector('.id_check').addEventListener('click', function() {
+        const loginId = document.querySelector('[name="loginId"]').value;
+
+        if (loginId === "") {
+            alert("아이디를 입력해 주세요.");
+            return;
+        }
+
+        // 서버로 중복 체크 요청
+        fetch(`/member/check-id?loginId=${loginId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.isDuplicate) {
+                    alert("이미 사용 중인 아이디입니다.");
+                } else {
+                    alert("사용 가능한 아이디입니다.");
+                }
+            })
+            .catch(error => {
+                console.error("ID 중복 체크 오류:", error);
+                alert("아이디 중복 체크에 실패했습니다. 나중에 다시 시도해주세요.");
+            });
+    });
+
+
+
   });  

@@ -22,4 +22,14 @@ public class MemberServiceImpl implements MemberService{
     public void insert(MemberVO memberVO) {
         memberMapper.insert(memberVO);
     }
+
+    @Override
+    public int updateMember(MemberVO memberVO) {
+        return memberMapper.updateMember(memberVO);
+    }
+
+    @Override
+    public int deleteMember(String loginId) {
+        return memberMapper.deleteMember(loginId);
+    }
 }

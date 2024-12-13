@@ -1,6 +1,12 @@
 package com.ezen.books.config;
 
-import com.ezen.books.security.CustomUserService;
+import com.ezen.books.jwt.JwtAuthorizationFilter;
+import com.ezen.books.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.ezen.books.oauth2.handler.OAuth2AuthenticationFailureHandler;
+import com.ezen.books.oauth2.handler.OAuth2AuthenticationSuccessHandler;
+import com.ezen.books.oauth2.service.CustomOAuth2UserService;
+import com.ezen.books.security.CustomUserDetailsService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,11 +18,19 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    /* springSecurity6 => bcEncoder 변경 : PasswordEncoder => createDelegatingPasswordEncoder */
 
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+    private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+    private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
+    private final JwtAuthorizationFilter jwtAuthorizationFilter;
+
+
+    /* springSecurity6 => bcEncoder 변경 : PasswordEncoder => createDelegatingPasswordEncoder */
     @Bean
     PasswordEncoder passwordEncoder(){
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -34,7 +48,7 @@ public class SecurityConfig {
                     .requestMatchers("/manager/**").hasAnyRole("MANAGER", "ADMIN") // "MAMAGER" -> "MANAGER"
                     .requestMatchers("/admin/**").hasAnyRole("ADMIN")
                     .requestMatchers("/login").permitAll()  // "/login"은 누구나 접근 가능하도록 설정
-                    .requestMatchers("/user/join").permitAll() // 예시로 추가된 회원가입 페이지 접근 설정
+                    .requestMatchers("/member/join").permitAll() // 예시로 추가된 회원가입 페이지 접근 설정
                     .anyRequest().permitAll();  // 그 외의 요청은 모두 접근 가능
         });
 
@@ -47,6 +61,14 @@ public class SecurityConfig {
                     .defaultSuccessUrl("/")  // 로그인 성공 후 리디렉션할 URL 설정
                     .permitAll();  // 로그인 페이지는 누구나 접근 가능
         });
+        http.oauth2Login(configure -> configure
+                .authorizationEndpoint(config ->
+                        config.authorizationRequestRepository(httpCookieOAuth2AuthorizationRequestRepository))
+                .userInfoEndpoint(config ->
+                        config.userService(customOAuth2UserService))
+                .successHandler(oAuth2AuthenticationSuccessHandler)
+                .failureHandler(oAuth2AuthenticationFailureHandler)
+        );
 
         // 로그아웃 설정
         http.logout(logout -> {
@@ -59,10 +81,11 @@ public class SecurityConfig {
 
         return http.build();
     }
+
     // userDetailsService : spring에서 만든 클래스와 같은 객체
     @Bean
     UserDetailsService userDetailsService(){
-        return new CustomUserService();     //security 패키지에 클래스로 생성
+        return new CustomUserDetailsService();     //security 패키지에 클래스로 생성
     }
 
     // authenticationManager 객체
