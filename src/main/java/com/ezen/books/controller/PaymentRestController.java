@@ -1,12 +1,10 @@
 package com.ezen.books.controller;
 
-import com.ezen.books.domain.IamportAccessTokenVO;
 import com.ezen.books.domain.PaymentDTO;
 import com.ezen.books.service.PaymentService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.siot.IamportRestClient.IamportClient;
-import com.siot.IamportRestClient.response.AccessToken;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,11 +17,7 @@ import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 
 @Slf4j
@@ -31,6 +25,7 @@ import java.nio.charset.StandardCharsets;
 @RestController
 @RequiredArgsConstructor
 @PropertySource("classpath:application-secrets.properties")
+// NOTE: 결제 api 관련 비즈니스 로직은 모두 여기서 처리함.
 public class PaymentRestController {
 
     private String iamportApiKey; // api 키와 시크릿을 여기서 지금 쓰고 있지는 않음. 추후에는 쓸지도.

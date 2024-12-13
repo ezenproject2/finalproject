@@ -25,6 +25,8 @@ function identifyPayBtn(targetClassList) {
     }
 
     // TODO: channelKey는 서버에서 제공할 것.
+    // NOTE: 토스페이: 결제는 되는데, 결제 후 나오는 토스 테스트 페이지의
+    // "이동하기" 버튼을 눌러도 아무것도 실행되지 않음. 알아봐야 함.
     if(targetClassList.contains('credit-card-btn')) {
         pgData.pgVal = "페이팔, pg 상점 아이디 필요";
         pgData.payMethodVal = "card";
@@ -134,6 +136,8 @@ async function sendPaymentResultToServer(impResponse) {
     }
 }
 
+
+// 여기서부터 데이터를 DB에 저장하는 함수
 async function preservePaymentInfoToServer(impResponse) {
     const url = `/payment/preserve`;
     const sendData = {

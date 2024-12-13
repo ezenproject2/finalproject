@@ -9,8 +9,21 @@
   <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 </head>
 
-<div layout:fragment="content" class="container-md">
-  <h3>대한민국의 주권은 국민에게 있고, 모든 권력은 국민으로부터 나온다.</h3>
+<div layout:fragment="main">
+  <div id="dataContainer" th:data-mno="${mno}"></div>
+
+  <!-- 배송지의 class="address_info_box"의 기본 구성요소 -->
+  <div class="address_info_box">
+    <div class="address_name">
+      <span class="name"></span>
+    </div>
+    <div class="address_person"></div>
+    <div class="address"></div>
+  </div>
+
+  <!--/* 사용자가 "배송지 변경" 버튼을 눌렀을 때 나올 div: 사용자 배송지 목록을 보여주는 역할 */-->
+
+  <!--/* 사용자가 "배송지 변경" div에 있는 "배송지 추가" 버튼을 눌렀을 때 나올 div: 배송지 추가를 위한 정보를 입력받는 역할 */-->
 
   <div id="payBtnContainer">
     <button type="button" id="creditCard" class="pay-btn credit-card-btn">Credit Card, 미지원</button>
@@ -24,5 +37,8 @@
 
   <a th:href="@{/}">Go to index.html</a>
 </div>
-<script th:src="@{/javaScript/payment.js}"></script>
+
+<script th:src="@{/js/paymentBusiness.js}"></script>
+<script th:src="@{/js/paymentDisplay.js}"></script>
+
 </html>

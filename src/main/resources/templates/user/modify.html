@@ -4,8 +4,8 @@
       xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout}">
 
-<div layout:fragment="content">
-  <div class="container-md">
+<div layout:fragment="main">
+  <div>
     <h1>User Modify</h1>
     <hr>
     <form action="/user/modify" method="post" th:each="userDTO:${#authentication.getPrincipal().userDTO}">
