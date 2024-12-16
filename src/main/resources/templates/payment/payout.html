@@ -12,15 +12,44 @@
 <div layout:fragment="main">
   <div id="dataContainer" th:data-mno="${mno}"></div>
 
-  <!-- 배송지의 class="address_info_box"의 기본 구성요소 -->
-  <div class="address_info_box">
-    <p>기본배송지 여부</p>
+  <!--/* >>>>> "배송지" 영역 <<<<< */-->
+  <!-- 주문 배송지의 정보를 담는 div -->
+  <div>
+    <button type="button">배송지 변경</button>
+    <p>[[${defaultAddress.addrName} ?: "배송지"]]</p>
+    <p>[[${defaultAddress.} ?: "수령인 이름"]]</p>
+    <p>[[${defaultAddress.} ?: "수령인 전화번호"]]</p>
+    <p>[[${defaultAddress.} ?: "우편번호"]]</p>
+    <p>[[${defaultAddress.} ?: "배송지"]]</p>
+    <p>[[${defaultAddress.} ?: "상세 주소"]]</p>
+    <button type="button">배송 요청사항/메모 남기기</button>
   </div>
 
-  <!--/* 사용자가 "배송지 변경" 버튼을 눌렀을 때 나올 div: 사용자 배송지 목록을 보여주는 역할 */-->
+  <!--/* 사용자가 "배송지 변경" 버튼을 눌렀을 때 나오는 div */-->
+  <div>
+    <button type="button">배송지 추가</button>
+    <!--/* "주문 배송지의 정보를 담는 div"의 형식에 맞춰 사용자가 등록한 모든 배송지를 띄워야 함. 즉 th:each로 반복해서 띄워야 함. */-->
+  </div>
 
   <!--/* 사용자가 "배송지 변경" div에 있는 "배송지 추가" 버튼을 눌렀을 때 나올 div: 배송지 추가를 위한 정보를 입력받는 역할 */-->
 
+
+  <!--/* >>>>> "주문 상품" 영역<<<<< */-->
+  <div>
+      주문 상품 : 총 <span></span>개
+    <!--/* 고객이 장바구니에서 선택하여 주문할 도서 정보를 보여주는 div. 장바구니 개수만큼 반복되어야 함. */-->
+    <div>
+      <p>도서 제목</p>
+      <p>도서 수량</p>
+      <p>도서 금액</p>
+    </div>
+  </div>
+
+  <!--/* >>>>> "쿠폰" 영역<<<<< */-->
+
+  <!--/* >>>>> "마일리지" 영역<<<<< */-->
+
+  <!--/* >>>>> "결제 수단" 영역<<<<< */-->
   <div id="payBtnContainer">
     <button type="button" id="creditCard" class="pay-btn credit-card-btn">Credit Card, 미지원</button>
     <button type="button" id="phone" class="pay-btn phone-btn">Phone</button>
