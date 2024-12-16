@@ -19,7 +19,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         log.info(">>> username : {}",username);
         MemberVO memberVO = memberMapper.findByLoginId(username);
         log.info(">>> login userVO {}", memberVO);
-        if (memberVO == null) {
+        if (memberVO == null || "Y".equals(memberVO.getIsDel())) {
             throw new UsernameNotFoundException("User not found with email: " + username);
         }
 

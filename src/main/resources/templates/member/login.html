@@ -33,7 +33,7 @@
                             </li>
                         </ul>
 
-                        <form action="/member/login" method="post"> <!-- 회원 로그인 -->
+                        <form action="/member/login" method="post" id="loginForm"> <!-- 회원 로그인 -->
                             <ul class="panel_wrap">
                                 <li class="panel_item">
                                     <div class="panel_inner" aria-controls="member">
@@ -71,23 +71,11 @@
                                             </div>
                                         </div>
 
-                                        <!-- error 메세지 컬러: #D50136
-                                        <div class="login_error_wrap" id="err_empty_id" style="display: none;">
-                                            <div class="error_message">
-                                                <span>아이디 또는 이메일을 입력해 주세요.</span>
+                                        <div class="login_error_wrap" th:if="${error != null}">
+                                            <div class="error_message" id="err_common" style="color: #D50136;">
+                                                <span th:text="${error}"></span>
                                             </div>
                                         </div>
-                                        <div class="login_error_wrap" id="err_empty_pw" style="display: none;">
-                                            <div class="error_message">
-                                                <span>비밀번호를 입력해 주세요.</span>
-                                            </div>
-                                        </div>
-                                        <div class="login_error_wrap" id="err_common">
-                                            <div class="error_message">
-                                                <span>아이디(이메일) 또는 비밀번호가 잘못되었습니다.</span>
-                                                <span>아이디와 비밀번호를 정확히 입력해 주세요.</span>
-                                            </div>
-                                        </div>-->
 
                                         <div class="login_btn_wrap">
                                             <button type="submit" class="btn btn_login"> <span class="btn_text">로 그 인</span></button>

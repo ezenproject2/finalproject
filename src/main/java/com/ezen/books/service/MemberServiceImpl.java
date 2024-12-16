@@ -32,4 +32,11 @@ public class MemberServiceImpl implements MemberService{
     public int deleteMember(String loginId) {
         return memberMapper.deleteMember(loginId);
     }
+
+    @Override
+    public boolean validateUser(String loginId, String password) {
+        return memberMapper.checkUser(loginId, password) > 0;
+    }
+
+
 }

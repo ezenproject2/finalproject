@@ -25,6 +25,7 @@ public class MemberVO {
     private String email;
     private String phoneNumber;
     private String nickName;
+    private String isDel;
     private String regAt;
     private String lastLogin;
     private MemberAuth auth;

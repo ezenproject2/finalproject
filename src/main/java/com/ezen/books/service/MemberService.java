@@ -12,4 +12,6 @@ public interface MemberService {
     int updateMember(MemberVO memberVO);
 
     int deleteMember(String loginId);
+
+    boolean validateUser(String loginId, String password);
 }

@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 비밀번호와 비밀번호 확인 일치 여부 검사
     const checkPasswordMatch = () => {
       if (pwInput.value !== pwCheckInput.value) {
-        showError(pwCheckInput, ""); //showError(pwCheckInput, "비밀번호가 일치하지 않습니다.");
+        showError(pwCheckInput, "비밀번호가 일치하지 않습니다.");
       } else {
         clearError(pwCheckInput);
       }
@@ -234,6 +234,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 alert("아이디 중복 체크에 실패했습니다. 나중에 다시 시도해주세요.");
             });
     });
+
 
 
 

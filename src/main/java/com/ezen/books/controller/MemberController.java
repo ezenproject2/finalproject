@@ -7,18 +7,19 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -58,8 +59,38 @@ public class MemberController {
         return "/index";
     }
 
+    @ResponseBody
+    @GetMapping("/check-id")
+    public ResponseEntity<Map<String, Object>> checkId(@RequestParam("loginId") String loginId) {
+        boolean isDuplicate = memberService.checkLoginIdDuplicate(loginId);
+        Map<String, Object> response = new HashMap<>();
+        response.put("isDuplicate", isDuplicate); // true if duplicate, false if available
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/login")
-    public void login(){}
+    public String login(Model model){
+        log.info("Error message: " + model.asMap().get("error"));
+
+        return "/member/login";
+    }
+
+    @PostMapping("/login")
+    public String login(MemberVO memberVO, Model model) {
+
+        if (memberVO.getLoginId() == null || memberVO.getLoginId().isEmpty()) {
+            model.addAttribute("error", "아이디 또는 이메일을 입력해 주세요.");
+            return "/member/login"; // Ensure this matches the actual Thymeleaf template name
+        }
+
+        if (memberVO.getPassword() == null || memberVO.getPassword().isEmpty()) {
+            model.addAttribute("error", "비밀번호를 입력해 주세요.");
+            return "/member/login"; // Ensure this matches the actual Thymeleaf template name
+        }
+
+        return "redirect:/";
+    }
+
 
     @GetMapping("/modify")
     public void modify(){}
@@ -67,20 +98,25 @@ public class MemberController {
     @PostMapping("/modify")
     public String modify(MemberVO memberVO, HttpServletRequest request, HttpServletResponse response,
                          RedirectAttributes re){
-        if(memberVO.getPassword() != null && !memberVO.getPassword().isEmpty()){
+        if (memberVO.getPassword() != null && !memberVO.getPassword().isEmpty()) {
             String pwd = passwordEncoder.encode(memberVO.getPassword());
             memberVO.setPassword(pwd);
+        } else {
+            memberVO.setPassword(null);
         }
 
         int isOk = memberService.updateMember(memberVO);
         logout(request, response);
-        if(isOk > 0){
+
+        if (isOk > 0) {
             re.addFlashAttribute("mod_msg", "ok");
         } else {
             re.addFlashAttribute("mod_msg", "fail");
         }
+
         return "redirect:/";
     }
+
 
     @GetMapping("/remove")
     public String remove(HttpServletRequest request, HttpServletResponse response,

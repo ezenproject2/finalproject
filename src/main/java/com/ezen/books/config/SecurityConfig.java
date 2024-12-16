@@ -44,11 +44,12 @@ public class SecurityConfig {
 
         // URL 접근 권한 설정
         http.authorizeHttpRequests(authorize -> {
-            authorize.requestMatchers("/user/").authenticated()
+            authorize
+                    .requestMatchers("/member/").authenticated()
                     .requestMatchers("/manager/**").hasAnyRole("MANAGER", "ADMIN") // "MAMAGER" -> "MANAGER"
                     .requestMatchers("/admin/**").hasAnyRole("ADMIN")
-                    .requestMatchers("/login").permitAll()  // "/login"은 누구나 접근 가능하도록 설정
-                    .requestMatchers("/member/join").permitAll() // 예시로 추가된 회원가입 페이지 접근 설정
+                    .requestMatchers("/login").permitAll()
+                    .requestMatchers("/member/join").permitAll()
                     .anyRequest().permitAll();  // 그 외의 요청은 모두 접근 가능
         });
 
