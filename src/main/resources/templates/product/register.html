@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<div layout:fragment="main">
+  <h3>상품 등록!!</h3>
+
+  <!--/*
+  관리자의 입장에서 상품 등록을 위한 페이지
+  1. 관리자는 도서 제목 또는 ISBN을 입력해 비동기 요청으로 네이버 API에 도서 검색한다.
+  2. 검색 결과가 있을 경우, DB에 이미 존재하는지 여부 판단 후 없다면 > 내려받기 버튼 클릭! 버튼 클릭시 > input 태그에 일부 정보 업데이트
+  3. DB에 이미 존재할 경우 > 등록할 수 없음 > 등록된 상품이 있습니다. 수정하시겠습니까? > 수정 페이지로 이동
+  4. 검색 결과가 없다면 진행되는 동작 없음!
+  5. 관리자는 bookVO 와 productVO를 채우기 위한 데이터를 입력 후 저장 버튼을 누르면 상품 등록이 되는 매커니즘
+  */-->
+
+  <label>등록할 도서의 이름:</label>
+  <input type="text" id="searchEl" name="keyword" placeholder="등록할 상품 이름을 입력해주세요..">
+  <button type="button" id="searchBtn">검색하기</button>
+  <p id="printEl">등록한 상품이 없습니다. (검색 결과로 바뀔 예정)</p>
+
+  <form action="/product/register" method="post">
+      <table>
+          <tr>
+            <td>isbn</td>
+            <td><input type="text" name="isbn" id="isbnEl"></td>
+          </tr>
+          <tr>
+              <td>제목</td>
+              <td><input type="text" name="title" id="titleEl"></td>
+          </tr>
+          <tr>
+              <td>저자</td>
+              <td><input type="text" name="author" id="authorEl"></td>
+          </tr>
+          <tr>
+              <td>가격</td>
+              <td><input type="text" name="discount" id="discountEl"></td>
+          </tr>
+          <tr>
+              <td>출판사</td>
+              <td><input type="text" name="publisher" id="publisherEl"></td>
+          </tr>
+          <tr>
+              <td>출판일</td>
+              <td><input type="text" name="pubdate" id="pubdateEl"></td>
+          </tr>
+          <tr>
+              <td>설명</td>
+              <td><textarea name="description" id="descriptionEl"></textarea></td>
+          </tr>
+          <tr>
+            <td>재고</td>
+            <td><input type="text" name="stock" id="stockEl">권</td>
+          </tr>
+          <tr>
+            <td>할인율</td>
+            <td><input type="text" name="discountRate" id="discountRateEl">%</td>
+          </tr>
+          <tr>
+            <td>카테고리(대)</td>
+            <td><input type="text" name="primaryCtg" id="primaryCtgEl"></td>
+          </tr>
+          <tr>
+            <td>카테고리(중)</td>
+            <td><input type="text" name="secondaryCtg" id="secondaryCtgEl"></td>
+          </tr>
+      </table>
+        <input type="hidden" name="link" id="linkEl">
+        <input type="hidden" name="image" id="imageEl">
+      <button type="submit" id="regBtn">저장</button>
+  </form>
+
+
+  <script th:src="@{/js/productRegister.js}"></script>
+</div>

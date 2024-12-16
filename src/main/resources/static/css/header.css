@@ -1,0 +1,523 @@
+header {
+    background-color: white;
+    z-index: 99;
+}
+.default-header {
+    position: relative;
+    transition: all 0.3s ease;
+}
+.sticky-header {
+    height: 67px;
+    position: fixed;
+    transition: all 0.3s ease;
+    top: 0;
+    left: 0;
+    padding: 0;
+}
+.sticky-header .header_above {
+    display: none;
+}
+header .inner {
+    width: 1060px;
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+}
+.header_above ul li + li, .link + .link{
+    margin-left: 20px;
+}
+
+
+/* header_above */
+.header_above {
+    position: relative;
+    height: 40px;
+    border-bottom: 1px solid #D8D8D8;
+}
+.header_above .link {
+    position: relative;
+    display: inline-flex;
+    align-content : center;
+    align-items: center;
+    font-size: 13px;
+    color: #555;
+    line-height: 40px;
+}
+
+
+/* header_center */
+.header_center {
+    padding: 30px 0 25px;
+}
+.header_center .inner {
+    align-items: center;
+    gap: 2rem;
+}
+
+.header_search_wrap {
+    width: 100%;
+    height: 50px;
+    border-radius: 25px;
+    background-color: white;
+    border: 1px solid #808080;
+    transition: border-color 0.23s ease;
+    padding: 15px 0;
+    display: flex;
+    align-items: center;
+}
+.header_search_wrap:focus-within {
+    border : 1.5px solid #497248;
+}
+.header_search {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.search_dropBox_wrap {
+    position: relative;
+    width: 120px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid #ddd; /* 오른쪽 구분선 */
+    overflow: hidden; /* 화살표 영역이 `select` 외부로 나가지 않도록 */
+}
+.search_dropBox_wrap select {
+    appearance: none; /* 기본 화살표 제거 */
+    -webkit-appearance: none; /* WebKit 브라우저 */
+    -moz-appearance: none; /* Firefox 브라우저 */
+    width: 100%;
+    height: 100%;
+    border: none;
+    font-size: 15px;
+    color: #555;
+    background-color: transparent;
+    cursor: pointer;
+    z-index: 1; /* 화살표와 겹치지 않도록 */
+    padding-left: 20px;
+}
+.search_input_wrap {
+    flex-grow: 1; /* 검색 입력창이 남는 공간 채우도록 설정 */
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+}
+.search_dropBox_wrap::after {
+    content: '▼'; /* 커스텀 화살표 */
+    font-size: 12px;
+    color: #808080; /* 화살표 색상 */
+    position: absolute;
+    right: 15px; /* 화살표 위치 */
+    pointer-events: none; /* 클릭 이벤트는 select로 전달 */
+}
+.search_keyword {
+    width: 100%;
+    height: 30px;
+    padding: 0 10px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+}
+.search_btn_wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+}
+.search_btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+.ic_search {
+    width: 25px;
+    height: 25px;
+}
+.user_menu_list {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+.user_menu_list .ic {
+    width: 30px;
+    height: 30px;
+}
+.ic_cart {
+    background-image: url("../image/svg/cart.svg");
+}
+.ic_bell {
+    background-image: url("../image/svg/bell.svg");
+}
+.ic_myPage {
+    background-image: url("../image/svg/person.svg");
+}
+
+
+/* header_below */
+.header_below {
+    background-color: #497248;
+    overflow: visible;
+    position: relative;
+}
+.nav_category{
+    z-index: 50;
+    height: 48px;
+}
+.nav_category span, .nav_category a{
+    color: #F8F8F8;
+    font-size: 19px;
+}
+.nav_all_inner {
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+.btn_nav {
+    border: none;
+    height: 48px;
+}
+.ic_menu, .ic_menu_close {
+    width: 32px;
+    height: 32px;
+    margin-right: 12px;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.ic_menu {
+    background-image: url("../image/svg/menu.svg");
+}
+
+.ic_menu_close {
+    background-image: url("../image/svg/menu_close.svg");
+}
+
+
+.header_below ul {
+    display: flex;
+}
+.nav_all {
+    position: relative;
+}
+.nav_item {
+    display: flex;
+    height: 48px;
+    padding: 0 16px;
+    align-items: center;
+}
+.nav-right {
+    margin-left: auto;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 99;
+    display: none; /* 기본적으로 숨김 */
+    transition: opacity 0.3s ease;
+}
+
+.modal_main_menu {
+    position: absolute;
+    display: none;
+    width: 1060px;
+    max-width: 1280px;
+    height: 100vh;
+    max-height: 700px;
+    z-index: 100;
+    margin-top: 5px;
+
+    justify-content: center;
+    align-items: center;
+
+    border: 2px solid #C6C6C6;
+    border-radius: 15px;
+    background-color: #fff;
+    box-shadow: 3px 5px 10px 0px rgba(39, 39, 39, 0.20);
+    opacity: 0; /* 투명도 0으로 시작 */
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.modal_inner {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.main_category1_wrap {
+    display: flex;
+    width: 1034px;
+    padding: 5px 0 10px 0;
+    flex-shrink: 0;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #C6C6C6;
+    overflow: hidden;
+}
+.ic_prev, .ic_next {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+.ic_prev {
+    background-image: url("../image/svg/prev.svg");
+}
+.ic_next {
+    background-image: url("../image/svg/next.svg");
+}
+.category1_slide {
+    display: flex;
+    width: 950px;
+    align-items: center;
+    flex-shrink: 0;
+    align-self: stretch;
+    overflow: hidden;
+    position: relative;
+    justify-content: flex-start
+}
+.category1_list {
+    position: absolute;
+    display: flex;
+    flex: 0 0 50%;
+    align-items: center;
+    gap: 15px;
+    width: 1920px;
+    left: 0;
+    overflow: visible;
+    justify-content: space-between;
+}
+.category1_menu_1, .category1_menu_2 {
+    width: 950px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    flex: 0 0 20%;
+}
+.category1_menu_1 li, .category1_menu_2 li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    align-self: stretch;
+    cursor: pointer;
+    margin: 0;
+}
+.category1_menu_1 span, .category1_menu_2 span {
+    color: #555;
+    text-align: center;
+    font-family: "Noto Sans";
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 30px; /* 150% */
+    white-space: nowrap;
+    letter-spacing: 0.45px;
+}
+.category1_menu_1 span:hover, .category1_menu_2 span:hover, .menu-content a:hover {
+    color: #2D2D2D;
+    text-decoration: underline;
+}
+
+.category1_menu_1 .active span, .category1_menu_2 .active span {
+    color: #2D2D2D;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+
+.menu-content {
+    display: none; /* 기본적으로 숨김 */
+}
+
+.menu-content.active {
+    display: block; /* 활성화된 메뉴만 표시 */
+    width: 70%;
+    max-height: 452px;
+}
+
+.main_category2 {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    padding: 30px 35px;
+}
+
+.banner-box {
+    width: 30%;
+}
+
+.main_category3 {
+    width: 100%;
+    padding: 10px 0 5px 0;
+    border-top: 1px solid #C6C6C6;
+}
+
+.main_category2 a, .main_category2 span{
+    color: #555;
+}
+
+.menu-content ul {
+    width: 100%;
+    height: 455px;
+    display: flex;
+    align-content: flex-start;
+    flex-wrap: wrap; /* 줄바꿈 허용 */
+}
+.menu-content li:first-child {
+    flex: 0 0 100%; /* 전체 너비 */
+}
+.menu-content li:first-child a {
+    color: #2D2D2D;
+    font-size: 24px;
+}
+.menu-content .ic_carousel_arrow_right {
+    background-image: url("../image/svg/arrow-right-custom.svg");
+    width: 25px;
+    height: 25px;
+    margin-left: 10px;
+}
+
+.menu-content li {
+    flex: 0 0 33.33%; /* 너비를 1/3로 설정 */
+    height: calc(455px / 6); /* 높이를 455px의 1/6로 설정 */
+    padding: 5px; /* 여백 설정 */
+    display: flex;
+    align-items: flex-start;
+}
+.menu-content a {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+header .ic_arrow_right {
+    width: 20px;
+    height : 20px;
+    margin-left: 5px;
+}
+
+.banner-box {
+    display: flex;
+    max-height: 452px;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.banner-box img {
+    border-radius: 16px;
+}
+
+.category3_list {
+    justify-content: space-evenly
+}
+
+
+.category3_list_item a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.category3_list_item i{
+    width: 65px;
+    height: 65px;
+}
+
+.category3_list_item span{
+    line-height: 20px;
+    color: #555;
+    font-size: 15px;
+    text-align: center;
+}
+
+.pick {
+    background-image: url("../image/svg/menu_1.svg");
+}
+.attendance {
+    background-image: url("../image/svg/menu_2.svg");
+}
+.event {
+    background-image: url("../image/svg/menu_3.svg");
+}
+.review {
+    background-image: url("../image/svg/menu_4.svg");
+}
+.magazine {
+    background-image: url("../image/svg/menu_5.svg");
+}
+.sale {
+    background-image: url("../image/svg/menu_6.svg");
+}
+.store {
+    background-image: url("../image/svg/menu_7.svg");
+}
+.custom {
+    background-image: url("../image/svg/menu_8.svg");
+}
+
+/* 스티키 헤더 */
+.sticky-header .header_center {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 25%;
+    padding: 0;
+}
+.sticky-header .header_center .inner {
+    width: 1000px;
+    padding: 0;
+    background-color: white;
+}
+
+.sticky-header .header_below {
+    background-color: white;
+}
+.sticky-header .header_below span, .sticky-header .header_below a {
+    color: #000;
+}
+.sticky-header .header_search_wrap {
+    width: 90%;
+    height: 45px;
+}
+.sticky-header .ic_menu {
+    background-image: url("../image/svg/menu_green.svg");
+}
+.sticky-header .ic_menu_close {
+    background-image: url("../image/svg/menu_close_green.svg");
+}
+.sticky-header .ic_logo {
+    width: 100px;
+    margin-left: 10px;
+}
+.sticky-header .header_logo{
+    width: 100px;
+    padding-top: 17px;
+}
+.sticky-header .nav_all {
+    padding-top: 10px;
+}
+.sticky-header .nav-left, .sticky-header .nav-right, .sticky-header .btn_nav span {
+    display: none;
+}

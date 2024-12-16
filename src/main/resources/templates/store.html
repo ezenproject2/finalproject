@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<div layout:fragment="main">
+  <h3>오프라인 매장 보기</h3>
+
+  <ul>
+    <li class="ctgBtn" data-name="강남점">강남점</li>
+    <li class="ctgBtn" data-name="종로점">종로점</li>
+    <li class="ctgBtn" data-name="신촌점">신촌점</li>
+    <li class="ctgBtn" data-name="노원점">노원점</li>
+    <li class="ctgBtn" data-name="상봉점">상봉점</li>
+    <li class="ctgBtn" data-name="송파점">송파점</li>
+    <li class="ctgBtn" data-name="인천직영점">인천직영점</li>
+    <li class="ctgBtn" data-name="안양점">안양점</li>
+    <li class="ctgBtn" data-name="의정부캠퍼스점">의정부캠퍼스점</li>
+    <li class="ctgBtn" data-name="구리점">구리점</li>
+    <li class="ctgBtn" data-name="일산점">일산점</li>
+    <li class="ctgBtn" data-name="안산점">안산점</li>
+    <li class="ctgBtn" data-name="성남분당캠퍼스점">성남분당캠퍼스점</li>
+    <li class="ctgBtn" data-name="성남모란캠퍼스점">성남모란캠퍼스점</li>
+    <li class="ctgBtn" data-name="김포캠퍼스점">김포캠퍼스점</li>
+    <li class="ctgBtn" data-name="하남미사캠퍼스점">하남미사캠퍼스점</li>
+    <li class="ctgBtn" data-name="천안캠퍼스점">천안캠퍼스점</li>
+    <li class="ctgBtn" data-name="전주점">전주점</li>
+    <li class="ctgBtn" data-name="이젠IT캠퍼스점">이젠IT캠퍼스점</li>
+  </ul>
+
+  <!-- 지도를 표시할 div 입니다 -->
+  <div id="map" style="width:350px; height:350px;"></div>
+  <h3>가까운 매장</h3>
+  <ul id="store-list"></ul>
+  <button onclick="moveToCurrentLocation()">현재 위치로 돌아가기</button>
+
+  <div id="storeBox">
+    <h3>매장을 선택해 정보를 확인하세용! 이런거 아니면 뭐 걍 매장 선택하기 전 아무거나</h3>
+  </div>
+
+  <script th:inline="javascript">
+    let appkey = [[${appkey}]];
+  </script>
+  <script type="text/javascript" th:src="@{'//dapi.kakao.com/v2/maps/sdk.js?appkey=' + ${appkey}}"></script>
+  <script th:src="@{/js/mapSetting.js}"></script>
+</div>
