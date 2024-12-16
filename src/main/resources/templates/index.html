@@ -6,6 +6,9 @@
 
 <div layout:fragment="content">
     <h3>Main Area!!</h3>
+    <a th:href="@{/product/register}">상품 등록하기</a>
+    <a th:href="@{/product/list}">상품 목록보기</a>
+    <a th:href="@{/store}">오프라인 매장 보기</a>
 
     <script>
         let modify_msg = `<c:out value="${mod_msg}" />`;

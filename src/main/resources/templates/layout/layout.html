@@ -5,12 +5,17 @@
 <head>
   <meta charset="UTF-8">
   <title>EzenBooks</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/reset.css}" />
+  <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}" />
+  <link rel="stylesheet" type="text/css" th:href="@{/css/footer.css}" />
 </head>
 <body>
-  <div th:replace="~{fragments/header :: header}"></div>
+  <div class="container">
+    <header th:replace="~{fragments/header :: header}"></header>
 
   <div layout:fragment="main"></div>
 
-  <div th:replace="~{fragments/footer :: footer}"></div>
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
+  </div>
 </body>
 </html>

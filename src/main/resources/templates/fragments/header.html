@@ -2,29 +2,457 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title> header </title>
+</head>
 
-<div th:fragment="header">
-    <h3>Header Area!!</h3>
+<header th:fragment="header" id="main-header" class="default-header">
+        <div class="header_above">
+            <div class="inner">
+                <div class="header_top_left">
+                    <a href="" class="link"> 고객센터 </a>
+                    <a th:href="@{/store}" class="link"> 매장안내 </a>
+                    <a href="" class="link"> 회원혜택 </a>
+                </div>
 
-    <li class="nav-item">
-        <a class="nav-link" href="/">Home</a>
-    </li>
-    <li class="nav-item" sec:authorize="isAnonymous()">
-        <a class="nav-link" href="/member/join">Join</a>
-    </li>
-    <li class="nav-item" sec:authorize="isAnonymous()">
-        <a class="nav-link" href="/member/login">Login</a>
-    </li>
-    <li class="nav-item" sec:authorize="isAuthenticated()">
-        <a class="nav-link" href="/member/modify">
-            ([[${#authentication.name}]])UserModify
-        </a>
-    </li>
-    <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
-        <a class="nav-link" href="/member/list">UserList</a>
-    </li>
-    <li class="nav-item" sec:authorize="isAuthenticated()">
-        <a class="nav-link" href="/member/logout">Logout</a>
-    </li>
+                <div class="header_top_right">
+                    <a href="" class="link"> 로그인 </a>
+                    <a href="" class="link"> 회원가입 </a>
+                    <a href="" class="link"> 주문배송 </a>
+                </div>
+            </div>
+        </div>
 
-</div>
+        <div class="header_center">
+            <div class="inner">
+                <div class="header_logo">
+                    <a href="/"> <i class="ic ic_logo"></i></a>
+                </div>
+
+                <div class="header_search_wrap" tabindex="0">
+                    <form action="/product/list" method="get" class="header_search">
+                        <div class="search_dropBox_wrap">
+                            <select name="type" id="searchType">
+                                <option value="tap" selected> 통합검색 </option>
+                                <option value="t"> 책제목 </option>
+                                <option value="a"> 작가명 </option>
+                                <option value="p"> 출판사 </option>
+                            </select>
+                        </div>
+
+                        <div class="search_input_wrap">
+                            <input type="search" name="keyword" class="search_keyword" placeholder="검색어를 입력해 주세요.">
+                        </div>
+
+                        <div class="search_btn_wrap">
+                            <button type="submit" class="search_btn">
+                                <i class="ic ic_search"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="header_user_wrap">
+                    <ul class="user_menu_list">
+                        <li class="user_menu_item"> <i class="ic ic_cart"></i></li>
+                        <li class="user_menu_item"> <i class="ic ic_bell"></i> </li>
+                        <li class="user_menu_item"> <i class="ic ic_myPage"></i> </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="header_below">
+            <div class="nav_category">
+                <div class="inner">
+                    <div class="nav_all"> <!-- 전체 카테고리 항목 -->
+                        <div class="nav_all_inner">
+                            <button type="button" class="btn btn_nav">
+                                <i class="ic ic_menu"></i>
+                                <i class="ic ic_menu_close" style="display: none;"></i>
+                                <span> 전체 카테고리 </span>
+                            </button>
+                        </div>
+
+                        <!-- 메뉴(모달창) -->
+                        <div class="modal_main_menu">
+                            <div class="modal_inner">
+
+                                <div class="main_category1_wrap">
+                                    <div class="ic_prev_area"> <i class="ic ic_prev"></i> </div>
+                                    <div class="category1_slide">
+                                        <div class="category1_list">
+                                            <ul class="category1_menu_1">
+                                                <li data-category="literature" class="active"><span>소설</span></li>
+                                                <li data-category="poetry"><span>시/에세이</span></li>
+                                                <li data-category="economy"><span>경제/경영</span></li>
+                                                <li data-category="improvement"><span>자기계발</span></li>
+                                                <li data-category="humanities"><span>인문</span></li>
+                                                <li data-category="history"><span>역사</span></li>
+                                                <li data-category="society"><span>사회/정치</span></li>
+                                                <li data-category="natural"><span>자연/과학</span></li>
+                                                <li data-category="art"><span>예술/대중문화</span></li>
+                                                <li data-category="religion"><span>종교</span></li>
+                                            </ul>
+
+                                            <ul class="category1_menu_2">
+                                                <li data-category="child"><span>유아/어린이</span></li>
+                                                <li data-category="home"><span>가정/요리</span></li>
+                                                <li data-category="travel"><span>여행</span></li>
+                                                <li data-category="language"><span>언어</span></li>
+                                                <li data-category="it"><span>컴퓨터/IT</span></li>
+                                                <li data-category="teenager"><span>청소년</span></li>
+                                                <li data-category="certificate"><span>수험서/자격증</span></li>
+                                                <li data-category="comics"><span>만화</span></li>
+                                                <li data-category="magazine"><span>잡지</span></li>
+                                                <li data-category="health"><span>건강/취미</span></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="ic_next_area"> <i class="ic ic_next"></i> </div>
+                                </div>
+
+                                <!-- 서브 메뉴 -->
+                                <div class="main_category2">
+                                    <div class="menu-content active" id="literature">
+                                        <ul>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='소설')}">소설 전체보기 <i class="ic ic_carousel_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='소설', secondaryCtg='세계 각국 소설')}">세계 각국 소설 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='소설', secondaryCtg='한국소설')}">한국소설 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='소설', secondaryCtg='고전/문학')}">고전/문학 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='소설', secondaryCtg='장르소설')}">장르소설 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='소설', secondaryCtg='테마문학')}">테마문학 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='소설', secondaryCtg='비평/창작/이론')}">비평/창작/이론 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='소설', secondaryCtg='신화/전설/설화')}">신화/전설/설화 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='소설', secondaryCtg='희곡/시나리오')}">희곡/시나리오 <i class="ic ic_arrow_right"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="menu-content" id="poetry">
+                                        <ul>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='시/에세이')}">시/에세이 전체보기 <i class="ic ic_carousel_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='시/에세이', secondaryCtg='한국시')}">한국시 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='시/에세이', secondaryCtg='외국시')}">외국시 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='시/에세이', secondaryCtg='그림/사진 에세이')}">그림/사진 에세이 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='시/에세이', secondaryCtg='독서 에세이')}">독서 에세이 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='시/에세이', secondaryCtg='명상 에세이')}">명상 에세이 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='시/에세이', secondaryCtg='성공 에세이')}">성공 에세이 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='시/에세이', secondaryCtg='여행 에세이')}">여행 에세이 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='시/에세이', secondaryCtg='연애/사랑 에세이')}">연애/사랑 에세이 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='시/에세이', secondaryCtg='명사/연예인 에세이')}">명사/연예인 에세이 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='시/에세이', secondaryCtg='명언/잠언록')}">명언/잠언록 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='시/에세이', secondaryCtg='음식/요리 에세이')}">음식/요리 에세이 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='시/에세이', secondaryCtg='예술 에세이')}">예술 에세이 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='시/에세이', secondaryCtg='한국 에세이')}">한국 에세이 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='시/에세이', secondaryCtg='외국 에세이')}">외국 에세이 <i class="ic ic_arrow_right"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="menu-content" id="economy">
+                                        <ul>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='경제/경영')}">경제/경영 전체보기 <i class="ic ic_carousel_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='경제/경영', secondaryCtg='경제')}">경제 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='경제/경영', secondaryCtg='경영')}">경영 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='경제/경영', secondaryCtg='마케팅/세일즈')}">마케팅/세일즈 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='경제/경영', secondaryCtg='재테크/투자')}">재테크/투자 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='경제/경영', secondaryCtg='CEO/비즈니스')}">CEO/비즈니스 <i class="ic ic_arrow_right"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="menu-content" id="improvement">
+                                        <ul>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='자기계발')}">자기계발 전체보기 <i class="ic ic_carousel_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='자기계발', secondaryCtg='성공/처세')}">성공/처세 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='자기계발', secondaryCtg='시간관리')}">시간관리 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='자기계발', secondaryCtg='자기능력계발')}">자기능력계발 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='자기계발', secondaryCtg='인간관계')}">인간관계 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='자기계발', secondaryCtg='취업')}">취업 <i class="ic ic_arrow_right"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="menu-content" id="humanities">
+                                        <ul>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='인문')}">인문 전체보기 <i class="ic ic_carousel_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='인문', secondaryCtg='인문일반')}">인문일반 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='인문', secondaryCtg='심리')}">심리 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='인문', secondaryCtg='철학')}">철학 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='인문', secondaryCtg='언어학/기호학')}">언어학/기호학 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='인문', secondaryCtg='종교학/신화학')}">종교학/신화학 <i class="ic ic_arrow_right"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="menu-content" id="history">
+                                        <ul>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='역사')}">역사 전체보기 <i class="ic ic_carousel_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='역사', secondaryCtg='역사학/이론/비평')}">역사학/이론/비평 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='역사', secondaryCtg='세계사')}">세계사 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='역사', secondaryCtg='서양사')}">서양사 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='역사', secondaryCtg='동양사')}">동양사 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='역사', secondaryCtg='한국사')}">한국사 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='역사', secondaryCtg='주제별 역사/문화')}">주제별 역사/문화 <i class="ic ic_arrow_right"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="menu-content" id="society">
+                                        <ul>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='사회/정치')}">사회/정치 전체보기 <i class="ic ic_carousel_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='사회/정치', secondaryCtg='정치/외교')}">정치/외교 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='사회/정치', secondaryCtg='행정')}">행정 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='사회/정치', secondaryCtg='국방/군사')}">국방/군사 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='사회/정치', secondaryCtg='법')}">법 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='사회/정치', secondaryCtg='사회학')}">사회학 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='사회/정치', secondaryCtg='사회복지')}">사회복지 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='사회/정치', secondaryCtg='언론/미디어')}">언론/미디어 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='사회/정치', secondaryCtg='여성학')}">여성학 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='사회/정치', secondaryCtg='교육학')}">교육학 <i class="ic ic_arrow_right"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="menu-content" id="natural">
+                                        <ul>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='자연/과학')}">자연/과학 전체보기 <i class="ic ic_carousel_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='자연/과학', secondaryCtg='공학일반/산업공학')}">공학일반/산업공학 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='자연/과학', secondaryCtg='기계/전기/전자')}">기계/전기/전자 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='자연/과학', secondaryCtg='농수산/축산')}">농수산/축산 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='자연/과학', secondaryCtg='도시/토목/건설')}">도시/토목/건설 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='자연/과학', secondaryCtg='물리학')}">물리학 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='자연/과학', secondaryCtg='생물학')}">생물학 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='자연/과학', secondaryCtg='수학')}">수학 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='자연/과학', secondaryCtg='천문/지구과학')}">천문/지구과학 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='자연/과학', secondaryCtg='화학')}">화학 <i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='자연/과학', secondaryCtg='과학')}">과학 <i class="ic ic_arrow_right"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="menu-content" id="art">
+                                        <ul>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='예술/대중문화')}">예술/대중문화 전체보기<i class="ic ic_carousel_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='예술/대중문화', secondaryCtg='예술일반/예술사')}">예술일반/예술사<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='예술/대중문화', secondaryCtg='미술')}">미술<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='예술/대중문화', secondaryCtg='음악')}">음악<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='예술/대중문화', secondaryCtg='건축')}">건축<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='예술/대중문화', secondaryCtg='만화/애니메이션')}">만화/애니메이션<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='예술/대중문화', secondaryCtg='사진')}">사진<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='예술/대중문화', secondaryCtg='연극/공연/영화')}">연극/공연/영화<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='예술/대중문화', secondaryCtg='TV/라디오')}">TV/라디오<i class="ic ic_arrow_right"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="menu-content" id="religion">
+                                        <ul>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='종교')}">종교 전체보기<i class="ic ic_carousel_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='종교', secondaryCtg='개신교')}">개신교<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='종교', secondaryCtg='천주교(가톨릭)')}">천주교(가톨릭)<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='종교', secondaryCtg='불교')}">불교<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='종교', secondaryCtg='종교일반')}">종교일반<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='종교', secondaryCtg='기타종교')}">기타종교<i class="ic ic_arrow_right"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="menu-content" id="child">
+                                        <ul>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='유아/어린이')}">유아/어린이 전체보기 <i class="ic ic_carousel_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='유아/어린이', secondaryCtg='유아놀이책')}">유아놀이책<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='유아/어린이', secondaryCtg='유아그림책')}">유아그림책<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='유아/어린이', secondaryCtg='유아학습')}">유아학습<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='유아/어린이', secondaryCtg='어린이영어')}">어린이영어<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='유아/어린이', secondaryCtg='어린이 문학')}">어린이 문학<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='유아/어린이', secondaryCtg='학습/학습만화')}">학습/학습만화<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='유아/어린이', secondaryCtg='어린이 교양')}">어린이 교양<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='유아/어린이', secondaryCtg='어린이 세트')}">어린이 세트<i class="ic ic_arrow_right"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="menu-content" id="home">
+                                        <ul>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='가정/요리')}">가정/요리 전체보기 <i class="ic ic_carousel_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='가정/요리', secondaryCtg='결혼/가족')}">결혼/가족<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='가정/요리', secondaryCtg='임신/출산')}">임신/출산<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='가정/요리', secondaryCtg='자녀교육')}">자녀교육<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='가정/요리', secondaryCtg='인테리어/살림')}">인테리어/살림<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='가정/요리', secondaryCtg='요리')}">요리<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='가정/요리', secondaryCtg='육아')}">육아<i class="ic ic_arrow_right"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="menu-content" id="travel">
+                                        <ul>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='여행')}">여행 전체보기 <i class="ic ic_carousel_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='여행', secondaryCtg='국내여행')}">국내여행<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='여행', secondaryCtg='해외여행')}">해외여행<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='여행', secondaryCtg='테마여행')}">테마여행<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='여행', secondaryCtg='지도')}">지도<i class="ic ic_arrow_right"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="menu-content" id="language">
+                                        <ul>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='언어')}">언어 전체보기 <i class="ic ic_carousel_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='언어', secondaryCtg='국어')}">국어<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='언어', secondaryCtg='영어')}">영어<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='언어', secondaryCtg='일본어')}">일본어<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='언어', secondaryCtg='중국어')}">중국어<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='언어', secondaryCtg='기타외국어')}">기타외국어<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='언어', secondaryCtg='한자사전')}">한자사전<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='언어', secondaryCtg='기타 국가 사전')}">기타 국가 사전<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='언어', secondaryCtg='백과/전문사전')}">백과/전문사전<i class="ic ic_arrow_right"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="menu-content" id="it">
+                                        <ul>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='컴퓨터/IT')}">컴퓨터/IT 전체보기 <i class="ic ic_carousel_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='컴퓨터/IT', secondaryCtg='그래픽/멀티미디어')}">그래픽/멀티미디어<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='컴퓨터/IT', secondaryCtg='오피스활용도서')}">오피스활용도서<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='컴퓨터/IT', secondaryCtg='웹사이트')}">웹사이트<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='컴퓨터/IT', secondaryCtg='컴퓨터 입문/활용')}">컴퓨터 입문/활용<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='컴퓨터/IT', secondaryCtg='게임')}">게임<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='컴퓨터/IT', secondaryCtg='OS/데이터베이스')}">OS/데이터베이스<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='컴퓨터/IT', secondaryCtg='프로그래밍 언어')}">프로그래밍 언어<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='컴퓨터/IT', secondaryCtg='네트워크/보안')}">네트워크/보안<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='컴퓨터/IT', secondaryCtg='컴퓨터공학')}">컴퓨터공학<i class="ic ic_arrow_right"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="menu-content" id="teenager">
+                                        <ul>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='청소년')}">청소년 전체보기 <i class="ic ic_carousel_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='청소년', secondaryCtg='학습법/진학 가이드')}">학습법/진학 가이드<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='청소년', secondaryCtg='청소년 경제/자기계발')}">청소년 경제/자기계발<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='청소년', secondaryCtg='청소년 과학')}">청소년 과학<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='청소년', secondaryCtg='청소년 문학')}">청소년 문학<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='청소년', secondaryCtg='청소년 예술')}">청소년 예술<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='청소년', secondaryCtg='청소년 인문/사회')}">청소년 인문/사회<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='청소년', secondaryCtg='논술/면접대비')}">논술/면접대비<i class="ic ic_arrow_right"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="menu-content" id="certificate">
+                                        <ul>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='수험서/자격증')}">수험서/자격증 전체보기 <i class="ic ic_carousel_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='수험서/자격증', secondaryCtg='취업/상식/적성검사')}">취업/상식/적성검사<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='수험서/자격증', secondaryCtg='공무원')}">공무원<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='수험서/자격증', secondaryCtg='고등고시/전문직')}">고등고시/전문직<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='수험서/자격증', secondaryCtg='검정고시')}">검정고시<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='수험서/자격증', secondaryCtg='교원임용고시')}">교원임용고시<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='수험서/자격증', secondaryCtg='경제/금융/회계/물류')}">경제/금융/회계/물류<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='수험서/자격증', secondaryCtg='공인중개/주택관리')}">공인중개/주택관리<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='수험서/자격증', secondaryCtg='국가자격/전문사무')}">국가자격/전문사무<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='수험서/자격증', secondaryCtg='편입/대학원')}">편입/대학원<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='수험서/자격증', secondaryCtg='독학사')}">독학사<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='수험서/자격증', secondaryCtg='컴퓨터수험서')}">컴퓨터수험서<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='수험서/자격증', secondaryCtg='보건/위생/의학')}">보건/위생/의학<i class="ic ic_arrow_right"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="menu-content" id="comics">
+                                        <ul>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='만화')}">만화 전체보기 <i class="ic ic_carousel_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='만화', secondaryCtg='공포/추리')}">공포/추리<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='만화', secondaryCtg='교양만화')}">교양만화<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='만화', secondaryCtg='드라마')}">드라마<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='만화', secondaryCtg='성인만화')}">성인만화<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='만화', secondaryCtg='명랑/코믹만화')}">명랑/코믹만화<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='만화', secondaryCtg='순정만화')}">순정만화<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='만화', secondaryCtg='스포츠만화')}">스포츠만화<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='만화', secondaryCtg='액션/무협만화')}">액션/무협만화<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='만화', secondaryCtg='웹툰/카툰에세이')}">웹툰/카툰에세이<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='만화', secondaryCtg='학원만화')}">학원만화<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='만화', secondaryCtg='일본어판 만화')}">일본어판 만화<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='만화', secondaryCtg='영문판 만화')}">영문판 만화<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='만화', secondaryCtg='SF/판타지')}">SF/판타지<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='만화', secondaryCtg='기타만화')}">기타만화<i class="ic ic_arrow_right"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="menu-content" id="magazine">
+                                        <ul>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='잡지')}">잡지 전체보기 <i class="ic ic_carousel_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='잡지', secondaryCtg='문예/교양지')}">문예/교양지<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='잡지', secondaryCtg='자연/공학')}">자연/공학<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='잡지', secondaryCtg='컴퓨터/게임/그래픽')}">컴퓨터/게임/그래픽<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='잡지', secondaryCtg='어학/고시/교육')}">어학/고시/교육<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='잡지', secondaryCtg='연예/영화/만화')}">연예/영화/만화<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='잡지', secondaryCtg='여행/취미/스포츠')}">여행/취미/스포츠<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='잡지', secondaryCtg='외국잡지')}">외국잡지<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='잡지', secondaryCtg='여성/남성/패션')}">여성/남성/패션<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='잡지', secondaryCtg='요리/건강')}">요리/건강<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='잡지', secondaryCtg='리빙/육아')}">리빙/육아<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='잡지', secondaryCtg='경제/시사')}">경제/시사<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='잡지', secondaryCtg='종교')}">종교<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='잡지', secondaryCtg='예술/사진/건축')}">예술/사진/건축<i class="ic ic_arrow_right"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="menu-content" id="health">
+                                        <ul>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='건강/취미')}">건강/취미 전체보기 <i class="ic ic_carousel_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='건강/취미', secondaryCtg='건강')}">건강<i class="ic ic_arrow_right"></i></a></li>
+                                            <li><a th:href="@{/product/list(pageNo=1, primaryCtg='건강/취미', secondaryCtg='취미/레저')}">취미/레저<i class="ic ic_arrow_right"></i></a></li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="banner-box">
+                                        <a>
+                                            <img src="/image/main_menu_ad.png" alt="ad">
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="main_category3">
+                                    <ul class="category3_list">
+                                        <li class="category3_list_item">
+                                            <a href="">
+                                                <i class="ic category3-img pick"></i>
+                                                <span> 바로픽업 </span>
+                                            </a>
+                                        </li>
+                                        <li class="category3_list_item">
+                                            <a href="">
+                                                <i class="ic category3-img attendance"></i>
+                                                <span> 출석체크 </span>
+                                            </a>
+                                        </li>
+                                        <li class="category3_list_item">
+                                            <a href="">
+                                                <i class="ic category3-img event"></i>
+                                                <span> 이벤트 </span>
+                                            </a>
+                                        </li>
+                                        <li class="category3_list_item">
+                                            <a href="">
+                                                <i class="ic category3-img review"></i>
+                                                <span> 베스트리뷰 </span>
+                                            </a>
+                                        </li>
+                                        <li class="category3_list_item">
+                                            <a href="">
+                                                <i class="ic category3-img magazine"></i>
+                                                <span> 매거진 </span>
+                                            </a>
+                                        </li>
+                                        <li class="category3_list_item">
+                                            <a href="">
+                                                <i class="ic category3-img sale"></i>
+                                                <span> 특가상품 </span>
+                                            </a>
+                                        </li>
+                                        <li class="category3_list_item">
+                                            <a th:href="@{/store}">
+                                                <i class="ic category3-img store"></i>
+                                                <span> 매장위치 </span>
+                                            </a>
+                                        </li>
+                                        <li class="category3_list_item">
+                                            <a href="">
+                                                <i class="ic category3-img custom"></i>
+                                                <span> 고객센터 </span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <ul class="nav-left">
+                        <li> <a th:href="@{/product/list}" class="nav_item"> 국내도서 </a> </li>
+                        <li> <a href="" class="nav_item"> 베스트 </a> </li>
+                        <li> <a href="" class="nav_item"> 신상품 </a> </li>
+                        <li> <a href="" class="nav_item"> 매거진 </a> </li>
+                    </ul>
+
+                    <ul class="nav-right">
+                        <li> <a href="" class="nav_item"> 이벤트 </a> </li>
+                        <li> <a href="" class="nav_item"> 출석체크 </a> </li>
+                        <li> <a href="" class="nav_item"> 베스트리뷰 </a> </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    <script th:src="@{/js/header.js}"></script>
+</header>

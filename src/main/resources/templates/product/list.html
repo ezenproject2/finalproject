@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/layout}">
+
+<head>
+  <meta charset="UTF-8">
+  <title>EzenBooks</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/productList.css}" />
+</head>
+
+<main layout:fragment="content">
+  <div class="inner">
+    <section class="breadcrumb_wrap">
+      <ul class="breadcrumb_list">
+        <li class="breadcrumb_item">
+          <a href="/"><i class="ic ic_home"></i></a>
+        </li>
+        <li class="breadcrumb_item">
+          <a th:href="@{/product/list}" class="primary_ctg">전체</a> <i class="ic ic_carousel_up_white"></i>
+          <div class="sub_depth">
+            <ul class="primary_list">
+              <li class="primary_option" data-category="소설"><a
+                  th:href="@{/product/list(pageNo=1, primaryCtg='소설')}">소설</a></li>
+              <li class="primary_option" data-category="시/에세이"><a
+                  th:href="@{/product/list(pageNo=1, primaryCtg='시/에세이')}">시/에세이</a></li>
+              <li class="primary_option" data-category="경제/경영"><a
+                  th:href="@{/product/list(pageNo=1, primaryCtg='경제/경영')}">경제/경영</a></li>
+              <li class="primary_option" data-category="자기계발"><a
+                  th:href="@{/product/list(pageNo=1, primaryCtg='자기계발')}">자기계발</a></li>
+              <li class="primary_option" data-category="인문"><a
+                  th:href="@{/product/list(pageNo=1, primaryCtg='인문')}">인문</a></li>
+              <li class="primary_option" data-category="역사"><a
+                  th:href="@{/product/list(pageNo=1, primaryCtg='역사')}">역사</a></li>
+              <li class="primary_option" data-category="사회/정치"><a
+                  th:href="@{/product/list(pageNo=1, primaryCtg='사회/정치')}">사회/정치</a></li>
+              <li class="primary_option" data-category="자연/과학"><a
+                  th:href="@{/product/list(pageNo=1, primaryCtg='자연/과학')}">자연/과학</a></li>
+              <li class="primary_option" data-category="예술/대중문화"><a
+                  th:href="@{/product/list(pageNo=1, primaryCtg='예술/대중문화')}">예술/대중문화</a></li>
+              <li class="primary_option" data-category="종교"><a
+                  th:href="@{/product/list(pageNo=1, primaryCtg='종교')}">종교</a></li>
+              <li class="primary_option" data-category="유아/어린이"><a
+                  th:href="@{/product/list(pageNo=1, primaryCtg='유아/어린이')}">유아/어린이</a></li>
+              <li class="primary_option" data-category="가정/요리"><a
+                  th:href="@{/product/list(pageNo=1, primaryCtg='가정/요리')}">가정/요리</a></li>
+              <li class="primary_option" data-category="여행"><a
+                  th:href="@{/product/list(pageNo=1, primaryCtg='여행')}">여행</a></li>
+              <li class="primary_option" data-category="언어"><a
+                  th:href="@{/product/list(pageNo=1, primaryCtg='언어')}">언어</a></li>
+              <li class="primary_option" data-category="컴퓨터/IT"><a
+                  th:href="@{/product/list(pageNo=1, primaryCtg='컴퓨터/IT')}">컴퓨터/IT</a></li>
+              <li class="primary_option" data-category="청소년"><a
+                  th:href="@{/product/list(pageNo=1, primaryCtg='청소년')}">청소년</a></li>
+              <li class="primary_option" data-category="수험서/자격증"><a
+                  th:href="@{/product/list(pageNo=1, primaryCtg='수험서/자격증')}">수험서/자격증</a></li>
+              <li class="primary_option" data-category="만화"><a
+                  th:href="@{/product/list(pageNo=1, primaryCtg='만화')}">만화</a></li>
+              <li class="primary_option" data-category="잡지"><a
+                  th:href="@{/product/list(pageNo=1, primaryCtg='잡지')}">잡지</a></li>
+              <li class="primary_option" data-category="건강/취미"><a
+                  th:href="@{/product/list(pageNo=1, primaryCtg='건강/취미')}">건강/취미</a></li>
+            </ul>
+          </div>
+        </li>
+        <li class="breadcrumb_item" th:style="${ph.pgvo.primaryCtg == null ? 'display: none;' : ''}">
+          <a th:href="@{/product/list(pageNo=1, primaryCtg=${ph.pgvo.primaryCtg})}" class="secondary_ctg">전체</a> <i class="ic ic_carousel_up_white"></i>
+          <div class="sub_depth">
+            <ul class="secondary_list">
+              <!-- 동적으로 추가됨(주석 삭제 가능) -->
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <section class="contents">
+      <aside class="aside_menu">
+        <div class="aside_header">
+          <h2 class="aside_title"></h2>
+        </div>
+        <div class="aside_body">
+          <ul class="aside_list">
+            <!-- 동적으로 추가됨, 추후 li 삭제 가능 -->
+          </ul>
+        </div>
+      </aside>
+
+      <section class="content">
+        <div class="list_menu">
+          <div class="list_menu_item" data-order="new"><a
+              th:href="@{/product/list(pageNo=1, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword}, order='new')}">최근
+              출판</a></div>
+          <div class="list_menu_item" data-order="topRating"><a
+              th:href="@{/product/list(pageNo=1, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword}, order='topRating')}">높은
+              평점</a></div>
+          <div class="list_menu_item" data-order="topPrice"><a
+              th:href="@{/product/list(pageNo=1, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword}, order='topPrice')}">높은
+              가격</a></div>
+          <div class="list_menu_item" data-order="lowPrice"><a
+              th:href="@{/product/list(pageNo=1, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword}, order='lowPrice')}">낮은
+              가격</a></div>
+        </div>
+
+        <div class="book_list">
+          <!--/* 책 리스트 반복 */-->
+          <th:block th:each="productVO:${list}">
+            <a th:href="@{/product/detail(isbn=${productVO.isbn})}" class="book_box"> <!-- 12.16 여기서부터 수정사항!! -->
+              <div class="book-wrapper">
+                <div class="book-items">
+                  <div class="main-book-wrap">
+                    <div class="book-cover">
+                      <div class="book-inside"></div>
+                      <div class="book-image">
+                        <img th:src="${productVO.image}" />
+                        <div class="effect"></div>
+                        <div class="light"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="book_content">
+                <p class="book_title">
+                  <span class="book_title">[[${productVO.title}]]</span>
+                </p>
+
+                <div class="book-sub">
+                  <p class="book_write">
+                    <span class="book_writer">[[${productVO.author}]]</span>
+                    <span class="book_publisher">[[${productVO.publisher}]]</span>
+                  </p>
+
+                  <div class="book_info">
+                    <p class="book_price_wrap">
+                      <span class="book_price">[[${#numbers.formatInteger(productVO.discount, 3, 'COMMA')}]]</span>
+                      <span class="won">원</span>
+                    </p>
+                    <p class="book_discount"><span class="discount">[[${productVO.discountRate}]]%</span> </p>
+                  </div>
+
+                  <div class="book_score">
+                    <p class="book_rating_wrap">
+                      <i class="ic ic_star" data-score="[[${productVO.reviewAvg}]]"></i>
+                      <!--
+                            i 태그 클래스명 예시 : <i th:class="'ic ic_star star-' + ${book.score.toString().replace('.', '_')}"></i>
+                            이런 식으로 별점을 문자열로 변환, 소수점을 언더바로 바꿔서 클래스명에 넣어야 이미지가 바뀜!
+                        -->
+                      <span class="book_rating">[[${productVO.reviewAvg}]] <span class="book_review_count">(리뷰
+                          [[${productVO.reviewCnt}]]개)</span></span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </th:block>
+        </div>
+
+        <div class="pagenation_area">
+          <div class="pagenation">
+            <a
+              th:href="@{/product/list(pageNo=${ph.startPage-1}, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword})}"
+              th:classappend="${!ph.prev} ? ' disabled' : ''">
+              <i class="ic ic_carousel_left_white"></i>
+            </a>
+            <ul class="pagenation_num">
+              <th:block th:if="${ph.endPage eq 0}">
+                <!-- endPage가 0일 경우, disabled 클래스를 가진 0 페이지 항목만 출력 -->
+                <li class="disabled"><a href="javascript:void(0);">0</a></li>
+              </th:block>
+
+              <th:block th:if="${ph.endPage ne 0}" th:each="i:${#numbers.sequence(ph.startPage, ph.endPage)}">
+                <li th:classappend="${ph.pgvo.pageNo == i} ? ' present' : ''">
+                  <a th:href="@{/product/list(pageNo=${i}, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword})}">[[${i}]]</a>
+                </li>
+              </th:block>
+            </ul>
+            <a
+              th:href="@{/product/list(pageNo=${ph.endPage+1}, primaryCtg=${ph.pgvo.primaryCtg}, secondaryCtg=${ph.pgvo.secondaryCtg}, type=${ph.pgvo.type}, keyword=${ph.pgvo.keyword})}"
+              th:classappend="${!ph.next} ? ' disabled' : ''">
+              <i class="ic ic_carousel_right_white"></i>
+            </a>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
+
+  <script th:inline="javascript">
+    let order = [[${ ph.pgvo.order }]];
+    let primaryCtgData = [[${ ph.pgvo.primaryCtg }]];
+    let secondaryCtgData = [[${ ph.pgvo.secondaryCtg }]];
+  </script>
+  <script th:src="@{/js/productList.js}"></script>
+</main>

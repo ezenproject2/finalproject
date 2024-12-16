@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ezen.books.repository.MapMapper">
+
+    <select id="getDetail" resultType="com.ezen.books.domain.OfflineStoreVO">
+        select * from offline_store where name = #{name};
+    </select>
+
+</mapper>

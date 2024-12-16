@@ -40,8 +40,10 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
-
-
+	/* 웹 스크래핑 관련 */
+	implementation 'org.jsoup:jsoup:1.15.4'
+	/* JSON 변환 관련 */
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.0'
 	compileOnly 'org.projectlombok:lombok'
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
