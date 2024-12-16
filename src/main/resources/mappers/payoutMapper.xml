@@ -4,4 +4,9 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ezen.books.repository.PayoutMapper">
 
+    <select id="getDefaultAddress" resultType="com.ezen.books.domain.AddressVO">
+        select * from address
+        where mno = #{mno} and is_default = "Y"
+    </select>
+
 </mapper>

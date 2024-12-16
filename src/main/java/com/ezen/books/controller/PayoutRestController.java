@@ -44,12 +44,6 @@ public class PayoutRestController {
         this.iamportClient = new IamportClient(iamportApiKey, iamportApiSecret);
     }
 
-    @PostMapping("/default-address")
-    public ResponseEntity<String> getDefaultAddress() {
-        return null;
-    }
-
-
     @PostMapping("/result")
     public String getPaymentResultFromClient(HttpServletRequest request)
             throws IOException, URISyntaxException, InterruptedException {

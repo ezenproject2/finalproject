@@ -1,5 +1,6 @@
 package com.ezen.books.service;
 
+import com.ezen.books.domain.AddressVO;
 import com.ezen.books.domain.IamportAccessToken;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,8 +21,6 @@ import java.net.http.HttpResponse;
 public interface PayoutService {
 
     Logger log = LoggerFactory.getLogger(PayoutService.class);
-
-    boolean checkSinglePayment(String impUid, String amount) throws IOException, URISyntaxException, InterruptedException;
 
     // PaymentRestController에 있던 토큰 발급 메서드를 그대로 옮겨옴.
     default IamportAccessToken issueIamportToken(String iamportApiKey, String iamportApiSecret)
@@ -54,4 +53,8 @@ public interface PayoutService {
 
         return iamportToken;
     }
+
+    boolean checkSinglePayment(String impUid, String amount) throws IOException, URISyntaxException, InterruptedException;
+
+    AddressVO getDefaultAddress(long mno);
 }

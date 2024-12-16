@@ -1,24 +1,52 @@
 package com.ezen.books;
 
+import com.ezen.books.controller.PayoutRestController;
 import com.ezen.books.domain.DataUrlDTO;
 import com.ezen.books.domain.ProductVO;
 import com.ezen.books.handler.BookAPIHandler;
+import com.ezen.books.repository.CartMapper;
+import com.ezen.books.repository.PayoutMapper;
 import com.ezen.books.service.ProductService;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import groovy.util.logging.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.PropertySource;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
+@PropertySource("classpath:application-secrets.properties")
 @SpringBootTest(classes = BooksApplication.class)
 class BooksApplicationTests {
 
+	private static final Logger log = LoggerFactory.getLogger(BooksApplicationTests.class);
 	@Autowired
 	private BookAPIHandler bookAPIHandler;
 	@Autowired
 	private ProductService productService;
+
+	@Autowired
+	private PayoutMapper payoutMapper;
+	@Autowired
+	private CartMapper cartMapper;
+	@InjectMocks
+	private PayoutRestController payoutRestController;
+	private String iamportApiKey;
+	private String iamportApiSecret;
 
 	@Test
 	void contextLoads() {
@@ -82,5 +110,38 @@ class BooksApplicationTests {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	/* 결제: iamport api에서 토큰 받는 메서드 테스트 */
+	@Test
+	public void testGetIamportToken(
+			@Value("${iamport_rest_api_key}") String iamportApiKey,
+			@Value("${iamport_rest_api_secret}") String iamportApiSecret)
+			throws URISyntaxException, IOException, InterruptedException {
+		HttpClient httpClient = HttpClient.newHttpClient();
+
+		String requestJson = "{" +
+				"\"imp_key\": \"" + iamportApiKey + "\", " +
+				"\"imp_secret\": \"" + iamportApiSecret + "\"" +
+				"}";
+		log.info("The JSON body: {}", requestJson);
+
+		HttpRequest request = HttpRequest.newBuilder()
+				.uri(new URI("https://api.iamport.kr/users/getToken"))
+				.header("Content-Type", "application/json")
+				.POST(HttpRequest.BodyPublishers.ofString(requestJson))
+				.build();
+
+		HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+		log.info("Response Code: {}", response.statusCode());
+		log.info("Response Code: {}", response.body());
+
+		// 응답 body 문자열을 json으로 파싱 후 토큰에 접근
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode jsonNode = objectMapper.readTree(response.body());
+
+		String token = jsonNode.get("response").get("access_token").asText();
+		log.info("The token is: {}", token);
+
 	}
 }

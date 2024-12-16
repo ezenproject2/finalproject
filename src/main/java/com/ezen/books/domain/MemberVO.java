@@ -39,6 +39,4 @@ public class MemberVO {
     private String accessToken;
     // 리프레시 토큰
     private String refreshToken;
-
-
 }

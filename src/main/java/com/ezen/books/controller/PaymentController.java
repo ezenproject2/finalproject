@@ -1,5 +1,6 @@
 package com.ezen.books.controller;
 
+import com.ezen.books.domain.AddressVO;
 import com.ezen.books.domain.CartVO;
 import com.ezen.books.domain.CartProductDTO;
 import com.ezen.books.domain.ProductVO;
@@ -45,7 +46,7 @@ public class PaymentController {
     @PostMapping("/get-cart-list")
     @ResponseBody
     public String getCartList(Model model, @RequestBody String cartListData) {
-        log.info(" >>> PaymentController: goToPayout start.");
+        log.info(" >>> PaymentController: getCartList start.");
         // cartList: [{"mno":"1","prno":"1","bookQty":"5"},{"mno":"1","prno":"2","bookQty":"1"}]
         log.info(" >>> getCartList: cartList: {}", cartListData);
         List<CartVO> cartList =  parseCartVoArray(cartListData);
@@ -56,13 +57,25 @@ public class PaymentController {
 
     @GetMapping("/payout")
     public String goToPayout(Model model) {
+        log.info(" >>> PaymentController: goToPayout start.");
         List<CartProductDTO> cartProductList = buildCartProductList(cartList);
         // mno는 단독적으로 쓰이는 경우가 많아 편의상 따로 빼서 model로 보냄.
         long mno = cartProductList.get(0).getCartVO().getMno();
+        log.info("mno: {}", mno);
+
+        // 주문/결제 페이지에서 보여줄 사용자의 기본 배송지를 가져옴
+        AddressVO defaultAddress = getDefaultAddress(mno);
+        log.info("The default address: {}", defaultAddress);
 
         model.addAttribute("cartProductList", cartProductList);
+        model.addAttribute("defaultAddress", defaultAddress);
         model.addAttribute("mno", mno);
         return "/payment/payout";
+    }
+
+    private AddressVO getDefaultAddress(long mno) {
+        AddressVO defaultAddress = payoutService.getDefaultAddress(mno);
+        return defaultAddress;
     }
 
     private List<CartProductDTO> buildCartProductList(List<CartVO> cartList) {
@@ -109,17 +122,4 @@ public class PaymentController {
         }
     }
 
-    //    @PostMapping("/payout")
-//    public String goToPayout(
-//            Model model,
-//            @RequestParam("cartProductList") String cartProductList,
-//            @RequestParam("mno") long mno) {
-//        log.info(" >>> PaymentController: goToPayout start.");
-//        log.info(" >>> mno: {}", mno);
-//        log.info(" >>> cartProductList: {}", cartProductList);
-//
-//        model.addAttribute("mno", mno);
-//        model.addAttribute("cartProductList", cartProductList);
-//        return "/payment/payout";
-//    }
 }

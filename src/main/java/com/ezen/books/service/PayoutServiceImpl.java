@@ -1,5 +1,6 @@
 package com.ezen.books.service;
 
+import com.ezen.books.domain.AddressVO;
 import com.ezen.books.domain.IamportAccessToken;
 import com.ezen.books.repository.PayoutMapper;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -79,5 +80,11 @@ public class PayoutServiceImpl implements PayoutService {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public AddressVO getDefaultAddress(long mno) {
+        AddressVO defaultAddress = payoutMapper.getDefaultAddress(mno);
+        return defaultAddress;
     }
 }
