@@ -26,7 +26,7 @@ class BooksApplicationTests {
 		// 한번에 10~15개의 링크만 사용할 것을 권장합니다.
 		// 반복해서 입력하지 말고 하루에 한번만 사용해주세요.
 		List<DataUrlDTO> dataUrlList = new ArrayList<>();
-		int i = 4;
+		int i = 1;
 		dataUrlList.add(new DataUrlDTO("소설", "세계 각국 소설", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50005568&goodsType=PAPER&pageIndex=" + i + "&pageSize=40&sort=REL"));
 		dataUrlList.add(new DataUrlDTO("소설", "고전/문학", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50005569&goodsType=PAPER&pageIndex=" + i + "&pageSize=40&sort=REL"));
 		dataUrlList.add(new DataUrlDTO("소설", "장르소설", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50005570&goodsType=PAPER&pageIndex=" + i + "&pageSize=40&sort=REL"));
