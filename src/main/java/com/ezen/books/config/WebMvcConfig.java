@@ -17,8 +17,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     }
 
     /* 결제 api에서 HTTP 요청을 할 때 필요함 */
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
+//    @Bean
+//    public RestTemplate restTemplate() {
+//        return new RestTemplate();
+//    }
 }
