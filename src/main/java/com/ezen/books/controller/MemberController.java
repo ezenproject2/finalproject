@@ -139,6 +139,16 @@ public class MemberController {
         new SecurityContextLogoutHandler().logout(request, response, authentication);
     }
 
+    @GetMapping("/{mno}")
+    public MemberVO getMember(@PathVariable long mno){
+        return memberService.getMemberById(mno);
+    }
+
+    @PutMapping("/udate-grade/{mno}")
+    public ResponseEntity<Void> udateGrade(@PathVariable long mno){
+        memberService.updateMemberGrade(mno);
+        return ResponseEntity.ok().build();
+    }
 
 
 

@@ -21,4 +21,10 @@ public interface MemberMapper {
     int deleteMember(String loginId);
 
     int checkUser(@Param("loginId") String loginId, @Param("password") String password);
+
+    /* 12.16---------------------------------------------*/
+    MemberVO getMemberById(long mno);
+
+    void updateGrade(long mno, Long gno);
+
 }

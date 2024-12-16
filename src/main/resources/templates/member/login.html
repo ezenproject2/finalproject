@@ -9,108 +9,97 @@
     <link rel="stylesheet" href="/css/memberReset.css"/>
     <link rel="stylesheet" href="/css/memberLogin.css"/>
 </head>
-<body>
-<div layout:fragment="main">
-    <div class="container">
-        <main>
-            <div class="inner">
-                <div class="login_content">
-                    <div class="login_wrap">
-                        <ul class="login_menu_wrap">
-                            <li class="login_menu_item">
-                                <div class="login_member on">
-                                    <span class="menu_text">
-                                        <span class="text"> 회원 로그인</span>
-                                    </span>
-                                </div>
-                            </li>
-                            <li class="login_menu_item">
-                                <div class="login_non_member">
-                                    <span class="menu_text">
-                                        <span class="text"> 비회원 주문 확인</span>
-                                    </span>
-                                </div>
-                            </li>
-                        </ul>
 
-                        <form action="/member/login" method="post" id="loginForm"> <!-- 회원 로그인 -->
-                            <ul class="panel_wrap">
-                                <li class="panel_item">
-                                    <div class="panel_inner" aria-controls="member">
-                                        <div class="login_form">
-                                            <div class="login_box">
-                                                <div class="input_item id" id="input_item_id">
-                                                    <input type="text" id="id" class="input_id" name="loginId">
-                                                    <label for="id" class="text_label" id="id_label">아이디 또는 이메일</label>
-                                                    <button type="button" class="btn btn_delete" id="id_clear">
-                                                        <i class="ic ic_delete"></i>
-                                                    </button>
-                                                </div>
-
-                                                <div class="input_item pw" id="input_item_pw">
-                                                    <input type="password" id="pw" class="input_pw" name="password">
-                                                    <label for="pw" class="text_label" id="pw_label">비밀번호</label>
-                                                    <button type="button" class="btn btn_view" id="pw_view" aria-pressed="false">
-                                                        <i class="ic ic_view hide"></i>
-                                                    </button>
-                                                    <button type="button" class="btn_delete" id="pw_clear">
-                                                        <i class="ic ic_delete"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
+<main layout:fragment="main">
+    <div class="inner">
+        <div class="login_content">
+            <div class="login_wrap">
+                <ul class="login_menu_wrap">
+                    <li class="login_menu_item">
+                        <div class="login_member on">
+                            <span class="menu_text">
+                                <span class="text"> 회원 로그인</span>
+                            </span>
+                        </div>
+                    </li>
+                    <li class="login_menu_item">
+                        <div class="login_non_member">
+                            <span class="menu_text">
+                                <span class="text"> 비회원 주문 확인</span>
+                            </span>
+                        </div>
+                    </li>
+                </ul>
+                <form action="/member/login" method="post" id="loginForm"> <!-- 회원 로그인 -->
+                    <ul class="panel_wrap">
+                        <li class="panel_item">
+                            <div class="panel_inner" aria-controls="member">
+                                <div class="login_form">
+                                    <div class="login_box">
+                                        <div class="input_item id" id="input_item_id">
+                                            <input type="text" id="id" class="input_id" name="loginId">
+                                            <label for="id" class="text_label" id="id_label">아이디 또는 이메일</label>
+                                            <button type="button" class="btn btn_delete" id="id_clear">
+                                                <i class="ic ic_delete"></i>
+                                            </button>
                                         </div>
-
-                                        <div class="login_sub_wrap">
-                                            <div class="keep_check">
-                                                <input type="checkbox" class="input_keep">
-                                                <label for="keep" class="keep_text"> 로그인 상태 유지</label>
-                                            </div>
-                                            <div class="login_find">
-                                                <a href="">아이디 찾기</a>
-                                                <a href="">비밀번호 찾기</a>
-                                            </div>
-                                        </div>
-
-                                        <div class="login_error_wrap" th:if="${error != null}">
-                                            <div class="error_message" id="err_common" style="color: #D50136;">
-                                                <span th:text="${error}"></span>
-                                            </div>
-                                        </div>
-
-                                        <div class="login_btn_wrap">
-                                            <button type="submit" class="btn btn_login"> <span class="btn_text">로 그 인</span></button>
-                                            <div class="sns_login_box">
-                                                <div class="sns_login_line">
-                                                    <span> 간편하게 로그인 </span>
-                                                </div>
-                                                <ul class="sns_login_list">
-                                                    <li class="sns_login naver"><a href="http://localhost:8087/oauth2/authorization/naver?redirect_uri=http://localhost:8087&mode=login"><i class="ic ic_naver"></i></a></li>
-                                                    <li class="sns_login kakao"><a href="http://localhost:8087/oauth2/authorization/kakao?redirect_uri=http://localhost:8087&mode=login"><i class="ic ic_kakao"></i></a></li>
-                                                    <li class="sns_login google"><a href="http://localhost:8087/oauth2/authorization/google?redirect_uri=http://localhost:8087&mode=login"><i class="ic ic_google"></i></a></li>
-                                                </ul>
-                                            </div>
+                                        <div class="input_item pw" id="input_item_pw">
+                                            <input type="password" id="pw" class="input_pw" name="password">
+                                            <label for="pw" class="text_label" id="pw_label">비밀번호</label>
+                                            <button type="button" class="btn btn_view" id="pw_view" aria-pressed="false">
+                                                <i class="ic ic_view hide"></i>
+                                            </button>
+                                            <button type="button" class="btn_delete" id="pw_clear">
+                                                <i class="ic ic_delete"></i>
+                                            </button>
                                         </div>
                                     </div>
-                                </li>
-                            </ul>
-                        </form>
-                    </div>
-
-                    <div class="join_wrap">
-                        <div class="join_text">
-                            <p class="join_title"><strong>회원가입을 하시겠습니까?</strong></p>
-                            <p class="join_info">회원가입하고 이젠문고의 다양한 혜택을 누려보세요.</p>
-                        </div>
-
-                        <div class="join_btn_box">
-                            <a href="/member/join" class="btn join_btn"> 회 원 가 입 </a>
-                        </div>
-                    </div>
+                                </div>
+                                <div class="login_sub_wrap">
+                                    <div class="keep_check">
+                                        <input type="checkbox" class="input_keep">
+                                        <label for="keep" class="keep_text"> 로그인 상태 유지</label>
+                                    </div>
+                                    <div class="login_find">
+                                        <a href="">아이디 찾기</a>
+                                        <a href="">비밀번호 찾기</a>
+                                    </div>
+                                </div>
+                                <div class="login_error_wrap" th:if="${error != null}">
+                                    <div class="error_message" id="err_common" style="color: #D50136;">
+                                        <span th:text="${error}"></span>
+                                    </div>
+                                </div>
+                                <div class="login_btn_wrap">
+                                    <button type="submit" class="btn btn_login"> <span class="btn_text">로 그 인</span></button>
+                                    <div class="sns_login_box">
+                                        <div class="sns_login_line">
+                                            <span> 간편하게 로그인 </span>
+                                        </div>
+                                        <ul class="sns_login_list">
+                                            <li class="sns_login naver"><a href="http://localhost:8087/oauth2/authorization/naver?redirect_uri=http://localhost:8087&mode=login"><i class="ic ic_naver"></i></a></li>
+                                            <li class="sns_login kakao"><a href="http://localhost:8087/oauth2/authorization/kakao?redirect_uri=http://localhost:8087&mode=login"><i class="ic ic_kakao"></i></a></li>
+                                            <li class="sns_login google"><a href="http://localhost:8087/oauth2/authorization/google?redirect_uri=http://localhost:8087&mode=login"><i class="ic ic_google"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+            <div class="join_wrap">
+                <div class="join_text">
+                    <p class="join_title"><strong>회원가입을 하시겠습니까?</strong></p>
+                    <p class="join_info">회원가입하고 이젠문고의 다양한 혜택을 누려보세요.</p>
+                </div>
+                <div class="join_btn_box">
+                    <a href="/member/join" class="btn join_btn"> 회 원 가 입 </a>
                 </div>
             </div>
-        </main>
+        </div>
     </div>
-
     <script src="/js/memberLogin.js"> </script>
-</body>
+</main>
+
 </html>

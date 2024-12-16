@@ -17,9 +17,13 @@
                 </div>
 
                 <div class="header_top_right">
-                    <a href="/member/login" class="link"> 로그인 </a>
-                    <a href="/member/join" class="link"> 회원가입 </a>
-                    <a href="" class="link"> 주문배송 </a>
+                    <a th:href="@{/member/login}" class="link" sec:authorize="isAnonymous()"> 로그인 </a>
+                    <a th:href="@{/member/join}" class="link" sec:authorize="isAnonymous()"> 회원가입 </a>
+                    <a href="" class="link" sec:authorize="isAuthenticated()"> 주문배송 </a>
+                    <a th:href="@{/member/modify}" class="link" sec:authorize="isAuthenticated()">
+                        ([[${#authentication.name}]])UserModify
+                    </a>
+                    <a th:href="@{/member/logout}" class="link"  sec:authorize="isAuthenticated()"> 로그아웃 </a>
                 </div>
             </div>
         </div>
@@ -57,7 +61,7 @@
                     <ul class="user_menu_list">
                         <li class="user_menu_item"> <i class="ic ic_cart"></i></li>
                         <li class="user_menu_item"> <i class="ic ic_bell"></i> </li>
-                        <li class="user_menu_item"> <i class="ic ic_myPage"></i> </li>
+                        <li class="user_menu_item"> <a href=""> <i class="ic ic_myPage"></i> </a> </li>
                     </ul>
                 </div>
             </div>

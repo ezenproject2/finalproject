@@ -14,4 +14,10 @@ public interface MemberService {
     int deleteMember(String loginId);
 
     boolean validateUser(String loginId, String password);
+
+    MemberVO getMemberById(long mno);
+
+    void updateMemberGrade(long mno);
+
+    double calculatePoint(MemberVO memberVO, double bookPrice);
 }
