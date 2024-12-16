@@ -57,6 +57,7 @@ public class ProductController {
         PagingHandler ph = new PagingHandler(pagingVO, totalCount);
         List<ProductVO> list = productService.getList(pagingVO);
 //        log.info(">>>> list > {}", list);
+        log.info(">>>> ph > {}", ph);
         model.addAttribute("ph", ph);
         model.addAttribute("list", list);
     }

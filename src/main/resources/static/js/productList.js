@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.querySelectorAll('.book_rating_wrap').forEach(function (bookRatingWrap) {
         // 서버에서 전달된 점수를 가져오기 (data-score에서 가져옴)
-        let score = parseFloat(bookRatingWrap.querySelector('i').getAttribute('data-score'));
+        let score = parseFloat(bookRatingWrap.querySelector('span').innerText);
 
         // 0.5단위로 반 내림 함수
         function roundToHalf(score) {
@@ -155,25 +155,29 @@ document.addEventListener("DOMContentLoaded", () => {
         // 0.5단위로 반 내림하여 클래스명과 텍스트 값 계산
         let roundedScore = roundToHalf(score);
         let className = formatClassName(roundedScore);
-
+        console.log(score);
+        console.log(roundedScore);
+        console.log(className);
         // 기존 클래스를 보존하고, star- 클래스만 추가
         let iconElement = bookRatingWrap.querySelector('.ic_star');
         iconElement.classList.add('star-' + className);  // 새로운 클래스 추가
     });
 
-    if(primaryCtgData != null && primaryCtgData != ""){
+    if (primaryCtgData != null && primaryCtgData != "") {
 
         // primary_ctg와 aside_title 업데이트
         primaryCtg.textContent = primaryCtgData;
         asideTitle.textContent = primaryCtgData;
         // 슬래시('/')를 기준으로 줄바꿈 처리
         formatAsideTitle();
+
+        
         updateList(asideList, secondaryCategories[primaryCtgData] || ["항목 없음"], primaryCtgData);
         updateList(secondaryList, secondaryCategories[primaryCtgData] || ["항목 없음"], primaryCtgData);
-    }else{
+    } else {
         primaryCtg.textContent = "전체";
         asideTitle.textContent = "전체";
-
+        
         // 1차 카테고리만 가져오기 (객체의 키들)
         const primaryCategories = Object.keys(secondaryCategories);
         console.log(primaryCategories);

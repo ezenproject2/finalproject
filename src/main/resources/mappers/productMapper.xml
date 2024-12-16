@@ -68,7 +68,7 @@
         <!-- 동적 ORDER BY 절 -->
         <choose>
             <when test="order == 'new'">
-                order by prno desc
+                order by pubdate desc
             </when>
             <when test="order == 'topRating'">
                 order by review_avg desc
