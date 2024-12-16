@@ -2,6 +2,7 @@ package com.ezen.books.domain;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -10,25 +11,22 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserVO {
+    // NOTE: 장바구니, 결제 테스트용으로 만든 UserVO임.
     private long mno;
-    private String id;
-    private String pwd;
-    private String type;
+    private long gno;
+    private String login_id;
+    private String password;
     private String name;
     private String email;
     private String phoneNumber;
     private String nickName;
-    private String address;
-    private String createdAt;
-    private String updateAt;
-    private String lastLogin;
-    private String isDeleted;
-    private String delReason;
-    private String delAt;
-    private List<AuthVO> authList;
-
-    // provider : google이 들어감
+    private LocalDateTime regAt;
+    private LocalDateTime lastLogin;
+    private String isDel;
+    private String deleteReason;
+    private LocalDateTime deleteDate;
+    private LocalDateTime gradeLog;
+    private String auth;
     private String provider;
-    // providerId : 구굴 로그인 한 유저의 고유 ID가 들어감
-    private String providerID;
+    private String providerId;
 }

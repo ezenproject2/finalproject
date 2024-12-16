@@ -7,9 +7,9 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class CartDTO {
-    private long mno;
-    private long prno;
-    private int bookQty;
+public class IamportAccessToken {
+
+    private String token;
+    private int expiredAt;
+    private int now;
 }

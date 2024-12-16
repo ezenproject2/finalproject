@@ -1,11 +1,9 @@
 package com.ezen.books.service;
 
-import com.ezen.books.domain.CartDTO;
-import com.ezen.books.domain.IamportAccessTokenVO;
-import com.ezen.books.repository.PaymentMapper;
+import com.ezen.books.domain.IamportAccessToken;
+import com.ezen.books.repository.PayoutMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.siot.IamportRestClient.response.Payment;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,36 +15,29 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.List;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class PaymentServiceImpl implements PaymentService {
+public class PayoutServiceImpl implements PayoutService {
 
-    private PaymentMapper paymentMapper;
+    private PayoutMapper payoutMapper;
     private String iamportApiKey;
     private String iamportApiSecret;
 
     @Autowired
-    public PaymentServiceImpl(
-            PaymentMapper paymentMapper, @Value("${iamport_rest_api_key}") String iamportApiKey,
+    public PayoutServiceImpl(
+            PayoutMapper payoutMapper, @Value("${iamport_rest_api_key}") String iamportApiKey,
             @Value("${iamport_rest_api_secret}") String iamportApiSecret) {
-        this.paymentMapper = paymentMapper;
+        this.payoutMapper = payoutMapper;
         this.iamportApiKey = iamportApiKey;
         this.iamportApiSecret = iamportApiSecret;
     }
 
     @Override
-    public List<CartDTO> getAllCartItems(long mno) {
-        return paymentMapper.getAllCartItems(mno);
-    }
-
-    @Override
     public boolean checkSinglePayment(String impUid, String amount) throws IOException, URISyntaxException, InterruptedException {
         log.info(" >>> PaymentServiceImpl: checkSinglePayment start.");
-        IamportAccessTokenVO iamportToken = PaymentService.super.issueIamportToken(iamportApiKey, iamportApiSecret);
+        IamportAccessToken iamportToken = PayoutService.super.issueIamportToken(iamportApiKey, iamportApiSecret);
 
         RestTemplate restTemplate = new RestTemplate();
         String url = "https://api.iamport.kr/payments/" + impUid;

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <meta charset="UTF-8">
+  <title>Shopping Cart</title>
+</head>
+
+<!--/* TODO: merge한 후 DB의 값을 반영하여 화면에 보여줄 것. */-->
+<div layout:fragment="main">
+  <div id="dataContainer" th:data-mno="${mno}"></div>
+
+  <!-- /* 쇼핑카트 상품 목록 */ -->
+  <div>
+    <!--/*장바구니 전체 선택 버튼을 담는 div*/-->
+    <div>
+      <!--/* 전체 선택 버튼 */-->
+      <input type="checkbox" id="allItemBtn" name="itemBtn"> <- 모두 선택 버튼
+    </div>
+    <!--/* 장바구니에 담긴 각각의 내역을 보여주는 div */-->
+    <div th:each="cartProduct, iterStat:${cartProductList}">
+      <div>
+        <input type="hidden" th:value="${cartProduct.cartVO.mno}" th:class="mno" th:data-cart="${iterStat.index}">
+        <input type="hidden" th:value="${cartProduct.cartVO.prno}" th:class="prno" th:data-cart="${iterStat.index}">
+        <!--/* 해당 항목을 결제할지 말지 선택하는 checkbox를 담는 div */-->
+        <div>
+          <input type="checkbox" class="single-item-btn" name="itemBtn" th:data-cart="${iterStat.index}">
+        </div>
+        <!--/* 장바구니에 담긴 도서에 대한 정보를 담는 div */-->
+        <div>
+          <!--/* 도서 표지를 보여주는 img */-->
+          <img>
+          <p>[[${cartProduct.productVO.title} ?: '도서 제목']]</p>
+          <p>[[${cartProduct.productVO.discountRate} ?: '할인 없음']]</p>
+          <p>[[${cartProduct.productVO.discount} ?: '도서 가격']]</p>
+        </div>
+        <!--/* 장바구니에 담을 도서 개수를 줄이고 올리는 버튼이 들어가는 div */-->
+        <div>
+          <!--/* TODO: 미구현. 가격을 반영한 도서의 금액 */-->
+          <p id="qtyPrice" ></p>
+          <button id="bookQtyDescBtn" >-</button>
+          <!--/* 구매할 도서 개수 */-->
+          <input type="text" th:class="bookQty" th:value="${cartProduct.cartVO.bookQty}" th:data-cart="${iterStat.index}">
+          <button id="bookQtyAscBtn" >+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!--/* 화면 오른쪽에 등장하여 결제 정보를 알려주는 div */-->
+  <div>
+    <ul>
+      <li>
+        <!--/* 장바구니에 담긴 모든 도서의 금액을 합친 금액 */-->
+        <span id="infoSumList" th:data-sum-cart-list>장바구니 도서 금액 총합</span>
+      </li>
+      <li>
+        <!--/* 배송비 */-->
+        <span id="infoDeliver" th:data-deliver-fee>배송비</span>
+      </li>
+      <li>
+        <!--/* 도서 할인 금액 */-->
+        <span id="infoDiscount" th:data-discount-amount>도서 할인 금액</span>
+      </li>
+    </ul>
+    <ul>
+      <li>
+        <!--/* 위 <ul>의 정보를 반영한 결제 예정 금액 */-->
+        <span id="infoTotalPrice" th:data-total-price>결제 예정 금액</span>
+      </li>
+      <li>
+        <!--/* 적립 예정 포인트 */-->
+        <span id="infoPoint" th:data-sum-point>적립 예정 포인트</span>
+      </li>
+    </ul>
+
+  </div>
+  <!--/* TODO: 선택된 장바구니 내역들의 데이터를 꺼내 JS에 넘겨주고, 그것을 payout에 전달. */-->
+  <!--/* 결제 페이지로 넘어가는 버튼 */-->
+  <button id="orderBtn" type="button">주문하기</button>
+  <button id="pickupBtn" type="button">픽업하기</button>
+</div>
+
+<script defer th:src="@{/js/cart.js}"></script>
+</html>

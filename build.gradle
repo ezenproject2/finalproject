@@ -38,7 +38,7 @@ dependencies {
 	/* 결제 api 관련 */
 	implementation 'com.github.iamport:iamport-rest-client-java:0.2.21'
 	/* 보안 관련 */
-	implementation 'org.springframework.boot:spring-boot-starter-security'
+//	implementation 'org.springframework.boot:spring-boot-starter-security'
 
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'

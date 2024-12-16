@@ -1,14 +1,11 @@
 package com.ezen.books.service;
 
-import com.ezen.books.controller.PaymentRestController;
-import com.ezen.books.domain.CartDTO;
-import com.ezen.books.domain.IamportAccessTokenVO;
+import com.ezen.books.domain.IamportAccessToken;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import groovy.util.logging.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 
 import java.io.IOException;
@@ -17,20 +14,17 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.List;
 
 @Slf4j
 @PropertySource("classpath:application-secrets.properties")
-public interface PaymentService {
+public interface PayoutService {
 
-    Logger log = LoggerFactory.getLogger(PaymentService.class);
-
-    List<CartDTO> getAllCartItems(long mno);
+    Logger log = LoggerFactory.getLogger(PayoutService.class);
 
     boolean checkSinglePayment(String impUid, String amount) throws IOException, URISyntaxException, InterruptedException;
 
     // PaymentRestController에 있던 토큰 발급 메서드를 그대로 옮겨옴.
-    default IamportAccessTokenVO issueIamportToken(String iamportApiKey, String iamportApiSecret)
+    default IamportAccessToken issueIamportToken(String iamportApiKey, String iamportApiSecret)
             throws IOException, URISyntaxException, InterruptedException {
         log.info(">> PaymentService: getIamportToken start.");
         HttpClient httpClient = HttpClient.newHttpClient();
@@ -53,7 +47,7 @@ public interface PaymentService {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode responseJson = objectMapper.readTree(response.body());
 
-        IamportAccessTokenVO iamportToken = new IamportAccessTokenVO();
+        IamportAccessToken iamportToken = new IamportAccessToken();
         iamportToken.setToken(responseJson.get("response").get("access_token").asText());
         iamportToken.setNow(responseJson.get("response").get("now").asInt());
         iamportToken.setExpiredAt(responseJson.get("response").get("expired_at").asInt());

@@ -1,7 +1,7 @@
 package com.ezen.books.controller;
 
-import com.ezen.books.domain.PaymentDTO;
-import com.ezen.books.service.PaymentService;
+import com.ezen.books.domain.PaymentVO;
+import com.ezen.books.service.PayoutService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.siot.IamportRestClient.IamportClient;
@@ -21,28 +21,34 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 
 @Slf4j
-@RequestMapping("/payment/*")
+@RequestMapping("/payment/payout/*")
 @RestController
 @RequiredArgsConstructor
 @PropertySource("classpath:application-secrets.properties")
-// NOTE: 결제 api 관련 비즈니스 로직은 모두 여기서 처리함.
-public class PaymentRestController {
+// NOTE: 결제 api 관련 비즈니스 로직을 포함하여 /payout에서 발생하는 모든 RESTful api를 처리함.
+public class PayoutRestController {
 
     private String iamportApiKey; // api 키와 시크릿을 여기서 지금 쓰고 있지는 않음. 추후에는 쓸지도.
     private String iamportApiSecret;
 
     private final IamportClient iamportClient; // Private field 'iamportClient' is assigned but never accessed
-    private PaymentService paymentService;
+    private PayoutService payoutService;
 
     @Autowired
-    public PaymentRestController(
+    public PayoutRestController(
             @Value("${iamport_rest_api_key}") String iamportApiKey,
-            @Value("${iamport_rest_api_secret}") String iamportApiSecret, PaymentService paymentService) {
+            @Value("${iamport_rest_api_secret}") String iamportApiSecret, PayoutService payoutService) {
         this.iamportApiKey = iamportApiKey;
         this.iamportApiSecret = iamportApiSecret;
-        this.paymentService = paymentService;
+        this.payoutService = payoutService;
         this.iamportClient = new IamportClient(iamportApiKey, iamportApiSecret);
     }
+
+    @PostMapping("/default-address")
+    public ResponseEntity<String> getDefaultAddress() {
+        return null;
+    }
+
 
     @PostMapping("/result")
     public String getPaymentResultFromClient(HttpServletRequest request)
@@ -73,16 +79,15 @@ public class PaymentRestController {
     }
 
     private boolean checkSinglePayment(String impUid, String amount) throws IOException, URISyntaxException, InterruptedException {
-        boolean verifyResult = paymentService.checkSinglePayment(impUid, amount);
+        boolean verifyResult = payoutService.checkSinglePayment(impUid, amount);
         return verifyResult;
     }
 
+    // TODO: 화면에서 넘어온 실제 결제 정보를 바탕으로 결제 정보를 저장할 것.
     @PostMapping("/preserve")
-    public ResponseEntity<String> getPaymentIntoToPreserve(@RequestBody PaymentDTO paymentDTO) throws IOException {
+    public ResponseEntity<String> getPaymentInfoToPreserve(@RequestBody PaymentVO paymentVO) throws IOException {
         log.info(" >>> PaymentRestController: getPaymentIntoToPreserve start.");
-
-//        String requestBody = StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8);
-        log.info("Received payment data to be conserved: {}", paymentDTO);
+        log.info("Received payment data to be conserved: {}", paymentVO);
         return new ResponseEntity<String>("1", HttpStatus.OK);
     }
 

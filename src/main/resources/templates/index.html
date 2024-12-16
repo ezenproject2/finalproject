@@ -8,7 +8,8 @@
     <h3>Main Area!!</h3>
 
     <!--/* 결제를 위해 임시로 만든 경로. */-->
-    <a th:href="@{/payment/shoppingcart}"><button type="button">Shopping Cart</button></a>
-    <a th:href="@{/user/join}"><button type="button">User Join</button></a>
-    <a th:href="@{/user/login}"><button type="button">User Login</button></a>
+    <!--/* 장바구니 페이지에 들어갈 때 "로그인 된 사용자"가 들어가기 때문에 */-->
+    <!--/* mno를 path variable로 넘겨줄 수 있을 것이라 가정했음. */-->
+    <!--/* TODO: merge 후에 로그인 한 정보를 바탕으로 mno=${mno}로 넣을 것.  */-->
+    <a th:href="@{/payment/cart(mno=${1})}"><button type="button">Shopping Cart</button></a>
 </div>

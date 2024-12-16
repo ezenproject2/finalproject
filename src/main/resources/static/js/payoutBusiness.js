@@ -17,7 +17,7 @@ document.getElementById('payBtnContainer').addEventListener('click', (e) => {
 
 
 function identifyPayBtn(targetClassList) {
-    
+
     const pgData = {
         pgVal: "", // pg provider
         payMethodVal: "",
@@ -112,7 +112,7 @@ function comparePayment (supposeAmount, actualAmount) {
 async function sendPaymentResultToServer(impResponse) {
     console.log("sendPaymentResultToServer operating.")
 
-    const url = `/payment/result`;
+    const url = `/payment/payout/result`;
     const config = {
         method: "POST",
         headers: { "Content-Type": "application/json; charset=utf-8" },
@@ -139,15 +139,17 @@ async function sendPaymentResultToServer(impResponse) {
 
 // 여기서부터 데이터를 DB에 저장하는 함수
 async function preservePaymentInfoToServer(impResponse) {
-    const url = `/payment/preserve`;
+    const url = `/payment/payout/preserve`;
     const sendData = {
-        orno: impResponse.merchant_uid,
+        // TODO: orno는 주문에서 받아와야 해서 임시로 1로 주었음.
+        orno: 1,
         measure: impResponse.pay_method,
         price: impResponse.paid_amount,
         status: "",
         // DB의 reg_at은 mapper에서 now()로 설정할 예정.
         cardName: impResponse.card_name,
-        impUid: impResponse.imp_uid
+        impUid: impResponse.imp_uid,
+        uuid: impResponse.merchant_uid
     };
     sendData.status = selectStatus(impResponse.status);
     const config = {

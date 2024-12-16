@@ -1,9 +1,5 @@
 package com.ezen.books;
 
-import com.ezen.books.controller.PaymentRestController;
-import com.ezen.books.domain.CartDTO;
-import com.ezen.books.domain.IamportAccessTokenVO;
-import com.ezen.books.repository.PaymentMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import groovy.util.logging.Slf4j;
@@ -11,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.PropertySource;
@@ -29,11 +24,11 @@ import java.net.http.HttpResponse;
 class BooksApplicationTests {
 
 	private static final Logger log = LoggerFactory.getLogger(BooksApplicationTests.class);
-	@Autowired
-	private PaymentMapper paymentMapper;
+//	@Autowired
+//	private PaymentMapper paymentMapper;
 
 	@InjectMocks
-	private PaymentRestController paymentRestController;
+//	private PaymentRestController paymentRestController;
 
 	private String iamportApiKey;
 
@@ -41,16 +36,7 @@ class BooksApplicationTests {
 
 	@Test
 	void contextLoads() {
-		// 임시로 장바구니에 값 넣기
-		for (int i=0; i < 20; i++) {
-			CartDTO cartDto = CartDTO.builder()
-					.mno((long) (Math.random()*20 +1))
-					.prno((long) (Math.random()*20 +1))
-					.bookQty((int) (Math.random()*10 +1))
-					.build();
-
-			paymentMapper.addCart(cartDto);
-		}
+		//
 	}
 
 	/* 결제: iamport api에서 토큰 받는 메서드 테스트 */
