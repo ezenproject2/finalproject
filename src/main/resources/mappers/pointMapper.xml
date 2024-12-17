@@ -4,34 +4,32 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ezen.books.repository.PointMapper">
-
-    <insert id="insertPoint" parameterType="com.ezen.books.domain.PointsVO">
+    <!-- 포인트 삽입 -->
+    <insert id="insertPoint">
         insert into points (mno, orno, earned, used, balance, reg_at)
-        values (#{mno}, #{orno}, #{earned}, #{used}, #{balance}, #{regAt})
+        values (#{mno}, #{orno}, #{earned}, #{used}, #{balance}, now())
     </insert>
 
-    <update id="updateBalance" parameterType="com.ezen.books.domain.PointsVO">
+    <!-- 포인트 잔액 업데이트 **-->
+    <update id="updateBalance">
         update points
         set balance = #{balance}
-        where mno = #{mno} and orno = #{orno}
+        where mno = #{mno}
     </update>
 
+    <!-- 마지막 포인트 내역 조회 -->
+    <select id="getLastPointByMember" resultType="com.ezen.books.domain.PointsVO">
+        select * from points
+        where mno = #{mno}
+        order by reg_at desc
+        limit 1
+    </select>
+
+    <!-- 포인트 내역 조회 -->
     <select id="getPointByMember" resultType="com.ezen.books.domain.PointsVO">
         select * from points
         where mno = #{mno}
         order by reg_at desc
-    </select>
-
-    <select id="getLastPointByMember" resultType="com.ezen.books.domain.PointsVO">
-        select * from points
-        where mno = #{mno}
-        order by reg_at desc limit 1
-    </select>
-
-    <select id="getPointByMember" resultType="com.ezen.books.domain.PointsVO">
-        select * from points
-        where mno = #{mno}
-        order by reg_at
     </select>
 
 </mapper>

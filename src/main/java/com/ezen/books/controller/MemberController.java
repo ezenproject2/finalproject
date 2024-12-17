@@ -103,7 +103,9 @@ public class MemberController {
             String pwd = passwordEncoder.encode(memberVO.getPassword());
             memberVO.setPassword(pwd);
         } else {
-            memberVO.setPassword(null);
+            //memberVO.setPassword(null);
+            String existingPassword = memberService.getExistingPassword(memberVO.getLoginId());
+            memberVO.setPassword(existingPassword);  // 기존 비밀번호 유지
         }
 
         int isOk = memberService.updateMember(memberVO);
@@ -164,9 +166,6 @@ public class MemberController {
     }
 
 
-
-
-//
 //
 //    @PostMapping("/order")
 //    public ResponseEntity<?> placeOrder(@RequestBody OrdersVO ordersVO){

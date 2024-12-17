@@ -30,6 +30,11 @@
         values (#{loginId}, #{password}, #{email}, #{name}, #{phoneNumber}, #{nickName}, 'ROLE_USER' , '1' ,#{provider}, #{providerId})
     </insert>
 
+    <select id="existingPassword" resultType="com.ezen.books.domain.MemberVO">
+        select password from member
+        where login_id = #{loginId}
+    </select>
+
     <update id="updateMember">
         update member
         <set>
@@ -48,19 +53,20 @@
         where login_id = #{loginId}
     </update>
 
-    <!--3개월 이내 총 구매 금액을 조회-->
+    <!-- 최근 3개월 동안의 총 구매 내역 -->
     <select id="getTotalSpentInLast3Months" resultType="double">
-        select sum(book_price) from purchase
-        where mno = #{mno} and purchase_date > now() - interval 3 month
+        select sum(total_price) from orders
+        where mno = #{mno} and order_date > now() - interval 3 month
     </select>
 
-    <!--회원 등급 갱신-->
+    <!-- 회원 등급 업데이트 -->
     <update id="updateMemberGrade">
         update member
-        set gno = #{gradeNo}, grade_log = now()
+        set gno = #{gno}, grade_log = now()
         where mno = #{mno}
     </update>
 
+    <!-- 회원 정보 조회 -->
     <select id="getMemberByInfo" resultType="com.ezen.books.domain.MemberVO">
         select * from member
         where mno = #{mno}

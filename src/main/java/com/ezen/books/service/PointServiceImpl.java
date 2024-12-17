@@ -54,7 +54,7 @@ public class PointServiceImpl implements PointService{
     @Override
     public int getBalance(long mno) {
         PointsVO lastPoint = pointMapper.getLastPointByMember(mno);
-        return 0;
+        return (lastPoint != null) ? lastPoint.getBalance() : 0;
     }
 
     @Override

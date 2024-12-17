@@ -10,6 +10,8 @@ public interface MemberService {
 
     void insert(MemberVO memberVO);
 
+    String getExistingPassword(@NotBlank(message = "ID를 입력하세요.") String loginId);
+
     int updateMember(MemberVO memberVO);
 
     int deleteMember(String loginId);
@@ -25,4 +27,5 @@ public interface MemberService {
     double getPointRateByGrade(long mno);
 
     MemberVO getMemberById(long mno);
+
 }

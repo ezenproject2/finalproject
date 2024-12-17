@@ -30,6 +30,11 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
+    public String getExistingPassword(String loginId) {
+        return memberMapper.existingPassword(loginId);
+    }
+
+    @Override
     public int updateMember(MemberVO memberVO) {
         return memberMapper.updateMember(memberVO);
     }
@@ -47,10 +52,10 @@ public class MemberServiceImpl implements MemberService{
         double totalSpent = memberMapper.getTotalSpentInLast3Months(mno);
 
         // 구매 금액에 따른 금액 갱신
-        long gradeNo = calculateGrade(totalSpent);
+        long gno = calculateGrade(totalSpent);
 
         // 등급 업데이트
-        memberMapper.updateMemberGrade(mno, gradeNo);
+        memberMapper.updateMemberGrade(mno, gno);
     }
 
     private long calculateGrade(double totalSpent){
