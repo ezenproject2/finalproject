@@ -6,7 +6,83 @@
 
 <main layout:fragment="main">
 
+    <body>
+    <header>
+        <h1>Welcome to Your Mypage</h1>
+        <nav>
+            <ul>
+                <li><a href="/mypage/points/balance/{mno}" th:text="'Point Balance: ' + ${balance}">Point Balance</a></li>
+                <li><a href="/mypage/points/history/{mno}" th:text="'Point History'">Point History</a></li>
+                <li><a href="/mypage/coupons/{mno}" th:text="'Coupons'">Coupons</a></li>
+                <li><a href="/mypage/grade/{mno}" th:text="'My Grade'">My Grade</a></li>
+            </ul>
+        </nav>
+    </header>
 
+    <main>
+        <section>
+            <h2>Point Balance</h2>
+            <p>Your current point balance is: <span th:text="${balance}">0</span> points.</p>
+        </section>
+
+        <section>
+            <h2>Point History</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Points Earned</th>
+                    <th>Points Used</th>
+                    <th>Order No</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="history : ${pointHistory}">
+                    <td th:text="${history.date}">Date</td>
+                    <td th:text="${history.pointsEarned}">Earned</td>
+                    <td th:text="${history.pointsUsed}">Used</td>
+                    <td th:text="${history.orno}">Order No</td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>My Coupons</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Coupon Code</th>
+                    <th>Discount</th>
+                    <th>Expiration Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="coupon : ${coupons}">
+                    <td th:text="${coupon.code}">Coupon Code</td>
+                    <td th:text="${coupon.discount}">Discount</td>
+                    <td th:text="${coupon.expirationDate}">Expiration Date</td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Available Coupons</h2>
+            <form action="/mypage/coupons/apply" method="POST">
+                <label for="cno">Coupon Code:</label>
+                <input type="text" id="cno" name="cno" required>
+                <label for="purchaseAmount">Purchase Amount:</label>
+                <input type="number" id="purchaseAmount" name="purchaseAmount" required>
+                <button type="submit">Apply Coupon</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Your Company</p>
+    </footer>
+    </body>
 
 
 </main>

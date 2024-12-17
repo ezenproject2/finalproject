@@ -26,6 +26,9 @@ public class MypageController {
     private final CouponService couponService;
     private final MemberService memberService;
 
+    @GetMapping
+    public void mypage(){}
+
     // 포인트 적립
     @PostMapping("/points/earn")
     public String eranPoints(@RequestParam("mno") long mno, @RequestParam("orno") long orno, @RequestParam("earnedPoints") int earnedPoints){

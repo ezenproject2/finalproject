@@ -5,26 +5,26 @@
 
 <mapper namespace="com.ezen.books.repository.CouponMapper">
 
-    <!-- 1. 등급에 맞는 쿠폰 조회 -->
+    <!-- 등급에 맞는 쿠폰 조회 -->
     <select id="getCouponsForGrade" resultType="com.ezen.books.domain.CouponVO">
         select * from coupon
         where gno = #{gno}
     </select>
 
-    <!-- 2. 쿠폰 ID로 조회 -->
+    <!-- 쿠폰 ID로 조회 -->
     <select id="getCouponById" resultType="com.ezen.books.domain.CouponVO">
         select * from coupon
         where cno = #{cno}
     </select>
 
-    <!-- 3. 등급과 구매 금액에 맞는 쿠폰 조회 -->
-    <select id="getCouponsByGrade" resultType="com.ezen.books.domain.CouponVO">
-        select * from coupon
-        where gno = #{gno}
-        and min_price <= #{purchaseAmount}
-    </select>
+    <!-- 등급과 구매 금액에 맞는 쿠폰 조회 -->
+<!--    <select id="getCouponsByGrade" resultType="com.ezen.books.domain.CouponVO">-->
+<!--        select * from coupon-->
+<!--        where gno = #{gno}-->
+<!--        and min_price <= #{purchaseAmount}-->
+<!--    </select>-->
 
-    <!-- 4. 쿠폰 적용 -->
+    <!-- 쿠폰 적용 -->
     <update id="applyCoupon">
         insert into coupon_log (mno, cno, orno, status, useAt)
         values (#{mno}, #{cno}, #{orno}, '사용 가능', now())
