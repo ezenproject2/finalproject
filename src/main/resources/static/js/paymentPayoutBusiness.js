@@ -1,58 +1,70 @@
-let pgData = null;
-document.getElementById('payBtnContainer').addEventListener('click', (e) => {
+let pgData = {
+    channelKey: "",
+    pg: "",
+    pay_method: "",
+    merchant_uid: "",
+    name : "",
+    amount : 0,
+    notice_url: "",
+    m_redirect_url: "http://localhost:8087"
+};
+
+document.querySelector('[data-pay-btn-container="payBtnContainer"]').addEventListener('click', (e) => {
 
     if(e.target.classList.contains('pay-btn')) {
-        pgData = identifyPayBtn(e.target.classList);
+        pgData.pg = selectPg(e.target.classList);
     }
 
     if(e.target.id == 'orderBtn') {
-        if(pgData == null) {
+        if(pgData.pg == "") {
             console.log('결제 수단을 선택해주세요.');
         } else {
+            // getPayDataFromServer(pgData.pg);
+
             payWithIamport(pgData);
-            pgData = null;
+            // pgData 초기화
+            pgData = {
+                channelKey: "",
+                pg: "",
+                pay_method: "",
+                merchant_uid: "",
+                name : "",
+                amount : 0,
+                notice_url: "",
+                m_redirect_url: "http://localhost:8087"
+            };
         }
     }
 })
 
 
-function identifyPayBtn(targetClassList) {
+function selectPg(targetClassList) {
+    
+    let pgVal = "";
 
-    const pgData = {
-        pgVal: "", // pg provider
-        payMethodVal: "",
-        channelKeyVal: ""
-    }
-
-    // TODO: channelKey는 서버에서 제공할 것.
-    // NOTE: 토스페이: 결제는 되는데, 결제 후 나오는 토스 테스트 페이지의
-    // "이동하기" 버튼을 눌러도 아무것도 실행되지 않음. 알아봐야 함.
     if(targetClassList.contains('credit-card-btn')) {
-        pgData.pgVal = "페이팔, pg 상점 아이디 필요";
-        pgData.payMethodVal = "card";
-        pgData.channelKeyVal = "";
+        pgVal = "페이팔, pg 상점 아이디 필요";
     } else if (targetClassList.contains('phone-btn')) {
-        pgData.pgVal = "danal";
-        pgData.payMethodVal = "phone";
-        pgData.channelKeyVal = "channel-key-bd169ac7-dd07-48a1-a122-d3558620fc7c";
+        pgVal = "danal";
     } else if (targetClassList.contains('naverpay-btn')) {
-        pgData.pgVal = "네이버, pg 상점 아이디 필요";
-        pgData.payMethodVal = "naverpay";
-        pgData.channelKeyVal = "";
+        pgVal = "네이버, pg 상점 아이디 필요";
     } else if (targetClassList.contains('kakaopay-btn')) {
-        pgData.pgVal = "kakaopay";
-        pgData.payMethodVal = "card"; // 다른 payMethod도 지원하니 참고.
-        pgData.channelKeyVal = "channel-key-a95bda2d-2a2f-43fb-8e53-7ba806a637f4";
+        pgVal = "kakaopay";
     } else if (targetClassList.contains('tosspay-btn')) {
-        pgData.pgVal = "tosspay_v2";
-        pgData.payMethodVal = "tosspay";
-        pgData.channelKeyVal = "channel-key-03b07e29-1b6d-463c-801e-c23bb3fd86f5";
+        pgVal = "tosspay_v2";
     } else {
         console.log(`It's not a valid button.`);
     }
-
-    return pgData;
+    
+    console.log("selected pg: " + pgVal);
+    return pgVal;
 }
+
+
+async function getPayDataFromServer(selectedPg) {
+    const url = `/payment/payout/get`
+}
+
 
 async function payWithIamport(pgData) {
     // TODO: 결제 진행 시 서버에서 uuid 생성할 것.

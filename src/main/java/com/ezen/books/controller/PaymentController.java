@@ -68,10 +68,12 @@ public class PaymentController {
         AddressVO defaultAddress = getDefaultAddress(mno);
         log.info("The default address: {}", defaultAddress);
 
+        // TODO: pickup 주문이면 isPickup을 1로 보낼 것.
         Map<String, Object> modelAttrs = Map.of(
                 "cartProductList", cartProductList,
                 "defaultAddress", defaultAddress,
-                "mno", mno
+                "mno", mno,
+                "isPickup", 0
         );
 
         model.addAllAttributes(modelAttrs);

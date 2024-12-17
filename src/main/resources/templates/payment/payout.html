@@ -27,16 +27,14 @@
 
   <!--/* >>>>> "주문 상품" 영역<<<<< */-->
   <div>
-    주문 상품 : 총 <span>[[${cartProductList.size}]]</span>개
+    주문 상품 : 총 <span th:data-list-total="listTotal">[[${cartProductList.size}]]</span>개
     <div th:each="cartProduct, iterStat:${cartProductList}">
-      <input type="hidden" th:value="${cartProduct.cartVO.mno}" th:class="mno" th:data-cart="${iterStat.index}">
-      <input type="hidden" th:value="${cartProduct.cartVO.prno}" th:class="prno" th:data-cart="${iterStat.index}">
       <!--/* 사용자가 장바구니에서 선택한 주문 상세들을 보여주는 div. */-->
       <div>
         <!--/* 도서 표지를 보여주는 img */-->
         <img>
         <p>[[${cartProduct.productVO.title} ?: '도서 제목']]</p>
-        <p>[[${cartProduct.productVO.discount} ?: '도서 가격']]</p>
+        <p th:data-list-book-price="${iterStat.index}">[[${cartProduct.productVO.discount} ?: '도서 가격']]</p>
         <p>[[${cartProduct.cartVO.bookQty} ?: '도서 수량']]</p>
       </div>
     </div>
@@ -54,26 +52,27 @@
 
   <!--/* >>>>> "마일리지" 영역<<<<< */-->
   <div>
-    보유 마일리지: <span></span> p.
+    보유 마일리지: <span></span> 포인트
     사용할 액수: <input type="text"> <button>전액 사용</button>
   </div>
 
   <!--/* >>>>> "결제 수단" 영역<<<<< */-->
-  <div id="payBtnContainer">
+  <div data-pay-btn-container="payBtnContainer">
     <input type="hidden" data-payment-mno="${mno}">
-    <button type="button" id="creditCard" class="pay-btn credit-card-btn">Credit Card, 미지원</button>
-    <button type="button" id="phone" class="pay-btn phone-btn">Phone</button>
-    <button type="button" id="naverpay" class="pay-btn naverpay-btn">Naver Pay, 미지원</button>
-    <button type="button" id="kakaopay" class="pay-btn kakaopay-btn">Kakao Pay</button>
-    <button type="button" id="tosspay" class="pay-btn tosspay-btn">Toss Pay</button>
+    <button type="button" class="pay-btn credit-card-btn">Credit Card, 미지원</button>
+    <button type="button" class="pay-btn phone-btn">Phone</button>
+    <button type="button" class="pay-btn naverpay-btn">Naver Pay, 미지원</button>
+    <button type="button" class="pay-btn kakaopay-btn">Kakao Pay</button>
+    <button type="button" class="pay-btn tosspay-btn">Toss Pay</button>
     <br>
+    총 가격: <span data-total-price="totalPrice"></span>
     <button type="button" id="orderBtn">주문하기</button>
   </div>
 
   <a th:href="@{/}">Go to index.html</a>
 </div>
 
-<script th:src="@{/js/payoutBusiness.js}"></script>
-<script th:src="@{/js/payoutDisplay.js}"></script>
+<script defer th:src="@{/js/paymentPayoutBusiness.js}"></script>
+<script defer th:src="@{/js/paymentPayoutDisplay.js}"></script>
 
 </html>
