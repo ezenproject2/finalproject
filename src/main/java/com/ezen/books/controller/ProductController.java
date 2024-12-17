@@ -43,10 +43,23 @@ public class ProductController {
         String res = bookAPIHandler.search(keyword);
         ProductVO productVO = bookAPIHandler.getProductVO(res);
 
-        int isValid = productService.isValid(productVO.getIsbn());
-        productVO.setIsValid(isValid);
+        if(productVO.getIsbn() == null || productVO.getIsbn().equals("")){
+            // 빈 값일 때
+            productVO.setIsValid(2);
+        }else{
+            int isValid = productService.isValid(productVO.getIsbn());
+            productVO.setIsValid(isValid);
+        }
 
         return productVO;
+    }
+
+    @ResponseBody
+    @GetMapping(value = "/duplCheck/{isbn}")
+    public String duplCheck(@PathVariable("isbn") String isbn) {
+        int isValid = productService.isValid(isbn);
+        log.info(">>>> 충복검사 결과 > {}", (isValid>0? "중복O" : "중복X"));
+        return isValid>0? "1" : "0";
     }
 
     @GetMapping("/list")

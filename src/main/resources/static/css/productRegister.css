@@ -1,4 +1,96 @@
 
-input{
-    border: 1px solid black;
+.inner {
+    width: 1060px;
+    margin: 50px auto;
+}
+
+/* 기본 폼 스타일 */
+.registerForm {
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* 테이블 스타일 */
+table {
+    width: 100%;
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+
+th {
+    width: 1060px;
+    background-color: #f0f0f0;
+    padding: 10px;
+    text-align: left;
+}
+
+td {
+    padding: 10px;
+    text-align: left;
+}
+
+.td1{
+    width: 160px;
+    padding-left: 10px;
+}
+
+thead th {
+    font-weight: bold;
+}
+
+/* 폼 항목 스타일 */
+.form_item {
+    align-items: center;
+    box-sizing: border-box;
+    min-height: 30px;
+    padding: 0 10px 0 25px;
+    border: 1px solid #C6C6C6;
+    border-radius: 6px;
+}
+
+/* 버튼 스타일 */
+.searchBtn {
+    min-height: 30px;
+    padding: 0 10px;
+    background-color: #497248;
+    color: white;
+    font-size: 1em;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.textTd{
+    vertical-align: middle;
+}
+
+.textBox {
+    width: 750px;
+    height: 85px;
+    padding: 10px 10px 0 25px;
+    border: 1px solid #C6C6C6;
+    border-radius: 6px;
+    resize: none;
+}
+
+/* 저장 버튼 형식 */
+.regBtn {
+    width: 45%;
+    padding: 13px 20px;
+    border-radius: 8px;
+    background-color: #497248;
+    margin: 30 auto;
+}
+
+.disabled {
+    cursor: not-allowed;         /* 마우스를 올렸을 때 클릭할 수 없음을 나타냄 */
+    opacity: 0.5;                /* 버튼을 흐리게 표시 */
+    pointer-events: none;        /* 클릭 이벤트를 비활성화 */
+}
+
+.regBtn .btn_text {
+    font-size: 17px;
+    line-height: 24px;
+    letter-spacing: -.4px;
+    color: #fff;
 }
