@@ -43,6 +43,13 @@ public class ProductController {
         String res = bookAPIHandler.search(keyword);
         ProductVO productVO = bookAPIHandler.getProductVO(res);
 
+        if(productVO.getDiscount()>0){
+            double originalPrice = productVO.getDiscount() / 0.9;
+            // 100원 단위로 반올림
+            int roundedPrice = (int) Math.round(originalPrice / 100.0) * 100;
+            productVO.setDiscount(roundedPrice);
+        }
+
         if(productVO.getIsbn() == null || productVO.getIsbn().equals("")){
             // 빈 값일 때
             productVO.setIsValid(2);
