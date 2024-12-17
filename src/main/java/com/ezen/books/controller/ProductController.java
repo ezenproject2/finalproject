@@ -70,12 +70,12 @@ public class ProductController {
         log.info(">>>> productVO > {}", productVO);
         BookInfo bookInfo = new BookInfo();
         // 자주 테스트할 때 켜두면 네이버가 화내용...
-//        try {
-//            bookInfo = bookAPIHandler.getDetailDate(productVO.getLink());
-//            log.info(">>>> detail > {}", bookInfo);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
+        try {
+            bookInfo = bookAPIHandler.getDetailDate(productVO.getLink());
+            log.info(">>>> detail > {}", bookInfo);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         model.addAttribute("bookInfo", bookInfo);
 
         model.addAttribute("productVO", productVO);

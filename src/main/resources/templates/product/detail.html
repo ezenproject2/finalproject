@@ -3,56 +3,451 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>EzenBooks</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/productdetail.css}" />
+</head>
 
-<div layout:fragment="main">
+<main layout:fragment="main">
+    <div class="inner">
+        <section class="breadcrumb_wrap">
+            <ul class="breadcrumb_list">
+                <li class="breadcrumb_item">
+                    <a href="/"><i class="ic ic_home"></i></a>
+                </li>
+                <li class="breadcrumb_item">
+                    <a href="/" class="primary_ctg">[[${productVO.primaryCtg}]]</a> <i class="ic ic_carousel_up_white"></i>
+                    <div class="sub_depth">
+                        <ul class="primary_list">
+                            <li class="primary_option" data-category="소설"><a href="/product/">소설</a></li>
+                            <li class="primary_option" data-category="시/에세이"><a href="">시/에세이</a></li>
+                            <li class="primary_option" data-category="경제/경영"><a href="">경제/경영</a></li>
+                            <li class="primary_option" data-category="자기계발"><a href="">자기계발</a></li>
+                            <li class="primary_option" data-category="인문"><a href="">인문</a></li>
+                            <li class="primary_option" data-category="역사"><a href="">역사</a></li>
+                            <li class="primary_option" data-category="사회/정치"><a href="">사회/정치</a></li>
+                            <li class="primary_option" data-category="자연/과학"><a href="">자연/과학</a></li>
+                            <li class="primary_option" data-category="예술/대중문화"><a href="">예술/대중문화</a></li>
+                            <li class="primary_option" data-category="종교"><a href="">종교</a></li>
+                            <li class="primary_option" data-category="유아/어린이"><a href="">유아/어린이</a></li>
+                            <li class="primary_option" data-category="가정/요리"><a href="">가정/요리</a></li>
+                            <li class="primary_option" data-category="여행"><a href="">여행</a></li>
+                            <li class="primary_option" data-category="언어"><a href="">언어</a></li>
+                            <li class="primary_option" data-category="컴퓨터/IT"><a href="">컴퓨터/IT</a></li>
+                            <li class="primary_option" data-category="청소년"><a href="">청소년</a></li>
+                            <li class="primary_option" data-category="수험서/자격증"><a href="">수험서/자격증</a></li>
+                            <li class="primary_option" data-category="만화"><a href="">만화</a></li>
+                            <li class="primary_option" data-category="잡지"><a href="">잡지</a></li>
+                            <li class="primary_option" data-category="건강/취미"><a href="">건강/취미</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="breadcrumb_item">
+                    <a href="/" class="secondary_ctg">[[${productVO.secondaryCtg}]]</a> <i class="ic ic_carousel_up_white"></i>
+                    <div class="sub_depth">
+                        <ul class="secondary_list">
+                            <!-- 동적으로 추가됨(주석 삭제 가능) -->
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </section>
 
-  <!--/* 책 정보 (필수) */-->
-  <h3>[[${productVO.title}]]</h3>
-  <img th:src="${productVO.image}" alt="Book Image" height="300px">
-  <p>카테고리 : [[${productVO.primaryCtg}]] > [[${productVO.secondaryCtg}]]</p>
-  <p>책 정보 : [[${productVO.author}]]/[[${productVO.publisher}]]/[[${productVO.pubdate}]]</p>
-  <p>책 가격 : [[${productVO.discount}]]/[[${productVO.discountRate}]]%</p>
-  <p>책 소개 : [[${productVO.description}]]</p>
+        <section class="contents">
+            <div class="book_detail_header">
+                <div class="book_detail_left">
+                    <div class="book_thum_wrap">
+                        <div class="book-items">
+                            <div class="book-image">
+                                <img th:src="${productVO.image}" class="thumbnail" alt="image"/>
+                                <div class="effect"></div>
+                                <div class="light"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="full_view_area">
+                        <button class="btn full_view_btn">전체보기</button>
+                    </div>
+                </div>
+                <div class="book_detail_right">
+                    <p class="book_tag_wrap">
+                        <span class="book_tag">MD 추천</span>
+                        <span class="book_tag">무료배송</span>
+                    </p>
 
-  <!--/* 책 정보 (웹 스크래핑) */-->
-  <div th:if="${bookInfo.bookIntroContent != null and bookInfo.bookIntroContent != ''}">
-    <h3 th:text="${bookInfo.bookIntroTitle}"></h3>
-    <div th:utext="${bookInfo.bookIntroContent}"></div>
-  </div>
-  <div th:if="${bookInfo.publisherReviewContent != null and bookInfo.publisherReviewContent != ''}">
-    <h3 th:text="${bookInfo.publisherReviewTitle}"></h3>
-    <div th:utext="${bookInfo.publisherReviewContent}"></div>
-  </div>
-  <div th:if="${bookInfo.tableOfContentsContent != null and bookInfo.tableOfContentsContent != ''}">
-    <h3 th:text="${bookInfo.tableOfContentsTitle}"></h3>
-    <div th:utext="${bookInfo.tableOfContentsContent}"></div>
-  </div>
+                    <div class="book_detail_wrap">
+                        <div class="book_detail_general">
+                            <div class="book_detail_content">
+                                <h2 class="book_title">[[${productVO.title}]]</h2>
+                                <p class="book_write">
+                                    <span class="book_writer">[[${productVO.author}]]</span>
+                                    <span class="book_publisher">[[${productVO.publisher}]]</span>
+                                </p>
+                                <p class="book_publication_date">[[${productVO.pubdate}]</p>
+                            </div>
 
-  <!--/* 리뷰 */-->
-  <!--/* 주문 내역 페이지에 모달창으로써 들어갈 부분이에요. 우선 여기에 적어둠! */-->
-  <h3>리뷰 입력하기</h3>
-  리뷰 내용 : <input type="text" name="content" id="contentEl"> <br>
-  별점 : <input type="text" name="rating" id="ratingEl"> <br>
-  파일 첨부 : <input type="file" name="file" id="fileEl"> <br>
-  <!--/* 모달 창을 열 때 같이 넘어가야할 정보 : prno, mno */-->
-  <input type="hidden" name="prno" id="prnoEl" th:value="${productVO.prno}">
-  <input type="hidden" name="mno" id="mnoEl" value=1>
-  <button type="button" id="regBtn">리뷰 등록하기</button>
+                            <div class="book_info">
+                                <span class="discount">[[${productVO.discountRate}]]%</span>
+                                <span class="book_price_wrap">
+                                            <span class="book_discount_price">[[${#numbers.formatInteger(productVO.discount, 3, 'COMMA')}]]<span class="won">원</span></span>
+                                        </span>
+                                <span class="book_original_price">23,900원</span>
+                            </div>
 
-  <!--/* 리뷰 출력 */-->
-  <div id="reviewBox">리뷰가 없다면 출력됩니다. ex) 리뷰가 없습니다!</div>
+                            <div class="book_score">
+                                <p class="book_rating_wrap">
+                                    <i class="ic ic_star" data-score="[[${productVO.reviewAvg}]]"></i>
+                                    <!--
+                                        i 태그 클래스명 예시 : <i th:class="'ic ic_star star-' + ${book.score.toString().replace('.', '_')}"></i>
+                                        이런 식으로 별점을 문자열로 변환, 소수점을 언더바로 바꿔서 클래스명에 넣어야 이미지가 바뀜!
+                                    -->
+                                    <span class="book_rating">[[${productVO.reviewAvg}]] <span class="book_review_count">(리뷰
+                          [[${productVO.reviewCnt}]]개)</span></span>
+                                </p>
+                            </div>
+                        </div>
 
-  <!--/* 리뷰 페이지네이션 */-->
-  <div id="pagingBox">페이지네이션 출력될 박스!</div>
+                        <div class="book_detail_benefits">
+                            <div class="book_detail_title"><span>혜택안내</span></div>
+                            <div class="book_benefits_list">
+                                <div class="book_benefits_item">
+                                    <div class="book_benefits_title"><span>적립금</span></div>
+                                    <div class="book_benefits_content">
+                                        <span class="book_point">750원 <span>(최대 6% 적립)</span></span>
+                                    </div>
+                                </div>
+                                <div class="book_benefits_item">
+                                    <div class="book_benefits_title"><span>결제혜택</span></div>
+                                    <div class="book_benefits_content">
+                                                <span class="book_point">
+                                                    무이자 할부 <i class="ic ic_carousel_down_white"></i>
+                                                    <div class="book_point_modal">
+                                                        <p><span>신용카드 무이자 할부 안내</span><i class="ic ic_delete"></i></p>
+                                                        <p class="card_benefit"><i class="ic card1 ic_bc"></i> <span>5만원 이상 2-6개월 무이자 (~25/01/31 까지)</span></p>
+                                                        <p class="card_benefit"><i class="ic card2 ic_hc"></i> <span>1만원 이상 2-3개월 무이자 (~25/01/31 까지)</span></p>
+                                                        <p class="card_benefit"><i class="ic card ic_nh"></i> <span>5만원 이상 2-6개월 무이자 (~25/01/31 까지)</span></p>
+                                                        <p class="card_benefit"><i class="ic card1 ic_wr"></i> <span>5만원 이상 2-6개월 무이자 (~25/01/31 까지)</span></p>
+                                                        <p class="card_benefit"><i class="ic card1 ic_hn"></i> <span>5만원 이상 2-3개월 무이자 (~25/01/31 까지)</span></p>
+                                                        <p class="card_benefit"><i class="ic card2 ic_rt"></i> <span>5만원 이상 2-3개월 무이자 (~25/01/31 까지)</span></p>
+                                                        <p class="card_benefit"><i class="ic card2 ic_kb"></i> <span>5만원 이상 2-3개월 무이자 (~25/01/31 까지)</span></p>
+                                                        <p class="card_benefit"><i class="ic card2 ic_ss"></i> <span>5만원 이상 2-3개월 무이자 (~25/01/31 까지)</span></p>
+                                                        <p class="card_benefit"><i class="ic card ic_sh"></i> <span>5만원 이상 2-5개월 무이자 (~25/01/31 까지)</span></p>
+                                                    </div>
+                                                </span>
+                                        <span class="book_point">
+                                                    결제사 혜택 <i class="ic ic_carousel_down_white"></i>
 
-  <script th:inline="javascript">
-    let prno = [[${productVO.prno}]];
-    let mno = 1;
-  </script>
-  <!--/* 리뷰 등록 관련 스크립트 */-->
-  <script th:src="@{/js/reviewRegister.js}"></script>
-  <script th:src="@{/js/reviewDetail.js}"></script>
-  <script th:inline="javascript">
-    printReviewBox([[${productVO.prno}]], 1, mno);
-  </script>
-</div>
+                                                    <div class="book_point_modal">
+                                                        <p><span>결제사 혜택 안내</span><i class="ic ic_delete"></i></p>
+                                                        <p class="card_benefit"><i class="ic ic_pay ic_toss"></i> <span>1월 토스페이 결제 혜택</span></p>
+                                                        <p class="card_benefit"><i class="ic ic_pay ic_kpay"></i> <span>1월 카카오페이 결제 혜택</span></p>
+                                                        <p class="card_benefit"><i class="ic ic_pay ic_npay"></i> <span>1월 네이버페이 결제 혜택</span></p>
+                                                    </div>
+                                                </span>
+                                        <a href=""><span class="book_point">쿠폰 <i
+                                                class="ic ic_carousel_right_white"></i></span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="book_detail_delivery">
+                            <div class="book_detail_title"><span>배송 안내</span></div>
+                            <div class="book_delivery_list">
+                                <div class="book_delivery_title"><span>배송비<i class="ic ic_question"></i></span></div>
+                                <div class="book_delivery_content"><span
+                                        class="delivery_free">무료 (해외배송의 경우 지역에 따라 상이)</span></div>
+                            </div>
+                            <button class="btn store_btn" id="openModal"><span>매장 재고 · 위치</span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="book_detail_body">
+                <div class="book">
+                    <div id="pages" class="pages">
+                        <div class="page">
+                            <div class="page-inner"><p>1 페이지~</p></div>
+                        </div>
+
+                        <div class="page">
+                            <div class="page-inner" th:if="${bookInfo.bookIntroContent != null and bookInfo.bookIntroContent != ''}">
+                                <p class="book_detail_title" th:text="${bookInfo.bookIntroTitle}"></p> <!-- 책 소개 -->
+                                <p class="book_detail_content" th:utext="${bookInfo.bookIntroContent}"> [[${productVO.description}]] </p>
+                            </div>
+                            <div class="page-inner" th:if="${bookInfo.tableOfContentsContent != null and bookInfo.tableOfContentsContent != ''}">
+                                <p class="book_detail_title" th:text="${bookInfo.tableOfContentsTitle}"></p> <!-- 상세 소개 -->
+                                <p class="book_detail_content" th:utext="${bookInfo.tableOfContentsContent}"></p>
+                            </div>
+                        </div>
+
+                        <div class="page" style="max-height: 100%">
+                            <div class="page-inner" th:if="${bookInfo.publisherReviewContent != null and bookInfo.publisherReviewContent != ''}" style="max-height: 100%">
+                                <p class="book_detail_title" th:text="${bookInfo.publisherReviewTitle}"></p> <!-- 출판사 서평 -->
+                                <p class="book_detail_content" th:utext="${bookInfo.publisherReviewContent}" style="max-height: 58vh;"></p>
+                            </div>
+                        </div>
+                        <div class="page">
+                            <div class="page-inner">
+                                <p class="book_detail_title">4 페이지~</p>
+                                <p class="book_detail_content">4 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
+                                    페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
+                                    페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
+                                    페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
+                                    페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
+                                    페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
+                                    페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
+                                    페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
+                                    페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
+                                    페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
+                                    페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
+                                    페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~</p>
+
+                            </div>
+                            <div class="page-inner">
+                                <p class="book_detail_title">4-2 페이지~</p>
+                                <p class="book_detail_content">4 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
+                                    페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
+                                    페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
+                                    페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
+                                    페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
+                                    페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
+                                    페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
+                                    페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
+                                    페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
+                                    페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
+                                    페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
+                                    페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~</p>
+                            </div>
+                        </div>
+                        <div class="page">
+                            <div class="page-inner" style="border: none;">
+                                <p class="book_detail_title" style="margin: 5px;">이 달의 이벤트</p>
+                                <div class="stickers">
+                                    <a href="">
+                                        <div class="sticker sticker1"></div>
+                                        <span>만 원 이상 무료배송!</span> </a>
+                                    <a href="">
+                                        <div class="sticker sticker2"></div>
+                                        <span>이 달의 책</span></a>
+                                </div>
+                                <div class="stickers">
+                                    <a href="">
+                                        <div class="sticker sticker3"></div>
+                                        <span>신년 맞이 쿠폰팩</span></a>
+                                    <a href="">
+                                        <div class="sticker sticker4"></div>
+                                        <span>출석 췤!</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 원본 이미지 뷰 영역 -->
+    <div class="modal" id="imageModal">
+        <img src="" id="fullImage"/>
+    </div>
+
+    <div class="modal_overlay" id="modalOverlay">
+        <div class="delivery_modal">
+            <p class="modal_title">
+                <span>매장별 재고 및 도서위치</span>
+                <svg
+                        id="closeModal"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        stroke="#1D1D1D"
+                        stroke-width="1.3"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="close_btn">
+                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                </svg>
+            </p>
+            <div class="modal_content">
+                <p> 서울 </p>
+                <table class="store_stock_table">
+                    <tr>
+                        <th>강남</th>
+                        <th>노원</th>
+                        <th>상봉</th>
+                        <th>송파</th>
+                        <th>신촌</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <th>종로</th>
+                        <th>이젠IT</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>1</td>
+                    </tr>
+                </table>
+
+                <p> 수도권 </p>
+                <table class="store_stock_table">
+                    <tr>
+                        <th>구리</th>
+                        <th>김포</th>
+                        <th>성남모란</th>
+                        <th>성남분당</th>
+                        <th>안산</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <th>안양</th>
+                        <th>의정부</th>
+                        <th>일산</th>
+                        <th>인산직영</th>
+                        <th>하남미사</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                    </tr>
+                </table>
+                <p> 수도권 외 </p>
+                <table class="store_stock_table">
+                    <tr>
+                        <th>전주</th>
+                        <th>천안</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>1</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="prod_purchase_wrap">
+        <div class="inner">
+            <div class="total_price_area">
+                <span>총 상품 금액</span>
+                <span class="total_price"> 16,200<span class="won">원</span> </span>
+            </div>
+            <div class="prod_purchase_btn_area">
+                <div class="prod_count_btn_wrap"> <!-- +, - 버튼 -->
+                    <button type="button" class="btn minus_btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#555" stroke="#555"
+                             stroke-width="1.5" class="bi bi-dash-lg" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8"/>
+                        </svg>
+                    </button>
+                    <span id="number">1</span>
+                    <button type="button" class="btn plus_btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#555" stroke="#555"
+                             stroke-width="1.5" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                  d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <button type="button" class="btn shopping_basket_btn">장바구니</button>
+                <button type="button" class="btn purchase_btn">바로구매</button>
+                <button type="button" class="btn pick_up_btn">바로픽업</button>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/js/productDetail.js}"></script>
+    <script>
+        var pages = document.getElementsByClassName('page');
+
+        // 1. 페이지 번호와 z-index 설정
+        for (var i = 0; i < pages.length; i++) {
+            var page = pages[i];
+            if (i % 2 === 0) {
+                page.style.zIndex = (pages.length - i);
+            }
+        }
+
+        // 2. 초기 상태로 2페이지까지 flipped 처리
+        document.addEventListener('DOMContentLoaded', function () {
+            for (var i = 0; i < pages.length; i++) {
+                pages[i].pageNum = i + 1;
+
+                // 1페이지와 2페이지를 기본적으로 flipped
+                if (i <= 1) {
+                    pages[i].classList.add('flipped');
+                }
+
+                // 클릭 이벤트 추가
+                pages[i].onclick = function () {
+                    // 1페이지와 2페이지로 돌아가지 않도록 설정
+                    if (this.pageNum <= 2) return;
+
+                    // 6페이지에서 더 이상 넘길 수 없도록 설정
+                    if (this.pageNum >= pages.length - 1 && !this.classList.contains('flipped')) return;
+
+                    if (this.pageNum % 2 === 0) {
+                        // 짝수 페이지를 닫기
+                        this.classList.remove('flipped');
+                        this.previousElementSibling.classList.remove('flipped');
+                    } else {
+                        // 홀수 페이지를 넘기기
+                        this.classList.add('flipped');
+                        this.nextElementSibling.classList.add('flipped');
+                    }
+                };
+            }
+        });
+    </script>
+    <script th:src="@{/js/sticker.min.js}"></script>
+    <script type="text/javascript"> window.onload = function() {Sticker.init('.sticker');}</script>
+</main>
+</html>
+<!--/* 리뷰 */-->
+<!--/* 주문 내역 페이지에 모달창으로써 들어갈 부분이에요. 우선 여기에 적어둠! */-->
+<!--  <h3>리뷰 입력하기</h3>-->
+<!--  리뷰 내용 : <input type="text" name="content" id="contentEl"> <br>-->
+<!--  별점 : <input type="text" name="rating" id="ratingEl"> <br>-->
+<!--  파일 첨부 : <input type="file" name="file" id="fileEl"> <br>-->
+<!--  &lt;!&ndash;/* 모달 창을 열 때 같이 넘어가야할 정보 : prno, mno */&ndash;&gt;-->
+<!--  <input type="hidden" name="prno" id="prnoEl" th:value="${productVO.prno}">-->
+<!--  <input type="hidden" name="mno" id="mnoEl" value=1>-->
+<!--  <button type="button" id="regBtn">리뷰 등록하기</button>-->
+
+<!--  &lt;!&ndash;/* 리뷰 출력 */&ndash;&gt;-->
+<!--  <div id="reviewBox">리뷰가 없다면 출력됩니다. ex) 리뷰가 없습니다!</div>-->
+
+<!--  &lt;!&ndash;/* 리뷰 페이지네이션 */&ndash;&gt;-->
+<!--  <div id="pagingBox">페이지네이션 출력될 박스!</div>-->
+
+<!--  <script th:inline="javascript">-->
+<!--    let prno = [[${productVO.prno}]];-->
+<!--    let mno = 1;-->
+<!--  </script>-->
+<!--  &lt;!&ndash;/* 리뷰 등록 관련 스크립트 */&ndash;&gt;-->
+<!--  <script th:src="@{/js/reviewRegister.js}"></script>-->
+<!--  <script th:src="@{/js/reviewDetail.js}"></script>-->
+<!--  <script th:inline="javascript">-->
+<!--    printReviewBox([[${productVO.prno}]], 1, mno);-->
+<!--  </script>-->

@@ -282,6 +282,7 @@
     grid-row: 1 / -1;
     grid-column: 1;
     width: 100%;
+    max-height: 330px;
     border-radius: 2px 6px 6px 2px;
 }
 
@@ -424,7 +425,7 @@
 }
 
 .star-0 {
-    background-image: url("/image/list/star-0.png");
+    background-image: url("../image/list/star-0.png");
 }
 
 .star-0_5 {
