@@ -71,6 +71,7 @@ public class PayoutRestController {
 
         UUID merchantUid = UUID.randomUUID();
 
+        // TODO: channelKey, payMethod, merchantUid를 return으로 보낼 것.
         return new ResponseEntity<String>("1", HttpStatus.OK);
     }
 
