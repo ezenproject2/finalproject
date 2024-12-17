@@ -18,34 +18,54 @@
           <a href="/"><i class="ic ic_home"></i></a>
         </li>
         <li class="breadcrumb_item">
-          <a href="/" class="primary_ctg">[[${productVO.primaryCtg}]]</a> <i class="ic ic_carousel_up_white"></i>
+          <a th:href="@{/product/list(pageNo=1, primaryCtg=${productVO.primaryCtg})}" class="primary_ctg">[[${productVO.primaryCtg}]]</a> <i class="ic ic_carousel_up_white"></i>
           <div class="sub_depth">
             <ul class="primary_list">
-              <li class="primary_option" data-category="소설"><a href="/product/">소설</a></li>
-              <li class="primary_option" data-category="시/에세이"><a href="">시/에세이</a></li>
-              <li class="primary_option" data-category="경제/경영"><a href="">경제/경영</a></li>
-              <li class="primary_option" data-category="자기계발"><a href="">자기계발</a></li>
-              <li class="primary_option" data-category="인문"><a href="">인문</a></li>
-              <li class="primary_option" data-category="역사"><a href="">역사</a></li>
-              <li class="primary_option" data-category="사회/정치"><a href="">사회/정치</a></li>
-              <li class="primary_option" data-category="자연/과학"><a href="">자연/과학</a></li>
-              <li class="primary_option" data-category="예술/대중문화"><a href="">예술/대중문화</a></li>
-              <li class="primary_option" data-category="종교"><a href="">종교</a></li>
-              <li class="primary_option" data-category="유아/어린이"><a href="">유아/어린이</a></li>
-              <li class="primary_option" data-category="가정/요리"><a href="">가정/요리</a></li>
-              <li class="primary_option" data-category="여행"><a href="">여행</a></li>
-              <li class="primary_option" data-category="언어"><a href="">언어</a></li>
-              <li class="primary_option" data-category="컴퓨터/IT"><a href="">컴퓨터/IT</a></li>
-              <li class="primary_option" data-category="청소년"><a href="">청소년</a></li>
-              <li class="primary_option" data-category="수험서/자격증"><a href="">수험서/자격증</a></li>
-              <li class="primary_option" data-category="만화"><a href="">만화</a></li>
-              <li class="primary_option" data-category="잡지"><a href="">잡지</a></li>
-              <li class="primary_option" data-category="건강/취미"><a href="">건강/취미</a></li>
+              <li class="primary_option" data-category="소설"><a
+                      th:href="@{/product/list(pageNo=1, primaryCtg='소설')}">소설</a></li>
+              <li class="primary_option" data-category="시/에세이"><a
+                      th:href="@{/product/list(pageNo=1, primaryCtg='시/에세이')}">시/에세이</a></li>
+              <li class="primary_option" data-category="경제/경영"><a
+                      th:href="@{/product/list(pageNo=1, primaryCtg='경제/경영')}">경제/경영</a></li>
+              <li class="primary_option" data-category="자기계발"><a
+                      th:href="@{/product/list(pageNo=1, primaryCtg='자기계발')}">자기계발</a></li>
+              <li class="primary_option" data-category="인문"><a
+                      th:href="@{/product/list(pageNo=1, primaryCtg='인문')}">인문</a></li>
+              <li class="primary_option" data-category="역사"><a
+                      th:href="@{/product/list(pageNo=1, primaryCtg='역사')}">역사</a></li>
+              <li class="primary_option" data-category="사회/정치"><a
+                      th:href="@{/product/list(pageNo=1, primaryCtg='사회/정치')}">사회/정치</a></li>
+              <li class="primary_option" data-category="자연/과학"><a
+                      th:href="@{/product/list(pageNo=1, primaryCtg='자연/과학')}">자연/과학</a></li>
+              <li class="primary_option" data-category="예술/대중문화"><a
+                      th:href="@{/product/list(pageNo=1, primaryCtg='예술/대중문화')}">예술/대중문화</a></li>
+              <li class="primary_option" data-category="종교"><a
+                      th:href="@{/product/list(pageNo=1, primaryCtg='종교')}">종교</a></li>
+              <li class="primary_option" data-category="유아/어린이"><a
+                      th:href="@{/product/list(pageNo=1, primaryCtg='유아/어린이')}">유아/어린이</a></li>
+              <li class="primary_option" data-category="가정/요리"><a
+                      th:href="@{/product/list(pageNo=1, primaryCtg='가정/요리')}">가정/요리</a></li>
+              <li class="primary_option" data-category="여행"><a
+                      th:href="@{/product/list(pageNo=1, primaryCtg='여행')}">여행</a></li>
+              <li class="primary_option" data-category="언어"><a
+                      th:href="@{/product/list(pageNo=1, primaryCtg='언어')}">언어</a></li>
+              <li class="primary_option" data-category="컴퓨터/IT"><a
+                      th:href="@{/product/list(pageNo=1, primaryCtg='컴퓨터/IT')}">컴퓨터/IT</a></li>
+              <li class="primary_option" data-category="청소년"><a
+                      th:href="@{/product/list(pageNo=1, primaryCtg='청소년')}">청소년</a></li>
+              <li class="primary_option" data-category="수험서/자격증"><a
+                      th:href="@{/product/list(pageNo=1, primaryCtg='수험서/자격증')}">수험서/자격증</a></li>
+              <li class="primary_option" data-category="만화"><a
+                      th:href="@{/product/list(pageNo=1, primaryCtg='만화')}">만화</a></li>
+              <li class="primary_option" data-category="잡지"><a
+                      th:href="@{/product/list(pageNo=1, primaryCtg='잡지')}">잡지</a></li>
+              <li class="primary_option" data-category="건강/취미"><a
+                      th:href="@{/product/list(pageNo=1, primaryCtg='건강/취미')}">건강/취미</a></li>
             </ul>
           </div>
         </li>
         <li class="breadcrumb_item">
-          <a href="/" class="secondary_ctg">[[${productVO.secondaryCtg}]]</a> <i class="ic ic_carousel_up_white"></i>
+          <a th:href="@{/product/list(pageNo=1, secondaryCtg=${productVO.secondaryCtg})}" class="secondary_ctg">[[${productVO.secondaryCtg}]]</a> <i class="ic ic_carousel_up_white"></i>
           <div class="sub_depth">
             <ul class="secondary_list">
               <!-- 동적으로 추가됨(주석 삭제 가능) -->
@@ -85,15 +105,15 @@
                   <span class="book_writer">[[${productVO.author}]]</span>
                   <span class="book_publisher">[[${productVO.publisher}]]</span>
                 </p>
-                <p class="book_publication_date">[[${productVO.pubdate}]</p>
+                <p class="book_publication_date">[[${productVO.pubdate}]]</p>
               </div>
 
               <div class="book_info">
                 <span class="discount">[[${productVO.discountRate}]]%</span>
                 <span class="book_price_wrap">
-                                            <span class="book_discount_price">[[${#numbers.formatInteger(productVO.discount, 3, 'COMMA')}]]<span class="won">원</span></span>
-                                        </span>
-                <span class="book_original_price">23,900원</span>
+                  <span class="book_discount_price">[[${#numbers.formatInteger(productVO.realPrice, 3, 'COMMA')}]]<span class="won">원</span></span>
+                </span>
+                <span class="book_original_price">[[${#numbers.formatInteger(productVO.discount, 3, 'COMMA')}]]원</span>
               </div>
 
               <div class="book_score">
@@ -351,7 +371,7 @@
     <div class="inner">
       <div class="total_price_area">
         <span>총 상품 금액</span>
-        <span class="total_price"> 16,200<span class="won">원</span> </span>
+        <span class="total_price" id="totalPrice">[[${#numbers.formatInteger(productVO.realPrice, 3, 'COMMA')}]]<span class="won">원</span> </span>
       </div>
       <div class="prod_purchase_btn_area">
         <div class="prod_count_btn_wrap"> <!-- +, - 버튼 -->
@@ -378,6 +398,9 @@
     </div>
   </div>
 
+  <script th:inline="javascript">
+    let realPrice = [[${productVO.realPrice}]];
+  </script>
   <script th:src="@{/js/productDetail.js}"></script>
   <script>
     var pages = document.getElementsByClassName('page');

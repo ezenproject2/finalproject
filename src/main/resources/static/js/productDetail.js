@@ -109,6 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
     plusBtn.addEventListener('click', () => {
         value++;
         number.textContent = value;
+        updateTotalPrice();
     });
 
     // - 버튼 클릭 시
@@ -116,6 +117,16 @@ document.addEventListener("DOMContentLoaded", () => {
         if (value > 1) {
             value--;
             number.textContent = value;
+            updateTotalPrice();
         }
     });
 });
+
+function updateTotalPrice(){
+    let number = document.getElementById("number");
+    let totalPrice = document.getElementById("totalPrice");
+    let result = parseInt(number.innerText) * realPrice;
+    result = result.toLocaleString();
+    totalPrice.innerHTML = `${result}<span class="won">원</span>`;
+    
+}
