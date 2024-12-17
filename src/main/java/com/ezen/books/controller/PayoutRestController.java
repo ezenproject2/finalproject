@@ -8,6 +8,7 @@ import com.siot.IamportRestClient.IamportClient;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.env.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
+import java.util.UUID;
 
 @Slf4j
 @RequestMapping("/payment/payout/*")
@@ -27,6 +30,9 @@ import java.nio.charset.StandardCharsets;
 @PropertySource("classpath:application-secrets.properties")
 // NOTE: 결제 api 관련 비즈니스 로직을 포함하여 /payout에서 발생하는 모든 RESTful api를 처리함.
 public class PayoutRestController {
+
+    @Autowired
+    private Environment env;
 
     private String iamportApiKey; // api 키와 시크릿을 여기서 지금 쓰고 있지는 않음. 추후에는 쓸지도.
     private String iamportApiSecret;
@@ -42,6 +48,30 @@ public class PayoutRestController {
         this.iamportApiSecret = iamportApiSecret;
         this.payoutService = payoutService;
         this.iamportClient = new IamportClient(iamportApiKey, iamportApiSecret);
+    }
+
+    @PostMapping("/prepare")
+    public ResponseEntity<String> sendDataToClient(@RequestBody String pgData) {
+        // The received pgVal: {"pg":"kakaopay"}
+        log.info("The received pgVal: {}", pgData);
+
+        String pgVal = "";
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode pgNode = objectMapper.readTree(pgData);
+            pgVal = pgNode.get("pg").asText();
+        } catch (Exception e) {
+            log.info("Exception occurred. Content: {}", e);
+        }
+
+        Map<String, String> pgMap = getChannelKeyAndMethod(pgVal);
+        String channelKey = pgMap.get("channelKey");
+        String payMethod = pgMap.get("payMethod");
+        log.info("The channel key: {}", channelKey);
+
+        UUID merchantUid = UUID.randomUUID();
+
+        return new ResponseEntity<String>("1", HttpStatus.OK);
     }
 
     @PostMapping("/result")
@@ -72,11 +102,6 @@ public class PayoutRestController {
         return (checkResult) ? "1" : "0";
     }
 
-    private boolean checkSinglePayment(String impUid, String amount) throws IOException, URISyntaxException, InterruptedException {
-        boolean verifyResult = payoutService.checkSinglePayment(impUid, amount);
-        return verifyResult;
-    }
-
     // TODO: 화면에서 넘어온 실제 결제 정보를 바탕으로 결제 정보를 저장할 것.
     @PostMapping("/preserve")
     public ResponseEntity<String> getPaymentInfoToPreserve(@RequestBody PaymentVO paymentVO) throws IOException {
@@ -86,37 +111,40 @@ public class PayoutRestController {
     }
 
 
+    private boolean checkSinglePayment(String impUid, String amount) throws IOException, URISyntaxException, InterruptedException {
+        boolean verifyResult = payoutService.checkSinglePayment(impUid, amount);
+        return verifyResult;
+    }
 
-    // PaymentService로 옮길 예정.
-//    private IamportAccessTokenVO issueIamportToken()
-//            throws IOException, URISyntaxException, InterruptedException {
-//        log.info(">> PaymentRestController: getIamportToken start.");
-//        HttpClient httpClient = HttpClient.newHttpClient();
-//
-//        String requestJson = "{" +
-//                "\"imp_key\": \"" + iamportApiKey + "\", " +
-//                "\"imp_secret\": \"" + iamportApiSecret + "\"" +
-//                "}";
-//
-//        HttpRequest request = HttpRequest.newBuilder()
-//                .uri(new URI("https://api.iamport.kr/users/getToken"))
-//                .header("Content-Type", "application/json")
-//                .POST(HttpRequest.BodyPublishers.ofString(requestJson))
-//                .build();
-//
-//        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-//        log.info(">> Response Code: {}", response.statusCode());
-//
-//        // 응답 body 문자열을 json으로 파싱 후 토큰에 접근
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        JsonNode responseJson = objectMapper.readTree(response.body());
-//
-//        IamportAccessTokenVO iamportToken = new IamportAccessTokenVO();
-//        iamportToken.setToken(responseJson.get("response").get("access_token").asText());
-//        iamportToken.setNow(responseJson.get("response").get("now").asInt());
-//        iamportToken.setExpiredAt(responseJson.get("response").get("expired_at").asInt());
-//
-//        return iamportToken;
-//    }
+    private Map<String, String> getChannelKeyAndMethod(String pgVal) {
+        String channelKey = null;
+        String payMethod = null;
+
+        switch (pgVal) {
+            case "kakaopay":
+                channelKey = "iamport_kakaopay_general_payment_channel_key";
+                payMethod = "card";
+                break;
+            case "danal":
+                channelKey = "iamport_danal_phone_payment_channel_key";
+                payMethod = "phone";
+                break;
+            case "tosspay_v2":
+                channelKey = "iamport_tosspay_v2_general_payment_channel_key";
+                payMethod = "tosspay";
+                break;
+            default:
+                channelKey = "Unknown channelKey";
+                payMethod = "Unknown payMethod";
+        }
+
+        // NOTE: Argument 'env. getProperty(channelKey)' might be null
+        Map<String, String> pgMap = Map.of(
+                "channelKey", env.getProperty(channelKey),
+                "payMethod", payMethod
+        );
+
+        return pgMap;
+    }
 
 }

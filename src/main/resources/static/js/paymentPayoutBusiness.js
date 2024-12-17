@@ -19,9 +19,9 @@ document.querySelector('[data-pay-btn-container="payBtnContainer"]').addEventLis
         if(pgData.pg == "") {
             console.log('결제 수단을 선택해주세요.');
         } else {
-            // getPayDataFromServer(pgData.pg);
+            getPayDataFromServer(pgData.pg);
 
-            payWithIamport(pgData);
+            // payWithIamport(pgData);
             // pgData 초기화
             pgData = {
                 channelKey: "",
@@ -62,7 +62,19 @@ function selectPg(targetClassList) {
 
 
 async function getPayDataFromServer(selectedPg) {
-    const url = `/payment/payout/get`
+    const url = `/payment/payout/prepare`;
+
+    const config = {
+        method: "post",
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        body: JSON.stringify({
+            pg: selectedPg
+        })
+    }
+
+    const response = await fetch(url, config);
+    const result = await response.text();
+    console.log("The result of getPayDataFromServer" + result);
 }
 
 

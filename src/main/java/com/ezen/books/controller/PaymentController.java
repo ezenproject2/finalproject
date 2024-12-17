@@ -104,7 +104,6 @@ public class PaymentController {
         }
 
         return cartProductList;
-
     }
 
     private List<CartVO> parseCartVoArray(String cartListData) {

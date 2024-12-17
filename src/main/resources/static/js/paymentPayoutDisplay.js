@@ -14,10 +14,8 @@ function initializeTotalPrice() {
     let sumPrice = 0;
     for(let i=0; i < parseInt(index); i++ ) {
         let price = document.querySelector(`[data-list-book-price="${i}"]`).innerText;
-        console.log("The price: " + price);
         sumPrice += parseInt(price);
     }
-    console.log("sumPrice: " + sumPrice);
 
     document.querySelector('[data-total-price="totalPrice"]').innerText = sumPrice;
 }
