@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequestMapping("/payment/*")
@@ -67,9 +68,13 @@ public class PaymentController {
         AddressVO defaultAddress = getDefaultAddress(mno);
         log.info("The default address: {}", defaultAddress);
 
-        model.addAttribute("cartProductList", cartProductList);
-        model.addAttribute("defaultAddress", defaultAddress);
-        model.addAttribute("mno", mno);
+        Map<String, Object> modelAttrs = Map.of(
+                "cartProductList", cartProductList,
+                "defaultAddress", defaultAddress,
+                "mno", mno
+        );
+
+        model.addAllAttributes(modelAttrs);
         return "/payment/payout";
     }
 

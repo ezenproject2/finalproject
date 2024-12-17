@@ -16,41 +16,51 @@
   <!-- 주문 배송지의 정보를 담는 div -->
   <div>
     <button type="button">배송지 변경</button>
-    <p>[[${defaultAddress.addrName} ?: "배송지"]]</p>
-    <p>[[${defaultAddress.} ?: "수령인 이름"]]</p>
-    <p>[[${defaultAddress.} ?: "수령인 전화번호"]]</p>
-    <p>[[${defaultAddress.} ?: "우편번호"]]</p>
-    <p>[[${defaultAddress.} ?: "배송지"]]</p>
-    <p>[[${defaultAddress.} ?: "상세 주소"]]</p>
-    <button type="button">배송 요청사항/메모 남기기</button>
+    <p>[[${defaultAddress.addrName} ?: '배송지']]</p>
+    <p>[[${defaultAddress.recName} ?: '수령인 이름']]</p>
+    <p>[[${defaultAddress.recPhone} ?: '수령인 전화번호']]</p>
+    <p>[[${defaultAddress.addrCode} ?: '우편번호']]</p>
+    <p>[[${defaultAddress.addr} ?: '배송지']]</p>
+    <p>[[${defaultAddress.addrDetail} ?: '상세 주소']]</p>
+    <textarea placeholder="배송 요청사항 남기기"></textarea>
   </div>
-
-  <!--/* 사용자가 "배송지 변경" 버튼을 눌렀을 때 나오는 div */-->
-  <div>
-    <button type="button">배송지 추가</button>
-    <!--/* "주문 배송지의 정보를 담는 div"의 형식에 맞춰 사용자가 등록한 모든 배송지를 띄워야 함. 즉 th:each로 반복해서 띄워야 함. */-->
-  </div>
-
-  <!--/* 사용자가 "배송지 변경" div에 있는 "배송지 추가" 버튼을 눌렀을 때 나올 div: 배송지 추가를 위한 정보를 입력받는 역할 */-->
-
 
   <!--/* >>>>> "주문 상품" 영역<<<<< */-->
   <div>
-      주문 상품 : 총 <span></span>개
-    <!--/* 고객이 장바구니에서 선택하여 주문할 도서 정보를 보여주는 div. 장바구니 개수만큼 반복되어야 함. */-->
-    <div>
-      <p>도서 제목</p>
-      <p>도서 수량</p>
-      <p>도서 금액</p>
+    주문 상품 : 총 <span>[[${cartProductList.size}]]</span>개
+    <div th:each="cartProduct, iterStat:${cartProductList}">
+      <input type="hidden" th:value="${cartProduct.cartVO.mno}" th:class="mno" th:data-cart="${iterStat.index}">
+      <input type="hidden" th:value="${cartProduct.cartVO.prno}" th:class="prno" th:data-cart="${iterStat.index}">
+      <!--/* 사용자가 장바구니에서 선택한 주문 상세들을 보여주는 div. */-->
+      <div>
+        <!--/* 도서 표지를 보여주는 img */-->
+        <img>
+        <p>[[${cartProduct.productVO.title} ?: '도서 제목']]</p>
+        <p>[[${cartProduct.productVO.discount} ?: '도서 가격']]</p>
+        <p>[[${cartProduct.cartVO.bookQty} ?: '도서 수량']]</p>
+      </div>
     </div>
   </div>
 
   <!--/* >>>>> "쿠폰" 영역<<<<< */-->
+  <div>
+    사용 가능한 쿠폰이 없어서 화면이 어떻게 생겼는지 모름... 테이블 기준으로 만듦.
+    <!--/* 사용자의 가용한 쿠폰들을 나열하는 div. th:each로 반복함. */-->
+    <div>
+      <p>사용을 위한 최소 금액</p>
+      <p>할인 액수</p>
+    </div>
+  </div>
 
   <!--/* >>>>> "마일리지" 영역<<<<< */-->
+  <div>
+    보유 마일리지: <span></span> p.
+    사용할 액수: <input type="text"> <button>전액 사용</button>
+  </div>
 
   <!--/* >>>>> "결제 수단" 영역<<<<< */-->
   <div id="payBtnContainer">
+    <input type="hidden" data-payment-mno="${mno}">
     <button type="button" id="creditCard" class="pay-btn credit-card-btn">Credit Card, 미지원</button>
     <button type="button" id="phone" class="pay-btn phone-btn">Phone</button>
     <button type="button" id="naverpay" class="pay-btn naverpay-btn">Naver Pay, 미지원</button>

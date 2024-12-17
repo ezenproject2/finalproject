@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 public class OrderDetailVO {
     private long odno;
-    private long orno;
+    private String orno;
     private long prno;
     private int bookQty;
     private int price;
@@ -17,7 +17,7 @@ public class OrderDetailVO {
 /*
 CREATE TABLE order_detail (
     odno bigint NOT NULL AUTO_INCREMENT,
-    orno bigint NOT NULL,
+    orno VARCHAR(250) NOT NULL,
     prno bigint NOT NULL,
     book_qty int NOT NULL,
     price int NOT NULL,
