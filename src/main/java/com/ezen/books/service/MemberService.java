@@ -1,6 +1,7 @@
 package com.ezen.books.service;
 
 import com.ezen.books.domain.MemberVO;
+import com.ezen.books.domain.OrdersVO;
 import jakarta.validation.constraints.NotBlank;
 
 public interface MemberService {
@@ -13,11 +14,15 @@ public interface MemberService {
 
     int deleteMember(String loginId);
 
-    boolean validateUser(String loginId, String password);
-
-    MemberVO getMemberById(long mno);
-
+    /*--------------------------------------*/
+    // 회원 등급 갱신
     void updateMemberGrade(long mno);
 
-    double calculatePoint(MemberVO memberVO, double bookPrice);
+    // 회원 정보 페이지
+    MemberVO getMemberByInfo(long mno);
+
+    // 회원 등급에 따른 비율 반환
+    double getPointRateByGrade(long mno);
+
+    MemberVO getMemberById(long mno);
 }

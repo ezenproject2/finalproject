@@ -2,6 +2,7 @@ package com.ezen.books.repository;
 
 import com.ezen.books.domain.MemberAuth;
 import com.ezen.books.domain.MemberVO;
+import com.ezen.books.domain.PointsVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.data.repository.query.Param;
 
@@ -22,9 +23,10 @@ public interface MemberMapper {
 
     int checkUser(@Param("loginId") String loginId, @Param("password") String password);
 
-    /* 12.16---------------------------------------------*/
-    MemberVO getMemberById(long mno);
 
-    void updateGrade(long mno, Long gno);
+    double getTotalSpentInLast3Months(long mno);
 
+    void updateMemberGrade(long mno, long gradeNo);
+
+    MemberVO getMemberByInfo(long mno);
 }

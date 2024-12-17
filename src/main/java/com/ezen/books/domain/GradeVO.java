@@ -14,6 +14,8 @@ public class GradeVO {
     private int pointRate; // 포인트 비율
     private int period; // 등급 유지 기간
 
+    private String amount;  // 구매 내역
+
     /* sql 구문
     CREATE TABLE grade (
     gno bigint NOT NULL AUTO_INCREMENT,

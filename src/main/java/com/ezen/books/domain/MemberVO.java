@@ -37,6 +37,9 @@ public class MemberVO {
     // OAuth 제공자에서 제공하는 고유 ID (예: google의 경우 userId)
     private String providerId;
 
+    private String accessToken;
+    private String refreshToken;
+
     private Long gno; // 등급 번호
     private Date gradeLog; // 등급 변경 일자
 

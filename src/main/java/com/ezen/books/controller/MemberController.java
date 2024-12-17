@@ -1,6 +1,7 @@
 package com.ezen.books.controller;
 
 import com.ezen.books.domain.MemberVO;
+import com.ezen.books.domain.OrdersVO;
 import com.ezen.books.service.MemberService;
 import com.nimbusds.jose.proc.SecurityContext;
 import jakarta.servlet.http.HttpServletRequest;
@@ -139,16 +140,52 @@ public class MemberController {
         new SecurityContextLogoutHandler().logout(request, response, authentication);
     }
 
-    @GetMapping("/{mno}")
-    public MemberVO getMember(@PathVariable long mno){
-        return memberService.getMemberById(mno);
+
+//    @PutMapping("/udate-grade/{mno}")
+//    public ResponseEntity<Void> udateGrade(@PathVariable long mno){
+//        memberService.updateMemberGrade(mno);
+//        return ResponseEntity.ok().build();
+//    }
+    @PostMapping("/updateGrade")
+    public String updateGrade(@RequestParam("mno") long mno){
+        // 회원의 등급을 갱신
+        memberService.updateMemberGrade(mno);
+        return "redirect:/member/profile?mno=" + mno;
     }
 
-    @PutMapping("/udate-grade/{mno}")
-    public ResponseEntity<Void> udateGrade(@PathVariable long mno){
-        memberService.updateMemberGrade(mno);
-        return ResponseEntity.ok().build();
+    // 회원 정보 페이지 (등급 표시)
+    @GetMapping("/profile")
+    public String getProfile(@RequestParam("mno") long mno, Model model){
+        // 회원 정보 및 증급 정보를 가져옴
+        MemberVO memberVO = memberService.getMemberByInfo(mno);
+        model.addAttribute("memberVO", memberVO);
+
+        return "/member/profile";
     }
+
+
+
+
+//
+//
+//    @PostMapping("/order")
+//    public ResponseEntity<?> placeOrder(@RequestBody OrdersVO ordersVO){
+//        // 주문 정보 처리
+//        int totalPrice = ordersVO.getTotalPrice();
+//        long mno = ordersVO.getMno();
+//        long orno = ordersVO.getOrno();
+//
+//        // 포인트 적립
+//        memberService.addPoints(mno, orno, totalPrice);
+//
+//        // 쿠폰 지급
+//        memberService.issueCoupons(mno, totalPrice);
+//
+//        return ResponseEntity.ok().build();
+//    }
+
+
+
 
 
 

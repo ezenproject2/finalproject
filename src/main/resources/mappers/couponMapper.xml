@@ -15,4 +15,16 @@
         where cno = #{cno}
     </select>
 
+    <select id="getCouponsByGrade" resultType="com.ezen.books.domain.CouponVO">
+        select * from coupon
+        where gno = #{gno}
+        and min_price <= #{purchaseAmount}
+    </select>
+
+    <update id="applyCoupon" parameterType="map">
+        insert into coupon_log (mno, cno, orno, status, useAt)
+        values (#{mno}, #{cno}, #{orno}, '사용 가능', now())
+    </update>
+
+
 </mapper>
