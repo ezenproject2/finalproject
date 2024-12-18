@@ -117,26 +117,16 @@ async function payWithIamport() {
             // 결제 검증 2. 포트원의 "결제 단건 조회" API를 통해 imp_uid와 액수 비교.
             let verifyTwoResult = false;
             console.log("The running flag 1");
-            // formatCartProductListToJson();
 
             let verifyResult = checkFlags(paymentData.amount, impResponse.paid_amount, impResponse);
             console.log(verifyResult);
-            
+
         (impResponse);
         } else if (impResponse.error_code != null) {
             alert("Fail -> code(" + impResponse.error_code + ") / Message(" + impResponse.error_msg + ")");
         }
     });
 }
-
-// function formatCartProductListToJson() {
-//     console.log("formatCartProductListToJson start.");
-
-//     // th:each 할 때 마다 cart와 product의 기본 키 뽑아서
-//     // 그것들 가지고 cart와 product에서 sql 쿼리로 데이터 가져오고
-//     // 서버에서 그 결과를 json 형식으로 js에 보내준 뒤
-//     // 여기서 그걸 받아서 결과 잘 왔는지 검증해볼 것.
-// }
 
 async function checkFlags(paymentDataAmount, impResPaidAmount, impResponse) {
 
@@ -150,9 +140,8 @@ async function checkFlags(paymentDataAmount, impResPaidAmount, impResponse) {
     
     if(result.verify1 && result.verify2) {
         console.log("The running flag 2");
-        // handlePreserveRequest(impResponse);
         await preserveOrdersToServer(impResponse);
-        await preserveOrderDetailToServer(impResponse);
+        // await preserveOrderDetailToServer(impResponse);
     }
 
     return result;
@@ -198,15 +187,6 @@ async function sendPaymentResultToServer(impResponse) {
     }
 }
 
-async function handlePreserveRequest(impResponse) {
-    console.log("handlePreserveRequest start.");
-
-    await preserveOrdersToServer(impResponse);
-    await preserveOrderDetailToServer(impResponse);
-    // 쿠폰 이력, 마일리지 적립 이력도 추가해야 함.
-    // preservePaymentToServer();
-}
-
 async function preserveOrdersToServer(impResponse) {
     const url = `/payment/payout/preserve-orders`;
 
@@ -237,14 +217,17 @@ async function preserveOrderDetailToServer(impResponse) {
     const url = `/payment/payout/preserve-order-detail`;
     // orno, prno, bookQty, price
     // 문자열
-    const cartProductList = document.getElementById('dataContainer').dataset.cartProductList;
-    console.log(cartProductList);
-    console.log(typeof cartProductList);
+
+    const detailData = {
+        orno: impResponse.merchant_uid,
+        prno: "",
+        book
+    }
 
     const config = {
         method: "POST",
         headers: { "Content-Type": "application/json; charset=utf-8" },
-        body: JSON.stringify(cartProductList)
+        body: JSON.stringify()
     }
 
     const response = await fetch(url, config);

@@ -35,11 +35,10 @@
         <img>
         <p>[[${cartProduct.productVO.title} ?: '도서 제목']]</p>
         <p th:data-list-book-price="${iterStat.index}">[[${cartProduct.productVO.discount} ?: '도서 가격']]</p>
-        <p>[[${cartProduct.cartVO.bookQty} ?: '도서 수량']]</p>
+        <p th:data-list-book-qty >[[${cartProduct.cartVO.bookQty} ?: '도서 수량']]</p>
       </div>
+
     </div>
-
-
   </div>
 
   <!--/* >>>>> "쿠폰" 영역<<<<< */-->
