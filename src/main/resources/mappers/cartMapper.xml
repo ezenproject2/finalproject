@@ -7,6 +7,10 @@
         insert into cart(mno, prno, book_qty)
         values(#{mno}, #{prno}, #{bookQty})
     </insert>
+    <insert id="storeCartDataToServer">
+        insert into cart(mno, prno, book_qty)
+        values (#{mno}, #{prno}, #{bookQty})
+    </insert>
 
     <select id="getAllCartItems" resultType="com.ezen.books.domain.CartVO">
         select * from cart

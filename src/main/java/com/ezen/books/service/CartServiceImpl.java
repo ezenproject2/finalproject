@@ -26,4 +26,7 @@ public class CartServiceImpl implements CartService {
     public ProductVO getProductInfo(long prnoFromCartDto) {
         return cartMapper.getProductInfo(prnoFromCartDto);
     }
+
+    @Override
+    public int storeCartDataToServer(CartVO cartData) { return cartMapper.storeCartDataToServer(cartData); }
 }
