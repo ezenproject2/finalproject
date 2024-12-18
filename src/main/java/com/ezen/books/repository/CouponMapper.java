@@ -7,7 +7,6 @@ import java.util.List;
 
 @Mapper
 public interface CouponMapper {
-    List<CouponVO> getCouponForGrade(Long gno);
 
     CouponVO getCouponById(long cno);
 
@@ -17,4 +16,6 @@ public interface CouponMapper {
     List<CouponVO> getCouponsByGradeAndPrice(long gno, int totalPrice);
 
     void applyCoupon(long mno, long cno, long orno);
+
+    List<CouponVO> getCouponsForGrade(Long gno);
 }

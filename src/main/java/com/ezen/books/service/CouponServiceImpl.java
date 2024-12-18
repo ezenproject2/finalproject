@@ -27,7 +27,12 @@ public class CouponServiceImpl implements CouponService{
     @Override
     public List<CouponVO> getMemberCoupons(long mno) {
         MemberVO memberVO = memberService.getMemberById(mno);
-        return couponMapper.getCouponForGrade(memberVO.getGno());
+        // memberVO가 null인 경우 예외 처리 또는 다른 처리
+        if (memberVO == null) {
+            // 예외를 던지거나, 빈 리스트를 반환
+            throw new RuntimeException("회원 정보를 찾을 수 없습니다. mno: " + mno);
+        }
+        return couponMapper.getCouponsForGrade(memberVO.getGno());
     }
 
     @Override

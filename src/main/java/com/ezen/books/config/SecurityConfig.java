@@ -48,8 +48,8 @@ public class SecurityConfig {
                     .requestMatchers("/member/").authenticated()
                     .requestMatchers("/manager/**").hasAnyRole("MANAGER", "ADMIN") // "MAMAGER" -> "MANAGER"
                     .requestMatchers("/admin/**").hasAnyRole("ADMIN")
-                    .requestMatchers("/login").permitAll()
-                    .requestMatchers("/member/join").permitAll()
+                    .requestMatchers("/login", "/member/join").permitAll()
+                    .requestMatchers("/mypage/**").authenticated()
                     .anyRequest().permitAll();  // 그 외의 요청은 모두 접근 가능
         });
 

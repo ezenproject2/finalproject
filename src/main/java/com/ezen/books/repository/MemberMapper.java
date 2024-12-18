@@ -23,13 +23,11 @@ public interface MemberMapper {
 
     int deleteMember(String loginId);
 
-    int checkUser(@Param("loginId") String loginId, @Param("password") String password);
-
-
     double getTotalSpentInLast3Months(long mno);
 
     void updateMemberGrade(long mno, long gno);
 
-    MemberVO getMemberByInfo(long mno);
+    MemberVO getMemberByInfo(String loginId);
 
+    MemberVO getMemberById(long mno);
 }

@@ -69,7 +69,13 @@
     <!-- 회원 정보 조회 -->
     <select id="getMemberByInfo" resultType="com.ezen.books.domain.MemberVO">
         select * from member
+        where login_id = #{loginId}
+    </select>
+
+    <select id="getMemberById" resultType="com.ezen.books.domain.MemberVO">
+        select * from member
         where mno = #{mno}
     </select>
+
 
 </mapper>

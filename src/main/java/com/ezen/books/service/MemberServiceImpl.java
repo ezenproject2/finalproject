@@ -8,8 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -47,6 +45,11 @@ public class MemberServiceImpl implements MemberService{
     /*---------------------------------------*/
 
     @Override
+    public MemberVO getMemberByInfo(String loginId) {
+        return memberMapper.getMemberByInfo(loginId);
+    }
+
+    @Override
     public void updateMemberGrade(long mno) {
         // 3개월 이내의 구매 금액 합계
         double totalSpent = memberMapper.getTotalSpentInLast3Months(mno);
@@ -71,18 +74,13 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public MemberVO getMemberByInfo(long mno) {
-        return memberMapper.getMemberByInfo(mno);
-    }
-
-    @Override
     public double getPointRateByGrade(long mno) {
         return 0;
     }
 
     @Override
     public MemberVO getMemberById(long mno) {
-        return null;
+        return memberMapper.getMemberById(mno);
     }
 
 
