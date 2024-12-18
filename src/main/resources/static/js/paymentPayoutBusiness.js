@@ -221,7 +221,8 @@ async function preserveOrderDetailToServer(impResponse) {
     const detailData = {
         orno: impResponse.merchant_uid,
         prno: "",
-        book
+        bookQty: 0,
+        price: 0
     }
 
     const config = {
