@@ -3,6 +3,7 @@ package com.ezen.books;
 import com.ezen.books.domain.DataUrlDTO;
 import com.ezen.books.domain.ProductVO;
 import com.ezen.books.handler.BookAPIHandler;
+import com.ezen.books.service.OfflineService;
 import com.ezen.books.service.ProductService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ class BooksApplicationTests {
 	private BookAPIHandler bookAPIHandler;
 	@Autowired
 	private ProductService productService;
+	@Autowired
+	private OfflineService offlineService;
 
 	@Test
 	void contextLoads() {
@@ -90,4 +93,13 @@ class BooksApplicationTests {
 			}
 		}
 	}
+
+	@Test
+	void insertOfflineStock() {
+		// prno를 제공하면 해당 상품의 '오프라인' 재고를 랜덤(0~5) 생성해주는 메서드
+		// 상품 상세 페이지를 시연을 위해 만들었어요.
+		long prno = 6;
+		int isOk = offlineService.testStockInsert(prno);
+	}
+
 }

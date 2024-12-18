@@ -228,7 +228,7 @@
     content: '·';
     display: inline-block;
     color: #555;
-    margin-left: 6px;
+    margin: 0 6px;
 }
 
 .book_info {

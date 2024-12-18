@@ -145,7 +145,7 @@ window.onload = getLocation;
 // (비동기) 오프라인 매장 정보 가져오기
 async function getStoreInfoFromServer(name) {
     try {
-        const url = "/map/getDetail/" + name
+        const url = "/offline/getDetail/" + name
         const resp = await fetch(url);
         const result = await resp.json();
         console.log(result);

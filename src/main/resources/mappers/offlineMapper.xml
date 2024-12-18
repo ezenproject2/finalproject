@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ezen.books.repository.OfflineMapper">
+
+    <select id="getDetail" resultType="com.ezen.books.domain.OfflineStoreVO">
+        select * from offline_store where name = #{name};
+    </select>
+
+    <select id="getOfflineQty" resultType="long">
+        select count(osno) from offline_store;
+    </select>
+
+    <select id="isValid" resultType="int">
+        select count(*) from offline_book where osno = #{osno} and prno = #{prno}
+    </select>
+
+    <insert id="testStockInsert">
+        insert into offline_book (osno, prno, stock) values (#{osno}, #{prno}, FLOOR(RAND() * 6))
+    </insert>
+
+    <update id="testStockUpdate">
+        update offline_book set stock = FLOOR(RAND() * 6) where osno = #{osno} and prno = #{prno}
+    </update>
+
+    <select id="getOfflineBookVO" resultType="com.ezen.books.domain.OfflineBookVO">
+        select * from offline_book where osno = #{osno} and prno = #{prno}
+    </select>
+
+</mapper>

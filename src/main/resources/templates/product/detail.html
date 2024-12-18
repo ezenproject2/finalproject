@@ -93,8 +93,8 @@
         </div>
         <div class="book_detail_right">
           <p class="book_tag_wrap">
-            <span class="book_tag">MD 추천</span>
-            <span class="book_tag">무료배송</span>
+            <span class="book_tag" id="tag1">MD 추천</span>
+            <span class="book_tag" id="tag2" th:if="${productVO.realPrice >= 20000}">무료배송</span>
           </p>
 
           <div class="book_detail_wrap">
@@ -103,9 +103,9 @@
                 <h2 class="book_title">[[${productVO.title}]]</h2>
                 <p class="book_write">
                   <span class="book_writer">[[${productVO.author}]]</span>
-                  <span class="book_publisher">[[${productVO.publisher}]]</span>
+                  <span class="book_publisher"> [[${productVO.publisher}]]</span>
                 </p>
-                <p class="book_publication_date">[[${productVO.pubdate}]]</p>
+                <p class="book_publication_date" id="book_publication_date">[[${productVO.pubdate}]]</p>
               </div>
 
               <div class="book_info">
@@ -135,7 +135,7 @@
                 <div class="book_benefits_item">
                   <div class="book_benefits_title"><span>적립금</span></div>
                   <div class="book_benefits_content">
-                    <span class="book_point">750원 <span>(최대 6% 적립)</span></span>
+                    <span class="book_point">750원 <span> (최대 6% 적립)</span></span>
                   </div>
                 </div>
                 <div class="book_benefits_item">
@@ -305,19 +305,19 @@
             <th>신촌</th>
           </tr>
           <tr>
-            <td>1</td>
-            <td>1</td>
-            <td>1</td>
-            <td>1</td>
-            <td>1</td>
+            <td class="td_stock" data-osno="1">0</td>
+            <td class="td_stock" data-osno="4">0</td>
+            <td class="td_stock" data-osno="5">0</td>
+            <td class="td_stock" data-osno="6">0</td>
+            <td class="td_stock" data-osno="3">0</td>
           </tr>
           <tr>
             <th>종로</th>
             <th>이젠IT</th>
           </tr>
           <tr>
-            <td>1</td>
-            <td>1</td>
+            <td class="td_stock" data-osno="2">0</td>
+            <td class="td_stock" data-osno="19">0</td>
           </tr>
         </table>
 
@@ -331,25 +331,25 @@
             <th>안산</th>
           </tr>
           <tr>
-            <td>1</td>
-            <td>1</td>
-            <td>1</td>
-            <td>1</td>
-            <td>1</td>
+            <td class="td_stock" data-osno="10">0</td>
+            <td class="td_stock" data-osno="15">0</td>
+            <td class="td_stock" data-osno="14">0</td>
+            <td class="td_stock" data-osno="13">0</td>
+            <td class="td_stock" data-osno="12">0</td>
           </tr>
           <tr>
             <th>안양</th>
             <th>의정부</th>
             <th>일산</th>
-            <th>인산직영</th>
+            <th>인천직영</th>
             <th>하남미사</th>
           </tr>
           <tr>
-            <td>1</td>
-            <td>1</td>
-            <td>1</td>
-            <td>1</td>
-            <td>1</td>
+            <td class="td_stock" data-osno="8">0</td>
+            <td class="td_stock" data-osno="9">0</td>
+            <td class="td_stock" data-osno="11">0</td>
+            <td class="td_stock" data-osno="7">0</td>
+            <td class="td_stock" data-osno="16">0</td>
           </tr>
         </table>
         <p> 수도권 외 </p>
@@ -359,13 +359,32 @@
             <th>천안</th>
           </tr>
           <tr>
-            <td>1</td>
-            <td>1</td>
+            <td class="td_stock" data-osno="18">0</td>
+            <td class="td_stock" data-osno="17">0</td>
           </tr>
         </table>
       </div>
     </div>
   </div>
+
+  <!--/* 리뷰 화면 작업 아직 안됨 일단 기능만 있는 장식으로 넣어둠!! */-->
+  <!--/* 주문 내역 페이지에 모달창으로써 들어갈 부분이에요. 우선 여기에 적어둠! */-->
+  <h3>리뷰 화면 작업 아직 안됨 일단 기능만 있는 장식으로 넣어둠!!</h3>
+  <h3>주문 내역 페이지에 모달창으로써 들어갈 부분이에요. 우선 여기에 적어둠!</h3>
+  리뷰 내용 >> <input type="text" name="content" id="contentEl"> <br>
+  별점 >> <input type="text" name="rating" id="ratingEl"> <br>
+  파일 첨부 >> <input type="file" name="file" id="fileEl"> <br>
+  <!--/* 나중에 주문확인 페이지에서 리뷰 입력 모달 창을 열 때 같이 넘어가야할 정보 : prno, mno */-->
+  <input type="hidden" name="prno" id="prnoEl" th:value="${productVO.prno}">
+  <input type="hidden" name="mno" id="mnoEl" value=1><br>
+  <button type="button" id="regBtn">리뷰 등록하기</button>
+
+  <!--/* 리뷰 출력 라인*/-->
+  <div id="reviewBox">리뷰가 없다면 출력됩니다. ex) 리뷰가 없습니다!</div>
+
+  <!--/* 리뷰 페이지네이션 */-->
+  <div id="pagingBox">페이지네이션 출력될 박스!</div>
+  <!--/* 여기까진 수정될 HTML 조각 */-->
 
   <div class="prod_purchase_wrap">
     <div class="inner">
@@ -390,7 +409,6 @@
             </svg>
           </button>
         </div>
-
         <button type="button" class="btn shopping_basket_btn">장바구니</button>
         <button type="button" class="btn purchase_btn">바로구매</button>
         <button type="button" class="btn pick_up_btn">바로픽업</button>
@@ -399,7 +417,19 @@
   </div>
 
   <script th:inline="javascript">
+    let prno = [[${productVO.prno}]];
+    let mno = 1;
+  </script>
+  <!--/* 리뷰 등록 관련 스크립트 */-->
+  <script th:src="@{/js/reviewRegister.js}"></script>
+  <script th:src="@{/js/reviewDetail.js}"></script>
+  <script th:inline="javascript">
+    printReviewBox([[${productVO.prno}]], 1, mno);
+  </script>
+  <script th:inline="javascript">
     let realPrice = [[${productVO.realPrice}]];
+    let primaryCtgData = [[${ productVO.primaryCtg }]];
+    let prnoData = [[${productVO.prno}]];
   </script>
   <script th:src="@{/js/productDetail.js}"></script>
   <script>
@@ -447,56 +477,3 @@
   <script th:src="@{/js/sticker.min.js}"></script>
   <script type="text/javascript"> window.onload = function() {Sticker.init('.sticker');}</script>
 </main>
-
-<!--<main layout:fragment="main">-->
-
-<!--  &lt;!&ndash;/* 책 정보 (필수) */&ndash;&gt;-->
-<!--  <h3>[[${productVO.title}]]</h3>-->
-<!--  <img th:src="${productVO.image}" alt="Book Image" height="300px">-->
-<!--  <p>카테고리 : [[${productVO.primaryCtg}]] > [[${productVO.secondaryCtg}]]</p>-->
-<!--  <p>책 정보 : [[${productVO.author}]]/[[${productVO.publisher}]]/[[${productVO.pubdate}]]</p>-->
-<!--  <p>책 가격 : [[${productVO.discount}]]/[[${productVO.discountRate}]]%</p>-->
-<!--  <p>책 소개 : [[${productVO.description}]]</p>-->
-
-<!--  &lt;!&ndash;/* 책 정보 (웹 스크래핑) */&ndash;&gt;-->
-<!--  <div th:if="${bookInfo.bookIntroContent != null and bookInfo.bookIntroContent != ''}">-->
-<!--    <h3 th:text="${bookInfo.bookIntroTitle}"></h3>-->
-<!--    <div th:utext="${bookInfo.bookIntroContent}"></div>-->
-<!--  </div>-->
-<!--  <div th:if="${bookInfo.publisherReviewContent != null and bookInfo.publisherReviewContent != ''}">-->
-<!--    <h3 th:text="${bookInfo.publisherReviewTitle}"></h3>-->
-<!--    <div th:utext="${bookInfo.publisherReviewContent}"></div>-->
-<!--  </div>-->
-<!--  <div th:if="${bookInfo.tableOfContentsContent != null and bookInfo.tableOfContentsContent != ''}">-->
-<!--    <h3 th:text="${bookInfo.tableOfContentsTitle}"></h3>-->
-<!--    <div th:utext="${bookInfo.tableOfContentsContent}"></div>-->
-<!--  </div>-->
-
-<!--  &lt;!&ndash;/* 리뷰 */&ndash;&gt;-->
-<!--  &lt;!&ndash;/* 주문 내역 페이지에 모달창으로써 들어갈 부분이에요. 우선 여기에 적어둠! */&ndash;&gt;-->
-<!--  <h3>리뷰 입력하기</h3>-->
-<!--  리뷰 내용 : <input type="text" name="content" id="contentEl"> <br>-->
-<!--  별점 : <input type="text" name="rating" id="ratingEl"> <br>-->
-<!--  파일 첨부 : <input type="file" name="file" id="fileEl"> <br>-->
-<!--  &lt;!&ndash;/* 모달 창을 열 때 같이 넘어가야할 정보 : prno, mno */&ndash;&gt;-->
-<!--  <input type="hidden" name="prno" id="prnoEl" th:value="${productVO.prno}">-->
-<!--  <input type="hidden" name="mno" id="mnoEl" value=1>-->
-<!--  <button type="button" id="regBtn">리뷰 등록하기</button>-->
-
-<!--  &lt;!&ndash;/* 리뷰 출력 */&ndash;&gt;-->
-<!--  <div id="reviewBox">리뷰가 없다면 출력됩니다. ex) 리뷰가 없습니다!</div>-->
-
-<!--  &lt;!&ndash;/* 리뷰 페이지네이션 */&ndash;&gt;-->
-<!--  <div id="pagingBox">페이지네이션 출력될 박스!</div>-->
-
-<!--  <script th:inline="javascript">-->
-<!--    let prno = [[${productVO.prno}]];-->
-<!--    let mno = 1;-->
-<!--  </script>-->
-<!--  &lt;!&ndash;/* 리뷰 등록 관련 스크립트 */&ndash;&gt;-->
-<!--  <script th:src="@{/js/reviewRegister.js}"></script>-->
-<!--  <script th:src="@{/js/reviewDetail.js}"></script>-->
-<!--  <script th:inline="javascript">-->
-<!--    printReviewBox([[${productVO.prno}]], 1, mno);-->
-<!--  </script>-->
-<!--</main>-->

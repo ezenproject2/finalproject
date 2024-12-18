@@ -72,12 +72,12 @@ public class ProductController {
     @GetMapping("/list")
     public void list(Model model, PagingVO pagingVO){
         // 상품 목록 출력 (페이징)
-        log.info(">>>> pagingVO > {}", pagingVO);
+//        log.info(">>>> 상품 목록 pagingVO > {}", pagingVO);
         int totalCount = productService.getTotalCount(pagingVO);
         PagingHandler ph = new PagingHandler(pagingVO, totalCount);
         List<ProductVO> list = productService.getList(pagingVO);
-//        log.info(">>>> list > {}", list);
-        log.info(">>>> ph > {}", ph);
+//        log.info(">>>> 상품 목록 list > {}", list);
+        log.info(">>>> 상품 목록 ph > {}", ph);
         model.addAttribute("ph", ph);
         model.addAttribute("list", list);
     }
