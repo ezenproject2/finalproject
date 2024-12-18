@@ -417,6 +417,9 @@
   </div>
 
   <script th:inline="javascript">
+    let realPrice = [[${productVO.realPrice}]];
+    let primaryCtgData = [[${ productVO.primaryCtg }]];
+    let prnoData = [[${productVO.prno}]];
     let prno = [[${productVO.prno}]];
     let mno = 1;
   </script>
@@ -425,11 +428,6 @@
   <script th:src="@{/js/reviewDetail.js}"></script>
   <script th:inline="javascript">
     printReviewBox([[${productVO.prno}]], 1, mno);
-  </script>
-  <script th:inline="javascript">
-    let realPrice = [[${productVO.realPrice}]];
-    let primaryCtgData = [[${ productVO.primaryCtg }]];
-    let prnoData = [[${productVO.prno}]];
   </script>
   <script th:src="@{/js/productDetail.js}"></script>
   <script>
