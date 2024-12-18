@@ -1,5 +1,6 @@
 package com.ezen.books.oauth2.service;
 
+import com.ezen.books.domain.MemberVO;
 import com.ezen.books.oauth2.user.OAuth2UserInfo;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,10 +16,12 @@ public class OAuth2UserPrincipal implements OAuth2User, UserDetails {
 
     private final OAuth2UserInfo userInfo;
     private final List<String> roles;
+    private final MemberVO memberVO;
 
-    public OAuth2UserPrincipal(OAuth2UserInfo userInfo, List<String> roles) {
+    public OAuth2UserPrincipal(OAuth2UserInfo userInfo, List<String> roles, MemberVO memberVO) {
         this.userInfo = userInfo;
         this.roles = roles;
+        this.memberVO = memberVO;
     }
 
 
@@ -79,4 +82,7 @@ public class OAuth2UserPrincipal implements OAuth2User, UserDetails {
         return userInfo;  // OAuth2 사용자 정보 반환
     }
 
+    public MemberVO getMemberVO(){
+        return memberVO;
+    }
 }

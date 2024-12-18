@@ -25,12 +25,41 @@ public class MypageController {
     private final CouponService couponService;
     private final MemberService memberService;
 
+//    /*-- 마이페이지 --*/
+//    @GetMapping(value = "/main/{mnoId}")
+//    public String myPageMain(@PathVariable("mnoId") long mnoId, Model model) {
+//        // 인증된 사용자 정보 가져오기
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String loginId = authentication.getName();  // 로그인한 사용자 이름 (아이디)
+//        log.info(">>>>>> loginId > {}", loginId);
+//        log.info(">>>> authentication {}",authentication);
+//
+//
+//        MemberVO memberVO = memberService.getMemberByInfo(loginId);  // 사용자 정보 조회
+//        model.addAttribute("memberVO", memberVO);
+//        long mno = memberVO.getMno();  // 회원 번호
+//
+//
+//        // 사용자 정보에 맞는 등급, 포인트, 쿠폰 리스트 조회
+//        GradeVO gradeVO = couponService.getMemberGrade(mno);
+//        int pointsBalance = pointService.getBalance(mno);
+//        List<CouponVO> coupons = couponService.getMemberCoupons(mno);
+//
+//        // 모델에 데이터 추가
+//        model.addAttribute("gradeVO", gradeVO);
+//        model.addAttribute("pointsBalance", pointsBalance);
+//        model.addAttribute("coupons", coupons);
+//
+//        return "/mypage/main";
+//    }
     /*-- 마이페이지 --*/
     @GetMapping("/main")
     public String myPageMain(Model model) {
         // 인증된 사용자 정보 가져오기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String loginId = authentication.getName();  // 로그인한 사용자 이름 (아이디)
+        log.info(">>>>>> loginId > {}", loginId);
+        log.info(">>>> authentication {}",authentication);
 
         MemberVO memberVO = memberService.getMemberByInfo(loginId);  // 사용자 정보 조회
         model.addAttribute("memberVO", memberVO);
