@@ -116,10 +116,8 @@ async function payWithIamport() {
             let verifyOneResult = false;
             // 결제 검증 2. 포트원의 "결제 단건 조회" API를 통해 imp_uid와 액수 비교.
             let verifyTwoResult = false;
-            console.log("The running flag 1");
 
             let verifyResult = checkFlags(paymentData.amount, impResponse.paid_amount, impResponse);
-            console.log(verifyResult);
 
         (impResponse);
         } else if (impResponse.error_code != null) {
@@ -139,9 +137,9 @@ async function checkFlags(paymentDataAmount, impResPaidAmount, impResponse) {
     result.verify2 = await sendPaymentResultToServer(impResponse);
     
     if(result.verify1 && result.verify2) {
-        console.log("The running flag 2");
         await preserveOrdersToServer(impResponse);
         await preserveOrderDetailToServer(impResponse.merchant_uid);
+        await preservePaymentToServer(impResponse);
     }
 
     return result;
@@ -161,8 +159,6 @@ function comparePayment (supposeAmount, actualAmount) {
 }
 
 async function sendPaymentResultToServer(impResponse) {
-    console.log("sendPaymentResultToServer operating.")
-
     const url = `/payment/payout/result`;
     const config = {
         method: "POST",
@@ -207,10 +203,17 @@ async function preserveOrdersToServer(impResponse) {
         headers: { "Content-Type": "application/json; charset=utf-8" },
         body: JSON.stringify(reqBody)
     }
-    console.log("The merchantUid from preserve: " + impResponse.merchant_uid);
 
     const response = await fetch(url, config);
     const result = await response.text();
+
+    if(result == "1") {
+        console.log("Preserve orders: Succeeded.");
+    } else if (result == "0") {
+        console.log("Preserve orders: Failed.");
+    } else {
+        console.log("Preserve orders: Unknown.");
+    }
 }
 
 async function preserveOrderDetailToServer(respMerchantUid) {
@@ -230,11 +233,9 @@ async function preserveOrderDetailToServer(respMerchantUid) {
         orderDetail.prno = document.querySelector(`[data-list-book-prno="${i}"]`).value;
         orderDetail.bookQty = document.querySelector(`[data-list-book-qty="${i}"]`).innerText;
         orderDetail.price = document.querySelector(`[data-list-book-price="${i}"]`).innerText;
-
-        console.log(orderDetail);
+        
         orderDetailArr.push(orderDetail);
     }
-    console.log(orderDetailArr);
 
     const config = {
         method: "POST",
@@ -245,40 +246,42 @@ async function preserveOrderDetailToServer(respMerchantUid) {
     const response = await fetch(url, config);
     const result = await response.text();
     if(result == "1") {
-        console.log("Preserve order detail: Succeeded");
-    } else if (result == "2") {
-        console.log("Preserve order detail: Failed");
+        console.log("Preserve order detail: Succeeded.");
+    } else if (result == "0") {
+        console.log("Preserve order detail: Failed.");
     } else {
-        console.log("Preserve order detail: Unknown");
+        console.log("Preserve order detail: Unknown.");
     }
 }
 
-
-// 여기서부터 데이터를 DB에 저장하는 함수
 async function preservePaymentToServer(impResponse) {
     const url = `/payment/payout/preserve-payment`;
-    const sendData = {
-        // TODO: orno는 주문에서 받아와야 해서 임시로 1로 주었음.
-        orno: 1,
+    const paymentData = {
+        orno: impResponse.merchant_uid,
         measure: impResponse.pay_method,
         price: impResponse.paid_amount,
         status: "",
         // DB의 reg_at은 mapper에서 now()로 설정할 예정.
         cardName: impResponse.card_name,
-        impUid: impResponse.imp_uid,
-        uuid: impResponse.merchant_uid
+        impUid: impResponse.imp_uid
     };
 
-    sendData.status = selectStatus(impResponse.status);
+    paymentData.status = selectStatus(impResponse.status);
     const config = {
         method: "POST",
         headers: { "Content-Type": "application/json; charset=utf-8" },
-        body: JSON.stringify(sendData)
+        body: JSON.stringify(paymentData)
     };
 
     const response = await fetch(url, config);
     const result = await response.text();
-    console.log("The result: " + result);
+    if(result == "1") {
+        console.log("Preserve payment: Succeeded.");
+    } else if (result == "0") {
+        console.log("Preserve payment: Failed.");
+    } else {
+        console.log("Preserve payment: Unknown.");
+    }
 }
 
 // impResponse의 status에 따라 DB에 저장할 status의 값을 결정함

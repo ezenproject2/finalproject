@@ -1,9 +1,6 @@
 package com.ezen.books.service;
 
-import com.ezen.books.domain.AddressVO;
-import com.ezen.books.domain.IamportAccessToken;
-import com.ezen.books.domain.OrderDetailVO;
-import com.ezen.books.domain.OrdersVO;
+import com.ezen.books.domain.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import groovy.util.logging.Slf4j;
@@ -71,4 +68,6 @@ public interface PayoutService {
     int saveOrdersToServer(OrdersVO ordersVO);
 
     int saveOrderDetailToServer(OrderDetailVO orderDetail);
+
+    int savePaymentToServer(PaymentVO paymentData);
 }

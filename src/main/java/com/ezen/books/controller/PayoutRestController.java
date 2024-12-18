@@ -142,11 +142,16 @@ public class PayoutRestController {
                 new ResponseEntity<>("0", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @PostMapping("/preserve")
-    public ResponseEntity<String> getPaymentInfoToPreserve(@RequestBody PaymentVO paymentVO) {
-        log.info(" >>> PaymentRestController: getPaymentIntoToPreserve start.");
-        log.info("Received payment data to be conserved: {}", paymentVO);
-        return new ResponseEntity<String>("1", HttpStatus.OK);
+    @PostMapping("/preserve-payment")
+    public ResponseEntity<String> savePaymentToServer(@RequestBody PaymentVO paymentData) {
+        log.info(" >>> PaymentRestController: savePaymentToServer start.");
+        log.info("The payment data from the client: {}", paymentData);
+
+        int isDone = payoutService.savePaymentToServer(paymentData);
+
+        return (isDone > 0) ?
+                new ResponseEntity<>("1", HttpStatus.OK) :
+                new ResponseEntity<>("0", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 
