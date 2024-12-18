@@ -5,7 +5,7 @@ let pgData = {
     merchant_uid: "",
     name : "",
     amount : 0,
-    notice_url: "",
+    notice_url: "http://localhost:8087/payment/verify-iamport/webhook",
     m_redirect_url: "http://localhost:8087"
 };
 
@@ -19,9 +19,14 @@ document.querySelector('[data-pay-btn-container="payBtnContainer"]').addEventLis
         if(pgData.pg == "") {
             console.log('결제 수단을 선택해주세요.');
         } else {
-            getPayDataFromServer(pgData.pg);
+            const pgObj = getPayDataFromServer(pgData.pg);
+            pgData.channelKey = pgObj.channelKey;
+            pgData.pay_method = pgObj.payMethod;
+            pgData.merchant_uid = pgObj.merchantUid;
 
-            // payWithIamport(pgData);
+            pgData.amount = getTotalPrice();
+
+            payWithIamport(pgObj);
             // pgData 초기화
             pgData = {
                 channelKey: "",
@@ -29,9 +34,7 @@ document.querySelector('[data-pay-btn-container="payBtnContainer"]').addEventLis
                 pay_method: "",
                 merchant_uid: "",
                 name : "",
-                amount : 0,
-                notice_url: "",
-                m_redirect_url: "http://localhost:8087"
+                amount : 0
             };
         }
     }
@@ -60,6 +63,11 @@ function selectPg(targetClassList) {
     return pgVal;
 }
 
+function getTotalPrice() {
+    const totalPrice = document.querySelector('[data-total-price="totalPrice"]').textContent;
+
+    return parseInt(totalPrice);
+}
 
 async function getPayDataFromServer(selectedPg) {
     const url = `/payment/payout/prepare`;
@@ -75,50 +83,80 @@ async function getPayDataFromServer(selectedPg) {
     const response = await fetch(url, config);
     const result = await response.text();
     console.log("The result of getPayDataFromServer" + result);
+
+    const pgDataObj = JSON.parse(result);
+    return pgDataObj;
 }
 
+async function payWithIamport() {
 
-async function payWithIamport(pgData) {
-    // TODO: 결제 진행 시 서버에서 uuid 생성할 것.
-    // 현재 해당 기능이 구현되어 있지 않아서 여기서 생성 중.
-    let merchantUuid = crypto.randomUUID();
-
-    // 고객 정보 및 상품 정보 테스트용 입력값임.
+    // 결제 api 사용 시 필요한 파라미터들
     const paymentData = {
-        channelKey: pgData.channelKeyVal,
-        pg: pgData.pgVal, // pg provider
-        pay_method: pgData.payMethodVal,
-        merchant_uid: merchantUuid, // 상점에서 생성한 고유 주문번호
-        name : "주문명: 결제 테스트", // 상품 이름. 영수증에 나옴.
-        amount : 100, // 최소 결제 가능 금액이 100원임.
+        channelKey: pgData.channelKey,
+        pg: pgData.pg, // pg provider
+        pay_method: pgData.pay_method,
+        merchant_uid: pgData.merchant_uid,
+        name : "주문명: 결제 테스트",
+        amount : pgData.amount,
         buyer_email : "qpfm111@naver.com",
         buyer_name : "박준희",
         buyer_tel : "01071882723",
-        notice_url: "http://localhost:8087/payment/verify-iamport/webhook", // 웹훅을 수신할 url 주소
-        m_redirect_url: "http://localhost:8087" // 모바일 전용 리디렉트 프로퍼티. 결제 완료 페이지로 payment/complete를 만들어야 할 듯?
+        notice_url: pgData.notice_url,
+        m_redirect_url: pgData.m_redirect_url
     }
 
     IMP.init('imp73014361'); // iamport_customer_verification_code의 값이다.
     IMP.request_pay(paymentData, function (impResponse) {
         console.log("Payment completed.");
         if(impResponse.success) {
+            console.log("The result of the payment: " + JSON.stringify(impResponse));
             console.log("Start payment information verification.");
             // 결제 데이터를 DB에 저장하기 전에 검증 먼저 실행.
             // 결제 검증 1. 결제할 액수와 결제 결과로 반환된 결제 액수 동등성 비교.
-            const verifyOneResult = comparePayment(paymentData.amount, impResponse.paid_amount);
+            let verifyOneResult = false;
             // 결제 검증 2. 포트원의 "결제 단건 조회" API를 통해 imp_uid와 액수 비교.
             let verifyTwoResult = false;
-            if(verifyOneResult) {
-                verifyTwoResult = sendPaymentResultToServer(impResponse);
-            }
-            // 모든 검증 후 DB에 결제 자료 입력
-            preservePaymentInfoToServer(impResponse);
+            console.log("The running flag 1");
+            // formatCartProductListToJson();
+
+            let verifyResult = checkFlags(paymentData.amount, impResponse.paid_amount, impResponse);
+            console.log(verifyResult);
+            
+        (impResponse);
         } else if (impResponse.error_code != null) {
             alert("Fail -> code(" + impResponse.error_code + ") / Message(" + impResponse.error_msg + ")");
         }
     });
 }
 
+// function formatCartProductListToJson() {
+//     console.log("formatCartProductListToJson start.");
+
+//     // th:each 할 때 마다 cart와 product의 기본 키 뽑아서
+//     // 그것들 가지고 cart와 product에서 sql 쿼리로 데이터 가져오고
+//     // 서버에서 그 결과를 json 형식으로 js에 보내준 뒤
+//     // 여기서 그걸 받아서 결과 잘 왔는지 검증해볼 것.
+// }
+
+async function checkFlags(paymentDataAmount, impResPaidAmount, impResponse) {
+
+    const result = {
+        verify1: false,
+        verify2: false
+    }
+
+    result.verify1 = await comparePayment(paymentDataAmount, impResPaidAmount);
+    result.verify2 = await sendPaymentResultToServer(impResponse);
+    
+    if(result.verify1 && result.verify2) {
+        console.log("The running flag 2");
+        // handlePreserveRequest(impResponse);
+        await preserveOrdersToServer(impResponse);
+        await preserveOrderDetailToServer(impResponse);
+    }
+
+    return result;
+}
 
 function comparePayment (supposeAmount, actualAmount) {
     if(supposeAmount == actualAmount) {
@@ -160,10 +198,63 @@ async function sendPaymentResultToServer(impResponse) {
     }
 }
 
+async function handlePreserveRequest(impResponse) {
+    console.log("handlePreserveRequest start.");
+
+    await preserveOrdersToServer(impResponse);
+    await preserveOrderDetailToServer(impResponse);
+    // 쿠폰 이력, 마일리지 적립 이력도 추가해야 함.
+    // preservePaymentToServer();
+}
+
+async function preserveOrdersToServer(impResponse) {
+    const url = `/payment/payout/preserve-orders`;
+
+    const mnoVal = document.getElementById('dataContainer').dataset.mno;
+    const isPickupVal = document.getElementById('dataContainer').dataset.isPickup;
+
+    const reqBody = {
+        orno: impResponse.merchant_uid,
+        mno: mnoVal,
+        status: "",
+        totalPrice: impResponse.paid_amount,
+        isPickup: isPickupVal
+    }
+    reqBody.status = selectStatus(impResponse.status);
+
+    const config = {
+        method: "POST",
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        body: JSON.stringify(reqBody)
+    }
+    console.log("The merchantUid from preserve: " + impResponse.merchant_uid);
+
+    const response = await fetch(url, config);
+    const result = await response.text();
+}
+
+async function preserveOrderDetailToServer(impResponse) {
+    const url = `/payment/payout/preserve-order-detail`;
+    // orno, prno, bookQty, price
+    // 문자열
+    const cartProductList = document.getElementById('dataContainer').dataset.cartProductList;
+    console.log(cartProductList);
+    console.log(typeof cartProductList);
+
+    const config = {
+        method: "POST",
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        body: JSON.stringify(cartProductList)
+    }
+
+    const response = await fetch(url, config);
+    const result = await response.text();
+}
+
 
 // 여기서부터 데이터를 DB에 저장하는 함수
-async function preservePaymentInfoToServer(impResponse) {
-    const url = `/payment/payout/preserve`;
+async function preservePaymentToServer(impResponse) {
+    const url = `/payment/payout/preserve-payment`;
     const sendData = {
         // TODO: orno는 주문에서 받아와야 해서 임시로 1로 주었음.
         orno: 1,
@@ -175,6 +266,7 @@ async function preservePaymentInfoToServer(impResponse) {
         impUid: impResponse.imp_uid,
         uuid: impResponse.merchant_uid
     };
+
     sendData.status = selectStatus(impResponse.status);
     const config = {
         method: "POST",

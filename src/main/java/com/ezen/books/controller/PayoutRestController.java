@@ -1,7 +1,12 @@
 package com.ezen.books.controller;
 
+import com.ezen.books.domain.CartProductDTO;
+import com.ezen.books.domain.CartVO;
+import com.ezen.books.domain.OrdersVO;
 import com.ezen.books.domain.PaymentVO;
 import com.ezen.books.service.PayoutService;
+import com.ezen.books.service.PayoutServiceImpl;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.siot.IamportRestClient.IamportClient;
@@ -12,6 +17,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StreamUtils;
@@ -20,8 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @RequestMapping("/payment/payout/*")
@@ -51,7 +56,7 @@ public class PayoutRestController {
     }
 
     @PostMapping("/prepare")
-    public ResponseEntity<String> sendDataToClient(@RequestBody String pgData) {
+    public ResponseEntity<Map<String, String>> sendDataToClient(@RequestBody String pgData) {
         // The received pgVal: {"pg":"kakaopay"}
         log.info("The received pgVal: {}", pgData);
 
@@ -65,14 +70,13 @@ public class PayoutRestController {
         }
 
         Map<String, String> pgMap = getChannelKeyAndMethod(pgVal);
-        String channelKey = pgMap.get("channelKey");
-        String payMethod = pgMap.get("payMethod");
-        log.info("The channel key: {}", channelKey);
+        pgMap.put("merchantUid", (UUID.randomUUID()).toString());
 
-        UUID merchantUid = UUID.randomUUID();
+        log.info("The channel key: {}", pgMap.get("channelKey"));
+        log.info("The pay method: {}", pgMap.get("payMethod"));
+        log.info("The merchant uid: {}", pgMap.get("merchantUid"));
 
-        // TODO: channelKey, payMethod, merchantUid를 return으로 보낼 것.
-        return new ResponseEntity<String>("1", HttpStatus.OK);
+        return ResponseEntity.ok(pgMap);
     }
 
     @PostMapping("/result")
@@ -104,8 +108,53 @@ public class PayoutRestController {
     }
 
     // TODO: 화면에서 넘어온 실제 결제 정보를 바탕으로 결제 정보를 저장할 것.
+    @PostMapping("/preserve-orders")
+    public ResponseEntity<String> saveOrdersToServer(@RequestBody OrdersVO ordersVO) {
+        log.info(" >>> PaymentRestController: saveOrdersToServer start.");
+        // ordersVO: OrdersVO(orno=nobody_1734487688880, mno=1, status=completed, totalPrice=60000, orderAt=null, isPickup=N)
+        log.info("ordersVO: {}", ordersVO);
+        int isDone = payoutService.saveOrdersToServer(ordersVO);
+
+        return (0 < isDone) ?
+                new ResponseEntity<>("1", HttpStatus.OK) :
+                new ResponseEntity<>("0", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @PostMapping("/preserve-order-detail")
+    public ResponseEntity<String> saveOrderDetailToServer(@RequestBody String cartProductData) {
+        log.info(" >>> PaymentRestController: saveOrderDetailToServer start.");
+        // The cartProductData: "[CartProductDTO(cartVO=CartVO(mno=1, prno=1, bookQty=5), productVO=ProductVO(prno=1, isbn=null, title=죽도록 즐기기, link=null, image=null, author=null, discount=10000, publisher=null, pubdate=null, description=null, isDel=null, stock=0, discountRate=10, primaryCtg=null, secondaryCtg=null, reviewAvg=0.0, saleQty=0, reviewCnt=0, isValid=0)), CartProductDTO(cartVO=CartVO(mno=1, prno=2, bookQty=1), productVO=ProductVO(prno=2, isbn=null, title=어떻게 민주주의는 무너지는가, link=null, image=null, author=null, discount=20000, publisher=null, pubdate=null, description=null, isDel=null, stock=0, discountRate=20, primaryCtg=null, secondaryCtg=null, reviewAvg=0.0, saleQty=0, reviewCnt=0, isValid=0)), CartProductDTO(cartVO=CartVO(mno=1, prno=3, bookQty=2), productVO=ProductVO(prno=3, isbn=null, title=도파민네이션, link=null, image=null, author=null, discount=30000, publisher=null, pubdate=null, description=null, isDel=null, stock=0, discountRate=30, primaryCtg=null, secondaryCtg=null, reviewAvg=0.0, saleQty=0, reviewCnt=0, isValid=0))]"
+        log.info("The cartProductList from JavaScript: {}", cartProductData);
+
+
+
+
+//        List<CartProductDTO> cartProductList = new ArrayList<>();
+
+
+//        try {
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            // Jackson이 json 배열을 요구함. 문자열이 아니라.
+//            List<CartProductDTO> cartProductList = objectMapper.readValue(cartProductData, new TypeReference<>() {});
+////            List<CartVO> cartList = objectMapper.readValue(cartListData, new TypeReference<>() {});
+//
+//            // Output the result
+//            cartProductList.forEach(cartProductDTO -> {
+//                System.out.println(cartProductDTO.getCartVO().getMno());
+//                System.out.println(cartProductDTO.getProductVO().getTitle());
+//            });
+
+//            log.info("The cartProductList: {}", cartProductList);
+//        } catch (Exception e) {
+//            log.info("Error during parsing. Content: " + e);
+//        }
+
+
+        return new ResponseEntity<>("1", HttpStatus.OK);
+    }
+
     @PostMapping("/preserve")
-    public ResponseEntity<String> getPaymentInfoToPreserve(@RequestBody PaymentVO paymentVO) throws IOException {
+    public ResponseEntity<String> getPaymentInfoToPreserve(@RequestBody PaymentVO paymentVO) {
         log.info(" >>> PaymentRestController: getPaymentIntoToPreserve start.");
         log.info("Received payment data to be conserved: {}", paymentVO);
         return new ResponseEntity<String>("1", HttpStatus.OK);
@@ -140,10 +189,9 @@ public class PayoutRestController {
         }
 
         // NOTE: Argument 'env. getProperty(channelKey)' might be null
-        Map<String, String> pgMap = Map.of(
-                "channelKey", env.getProperty(channelKey),
-                "payMethod", payMethod
-        );
+        Map<String, String> pgMap = new HashMap<>();
+        pgMap.put("channelKey", env.getProperty(channelKey));
+        pgMap.put("payMethod", payMethod);
 
         return pgMap;
     }

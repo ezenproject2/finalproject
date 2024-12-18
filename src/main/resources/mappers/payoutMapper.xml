@@ -4,6 +4,12 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ezen.books.repository.PayoutMapper">
 
+    <insert id="saveOrdersToServer">
+        insert into orders(orno, mno, status, total_price, is_pickup)
+        values
+        (#{orno}, #{mno}, #{status}, #{totalPrice}, #{isPickup})
+    </insert>
+
     <select id="getDefaultAddress" resultType="com.ezen.books.domain.AddressVO">
         select * from address
         where mno = #{mno} and is_default = "Y"

@@ -124,7 +124,6 @@ class BooksApplicationTests {
 				"\"imp_key\": \"" + iamportApiKey + "\", " +
 				"\"imp_secret\": \"" + iamportApiSecret + "\"" +
 				"}";
-		log.info("The JSON body: {}", requestJson);
 
 		HttpRequest request = HttpRequest.newBuilder()
 				.uri(new URI("https://api.iamport.kr/users/getToken"))
@@ -133,8 +132,8 @@ class BooksApplicationTests {
 				.build();
 
 		HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-		log.info("Response Code: {}", response.statusCode());
-		log.info("Response Code: {}", response.body());
+//		log.info("Response Code: {}", response.statusCode());
+//		log.info("Response Code: {}", response.body());
 
 		// 응답 body 문자열을 json으로 파싱 후 토큰에 접근
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -142,6 +141,5 @@ class BooksApplicationTests {
 
 		String token = jsonNode.get("response").get("access_token").asText();
 		log.info("The token is: {}", token);
-
 	}
 }

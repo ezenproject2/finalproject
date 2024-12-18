@@ -6,6 +6,7 @@ import com.ezen.books.domain.CartProductDTO;
 import com.ezen.books.domain.ProductVO;
 import com.ezen.books.service.CartService;
 import com.ezen.books.service.PayoutService;
+import com.ezen.books.service.PayoutServiceImpl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -68,14 +69,15 @@ public class PaymentController {
         AddressVO defaultAddress = getDefaultAddress(mno);
         log.info("The default address: {}", defaultAddress);
 
-        // TODO: pickup 주문이면 isPickup을 1로 보낼 것.
+        // TODO: pickup 주문이면 isPickup을 Y로 보낼 것.
         Map<String, Object> modelAttrs = Map.of(
                 "cartProductList", cartProductList,
                 "defaultAddress", defaultAddress,
                 "mno", mno,
-                "isPickup", 0
+                "isPickup", "N"
         );
 
+        log.info("CartProductList from PaymentController: {}", cartProductList);
         model.addAllAttributes(modelAttrs);
         return "/payment/payout";
     }

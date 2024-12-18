@@ -10,7 +10,7 @@
 </head>
 
 <div layout:fragment="main">
-  <div id="dataContainer" th:data-mno="${mno}"></div>
+  <div id="dataContainer" th:data-mno="${mno}" th:data-cart-product-list="${cartProductList}" th:data-is-pickup="${isPickup}"></div>
 
   <!--/* >>>>> "배송지" 영역 <<<<< */-->
   <!-- 주문 배송지의 정보를 담는 div -->
@@ -38,6 +38,8 @@
         <p>[[${cartProduct.cartVO.bookQty} ?: '도서 수량']]</p>
       </div>
     </div>
+
+
   </div>
 
   <!--/* >>>>> "쿠폰" 영역<<<<< */-->

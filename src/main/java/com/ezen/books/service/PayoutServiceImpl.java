@@ -1,7 +1,9 @@
 package com.ezen.books.service;
 
 import com.ezen.books.domain.AddressVO;
+import com.ezen.books.domain.CartProductDTO;
 import com.ezen.books.domain.IamportAccessToken;
+import com.ezen.books.domain.OrdersVO;
 import com.ezen.books.repository.PayoutMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -28,11 +31,24 @@ public class PayoutServiceImpl implements PayoutService {
 
     @Autowired
     public PayoutServiceImpl(
-            PayoutMapper payoutMapper, @Value("${iamport_rest_api_key}") String iamportApiKey,
+            PayoutMapper payoutMapper,
+            @Value("${iamport_rest_api_key}") String iamportApiKey,
             @Value("${iamport_rest_api_secret}") String iamportApiSecret) {
         this.payoutMapper = payoutMapper;
         this.iamportApiKey = iamportApiKey;
         this.iamportApiSecret = iamportApiSecret;
+    }
+
+    @Override
+    public AddressVO getDefaultAddress(long mno) {
+        AddressVO defaultAddress = payoutMapper.getDefaultAddress(mno);
+        return defaultAddress;
+    }
+
+    @Override
+    public int saveOrdersToServer(OrdersVO ordersVO) {
+        int isDone = payoutMapper.saveOrdersToServer(ordersVO);
+        return isDone;
     }
 
     @Override
@@ -82,9 +98,4 @@ public class PayoutServiceImpl implements PayoutService {
         }
     }
 
-    @Override
-    public AddressVO getDefaultAddress(long mno) {
-        AddressVO defaultAddress = payoutMapper.getDefaultAddress(mno);
-        return defaultAddress;
-    }
 }
