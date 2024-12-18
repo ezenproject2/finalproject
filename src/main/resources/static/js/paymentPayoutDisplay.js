@@ -12,8 +12,8 @@ function initializeTotalPrice() {
     let index = document.querySelector('[data-list-total="listTotal"]').textContent;
 
     let sumPrice = 0;
-    
-    for(let i=0; i < parseInt(index); i++ ) {
+
+    for(let i=0; i < parseInt(index); i++) {
         let price = document.querySelector(`[data-list-book-price="${i}"]`).innerText;
         sumPrice += parseInt(price);
     }

@@ -1,9 +1,6 @@
 package com.ezen.books.service;
 
-import com.ezen.books.domain.AddressVO;
-import com.ezen.books.domain.CartProductDTO;
-import com.ezen.books.domain.IamportAccessToken;
-import com.ezen.books.domain.OrdersVO;
+import com.ezen.books.domain.*;
 import com.ezen.books.repository.PayoutMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -47,8 +44,12 @@ public class PayoutServiceImpl implements PayoutService {
 
     @Override
     public int saveOrdersToServer(OrdersVO ordersVO) {
-        int isDone = payoutMapper.saveOrdersToServer(ordersVO);
-        return isDone;
+        return payoutMapper.saveOrdersToServer(ordersVO);
+    }
+
+    @Override
+    public int saveOrderDetailToServer(OrderDetailVO orderDetail) {
+        return payoutMapper.saveOrderDetailToServer(orderDetail);
     }
 
     @Override

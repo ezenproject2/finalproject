@@ -10,6 +10,12 @@
         (#{orno}, #{mno}, #{status}, #{totalPrice}, #{isPickup})
     </insert>
 
+    <insert id="saveOrderDetailToServer">
+        insert into order_detail(orno, prno, book_qty, price)
+        values
+        (#{orno}, #{prno}, #{bookQty}, #{price})
+    </insert>
+
     <select id="getDefaultAddress" resultType="com.ezen.books.domain.AddressVO">
         select * from address
         where mno = #{mno} and is_default = "Y"

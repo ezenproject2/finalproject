@@ -141,7 +141,7 @@ async function checkFlags(paymentDataAmount, impResPaidAmount, impResponse) {
     if(result.verify1 && result.verify2) {
         console.log("The running flag 2");
         await preserveOrdersToServer(impResponse);
-        // await preserveOrderDetailToServer(impResponse);
+        await preserveOrderDetailToServer(impResponse.merchant_uid);
     }
 
     return result;
@@ -213,26 +213,44 @@ async function preserveOrdersToServer(impResponse) {
     const result = await response.text();
 }
 
-async function preserveOrderDetailToServer(impResponse) {
+async function preserveOrderDetailToServer(respMerchantUid) {
     const url = `/payment/payout/preserve-order-detail`;
-    // orno, prno, bookQty, price
-    // 문자열
 
-    const detailData = {
-        orno: impResponse.merchant_uid,
-        prno: "",
-        bookQty: 0,
-        price: 0
+    const orderDetailArr = [];
+    let index = document.querySelector('[data-list-total="listTotal"]').textContent;
+    
+    for(let i=0; i < parseInt(index); i++) {
+        let orderDetail = {
+            orno: respMerchantUid,
+            prno: "",
+            bookQty: "",
+            price: ""
+        }
+
+        orderDetail.prno = document.querySelector(`[data-list-book-prno="${i}"]`).value;
+        orderDetail.bookQty = document.querySelector(`[data-list-book-qty="${i}"]`).innerText;
+        orderDetail.price = document.querySelector(`[data-list-book-price="${i}"]`).innerText;
+
+        console.log(orderDetail);
+        orderDetailArr.push(orderDetail);
     }
+    console.log(orderDetailArr);
 
     const config = {
         method: "POST",
         headers: { "Content-Type": "application/json; charset=utf-8" },
-        body: JSON.stringify()
+        body: JSON.stringify(orderDetailArr)
     }
 
     const response = await fetch(url, config);
     const result = await response.text();
+    if(result == "1") {
+        console.log("Preserve order detail: Succeeded");
+    } else if (result == "2") {
+        console.log("Preserve order detail: Failed");
+    } else {
+        console.log("Preserve order detail: Unknown");
+    }
 }
 
 

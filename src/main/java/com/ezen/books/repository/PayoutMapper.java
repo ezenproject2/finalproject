@@ -1,6 +1,7 @@
 package com.ezen.books.repository;
 
 import com.ezen.books.domain.AddressVO;
+import com.ezen.books.domain.OrderDetailVO;
 import com.ezen.books.domain.OrdersVO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -10,4 +11,6 @@ public interface PayoutMapper {
     AddressVO getDefaultAddress(long mno);
 
     int saveOrdersToServer(OrdersVO ordersVO);
+
+    int saveOrderDetailToServer(OrderDetailVO orderDetail);
 }

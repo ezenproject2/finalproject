@@ -1,9 +1,6 @@
 package com.ezen.books.controller;
 
-import com.ezen.books.domain.CartProductDTO;
-import com.ezen.books.domain.CartVO;
-import com.ezen.books.domain.OrdersVO;
-import com.ezen.books.domain.PaymentVO;
+import com.ezen.books.domain.*;
 import com.ezen.books.service.PayoutService;
 import com.ezen.books.service.PayoutServiceImpl;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -107,7 +104,6 @@ public class PayoutRestController {
         return (checkResult) ? "1" : "0";
     }
 
-    // TODO: 화면에서 넘어온 실제 결제 정보를 바탕으로 결제 정보를 저장할 것.
     @PostMapping("/preserve-orders")
     public ResponseEntity<String> saveOrdersToServer(@RequestBody OrdersVO ordersVO) {
         log.info(" >>> PaymentRestController: saveOrdersToServer start.");
@@ -121,36 +117,29 @@ public class PayoutRestController {
     }
 
     @PostMapping("/preserve-order-detail")
-    public ResponseEntity<String> saveOrderDetailToServer(@RequestBody String cartProductData) {
+    public ResponseEntity<String> saveOrderDetailToServer(@RequestBody String orderDetailArr) {
         log.info(" >>> PaymentRestController: saveOrderDetailToServer start.");
-        // The cartProductData: "[CartProductDTO(cartVO=CartVO(mno=1, prno=1, bookQty=5), productVO=ProductVO(prno=1, isbn=null, title=죽도록 즐기기, link=null, image=null, author=null, discount=10000, publisher=null, pubdate=null, description=null, isDel=null, stock=0, discountRate=10, primaryCtg=null, secondaryCtg=null, reviewAvg=0.0, saleQty=0, reviewCnt=0, isValid=0)), CartProductDTO(cartVO=CartVO(mno=1, prno=2, bookQty=1), productVO=ProductVO(prno=2, isbn=null, title=어떻게 민주주의는 무너지는가, link=null, image=null, author=null, discount=20000, publisher=null, pubdate=null, description=null, isDel=null, stock=0, discountRate=20, primaryCtg=null, secondaryCtg=null, reviewAvg=0.0, saleQty=0, reviewCnt=0, isValid=0)), CartProductDTO(cartVO=CartVO(mno=1, prno=3, bookQty=2), productVO=ProductVO(prno=3, isbn=null, title=도파민네이션, link=null, image=null, author=null, discount=30000, publisher=null, pubdate=null, description=null, isDel=null, stock=0, discountRate=30, primaryCtg=null, secondaryCtg=null, reviewAvg=0.0, saleQty=0, reviewCnt=0, isValid=0))]"
-        log.info("The cartProductList from JavaScript: {}", cartProductData);
+        // The orderDetailArr from JavaScript: [{"orno":"nobody_1734504395832","prno":"1","bookQty":"5","price":"10000"},{"orno":"nobody_1734504395832","prno":"3","bookQty":"2","price":"30000"}]
+        log.info("The orderDetailArr from JavaScript: {}", orderDetailArr);
 
+        List<OrderDetailVO> orderDetailList = null;
 
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            orderDetailList = objectMapper.readValue(orderDetailArr, new TypeReference<>() {});
+        } catch (Exception e) {
+            log.info("Error during parsing orderDetailArr. Content: {}", e);
+        }
 
+        List<Integer> resultList = new ArrayList<>();
+        for(OrderDetailVO orderDetail : orderDetailList) {
+            int isDone = payoutService.saveOrderDetailToServer(orderDetail);
+            resultList.add(isDone);
+        }
 
-//        List<CartProductDTO> cartProductList = new ArrayList<>();
-
-
-//        try {
-//            ObjectMapper objectMapper = new ObjectMapper();
-//            // Jackson이 json 배열을 요구함. 문자열이 아니라.
-//            List<CartProductDTO> cartProductList = objectMapper.readValue(cartProductData, new TypeReference<>() {});
-////            List<CartVO> cartList = objectMapper.readValue(cartListData, new TypeReference<>() {});
-//
-//            // Output the result
-//            cartProductList.forEach(cartProductDTO -> {
-//                System.out.println(cartProductDTO.getCartVO().getMno());
-//                System.out.println(cartProductDTO.getProductVO().getTitle());
-//            });
-
-//            log.info("The cartProductList: {}", cartProductList);
-//        } catch (Exception e) {
-//            log.info("Error during parsing. Content: " + e);
-//        }
-
-
-        return new ResponseEntity<>("1", HttpStatus.OK);
+        return (resultList.stream().allMatch(n -> n == 1)) ?
+                new ResponseEntity<>("1", HttpStatus.OK) :
+                new ResponseEntity<>("0", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PostMapping("/preserve")

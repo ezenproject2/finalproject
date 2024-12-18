@@ -2,6 +2,7 @@ package com.ezen.books.service;
 
 import com.ezen.books.domain.AddressVO;
 import com.ezen.books.domain.IamportAccessToken;
+import com.ezen.books.domain.OrderDetailVO;
 import com.ezen.books.domain.OrdersVO;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -68,4 +69,6 @@ public interface PayoutService {
     AddressVO getDefaultAddress(long mno);
 
     int saveOrdersToServer(OrdersVO ordersVO);
+
+    int saveOrderDetailToServer(OrderDetailVO orderDetail);
 }

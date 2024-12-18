@@ -25,15 +25,15 @@
      const cartDtoArray = [];
 
      if(singleItemBtns == null) {
-         console.log("The singleItemBtns is null.");
-     } else {
+        console.log("The singleItemBtns is null.");
+    } else {
          singleItemBtns.forEach(singleBtn => {
-             const dataCart = singleBtn.dataset.cart;
-             console.log("The value of data-cart: " + dataCart);
-             let cartDtoJson = getDataForCartDto(dataCart);
-             cartDtoArray.push(cartDtoJson);
-         })
-     }
+            const dataCart = singleBtn.dataset.cart;
+            console.log("The value of data-cart: " + dataCart);
+            let cartDtoJson = getDataForCartDto(dataCart);
+            cartDtoArray.push(cartDtoJson);
+        })
+    }
 
      return cartDtoArray;
  }

@@ -54,6 +54,7 @@ public class PaymentController {
         List<CartVO> cartList =  parseCartVoArray(cartListData);
         this.cartList = cartList;
 
+        // TODO: pickup이면 return을 2로 하든가 해서 구분하기.
         return "1";
     }
 
