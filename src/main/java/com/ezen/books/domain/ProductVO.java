@@ -67,4 +67,5 @@ public class ProductVO {
 
     // 테이블 외 변수
     private int isValid;
+    private int realPrice;
 }

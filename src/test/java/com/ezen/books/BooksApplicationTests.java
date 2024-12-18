@@ -3,6 +3,7 @@ package com.ezen.books;
 import com.ezen.books.domain.DataUrlDTO;
 import com.ezen.books.domain.ProductVO;
 import com.ezen.books.handler.BookAPIHandler;
+import com.ezen.books.service.OfflineService;
 import com.ezen.books.service.ProductService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ class BooksApplicationTests {
 	private BookAPIHandler bookAPIHandler;
 	@Autowired
 	private ProductService productService;
+	@Autowired
+	private OfflineService offlineService;
 
 	@Test
 	void contextLoads() {
@@ -26,7 +29,7 @@ class BooksApplicationTests {
 		// 한번에 10~15개의 링크만 사용할 것을 권장합니다.
 		// 반복해서 입력하지 말고 하루에 한번만 사용해주세요.
 		List<DataUrlDTO> dataUrlList = new ArrayList<>();
-		int i = 1;
+		int i = 5;
 		dataUrlList.add(new DataUrlDTO("소설", "세계 각국 소설", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50005568&goodsType=PAPER&pageIndex=" + i + "&pageSize=40&sort=REL"));
 		dataUrlList.add(new DataUrlDTO("소설", "고전/문학", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50005569&goodsType=PAPER&pageIndex=" + i + "&pageSize=40&sort=REL"));
 		dataUrlList.add(new DataUrlDTO("소설", "장르소설", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50005570&goodsType=PAPER&pageIndex=" + i + "&pageSize=40&sort=REL"));
@@ -67,6 +70,13 @@ class BooksApplicationTests {
 								productVO.setDescription("시연 발표 제외로 인한 생략");
 							}
 
+							if(productVO.getDiscount()>0){
+								double originalPrice = productVO.getDiscount() / 0.9;
+								// 100원 단위로 반올림
+								int roundedPrice = (int) Math.round(originalPrice / 100.0) * 100;
+								productVO.setDiscount(roundedPrice);
+							}
+
 							// DB 저장!!!!
 							if(productVO.getIsbn() != null && productVO.getIsbn() != ""){
 								productService.testDataInsert(productVO);
@@ -83,4 +93,13 @@ class BooksApplicationTests {
 			}
 		}
 	}
+
+	@Test
+	void insertOfflineStock() {
+		// prno를 제공하면 해당 상품의 '오프라인' 재고를 랜덤(0~5) 생성해주는 메서드
+		// 상품 상세 페이지를 시연을 위해 만들었어요.
+		long prno = 6;
+		int isOk = offlineService.testStockInsert(prno);
+	}
+
 }

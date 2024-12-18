@@ -348,11 +348,13 @@
     flex-direction: column;
     justify-content: center;
 }
-
+.book_title {
+    margin-bottom : 10px;
+}
 .book_title span {
     font-size: 20px;
     font-weight: 600;
-    line-height: 19px;
+    line-height: 25px;
     /* 줄 간격을 조금 더 넓게 설정 */
     color: #1D1D1D;
     /*트렌드 코리아 2025 - 2025 대한민국 소비트렌드 전망*/

@@ -35,6 +35,16 @@ document.getElementById("regBtn").addEventListener("click", ()=>{
     const prnoEl = document.getElementById("prnoEl");
     const mnoEl = document.getElementById("mnoEl");
 
+    if(contentEl.value == "" || contentEl.value == null){
+        alert("빈 값을 입력할 수 없음.");
+        return;
+    }else if(ratingEl.value == "" || ratingEl.value == null){
+        alert("빈 값을 입력할 수 없음.");
+        return;
+    }else if(isNaN(parseFloat(ratingEl.value))){
+        alert("별점은 숫자만 가능함! \n 이 부분은 어차피 나중에 별점 누르는 걸로 바꾸면 해결됨.");
+        return;
+    }
 
     const formData = new FormData();
     formData.append("content", contentEl.value);
@@ -53,6 +63,7 @@ document.getElementById("regBtn").addEventListener("click", ()=>{
     regReviewToServer(formData).then(result => {
         if (result === "1") {
             console.log("댓글 입력 성공!");
+            location.reload();
         } else {
             console.log("댓글 입력 실패!");
         }
