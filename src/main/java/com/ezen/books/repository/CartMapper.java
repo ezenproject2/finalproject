@@ -16,4 +16,8 @@ public interface CartMapper {
     ProductVO getProductInfo(long prno);
 
     int storeCartDataToServer(CartVO cartData);
+
+    int checkMnoAndPrno(long mno, long prno);
+
+    void increaseBookQty(CartVO cartData);
 }

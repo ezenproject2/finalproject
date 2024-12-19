@@ -71,5 +71,5 @@ public interface PayoutService {
 
     int savePaymentToServer(PaymentVO paymentData);
 
-    int removeCartToServer(long mno);
+    int removeCartToServer(long mno, long prno);
 }

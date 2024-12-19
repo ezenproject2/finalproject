@@ -16,10 +16,18 @@
         select * from cart
         where mno = #{mno}
     </select>
-
+    <select id="checkMnoAndPrno" resultType="int">
+        select count(*) from cart
+        where mno = #{mno} and prno=#{prno}
+    </select>
     <select id="getProductInfo" resultType="com.ezen.books.domain.ProductVO">
         select prno, title, discount, discount_rate from product
         where prno = #{prno} and is_del = "N"
     </select>
 
+    <update id="increaseBookQty">
+        update cart
+        set book_qty = book_qty + #{bookQty}
+        where mno = #{mno} and prno = #{prno}
+    </update>
 </mapper>

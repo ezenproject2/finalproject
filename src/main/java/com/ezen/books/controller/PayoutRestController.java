@@ -154,27 +154,50 @@ public class PayoutRestController {
                 new ResponseEntity<>("0", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @PostMapping("/remove-cart")
-    public ResponseEntity<String> removeCartToServer(@RequestBody String mnoData) {
-        log.info(" >>> PaymentRestController: removeCartToServer start.");
-        // The mnoData from the client: {"mno":"1"}
-        log.info("The mnoData from the client: {}", mnoData);
+//    @PostMapping("/remove-cart")
+//    public ResponseEntity<String> removeCartToServer(@RequestBody String mnoData) {
+//        log.info(" >>> PaymentRestController: removeCartToServer start.");
+//        // The mnoData from the client: {"mno":"1"}
+//        log.info("The mnoData from the client: {}", mnoData);
+//
+//        long mno = 0L;
+//        try {
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            JsonNode mnoNode = objectMapper.readTree(mnoData);
+//            mno = mnoNode.get("mno").asLong();
+//        } catch (Exception e) {
+//            log.info("Error during parsing mnoNode. Content: {}", e);
+//        }
+//
+//        int isDone = payoutService.removeCartToServer(mno);
+//
+//        return (isDone == 1) ?
+//                new ResponseEntity<>("1", HttpStatus.OK) :
+//                new ResponseEntity<>("0", HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
 
-        long mno = 0L;
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode mnoNode = objectMapper.readTree(mnoData);
-            mno = mnoNode.get("mno").asLong();
-        } catch (Exception e) {
-            log.info("Error during parsing mnoNode. Content: {}", e);
+    @PostMapping("/remove-cart")
+    public ResponseEntity<String> removeCartToServer(@RequestBody String cartListData) {
+        log.info(" >>> PaymentRestController: removeCartToServer start.");
+        // The cartListData from the client: [{"mno":"4","prno":"84","bookQty":1},{"mno":"4","prno":"82","bookQty":1},{"mno":"4","prno":"84","bookQty":1},{"mno":"4","prno":"84","bookQty":1},{"mno":"4","prno":"80","bookQty":1}]
+        log.info("The cartListData from the client: {}", cartListData);
+
+        List<CartVO> cartList =  parseCartVoArray(cartListData);
+        log.info("Is cartList List: {}", cartList instanceof List<CartVO>);
+        List<Integer> resultList = new ArrayList<>();
+
+        for(CartVO cartVO : cartList) {
+            long mno = cartVO.getMno();
+            long prno = cartVO.getPrno();
+            // TODO: mno, prno에 해당하는 cart의 데이터를 없애야 함.
+            resultList.add(payoutService.removeCartToServer(mno, prno));
         }
 
-        int isDone = payoutService.removeCartToServer(mno);
-
-        return (isDone == 1) ?
+        return (resultList.stream().allMatch(n -> n == 1)) ?
                 new ResponseEntity<>("1", HttpStatus.OK) :
                 new ResponseEntity<>("0", HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     private boolean checkSinglePayment(String impUid, String amount) throws IOException, URISyntaxException, InterruptedException {
         boolean verifyResult = payoutService.checkSinglePayment(impUid, amount);
@@ -209,6 +232,29 @@ public class PayoutRestController {
         pgMap.put("payMethod", payMethod);
 
         return pgMap;
+    }
+
+    // NOTE: 똑같은 메서드가 PaymentController에도 있음. 한 메서드를 같이 쓸 수 없나?
+    // 메서드 하나인데 굳이 싶기도 하고.
+    private List<CartVO> parseCartVoArray(String cartListData) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            // json String을 List<CartVO>로 변환
+            List<CartVO> cartList = objectMapper.readValue(cartListData, new TypeReference<>() {});
+
+            // 결과 확인하고 싶을 때 주석 풀어서 볼 것.
+//            for (int i = 0; i < cartList.size(); i++) {
+//                log.info("The mno from cartList: {}", cartList.get(i).getMno());
+//                log.info("The prno from cartList: {}", cartList.get(i).getPrno());
+//                log.info("The bookQty from cartList: {}", cartList.get(i).getBookQty());
+//            }
+
+            return cartList;
+        } catch (Exception e) {
+            log.info("Exception occurred. Content: {}", e);
+            return null;
+        }
     }
 
 }

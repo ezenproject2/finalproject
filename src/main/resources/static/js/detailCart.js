@@ -51,6 +51,8 @@ async function storeCartVoToServer(mnoVal, prnoVal, bookQtyVal) {
     if(result == "1") {
         console.log("Insert cart: Succeeded.");
         alert("장바구니에 담겼습니다.");
+    } else if(result == "2") {
+        alert("이미 해당 도서가 장바구니에 있어서 개수를 추가하였습니다.");
     } else if (result == "0") {
         console.log("Insert cart: Failed.");
         alert("서버 에러: 실패했습니다.");

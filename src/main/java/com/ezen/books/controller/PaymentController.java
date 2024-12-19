@@ -39,8 +39,17 @@ public class PaymentController {
         List<CartProductDTO> cartProductList = buildCartProductList(cartList);
         log.info(" >>> showCartItems: cartProductList: {}", cartProductList);
 
+        // 사용자의 장바구니가 비었는지 아닌지 판별하기 위한 값
+        boolean isCartEmpty;
+        if(cartProductList.isEmpty()) {
+            isCartEmpty = true;
+        } else {
+            isCartEmpty = false;
+        }
+
         model.addAttribute("mno", mno);
         model.addAttribute("cartProductList", cartProductList);
+        model.addAttribute("isCartEmpty", isCartEmpty);
         return "/payment/cart";
     }
 
@@ -116,7 +125,6 @@ public class PaymentController {
     }
 
     private List<CartVO> parseCartVoArray(String cartListData) {
-
         try {
             ObjectMapper objectMapper = new ObjectMapper();
 

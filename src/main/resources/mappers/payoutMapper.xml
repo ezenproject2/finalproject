@@ -29,6 +29,6 @@
 
     <delete id="removeCartToServer">
         delete from cart
-        where mno = #{mno}
+        where mno = #{mno} and prno = #{prno}
     </delete>
 </mapper>

@@ -307,27 +307,40 @@ function selectStatus(impResponseStatus) {
 
 async function removeCartToServer() {
     const mnoVal = document.getElementById('dataContainer').dataset.mno;
+    
+    // 주문한 prno를 다 받아서 CartVO의 JSON으로 만들 것.
+    const index = document.querySelector(`input[type="hidden"].data-storage-input`).dataset.listSize;
+    const cartVoArr = [];
+
+    for(let i = 0; i < parseInt(index); i++) {
+        let cartVoObj = {
+            mno: mnoVal,
+            prno:"",
+            bookQty: -1 // TODO: NOT NULL 컬럼이라 혹시 몰라 보냄. 빼도 이상 없으면 뺄 예정.
+        };
+
+        cartVoObj.prno = document.querySelector(`input[type="hidden"][data-payout="${i}"].data-storage-input`).value;
+        // let prno = document.querySelector(`input[type="hidden"][data-payout="${i}"].data-storage-input`).value;
+        // console.log("prno " + prno);
+
+        cartVoArr.push(cartVoObj);
+    }
+
     const url = '/payment/payout/remove-cart';
 
     const config = {
         method: "POST",
         headers: { "Content-Type": "application/json; charset=utf-8" },
-        body: JSON.stringify({
-            "mno": mnoVal
-        })
+        body: JSON.stringify(cartVoArr)
     };
     
     const response = await fetch(url, config);
     const result = await response.text();
     if(result == "1") {
-        console.log("Preserve order detail: Succeeded.");
+        console.log("Remove cart: Succeeded.");
     } else if (result == "0") {
-        console.log("Preserve order detail: Failed.");
+        console.log("Remove cart: Failed.");
     } else {
-        console.log("Preserve order detail: Unknown.");
+        console.log("Remove cart: Unknown.");
     }
 }
-
-document.getElementById('testRemove').addEventListener('click', () => {
-    removeCartToServer();
-})

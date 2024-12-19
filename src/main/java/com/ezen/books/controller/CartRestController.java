@@ -27,8 +27,15 @@ public class CartRestController {
         log.info("The cartData from the client: {}", cartData);
 
         int isDone = cartService.storeCartDataToServer(cartData);
+        log.info("isDone: {}", isDone);
 
-        return new ResponseEntity<>("1", HttpStatus.OK);
+        if(isDone == 1) {
+            return new ResponseEntity<>("1", HttpStatus.OK);
+        } else if (isDone == 2) {
+            return new ResponseEntity<>("2", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("0", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }

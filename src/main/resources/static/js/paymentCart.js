@@ -1,14 +1,20 @@
 console.log("cart.js recognized.");
 
 document.addEventListener('DOMContentLoaded', () => {
-    calculateQtyPrice();
+    const isCartEmpty = document.getElementById('dataContainer').dataset.isCartEmpty;
+    const isCartEmptyBool = (isCartEmpty === "true");
 
-    // 화면 로딩 시 모든 itemBtn이 클릭되있게 함
-    const selectItemBtns = document.getElementsByName('itemBtn');
-
-    selectItemBtns.forEach(itemBtn => {
-        itemBtn.checked = true;
-    });
+    if(isCartEmptyBool) {
+        // NOTE: 장바구니가 비어있다면 수행할 작업이 없음.
+    } else {
+        calculateQtyPrice();
+        // 화면 로딩 시 모든 itemBtn이 클릭되있게 함
+        const selectItemBtns = document.getElementsByName('itemBtn');
+    
+        selectItemBtns.forEach(itemBtn => {
+            itemBtn.checked = true;
+        });
+    }
 })
 
 function calculateQtyPrice() {
@@ -19,12 +25,12 @@ function calculateQtyPrice() {
     console.log(index);
 
     for (let i=0; i < numIndex; i++) {
-        let salePrice = document.querySelector(`span[data-cart="${i}"].sale-price`).innerText;
+        let salePrice = document.querySelector(`p[data-cart="${i}"].sale-price`).innerText;
         let bookQty = document.querySelector(`input[data-cart="${i}"].book-qty`).value;
 
         let qtyPrice = parseInt(salePrice) * parseInt(bookQty);
 
-        document.querySelector(`span[data-cart="${i}"].qty-price`).innerText = qtyPrice.toString();
+        document.querySelector(`p[data-cart="${i}"].qty-price`).innerText = qtyPrice.toString();
     }
 
 }
@@ -60,7 +66,6 @@ descBtns.forEach(descBtn => {
 
         if((bookQtyVal - 1) == 0) {
             bookQty.value == 1;
-            console.log("더 못 줄임");
         } else {
             bookQty.value = bookQtyVal - 1;
         }
@@ -117,8 +122,8 @@ function createCartDtoArray() {
         singleItemBtns.forEach(singleBtn => {
             const dataCart = singleBtn.dataset.cart;
             console.log("The value of data-cart: " + dataCart);
-            let cartDtoJson = getDataForCartDto(dataCart);
-            cartDtoArray.push(cartDtoJson);
+            let cartVoJson = getDataForCartDto(dataCart);
+            cartDtoArray.push(cartVoJson);
         })
     }
 
@@ -127,7 +132,7 @@ function createCartDtoArray() {
 
 // single-item-btn의 data-cart 값을 바탕으로 mno, prno, bootQty 값 추출
 function getDataForCartDto(singleItemBtnDataCart) {
-    const cartDtoJson = {
+    const cartVoJson = {
         mno:"",
         prno:"",
         bookQty:""
@@ -141,11 +146,11 @@ function getDataForCartDto(singleItemBtnDataCart) {
     // console.log("The prno of <input type='hidden' class='prno'>: " + prnoVal);
     // console.log("The bookQty of <input type='text' class='bookQty'>: " + bookQtyVal);
 
-    cartDtoJson.mno = mnoVal;
-    cartDtoJson.prno = prnoVal;
-    cartDtoJson.bookQty = bookQtyVal;
+    cartVoJson.mno = mnoVal;
+    cartVoJson.prno = prnoVal;
+    cartVoJson.bookQty = bookQtyVal;
 
-    return cartDtoJson;
+    return cartVoJson;
 }
 
 async function sendCartVoArrayToServer(cartDtoArray) {
