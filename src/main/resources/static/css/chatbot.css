@@ -1,6 +1,6 @@
 .chat-btn {
     padding: 10px 20px;
-    background-color: #007bff;
+    background-color: #497248;
     color: white;
     border: none;
     border-radius: 5px;
@@ -27,7 +27,7 @@
 
 .chat-header {
     padding: 10px;
-    background-color: #007bff;
+    background-color: #497248;
     color: white;
     display: flex;
     justify-content: space-between;
@@ -52,7 +52,7 @@
 }
 
 .bot-message {
-    background-color: #007bff;
+    background-color: #497248;
     color: white;
     padding: 8px;
     margin-bottom: 10px;
@@ -64,24 +64,23 @@
 #userMessage {
     width: 80%;
     padding: 5px;
-    margin: 10px;
+    margin: 10px 0;
 }
 
 #sendButton {
     width: 15%;
     padding: 5px;
-    background-color: #007bff;
+    background-color: #39553f;
     color: white;
     border: none;
     cursor: pointer;
 }
 
 .close-chat {
-    background-color: #ff4136;
+    background-color: #e7b343;
     border: none;
     color: white;
     font-size: 18px;
     cursor: pointer;
     padding: 5px;
-    border-radius: 50%;
 }

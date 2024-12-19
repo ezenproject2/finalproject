@@ -88,7 +88,8 @@ public class ChatbotController {
         if (userMessage.matches("(?i).*도움.*")) {
             answer.put("answer", "1. 책 검색 : 책 제목을 통해 상품 페이지로 연결해드립니다. <br> " +
                     "2. 포인트 : 당신의 포인트를 검색해 찾아옵니다. <br> " +
-                    "3. 가까운 매장 : 가까운 매장을 찾아 알려줍니다. ");
+                    "3. 가까운 매장 : 가까운 매장을 찾아 알려줍니다. " +
+                    "4. ");
             answer.put("classify", "a-type");
             return answer;
         }
