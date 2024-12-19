@@ -1,5 +1,6 @@
 package com.ezen.books.controller;
 
+import com.ezen.books.domain.AddressVO;
 import com.ezen.books.domain.MemberVO;
 import com.ezen.books.service.MemberService;
 import com.nimbusds.jose.proc.SecurityContext;

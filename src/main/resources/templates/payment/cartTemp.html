@@ -12,7 +12,6 @@
 
 <div th:fragment="main">
   <div class="cart_inner inner">
-    <div id="dataContainer" th:data-mno="${mno}" th:data-is-cart-empty="${isCartEmpty}"></div>
     <div class="cart_list">
       <div class="cart_title_area">
         <p class="cart_title">장바구니</p>
@@ -81,7 +80,7 @@
                     </button>
                     <!--/* <input type="text" th:class="book-qty" th:value="${cartProduct.cartVO.bookQty}" th:data-cart="${iterStat.index}">이 아래 span에 대응함. */-->
                     <!--/* 해당 <input>이 쓰이는 JS 함수 확인 후 span에 맞게 바꿀 것. */-->
-                    <span th:class="book-qty" th:data-cart="${iterStat.index}">[[${cartProduct.cartVO.bookQty}]]</span> <!--/* CSS에 없는 것을 확인하고 삭제 조치함. id="qtyPrice" */-->
+                    <span>1</span> <!--/* CSS에 없는 것을 확인하고 삭제 조치함. id="qtyPrice" */-->
                     <button type="button" class="btn plus_btn asc-btn" th:data-cart="${iterStat.index}"> <!--/* CSS에 없는 것을 확인하고 삭제 조치함. id="bookQtyAscBtn" */-->
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#555" stroke="#555" stroke-width="1.5" class="bi bi-plus-lg" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
@@ -95,6 +94,8 @@
               <td class="product_total_price"><strong style="font-size: 1.1rem;" class="qty-price" th:data-cart="${iterStat.index}">30,000</strong>원 <i class="ic ic_delete"></i></td>
             </tr>
           </table>
+
+
         </div> <!--/* th:each 용로도 사용하는 div */-->
 
         <div class="cart_recautions">
@@ -135,5 +136,4 @@
   </div>
 </div>
 </body>
-<script defer th:src="@{/js/paymentCart.js}"></script>
 </html>

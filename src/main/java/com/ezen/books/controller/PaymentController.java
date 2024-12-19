@@ -145,4 +145,10 @@ public class PaymentController {
         }
     }
 
+    // HTML 템플릿 보려고 임시로 만든 메서드.
+    @GetMapping("/cartTemp")
+    public String goCartTemp() {
+        return "/payment/cartTemp";
+    }
+
 }
