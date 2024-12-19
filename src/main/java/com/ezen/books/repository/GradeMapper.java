@@ -11,4 +11,6 @@ public interface GradeMapper {
 
     /*------------------------------------------------------------*/
     int getPointRateByGrade(long mno);
+
+    GradeVO getGradeByGrade(Long gno);
 }

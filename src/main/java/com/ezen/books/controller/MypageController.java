@@ -1,9 +1,8 @@
 package com.ezen.books.controller;
 
 import com.ezen.books.domain.*;
-import com.ezen.books.service.CouponService;
-import com.ezen.books.service.MemberService;
-import com.ezen.books.service.PointService;
+import com.ezen.books.handler.FileHandler;
+import com.ezen.books.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -11,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -24,6 +24,9 @@ public class MypageController {
     private final PointService pointService;
     private final CouponService couponService;
     private final MemberService memberService;
+    private final GradeService gradeService;
+    private final FileHandler fileHandler;
+    private final InquiryService inquiryService;
 
     /*-- 마이페이지 --*/
     @GetMapping(value = "/main")
@@ -37,9 +40,11 @@ public class MypageController {
         MemberVO memberVO = memberService.getMemberByInfo(loginId);  // 사용자 정보 조회
         model.addAttribute("memberVO", memberVO);
         long mno = memberVO.getMno();  // 회원 번호
+        log.info(">>> MemberInfo > {}", memberVO);
 
         // 사용자 정보에 맞는 등급, 포인트, 쿠폰 리스트 조회
-        GradeVO gradeVO = couponService.getMemberGrade(mno);
+        GradeVO gradeVO = gradeService.getGradeByGno(memberVO.getGno());    // grade 정보 조회
+        log.info(">>> GradeInfo > {}", gradeVO);
         int pointsBalance = pointService.getBalance(mno);
         List<CouponVO> coupons = couponService.getMemberCoupons(mno);
 
@@ -147,4 +152,39 @@ public class MypageController {
     public List<CouponVO> getAvailableCoupons(@RequestParam long gno, @RequestParam int purchaseAmount) {
         return couponService.getAvailableCoupons(gno, purchaseAmount);  // 사용 가능한 쿠폰 조회
     }
+
+
+    @GetMapping("/inquiry")
+    public void inquiry(){}
+
+    @PostMapping("/inquiry")
+    public String inquiry(InquiryVO inquiryVO,
+                          @RequestParam(name="files", required = false)MultipartFile file,
+                          Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loginId = authentication.getName();  // 로그인한 사용자 이름 (아이디)
+
+        MemberVO memberVO = memberService.getMemberByInfo(loginId);  // 사용자 정보 조회
+        model.addAttribute("memberVO", memberVO);
+        long mno = memberVO.getMno();  // 회원 번호
+
+        log.info("|| inquiryVO {}", inquiryVO);
+        log.info("|| file > {}", file);
+
+        GradeVO gradeVO = gradeService.getGradeByGno(memberVO.getGno());  // grade 정보 조회
+        model.addAttribute("gradeVO", gradeVO);
+
+        inquiryVO.setMno(mno);
+
+        if(file != null ){
+            String files = fileHandler.uploadInquiry(file);
+            log.info("|| fileAddr > {}", files);
+            inquiryVO.setFiles(files);
+        }
+        int isOk = inquiryService.insert(inquiryVO);
+
+        return isOk > 0 ? "/index" : "/mypage/inquiry";
+    }
+
+
 }

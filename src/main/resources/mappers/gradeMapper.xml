@@ -11,5 +11,10 @@
         join member m on g.gno = m.gno
         where m.mno = #{mno}
     </select>
+
+    <select id="getGradeByGrade" resultType="com.ezen.books.domain.GradeVO">
+        select * from grade
+        where gno = #{gno}
+    </select>
     
 </mapper>

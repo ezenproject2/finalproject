@@ -9,13 +9,6 @@ import retrofit2.http.GET;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CouponVO {
-
-    private long cno; // 쿠폰 번호
-    private long gno; // 등급 번호
-    private int minPrice; // 최소 구매 금액
-    private int disAmount; // 할인 금액
-    private int expDay; // 만료 일자
-    
     /* sql 구문
     CREATE TABLE coupon (
     cno bigint NOT NULL AUTO_INCREMENT,
@@ -25,5 +18,12 @@ public class CouponVO {
     exp_day int,
     PRIMARY KEY (cno)
     );*/
-    
+
+    private long cno; // 쿠폰 번호
+    private long gno; // 등급 번호
+    private int minPrice; // 최소 구매 금액
+    private int disAmount; // 할인 금액
+    private int expDay; // 만료 일자
+
+
 }

@@ -10,6 +10,17 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CouponLogVO {
+    /* sql 구문
+    CREATE TABLE coupon_log (
+    clno bigint NOT NULL AUTO_INCREMENT,
+    mno bigint NOT NULL,
+    orno bigint NOT NULL,
+    cno bigint NOT NULL,
+    status ENUM('사용 가능', '사용 완료', '만료') NOT NULL,
+    used_at DATE,
+    exp_at DATE,
+    PRIMARY KEY (clno)
+    );*/
 
     private long clno; // 쿠폰 기록 번호
     private long mno; // 회원 번호
@@ -22,18 +33,7 @@ public class CouponLogVO {
     public void setExpAt(int expDay) {
     }
 
-    
-    /* sql 구문
-    CREATE TABLE coupon_log (
-    clno bigint NOT NULL AUTO_INCREMENT,
-    mno bigint NOT NULL,
-    orno bigint NOT NULL,
-    cno bigint NOT NULL,
-    status ENUM('사용 가능', '사용 완료', '만료') NOT NULL,
-    used_at DATE,
-    exp_at DATE,
-    PRIMARY KEY (clno)
-    );*/
+
 
 
 }

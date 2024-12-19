@@ -96,7 +96,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             log.info("Searching for loginId: {}", loginId);
             MemberVO memberVO = memberMapper.findByLoginId(loginId);
             log.info("Found memberVO: {}", memberVO);
-            log.info("Found memberVO: {}", memberVO.getMno());
+            log.info("Found memberVO.mno: {}", memberVO.getMno());
 
             if (memberVO != null) {
                 // 이미 존재하는 사용자인 경우, DB에 저장하지 않고 바로 리디렉션
@@ -106,34 +106,35 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                         .queryParam("access_token", accessToken)
                         .queryParam("refresh_token", refreshToken)
                         .build().toUriString();
+            } else {
+                // 새 사용자일 경우에만 DB에 저장
+                String accessToken = tokenProvider.createToken(authentication);
+                String refreshToken = UUID.randomUUID().toString();
+
+                // DB에 사용자 정보 저장
+                memberVO = new MemberVO();
+                memberVO.setLoginId(loginId);
+                memberVO.setEmail(email);
+                memberVO.setName(name);
+                memberVO.setNickName(nickName);
+                memberVO.setAccessToken(accessToken);
+                memberVO.setRefreshToken(refreshToken);
+                memberVO.setProvider(provider);
+                memberVO.setProviderId(providerId);
+                memberVO.setAuth(MemberAuth.ROLE_USER);  // 기본적으로 USER 권한 부여
+
+
+                log.info(">> Saving new member: {}", memberVO);
+                // DB에 저장
+                memberMapper.saveTokens(memberVO);
+
+                // 리디렉션 URL에 토큰 포함
+                return UriComponentsBuilder.fromUriString(targetUrl)
+                        .queryParam("access_token", accessToken)
+                        .queryParam("refresh_token", refreshToken)
+                        .build().toUriString();
+
             }
-
-            // 새 사용자일 경우에만 DB에 저장
-            String accessToken = tokenProvider.createToken(authentication);
-            String refreshToken = UUID.randomUUID().toString();
-
-            // DB에 사용자 정보 저장
-            memberVO = new MemberVO();
-            memberVO.setLoginId(loginId);
-            memberVO.setEmail(email);
-            memberVO.setName(name);
-            memberVO.setNickName(nickName);
-            memberVO.setAccessToken(accessToken);
-            memberVO.setRefreshToken(refreshToken);
-            memberVO.setProvider(provider);
-            memberVO.setProviderId(providerId);
-            memberVO.setAuth(MemberAuth.ROLE_USER);  // 기본적으로 USER 권한 부여
-
-
-            log.info(">> Saving new member: {}", memberVO);
-            // DB에 저장
-            memberMapper.saveTokens(memberVO);
-
-            // 리디렉션 URL에 토큰 포함
-            return UriComponentsBuilder.fromUriString(targetUrl)
-                    .queryParam("access_token", accessToken)
-                    .queryParam("refresh_token", refreshToken)
-                    .build().toUriString();
 
         } else if ("unlink".equalsIgnoreCase(mode)) {
             String accessToken = principal.getUserInfo().getAccessToken();

@@ -60,15 +60,10 @@ public class MemberController {
     }
 
     @GetMapping("/login")
-    public String login(Model model){
-        log.info("Error message: " + model.asMap().get("error"));
-
-        return "/member/login";
-    }
+    public void login(){}
 
     @PostMapping("/login")
     public String login(MemberVO memberVO, Model model) {
-
         if (memberVO.getLoginId() == null || memberVO.getLoginId().isEmpty()) {
             model.addAttribute("error", "아이디 또는 이메일을 입력해 주세요.");
             return "/member/login"; // Ensure this matches the actual Thymeleaf template name
@@ -79,7 +74,16 @@ public class MemberController {
             return "/member/login"; // Ensure this matches the actual Thymeleaf template name
         }
 
-        return "redirect:/";
+        MemberVO member = memberService.getMemberByInfo(memberVO.getLoginId());
+        log.info(">>> memberVO {}", memberVO);
+        log.info(">>> member {}", member);
+
+        if (member == null || "Y".equals(member.getIsDel())) {
+            model.addAttribute("error", "아이디 또는 이메일이 존재하지 않거나 삭제된 계정입니다.");
+            return "/member/login"; // Ensure this matches the actual Thymeleaf template name
+        }
+
+        return "redirect:/"; // Redirect to home page after successful login
     }
 
 

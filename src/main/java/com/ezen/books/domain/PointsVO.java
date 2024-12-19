@@ -11,15 +11,6 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PointsVO {
-
-    private long pno; // 포인트 번호
-    private long mno; // 회원 번호
-    private long orno; // 주문 번호
-    private int earned; // 적립된 포인트
-    private int used; // 사용된 포인트
-    private int balance; // 잔액
-    private Date regAt; // 포인트 적립 일자
-
     /* sql 구문
     CREATE TABLE points (
     pno bigint NOT NULL AUTO_INCREMENT,
@@ -31,4 +22,12 @@ public class PointsVO {
     reg_at DATE,
     PRIMARY KEY (pno)
     );*/
+
+    private long pno; // 포인트 번호
+    private long mno; // 회원 번호
+    private long orno; // 주문 번호
+    private int earned; // 적립된 포인트
+    private int used; // 사용된 포인트
+    private int balance; // 잔액
+    private Date regAt; // 포인트 적립 일자
 }
