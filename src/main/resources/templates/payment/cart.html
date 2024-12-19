@@ -18,8 +18,10 @@
       <!--/* 전체 선택 버튼 */-->
       <input type="checkbox" id="allItemBtn" name="itemBtn"> <- 모두 선택 버튼
     </div>
+
     <!--/* 장바구니에 담긴 각각의 내역을 보여주는 div */-->
     <div th:each="cartProduct, iterStat:${cartProductList}">
+      <hr data-description="알아보기 쉽도록 만든 임시 구분 선">
       <div>
         <input type="hidden" th:value="${cartProduct.cartVO.mno}" th:class="mno" th:data-cart="${iterStat.index}">
         <input type="hidden" th:value="${cartProduct.cartVO.prno}" th:class="prno" th:data-cart="${iterStat.index}">
@@ -32,18 +34,18 @@
           <!--/* 도서 표지를 보여주는 img */-->
           <img>
           <p>[[${cartProduct.productVO.title} ?: '도서 제목']]</p>
-          <p>[[${cartProduct.productVO.discountRate} ?: '할인 없음']]</p>
-          <p>[[${cartProduct.productVO.discount} ?: '도서 가격']]</p>
+          <p>[[${cartProduct.productVO.discountRate} ?: '할인 없음']]%</p>
+          <p>[[${cartProduct.productVO.discount} ?: '도서 가격']]원</p>
         </div>
         <!--/* 장바구니에 담을 도서 개수를 줄이고 올리는 버튼이 들어가는 div */-->
         <div>
-          <!--/* TODO: 미구현. 가격을 반영한 도서의 금액 */-->
-          <p id="qtyPrice"></p>
-          <button id="bookQtyDescBtn" >-</button>
+          <p class="qty-price" th:data-cart="${iterStat.index}"></p>원
+          <button class="desc-btn" th:data-cart="${iterStat.index}">-</button>
           <!--/* 구매할 도서 개수 */-->
-          <input type="text" th:class="bookQty" th:value="${cartProduct.cartVO.bookQty}" th:data-cart="${iterStat.index}">
-          <button id="bookQtyAscBtn" >+</button>
+          <input type="text" th:class="book-qty" th:value="${cartProduct.cartVO.bookQty}" th:data-cart="${iterStat.index}">
+          <button class="asc-btn" th:data-cart="${iterStat.index}">+</button>
         </div>
+
       </div>
     </div>
   </div>

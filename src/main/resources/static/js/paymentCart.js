@@ -80,27 +80,56 @@ async function sendCartVoArrayToServer(cartDtoArray) {
     }
 }
 
+// 재고 + - 버튼에 맞춰 가격 변동
+const ascBtns = document.querySelectorAll('.asc-btn');
+ascBtns.forEach(ascBtn => {
+    ascBtn.addEventListener('click', () => {
+        console.log("Asc btn clicked!");
+        // 어느 order detail의 올리기 버튼인지 찾기
+        let index = ascBtn.dataset.cart;
+        
+        // 도서 개수 +1
+        let bookQty = document.querySelector(`input.book-qty[data-cart="${index}"]`);
+        let bookQtyVal = parseInt(bookQty.value);
+        bookQty.value = bookQtyVal + 1;
+
+        // 올라간 수량을 반영한 가격 띄우기
+        let qtyPrice = document.querySelector(`input.qty-price[data-cart="${index}"]`);
+        // qtyPrice.innerText
+    })
+});
+
+const descBtns = document.querySelectorAll('.desc-btn');
+descBtns.forEach(descBtn => {
+    descBtn.addEventListener('click', () => {
+        console.log("Desc btn clicked!");
+
+        let index = descBtn.dataset.cart;
+    })
+})
+
+
 // productDetail.js에서 긁어옴.
     // +, - 버튼(하단의 구매창)
-    const plusBtn = document.querySelector('.plus_btn');
-    const minusBtn = document.querySelector('.minus_btn');
-    const number = document.getElementById('number');
-    let value = 1; // 초기값 설정
+    const plusBtn = document.querySelector('.asc-btn');
+    const minusBtn = document.querySelector('.desc-btn');
+    const qtyPrice = document.querySelector('.qty-price');
+    // let value = 1; // 초기값 설정
 
     // + 버튼 클릭 시
     plusBtn.addEventListener('click', () => {
-        value++;
-        number.textContent = value;
-        updateTotalPrice();
+        // value++;
+        // number.textContent = value;
+        // updateTotalPrice();
     });
 
     // - 버튼 클릭 시
     minusBtn.addEventListener('click', () => {
-        if (value > 1) {
-            value--;
-            number.textContent = value;
-            updateTotalPrice();
-        }
+        // if (value > 1) {
+        //     value--;
+        //     number.textContent = value;
+        //     updateTotalPrice();
+        // }
     });
 
     function updateTotalPrice() {
