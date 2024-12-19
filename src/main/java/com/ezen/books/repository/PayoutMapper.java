@@ -16,4 +16,6 @@ public interface PayoutMapper {
     int saveOrderDetailToServer(OrderDetailVO orderDetail);
 
     int savePaymentToServer(PaymentVO paymentData);
+
+    void removeCartToServer(long mno);
 }

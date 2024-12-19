@@ -154,6 +154,27 @@ public class PayoutRestController {
                 new ResponseEntity<>("0", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @PostMapping("/remove-cart")
+    public ResponseEntity<String> removeCartToServer(@RequestBody String mnoData) {
+        log.info(" >>> PaymentRestController: removeCartToServer start.");
+        // The mnoData from the client: {"mno":"1"}
+        log.info("The mnoData from the client: {}", mnoData);
+
+        long mno = 0L;
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode mnoNode = objectMapper.readTree(mnoData);
+            mno = mnoNode.get("mno").asLong();
+        } catch (Exception e) {
+            log.info("Error during parsing mnoNode. Content: {}", e);
+        }
+
+        int isDone = payoutService.removeCartToServer(mno);
+
+        return (isDone == 1) ?
+                new ResponseEntity<>("1", HttpStatus.OK) :
+                new ResponseEntity<>("0", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
     private boolean checkSinglePayment(String impUid, String amount) throws IOException, URISyntaxException, InterruptedException {
         boolean verifyResult = payoutService.checkSinglePayment(impUid, amount);

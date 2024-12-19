@@ -27,4 +27,8 @@
         where mno = #{mno} and is_default = "Y"
     </select>
 
+    <delete id="removeCartToServer">
+        delete from cart
+        where mno = #{mno}
+    </delete>
 </mapper>

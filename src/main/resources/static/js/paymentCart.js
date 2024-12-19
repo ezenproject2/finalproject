@@ -1,5 +1,75 @@
 console.log("cart.js recognized.");
 
+document.addEventListener('DOMContentLoaded', () => {
+    calculateQtyPrice();
+
+    // 화면 로딩 시 모든 itemBtn이 클릭되있게 함
+    const selectItemBtns = document.getElementsByName('itemBtn');
+
+    selectItemBtns.forEach(itemBtn => {
+        itemBtn.checked = true;
+    });
+})
+
+function calculateQtyPrice() {
+    console.log("calculateQtyPrice start.");
+
+    const index = document.getElementById('listDataStorage').dataset.listSize;
+    const numIndex = parseInt(index);
+    console.log(index);
+
+    for (let i=0; i < numIndex; i++) {
+        let salePrice = document.querySelector(`span[data-cart="${i}"].sale-price`).innerText;
+        let bookQty = document.querySelector(`input[data-cart="${i}"].book-qty`).value;
+
+        let qtyPrice = parseInt(salePrice) * parseInt(bookQty);
+
+        document.querySelector(`span[data-cart="${i}"].qty-price`).innerText = qtyPrice.toString();
+    }
+
+}
+
+// 재고 + - 버튼에 맞춰 가격 변동
+const ascBtns = document.querySelectorAll('.asc-btn');
+ascBtns.forEach(ascBtn => {
+    ascBtn.addEventListener('click', () => {
+        console.log("Asc btn clicked!");
+        // 어느 order detail의 올리기 버튼인지 찾기
+        let index = ascBtn.dataset.cart;
+        
+        // 도서 개수 +1
+        let bookQty = document.querySelector(`input.book-qty[data-cart="${index}"]`);
+        let bookQtyVal = parseInt(bookQty.value);
+        bookQty.value = bookQtyVal + 1;
+
+        // 올라간 수량을 반영한 가격 띄우기
+        calculateQtyPrice();
+    })
+});
+
+const descBtns = document.querySelectorAll('.desc-btn');
+descBtns.forEach(descBtn => {
+    descBtn.addEventListener('click', () => {
+        console.log("Desc btn clicked!");
+        // 어느 order detail의 내리기 버튼인지 찾기
+        let index = descBtn.dataset.cart;
+
+        // 도서 개수 -1
+        let bookQty = document.querySelector(`input.book-qty[data-cart="${index}"]`);
+        let bookQtyVal = parseInt(bookQty.value);
+
+        if((bookQtyVal - 1) == 0) {
+            bookQty.value == 1;
+            console.log("더 못 줄임");
+        } else {
+            bookQty.value = bookQtyVal - 1;
+        }
+
+        // 내려간 수량을 반영한 가격 띄우기
+        calculateQtyPrice();
+    })
+})
+
 // #allItemBtn을 누르면 모두 선택됨
 document.getElementById('allItemBtn').addEventListener('click', (e) => {
     console.log("e.target.checked: " + e.target.checked);
@@ -8,15 +78,32 @@ document.getElementById('allItemBtn').addEventListener('click', (e) => {
 
     selectItemBtns.forEach((itemBtn) => {
         itemBtn.checked = e.target.checked;
+    });
+});
+
+// 모든 <input name="itemBtn">이 checked = false면 주문 버튼 비활성화
+const itemBtns = document.querySelectorAll('input[name="itemBtn"]');
+const singleItemBtns = document.querySelectorAll('input[name="itemBtn"].single-item-btn');
+itemBtns.forEach(itemBtn => {
+
+    itemBtn.addEventListener('click', () => {
+
+        let areAllUnchecked = Array.from(singleItemBtns).every(singleBtn => !singleBtn.checked);
+        if(areAllUnchecked) {
+            document.getElementById('orderBtn').disabled = true;
+        } else {
+            document.getElementById('orderBtn').disabled = false;
+        }
     })
 });
 
 // 주문 버튼 누르면 CartDTO와 매핑할 JSON 생성
 document.getElementById('orderBtn').addEventListener('click', () => {
-console.log("orderBtn clicked.");
-let cartDtoArray = createCartDtoArray();
-console.log(" >>> CartDtoArray: " + cartDtoArray);
-sendCartVoArrayToServer(cartDtoArray);
+    console.log("orderBtn clicked.");
+    let cartDtoArray = createCartDtoArray();
+    console.log(" >>> CartDtoArray: " + cartDtoArray);
+
+    sendCartVoArrayToServer(cartDtoArray);
 });
 
 // 클릭된 class="single-item-btn"들을 선택
@@ -48,7 +135,7 @@ function getDataForCartDto(singleItemBtnDataCart) {
 
     const mnoVal = document.querySelector(`input[data-cart="${singleItemBtnDataCart}"].mno`).value;
     const prnoVal = document.querySelector(`input[data-cart="${singleItemBtnDataCart}"].prno`).value;
-    const bookQtyVal = document.querySelector(`input[data-cart="${singleItemBtnDataCart}"].bookQty`).value;
+    const bookQtyVal = document.querySelector(`input[data-cart="${singleItemBtnDataCart}"].book-qty`).value;
 
     // console.log("The mno of <input type='hidden' class='mno'>: " + mnoVal);
     // console.log("The prno of <input type='hidden' class='prno'>: " + prnoVal);
@@ -79,63 +166,3 @@ async function sendCartVoArrayToServer(cartDtoArray) {
         console.log("sendCartVoArrayToServer: Failed.");
     }
 }
-
-// 재고 + - 버튼에 맞춰 가격 변동
-const ascBtns = document.querySelectorAll('.asc-btn');
-ascBtns.forEach(ascBtn => {
-    ascBtn.addEventListener('click', () => {
-        console.log("Asc btn clicked!");
-        // 어느 order detail의 올리기 버튼인지 찾기
-        let index = ascBtn.dataset.cart;
-        
-        // 도서 개수 +1
-        let bookQty = document.querySelector(`input.book-qty[data-cart="${index}"]`);
-        let bookQtyVal = parseInt(bookQty.value);
-        bookQty.value = bookQtyVal + 1;
-
-        // 올라간 수량을 반영한 가격 띄우기
-        let qtyPrice = document.querySelector(`input.qty-price[data-cart="${index}"]`);
-        // qtyPrice.innerText
-    })
-});
-
-const descBtns = document.querySelectorAll('.desc-btn');
-descBtns.forEach(descBtn => {
-    descBtn.addEventListener('click', () => {
-        console.log("Desc btn clicked!");
-
-        let index = descBtn.dataset.cart;
-    })
-})
-
-
-// productDetail.js에서 긁어옴.
-    // +, - 버튼(하단의 구매창)
-    const plusBtn = document.querySelector('.asc-btn');
-    const minusBtn = document.querySelector('.desc-btn');
-    const qtyPrice = document.querySelector('.qty-price');
-    // let value = 1; // 초기값 설정
-
-    // + 버튼 클릭 시
-    plusBtn.addEventListener('click', () => {
-        // value++;
-        // number.textContent = value;
-        // updateTotalPrice();
-    });
-
-    // - 버튼 클릭 시
-    minusBtn.addEventListener('click', () => {
-        // if (value > 1) {
-        //     value--;
-        //     number.textContent = value;
-        //     updateTotalPrice();
-        // }
-    });
-
-    function updateTotalPrice() {
-        let number = document.getElementById("number");
-        let totalPrice = document.getElementById("totalPrice");
-        let result = parseInt(number.innerText) * realPrice;
-        result = result.toLocaleString();
-        totalPrice.innerHTML = `${result}<span class="won">원</span>`;
-    }

@@ -58,6 +58,17 @@ public class PayoutServiceImpl implements PayoutService {
     }
 
     @Override
+    public int removeCartToServer(long mno) {
+        try {
+            payoutMapper.removeCartToServer(mno);
+            return 1;
+        } catch (Exception e) {
+            log.info("Error during removing cart table. Content: {}", e);
+        }
+        return 0;
+    }
+
+    @Override
     public boolean checkSinglePayment(String impUid, String amount) throws IOException, URISyntaxException, InterruptedException {
         log.info(" >>> PaymentServiceImpl: checkSinglePayment start.");
         IamportAccessToken iamportToken = PayoutService.super.issueIamportToken(iamportApiKey, iamportApiSecret);

@@ -12,17 +12,23 @@
 <div layout:fragment="main">
   <div id="dataContainer" th:data-mno="${mno}" th:data-cart-product-list="${cartProductList}" th:data-is-pickup="${isPickup}"></div>
 
-  <!--/* >>>>> "배송지" 영역 <<<<< */-->
-  <!-- 주문 배송지의 정보를 담는 div -->
-  <div>
-    <button type="button">배송지 변경</button>
-    <p>[[${defaultAddress.addrName} ?: '배송지']]</p>
-    <p>[[${defaultAddress.recName} ?: '수령인 이름']]</p>
-    <p>[[${defaultAddress.recPhone} ?: '수령인 전화번호']]</p>
-    <p>[[${defaultAddress.addrCode} ?: '우편번호']]</p>
-    <p>[[${defaultAddress.addr} ?: '배송지']]</p>
-    <p>[[${defaultAddress.addrDetail} ?: '상세 주소']]</p>
-    <textarea placeholder="배송 요청사항 남기기"></textarea>
+  <div th:if="${isPickup} == 'N'">
+    <!--/* >>>>> "배송지" 영역 <<<<< */-->
+    <!-- 주문 배송지의 정보를 담는 div -->
+    <div>
+      <button type="button">배송지 변경</button>
+      <p>[[${defaultAddress.addrName} ?: '배송지']]</p>
+      <p>[[${defaultAddress.recName} ?: '수령인 이름']]</p>
+      <p>[[${defaultAddress.recPhone} ?: '수령인 전화번호']]</p>
+      <p>[[${defaultAddress.addrCode} ?: '우편번호']]</p>
+      <p>[[${defaultAddress.addr} ?: '배송지']]</p>
+      <p>[[${defaultAddress.addrDetail} ?: '상세 주소']]</p>
+      <textarea placeholder="배송 요청사항 남기기"></textarea>
+    </div>
+  </div>
+
+  <div th:if="${isPickup} == 'Y'">
+    <p>픽업용 주문/결제 페이지</p>
   </div>
 
   <!--/* >>>>> "주문 상품" 영역<<<<< */-->
@@ -69,6 +75,7 @@
     <br>
     총 가격: <span data-total-price="totalPrice"></span>
     <button type="button" id="orderBtn">주문하기</button>
+    <button type="button" id="testRemove">Execute removeCart</button>
   </div>
 
   <a th:href="@{/}">Go to index.html</a>

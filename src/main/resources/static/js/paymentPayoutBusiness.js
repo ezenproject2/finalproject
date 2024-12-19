@@ -140,6 +140,7 @@ async function checkFlags(paymentDataAmount, impResPaidAmount, impResponse) {
         await preserveOrdersToServer(impResponse);
         await preserveOrderDetailToServer(impResponse.merchant_uid);
         await preservePaymentToServer(impResponse);
+        await removeCartToServer();
     }
 
     return result;
@@ -303,3 +304,30 @@ function selectStatus(impResponseStatus) {
     }
     return status;
 }
+
+async function removeCartToServer() {
+    const mnoVal = document.getElementById('dataContainer').dataset.mno;
+    const url = '/payment/payout/remove-cart';
+
+    const config = {
+        method: "POST",
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        body: JSON.stringify({
+            "mno": mnoVal
+        })
+    };
+    
+    const response = await fetch(url, config);
+    const result = await response.text();
+    if(result == "1") {
+        console.log("Preserve order detail: Succeeded.");
+    } else if (result == "0") {
+        console.log("Preserve order detail: Failed.");
+    } else {
+        console.log("Preserve order detail: Unknown.");
+    }
+}
+
+document.getElementById('testRemove').addEventListener('click', () => {
+    removeCartToServer();
+})

@@ -70,4 +70,6 @@ public interface PayoutService {
     int saveOrderDetailToServer(OrderDetailVO orderDetail);
 
     int savePaymentToServer(PaymentVO paymentData);
+
+    int removeCartToServer(long mno);
 }

@@ -37,7 +37,6 @@ public class PaymentController {
         log.info(" >>> cartList: {}", cartList);
 
         List<CartProductDTO> cartProductList = buildCartProductList(cartList);
-
         log.info(" >>> showCartItems: cartProductList: {}", cartProductList);
 
         model.addAttribute("mno", mno);
@@ -95,6 +94,13 @@ public class PaymentController {
             productList.add(cartService.getProductInfo(cartVO.getPrno()));
         }
         log.info(" >>> productList: {}", productList);
+
+        // productList에 realPrice 설정: ProductController의 /detail에 있는 공식 사용
+        for(ProductVO productVO : productList) {
+            double discountedPrice = productVO.getDiscount() * (1 - productVO.getDiscountRate() / 100.0);
+            int roundedPrice = (int) Math.floor(discountedPrice / 10.0) * 10;
+            productVO.setRealPrice(roundedPrice);
+        }
 
         // CartDTO와 그에 맞는 ProductDTO를 담을 List<CartProductDTO> 생성
         List<CartProductDTO> cartProductList = new ArrayList<>();
