@@ -47,7 +47,7 @@ public class OpenAIClient {
         JSONObject jsonResponse = new JSONObject(responseBody); // JSON 객체로 파싱
         return jsonResponse.getJSONArray("choices")
                 .getJSONObject(0)         // 첫 번째 choice
-                .getJSONObject("message") // message 객체
+                .getJSONObject("message")  // message 객체
                 .getString("content");     // content 값 추출
     }
 }

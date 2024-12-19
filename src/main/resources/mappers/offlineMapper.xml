@@ -28,4 +28,7 @@
         select * from offline_book where osno = #{osno} and prno = #{prno}
     </select>
 
+    <select id="chatGetOfflineStoreVO" resultType="com.ezen.books.domain.OfflineStoreVO">
+        select * from offline_store where name = #{userMessage}
+    </select>
 </mapper>

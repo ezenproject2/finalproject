@@ -4,6 +4,12 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout}">
 
+<head>
+    <meta charset="UTF-8">
+    <title>EzenBooks</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/chatbot.css}" />
+</head>
+
 <main layout:fragment="main">
     <h3>Main Area!!</h3>
     <a th:href="@{/product/register}">상품 등록하기</a>
@@ -16,34 +22,48 @@
     <!--/* TODO: merge 후에 로그인 한 정보를 바탕으로 mno=${mno}로 넣을 것.  */-->
     <a th:href="@{/payment/cart(mno=${1})}"><button type="button">Shopping Cart</button></a>
 
-    <!--/* 챗 GPT 챗봇! */-->
-    <h3>이젠문고 챗봇!!</h3>
-    <div id="chatBox"></div> <!-- 챗봇의 대화 내용이 표시될 부분 -->
+    <!-- 플로팅 버튼 -->
+    <button id="chatBtn" class="chat-btn">채팅방 열기</button>
+    <!-- 채팅방 -->
+    <div id="chatBox" class="chat-box">
+        <div class="chat-header">
+            <span>이젠문고 챗봇</span>
+            <button id="closeChat" class="close-chat">닫기</button>
+        </div>
+        <div class="chat-content">
+            <!-- 채팅 내용이 여기에 표시됩니다 -->
+        </div>
+        <input type="text" id="userMessage" placeholder="메시지를 입력하세요...">
+        <button id="sendButton" data-classify="a-type">전송</button>
+    </div>
 
-    <input type="text" id="userMessage" placeholder="질문을 입력하세요">
-    <button id="sendButton">전송</button> <!-- 전송 버튼 -->
+<!--    <h3>이젠문고 챗봇!!</h3>-->
+<!--    <div id="chatBox"></div> &lt;!&ndash; 챗봇의 대화 내용이 표시될 부분 &ndash;&gt;-->
+
+<!--    <input type="text" id="userMessage" placeholder="질문을 입력하세요">-->
+<!--    <button id="sendButton" data-classify="a-type">전송</button> &lt;!&ndash; 전송 버튼 &ndash;&gt;-->
 
     <script th:src="@{/js/chatbot.js}"></script>
 
 
 
-<!--    <script>-->
-<!--        let modify_msg = `<c:out value="${mod_msg}" />`;-->
-<!--        console.log(mod_msg);-->
-<!--        if(mod_msg == 'ok'){-->
-<!--            alert("회원정보가 수정되었습니다. 다시 로그인해주세요.");-->
-<!--        }-->
-<!--        if (mod_msg == 'fail') {-->
-<!--            alert("회원정보수정이 실패되었습니다. 다시 시도해주세요.");-->
-<!--        }-->
+    <script>
+        let modify_msg = `<c:out value="${mod_msg}" />`;
+        console.log(mod_msg);
+        if(mod_msg == 'ok'){
+            alert("회원정보가 수정되었습니다. 다시 로그인해주세요.");
+        }
+        if (mod_msg == 'fail') {
+            alert("회원정보수정이 실패되었습니다. 다시 시도해주세요.");
+        }
 
-<!--        let remove_msg = `<c:out value="${del_msg}" />`;-->
-<!--        console.log(del_msg);-->
-<!--        if(del_msg == 'ok'){-->
-<!--            alert("회원 탈퇴가 완료되었습니다. 안녕히가세요.");-->
-<!--        }-->
-<!--        if (del_msg == 'fail'){-->
-<!--            alert("회원 탈퇴가 실패되었습니다. 다시 시도해주세요.");-->
-<!--        }-->
-<!--    </script>-->
+        let remove_msg = `<c:out value="${del_msg}" />`;
+        console.log(del_msg);
+        if(del_msg == 'ok'){
+            alert("회원 탈퇴가 완료되었습니다. 안녕히가세요.");
+        }
+        if (del_msg == 'fail'){
+            alert("회원 탈퇴가 실패되었습니다. 다시 시도해주세요.");
+        }
+    </script>
 </main>
