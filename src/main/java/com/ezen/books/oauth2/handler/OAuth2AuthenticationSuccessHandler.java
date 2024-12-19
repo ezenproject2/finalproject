@@ -85,14 +85,20 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         if("login".equalsIgnoreCase(mode)){
             // 소셜 로그인 시, 이미 존재하는 사용자인지 확인
             String email = principal.getUserInfo().getEmail();
+            String name = principal.getUserInfo().getName();
+            String nickName = principal.getUserInfo().getNickname();
             String provider = principal.getUserInfo().getProvider().name();
             String providerId = principal.getUserInfo().getId();
             String loginId = provider + "_" + providerId;
 
-            // 이미 존재하는 사용자인지 확인
-            MemberVO existingMember = memberMapper.findByLoginId(loginId);
+//            // 이미 존재하는 사용자인지 확인
+//            MemberVO memberVO = memberMapper.findByLoginId(loginId);
+            log.info("Searching for loginId: {}", loginId);
+            MemberVO memberVO = memberMapper.findByLoginId(loginId);
+            log.info("Found memberVO: {}", memberVO);
+            log.info("Found memberVO: {}", memberVO.getMno());
 
-            if (existingMember != null) {
+            if (memberVO != null) {
                 // 이미 존재하는 사용자인 경우, DB에 저장하지 않고 바로 리디렉션
                 String accessToken = tokenProvider.createToken(authentication);
                 String refreshToken = UUID.randomUUID().toString();
@@ -107,18 +113,21 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             String refreshToken = UUID.randomUUID().toString();
 
             // DB에 사용자 정보 저장
-            MemberVO memberVO = new MemberVO();
+            memberVO = new MemberVO();
             memberVO.setLoginId(loginId);
             memberVO.setEmail(email);
+            memberVO.setName(name);
+            memberVO.setNickName(nickName);
             memberVO.setAccessToken(accessToken);
             memberVO.setRefreshToken(refreshToken);
             memberVO.setProvider(provider);
             memberVO.setProviderId(providerId);
             memberVO.setAuth(MemberAuth.ROLE_USER);  // 기본적으로 USER 권한 부여
 
+
+            log.info(">> Saving new member: {}", memberVO);
             // DB에 저장
             memberMapper.saveTokens(memberVO);
-            log.info("새로운 회원 정보 : {}", memberVO.getEmail());
 
             // 리디렉션 URL에 토큰 포함
             return UriComponentsBuilder.fromUriString(targetUrl)

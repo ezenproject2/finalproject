@@ -30,4 +30,6 @@ public interface MemberMapper {
     MemberVO getMemberByInfo(String loginId);
 
     MemberVO getMemberById(long mno);
+
+    MemberVO findById(String id);
 }
