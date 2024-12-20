@@ -64,22 +64,13 @@ public class MemberController {
 
     @PostMapping("/login")
     public String login(MemberVO memberVO, Model model) {
-        if (memberVO.getLoginId() == null || memberVO.getLoginId().isEmpty()) {
-            model.addAttribute("error", "아이디 또는 이메일을 입력해 주세요.");
-            return "/member/login"; // Ensure this matches the actual Thymeleaf template name
-        }
-
-        if (memberVO.getPassword() == null || memberVO.getPassword().isEmpty()) {
-            model.addAttribute("error", "비밀번호를 입력해 주세요.");
-            return "/member/login"; // Ensure this matches the actual Thymeleaf template name
-        }
 
         MemberVO member = memberService.getMemberByInfo(memberVO.getLoginId());
         log.info(">>> memberVO {}", memberVO);
         log.info(">>> member {}", member);
 
         if (member == null || "Y".equals(member.getIsDel())) {
-            model.addAttribute("error", "아이디 또는 이메일이 존재하지 않거나 삭제된 계정입니다.");
+            model.addAttribute("error_msg", "아이디 또는 비밀번호가 잘못 되었습니다. 아이디와 비밀번호를 정확히 입력해 주세요.\n");
             return "/member/login"; // Ensure this matches the actual Thymeleaf template name
         }
 

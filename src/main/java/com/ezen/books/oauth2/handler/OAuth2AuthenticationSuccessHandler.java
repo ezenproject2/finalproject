@@ -58,6 +58,15 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         // JWT 토큰을 HTTP 응답 헤더에 "Authorization: Bearer <jwtToken>" 형식으로 추가
         response.addHeader("Authorization", "Bearer " + jwtToken);
 
+        // ----- last_login 갱신
+        OAuth2UserPrincipal principal = getOAuth2UserPrincipal(authentication);
+
+        if(principal != null){
+            String loginId = principal.getUserInfo().getProvider() + "_" + principal.getUserInfo().getId();
+
+            memberMapper.updateLastLogin(loginId);
+        }
+
         clearAuthenticationAttributes(request, response);
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }

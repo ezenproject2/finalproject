@@ -51,7 +51,7 @@ public class MemberVO {
     private String nickName;
     private String isDel;
     private Date regAt;
-    private String lastLogin;
+    private Date lastLogin;
     private MemberAuth auth;
 
     // OAuth 제공자 (예: google, naver, kakao 등)

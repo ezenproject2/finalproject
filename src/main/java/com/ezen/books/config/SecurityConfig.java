@@ -1,5 +1,7 @@
 package com.ezen.books.config;
 
+import com.ezen.books.handler.LoginFailureHandler;
+import com.ezen.books.handler.LoginSuccessHandler;
 import com.ezen.books.jwt.JwtAuthorizationFilter;
 import com.ezen.books.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.ezen.books.oauth2.handler.OAuth2AuthenticationFailureHandler;
@@ -29,6 +31,8 @@ public class SecurityConfig {
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
 
+    private final LoginSuccessHandler loginSuccessHandler;
+    private final LoginFailureHandler loginFailureHandler;
 
     /* springSecurity6 => bcEncoder 변경 : PasswordEncoder => createDelegatingPasswordEncoder */
     @Bean
@@ -60,8 +64,11 @@ public class SecurityConfig {
                     .passwordParameter("password")  // 비밀번호는 "pwd"로 받기
                     .loginPage("/member/login")  // 로그인 페이지 경로 설정
                     .defaultSuccessUrl("/")  // 로그인 성공 후 리디렉션할 URL 설정
-                    .permitAll();  // 로그인 페이지는 누구나 접근 가능
+                    .permitAll()     // 로그인 페이지는 누구나 접근 가능
+                    .successHandler(loginSuccessHandler)
+                    .failureHandler(loginFailureHandler);
         });
+
         http.oauth2Login(configure -> configure
                 .authorizationEndpoint(config ->
                         config.authorizationRequestRepository(httpCookieOAuth2AuthorizationRequestRepository))

@@ -81,5 +81,11 @@
         select * from member
         where  provider_id = #{providerId}
     </select>
+    
+    <update id="updateLastLogin">
+        update member
+        set last_login = now()
+        where login_id = #{loginId}
+    </update>
 
 </mapper>

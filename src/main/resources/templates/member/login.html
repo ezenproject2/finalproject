@@ -66,11 +66,17 @@
                                         <a href="">비밀번호 찾기</a>
                                     </div>
                                 </div>
-                                <div class="login_error_wrap" th:if="${error != null}">
-                                    <div class="error_message" id="err_common" style="color: #D50136;">
-                                        <span th:text="${error}"></span>
+                                <div class="login_error_wrap">
+                                    <div class="error_message" id="err_id" style="display:none; color: #D50136;">
+                                        </i> <span>아이디를 입력해주세요.</span>
+                                    </div>
+                                    <div class="error_message" id="err_pw" style="display:none; color: #D50136;">
+                                        <span>비밀번호를 입력해주세요.</span>
                                     </div>
                                 </div>
+                                    <div class="err_msg" th:if="${param.error}">
+                                        <i class="ic ic_error"></i> <span th:text="${param.err_msg}"></span>
+                                    </div>
                                 <div class="login_btn_wrap">
                                     <button type="submit" class="btn btn_login"> <span class="btn_text">로 그 인</span></button>
                                     <div class="sns_login_box">

@@ -27,4 +27,5 @@ public interface MemberService {
 
     MemberVO getMemberById(long mno);
 
+    int updateLastLogin(String authLoginId);
 }

@@ -83,5 +83,10 @@ public class MemberServiceImpl implements MemberService{
         return memberMapper.getMemberById(mno);
     }
 
+    @Override
+    public int updateLastLogin(String authLoginId) {
+        return memberMapper.updateLastLogin(authLoginId);
+    }
+
 
 }
