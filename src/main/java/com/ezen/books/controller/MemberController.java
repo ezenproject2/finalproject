@@ -101,7 +101,7 @@ public class MemberController {
     @GetMapping("/remove")
     public String remove(HttpServletRequest request, HttpServletResponse response,
                          Principal principal, RedirectAttributes re){
-        log.info(">>> {}", principal.toString());
+
         String loginId = principal.getName();
         int isOk = memberService.deleteMember(loginId);
         if(isOk > 0){
