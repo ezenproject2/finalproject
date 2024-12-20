@@ -3,12 +3,14 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout}">
+
 <head>
     <title> 이젠문고 </title>
     <meta charset="UTF-8"/>
     <link rel="stylesheet" href="/css/memberReset.css"/>
     <link rel="stylesheet" href="/css/memberJoin.css"/>
 </head>
+
 <main layout:fragment="main">
     <div class="inner">
         <form action="/member/modify" method="post" th:each="memberVO:${#authentication.getPrincipal().memberVO}">
@@ -75,26 +77,6 @@
                                     <span class="error_message"></span>
                                 </td>
                             </tr>
-                            <!--<tr>
-                                <td class="form_table_label">주소 <em>*</em></td>
-                                <td class="form_data address">
-                                    <div class="form_addr1">
-                                        <div class="form_item addressform" style="width: 241px;">
-                                            <input type="text" class="postcode address" id="postcode" readonly name="address">
-                                        </div>
-                                        <button type="button" onclick="execDaumPostcode()" class="addrBtn" id="non_member_addrBtn">주소 찾기</button>
-                                    </div>
-                                    <div class="form_addr2" style="margin-bottom: 15px;">
-                                        <div class="form_item addr1">
-                                            <input type="text" class="homeAddress addressform" id="homeAddress" readonly>
-                                        </div>
-                                        <div class="form_item addr2">
-                                            <input type="text" class="detailAddress addressform" id="detailAddress" placeholder="상세 주소를 입력해 주세요.">
-                                        </div>
-                                    </div>
-                                    <span class="error_message" style="margin-top: -20px; margin-bottom: 15px;"></span>
-                                </td>
-                            </tr>-->
                             <tr>
                                 <td class="form_table_label">닉네임  <em>*</em></td>
                                 <td class="form_data">
@@ -110,20 +92,22 @@
                 </div>
             </div>
             <div class="btn-area">
-                <button type="submit" class="btn join_btn"><span class="btn_text">
-                        회 원 수 정
-                </span></button>
+                <button type="submit" class="btn join_btn"><span class="btn_text">회 원 수 정</span></button>
             </div>
-            <a th:href="@{/member/remove(loginId=${loginId})}">
-                <button type="button" class="btn join_btn"><span class="btn_text">
-                    회 원 탈 퇴
-                </span></button>
-            </a>
         </form>
+            <div class="btn-area">
+                <a th:href="@{/member/remove(loginId=${loginId})}" style="width: 100%;">
+                    <button type="button" class="btn join_btn" style="margin: 0 auto;"><span class="btn_text">회 원 탈 퇴</span></button>
+                </a>
+            </div>
     </div>
+
     <script src="/js/memberJoin.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="/js/privateAddress.js"></script>
+    <script src="/js/memberModify.js"></script>
+
+
 </main>
 
 </html>

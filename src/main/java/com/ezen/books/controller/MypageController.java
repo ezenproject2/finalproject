@@ -179,7 +179,7 @@ public class MypageController {
         if(file != null ){
             String files = fileHandler.uploadInquiry(file);
             log.info("|| fileAddr > {}", files);
-            inquiryVO.setFiles(files);
+            inquiryVO.setFileAddr(files);
         }
         int isOk = inquiryService.insert(inquiryVO);
 
