@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -69,6 +70,8 @@ public class MemberController {
 
         // TODO
         // 가장 최근에 생성된 mno를 받아와서: select max(mno) from member;
+        long mno = memberService.getLastMno();
+        addressVO.setMno(mno);
         // memberService를 통해 데이터를 저장할 것. 기본 배송지 여부는 Y로 줌.
 
         return new ResponseEntity<>("1", HttpStatus.OK);
