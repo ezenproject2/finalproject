@@ -26,4 +26,19 @@ public class CartServiceImpl implements CartService {
     public ProductVO getProductInfo(long prnoFromCartDto) {
         return cartMapper.getProductInfo(prnoFromCartDto);
     }
+
+    @Override
+    public int storeCartDataToServer(CartVO cartData) {
+        long mnoData = cartData.getMno();
+        long prnoData = cartData.getPrno();
+
+        int alreadyExist = cartMapper.checkMnoAndPrno(mnoData, prnoData);
+        if (0 < alreadyExist) {
+            cartMapper.increaseBookQty(cartData);
+            return 2;
+        } else {
+            cartMapper.storeCartDataToServer(cartData);
+            return 1;
+        }
+    }
 }

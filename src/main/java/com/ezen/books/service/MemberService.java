@@ -14,4 +14,6 @@ public interface MemberService {
     int deleteMember(String loginId);
 
     boolean validateUser(String loginId, String password);
+
+    long getLastMno();
 }

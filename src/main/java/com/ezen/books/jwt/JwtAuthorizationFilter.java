@@ -50,7 +50,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && !authentication.getAuthorities().stream()
                 .anyMatch(auth -> auth.getAuthority().equals("ROLE_ANONYMOUS"))) {
-            authentication.getAuthorities().forEach(auth -> log.info("Authority: {}", auth.getAuthority()));
+            authentication.getAuthorities().forEach(auth -> auth.getAuthority());
         }
 
         // 필터 체인 계속 진행
