@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log("Is the cart empty: " + isCartEmptyBool);
 
     if(isCartEmptyBool) {
-        // TODO: 장바구니가 비었을 때의 레이아웃을 띄울 것.
+        // 장바구니가 비었을 때의 레이아웃 설정
         document.querySelector('.cart_list_table').style = 'display: none';
         document.querySelector('.cart_list_none').style = "display: block";
         document.getElementById('orderBtn').disabled = true;
