@@ -17,7 +17,7 @@ document.querySelector('[data-pay-btn-container="payBtnContainer"]').addEventLis
 
     if(e.target.id == 'orderBtn') {
         if(pgData.pg == "") {
-            console.log('결제 수단을 선택해주세요.');
+            alert('결제 수단을 선택해주세요.');
         } else {
             const pgObj = getPayDataFromServer(pgData.pg);
             pgData.channelKey = pgObj.channelKey;

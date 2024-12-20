@@ -3,12 +3,26 @@ console.log("cart.js recognized.");
 document.addEventListener('DOMContentLoaded', () => {
     const isCartEmpty = document.getElementById('dataContainer').dataset.isCartEmpty;
     const isCartEmptyBool = (isCartEmpty === "true");
+    console.log("Is the cart empty: " + isCartEmptyBool);
 
     if(isCartEmptyBool) {
-        // NOTE: 장바구니가 비어있다면 수행할 작업이 없음.
+        // TODO: 장바구니가 비었을 때의 레이아웃을 띄울 것.
+        document.querySelector('.cart_list_table').style = 'display: none';
+        document.querySelector('.cart_list_none').style = "display: block";
+        document.getElementById('orderBtn').disabled = true;
+        document.getElementById('pickupBtn').disabled = true;
     } else {
+        // 레이아웃 설정
+        document.querySelector('.cart_list_table').style = "display: block";
+        document.querySelector('.cart_list_none').style = "display: none";
+        document.getElementById('orderBtn').disabled = false;
+        document.getElementById('pickupBtn').disabled = false;
+
+        // 화면 로딩 시 페이지에 보여질 값들 계산
         calculateQtyPrice();
-        // 화면 로딩 시 모든 itemBtn이 클릭되있게 함
+        calculateReceipt();
+
+        // 모든 itemBtn이 클릭되있게 함
         const selectItemBtns = document.getElementsByName('itemBtn');
     
         selectItemBtns.forEach(itemBtn => {
@@ -22,7 +36,6 @@ function calculateQtyPrice() {
 
     const index = document.getElementById('listDataStorage').dataset.listSize;
     const numIndex = parseInt(index);
-    console.log(index);
 
     for (let i=0; i < numIndex; i++) {
         let salePrice = document.querySelector(`span[data-cart="${i}"].sale-price`).innerText;
@@ -35,38 +48,61 @@ function calculateQtyPrice() {
 
 }
 
+function calculateReceipt() {
+    // NOTE: 임시로 배송비는 3,000원 적용, 포인트는 일괄적으로 300P 적용.
+    const index = document.getElementById('listDataStorage').dataset.listSize;
+
+    let sumOriginalPrice = 0;
+    let sumSalePrice = 0;
+
+    for (let i = 0; i < index; i++) {
+        let originalPrice = document.querySelector(`span[data-cart="${i}"].original-price`).innerText;
+        let salePrice = document.querySelector(`span[data-cart="${i}"].sale-price`).innerText;
+        let bookQty = document.querySelector(`[data-cart="${i}"].book-qty`).innerText;
+
+        sumOriginalPrice += parseInt(originalPrice) * parseInt(bookQty);
+        sumSalePrice += parseInt(salePrice) * parseInt(bookQty);
+    }
+
+    document.querySelector(`.total-original-price`).innerText = sumOriginalPrice;
+    document.querySelector(`.total-discount-price`).innerText = "- " + `${sumOriginalPrice - sumSalePrice}`;
+
+    let deliverFeeEle = document.querySelector(`.delivery-fee`);
+    deliverFeeEle.innerText = 3000;
+
+    document.querySelector(`.estimated-payment-amount`).innerText = (sumSalePrice + parseInt(deliverFeeEle.innerText));
+    document.querySelector(`.estimated-point-amount`).innerText = 300;
+}
+
 // 재고 + - 버튼에 맞춰 가격 변동
-// TODO: 모든 data-cart가 0으로 렌더링됨.
 const ascBtns = document.querySelectorAll('.asc-btn');
 ascBtns.forEach(ascBtn => {
     ascBtn.addEventListener('click', () => {
-        console.log("Asc btn clicked!");
         // 어느 order detail의 올리기 버튼인지 찾기
         let index = ascBtn.dataset.cart;
         console.log("asc index: " + index);
         
         // 도서 개수 +1
         let bookQty = document.querySelector(`span.book-qty[data-cart="${index}"]`);
-        console.log("The bookQty: " + bookQty);
-        let bookQtyVal = parseInt(bookQty.value);
+        let bookQtyVal = parseInt(bookQty.innerText);
         bookQty.innerText = bookQtyVal + 1;
 
         // 올라간 수량을 반영한 가격 띄우기
         calculateQtyPrice();
+        calculateReceipt();
     })
 });
 
 const descBtns = document.querySelectorAll('.desc-btn');
 descBtns.forEach(descBtn => {
     descBtn.addEventListener('click', () => {
-        console.log("Desc btn clicked!");
         // 어느 order detail의 내리기 버튼인지 찾기
         let index = descBtn.dataset.cart;
         console.log("desc index: " + index);
 
         // 도서 개수 -1
         let bookQty = document.querySelector(`span.book-qty[data-cart="${index}"]`);
-        let bookQtyVal = parseInt(bookQty.value);
+        let bookQtyVal = parseInt(bookQty.innerText);
 
         if((bookQtyVal - 1) == 0) {
             bookQty.innerText == 1;
@@ -76,6 +112,7 @@ descBtns.forEach(descBtn => {
 
         // 내려간 수량을 반영한 가격 띄우기
         calculateQtyPrice();
+        calculateReceipt();
     })
 })
 

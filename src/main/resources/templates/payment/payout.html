@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
 <head>
   <meta charset="UTF-8">
   <title>Payout</title>
@@ -9,7 +10,7 @@
   <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 </head>
 
-<div layout:fragment="main">
+<main layout:fragment="main">
   <div id="dataContainer" th:data-mno="${mno}" th:data-cart-product-list="${cartProductList}" th:data-is-pickup="${isPickup}"></div>
 
   <div th:if="${isPickup} == 'N'">
@@ -80,9 +81,8 @@
   </div>
 
   <a th:href="@{/}">Go to index.html</a>
-</div>
 
-<script defer th:src="@{/js/paymentPayoutBusiness.js}"></script>
-<script defer th:src="@{/js/paymentPayoutDisplay.js}"></script>
-
+  <script defer th:src="@{/js/paymentPayoutBusiness.js}"></script>
+  <script defer th:src="@{/js/paymentPayoutDisplay.js}"></script>
+</main>
 </html>
