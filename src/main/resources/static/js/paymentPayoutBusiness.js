@@ -1,6 +1,7 @@
 console.log("paymentPayoutBusiness.js recognized.");
 
 // 결제 api에 쓰일 파라미터를 보관하는 전역 객체
+// pg: payment gateway. 결제 대행사라고 생각하면 됨. toss, naver pay 등.
 let pgData = {
     channelKey: "",
     pg: "",
@@ -12,38 +13,128 @@ let pgData = {
     m_redirect_url: "http://localhost:8087"
 };
 
-// 결제 수단 버튼을 감싸는 div에 부여한 이벤트
-document.querySelector('.pay-btn-container').addEventListener('click', (e) => {
+document.addEventListener('DOMContentLoaded', () => {
+    // 화면 로딩 시 최종 결제 금액을 화면에 띄움.
+    console.log("the HTML file loaded.");
+    jehoInitializeTotalOriginalPrice();
+    jehoInitializeTotalDiscountAmount();
+    jehoInitializeTotalPrice();
+})
 
-    if(e.target.classList.contains('pay-btn')) {
-        pgData.pg = selectPg(e.target.classList);
-    }
+// 모든 pay-btn 클래스가 있는 버튼들에 이벤트 부여. pgData의 pg를 설정함.
+const payBtnGroup = document.querySelectorAll('.pay-btn');
+payBtnGroup.forEach(payBtn => {
+    payBtn.addEventListener('click', () => {
+        pgData.pg = selectPg(payBtn.classList);
+        console.log("The selected pg is: " + pgData.pg);
+    })
+})
 
-    // 주문 버튼 클릭 시 결제 수단이 있나 없나 판별
-    if(e.target.id == 'orderBtn') {
-        if(pgData.pg == "") {
-            alert('결제 수단을 선택해주세요.');
-        } else {
-            const pgObj = getPayDataFromServer(pgData.pg);
-            pgData.channelKey = pgObj.channelKey;
-            pgData.pay_method = pgObj.payMethod;
-            pgData.merchant_uid = pgObj.merchantUid;
+// pay-btn 클래스가 있는 버튼 아래의 span들에 이벤트 부여. pgData의 pg를 설정함.
+const spanUnderPayBtn = document.querySelectorAll('.pay-btn span');
+spanUnderPayBtn.forEach(span => {
+    span.addEventListener('click', () => {
+        let payBtnClassList = span.parentElement.classList;
+        pgData.pg = selectPg(payBtnClassList);
+        console.log("The selected pg is: " + pgData.pg);
+    })
+})
 
-            pgData.amount = getTotalPrice();
+// 주문 버튼 클릭 시 pg를 골랐는지 판별, 골랐다면 결제 진행
+document.getElementById('orderBtn').addEventListener('click', () => {
+    if(pgData.pg == "") {
+        alert('결제 수단을 선택해주세요.');
+    } else {
+        const pgObj = getPayDataFromServer(pgData.pg);
+        pgData.channelKey = pgObj.channelKey;
+        pgData.pay_method = pgObj.payMethod;
+        pgData.merchant_uid = pgObj.merchantUid;
 
-            payWithIamport(pgObj);
-            // 결제 완료 후 pgData 초기화
-            pgData = {
-                channelKey: "",
-                pg: "",
-                pay_method: "",
-                merchant_uid: "",
-                name : "",
-                amount : 0
-            };
-        }
+        pgData.amount = getTotalPrice();
+        console.log("The total amount is: " + pgData.amount);
+
+        payWithIamport(pgObj);
+        // 결제 완료 후 pgData 초기화
+        pgData = {
+            channelKey: "",
+            pg: "",
+            pay_method: "",
+            merchant_uid: "",
+            name : "",
+            amount : 0
+        };
     }
 })
+
+// 총 결제 금액 첫 설정
+function jehoInitializeTotalPrice() {
+    const index = document.querySelector(`[data-list-total="listTotal"]`).innerText;
+    let indexNum = parseInt(index);
+    console.log("The index: " + indexNum);
+
+    let totalPrice = 0;
+    for (let i = 0; i < indexNum; i++) {
+        let salePrice = document.querySelector(`[data-payout="${i}"].book-sale-price`).innerText;
+        let bookQty = document.querySelector(`[data-payout="${i}"].book-qty`).innerText;
+
+        console.log("the salePrice: " + salePrice);
+        console.log("the book qty: " + bookQty);
+
+        totalPrice += parseInt(salePrice) * parseInt(bookQty);
+        console.log("The total price: " + totalPrice);
+    }
+    console.log("totalPrice" + totalPrice);
+
+    document.querySelector(`[data-total-price="totalPrice"].total-price`).innerText = totalPrice;
+}
+
+// 총 할인받은 금액 설정
+function jehoInitializeTotalDiscountAmount() {
+    const index = document.querySelector(`[data-list-total="listTotal"]`).innerText;
+    let indexNum = parseInt(index);
+    console.log("The index: " + indexNum);
+
+    let totalAmount = 0;
+    for (let i = 0; i < indexNum; i++) {
+        let salePrice = document.querySelector(`[data-payout="${i}"].book-sale-price`).innerText;
+        let originalPrice = document.querySelector(`[data-payout="${i}"].book_original_price`).innerText;
+        let bookQty = document.querySelector(`[data-payout="${i}"].book-qty`).innerText;
+
+        console.log("the salePrice: " + salePrice);
+        console.log("the originalPrice: " + originalPrice);
+        console.log("the book qty: " + bookQty);
+
+        let discountAmount = (parseInt(originalPrice) - parseInt(salePrice)) * parseInt(bookQty);
+
+        totalAmount += discountAmount;
+        console.log("The total price: " + totalAmount);
+    }
+    console.log("totalAmount" + totalAmount);
+
+    document.querySelector(`.discount-amount`).innerText = '- ' + totalAmount;
+}
+
+// 도서들의 전체 원가 합계 첫 설정
+function jehoInitializeTotalOriginalPrice() {
+    const index = document.querySelector(`[data-list-total="listTotal"]`).innerText;
+    let indexNum = parseInt(index);
+    console.log("The index: " + indexNum);
+
+    let totalPrice = 0;
+    for (let i = 0; i < indexNum; i++) {
+        let originalPrice = document.querySelector(`[data-payout="${i}"].book_original_price`).innerText;
+        let bookQty = document.querySelector(`[data-payout="${i}"].book-qty`).innerText;
+
+        console.log("the originalPrice: " + originalPrice);
+        console.log("the book qty: " + bookQty);
+
+        totalPrice += parseInt(originalPrice) * parseInt(bookQty);
+        console.log("The total price: " + totalPrice);
+    }
+    console.log("totalPrice" + totalPrice);
+    
+    document.querySelector(`.total-original-price`).innerText = totalPrice;
+}
 
 // pay-btn을 누르면 그에 따라 pdData의 pg를 설정함
 function selectPg(targetClassList) {
@@ -249,7 +340,11 @@ async function preserveOrderDetailToServer(respMerchantUid) {
         // orderDetail.price = document.querySelector(`[data-list-book-price="${i}"]`).innerText;
         orderDetail.prno = document.querySelector(`[data-payout="${i}"].list-data-storage`).dataset.listBookPrno;
         orderDetail.bookQty = document.querySelector(`[data-payout="${i}"].book-qty`).innerText;
-        orderDetail.price = document.querySelector(`[data-payout="${i}"].book-price`).innerText;
+        let bookPriceVal = document.querySelector(`[data-payout="${i}"].book-price`).innerText;
+        
+        // bookPriceVal이 숫자+원 임. "원"을 제거하고 숫자만 추출한 후에  문자열을 int로 전환.
+        let onlyPriceVal = bookPriceVal.match(/\d+/);
+        orderDetail.price = parseInt(onlyPriceVal);
         
         orderDetailArr.push(orderDetail);
     }
@@ -339,8 +434,8 @@ async function removeCartToServer() {
 
         cartVoObj.prno = document.querySelector(`[data-payout="${i}"].list-data-storage`).dataset.listBookPrno;
 
-        console.log("The cartVoObj: ");
-        console.log(cartVoObj);
+        // console.log("The cartVoObj: ");
+        // console.log(cartVoObj);
 
         cartVoArr.push(cartVoObj);
     }

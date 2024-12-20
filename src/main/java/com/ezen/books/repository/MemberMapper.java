@@ -1,5 +1,6 @@
 package com.ezen.books.repository;
 
+import com.ezen.books.domain.AddressVO;
 import com.ezen.books.domain.MemberAuth;
 import com.ezen.books.domain.MemberVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -23,4 +24,6 @@ public interface MemberMapper {
     int checkUser(@Param("loginId") String loginId, @Param("password") String password);
 
     long getLastMno();
+
+    int saveAddressToServer(AddressVO addressVO);
 }

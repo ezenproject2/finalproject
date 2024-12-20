@@ -1,5 +1,6 @@
 package com.ezen.books.service;
 
+import com.ezen.books.domain.AddressVO;
 import com.ezen.books.domain.MemberVO;
 import com.ezen.books.repository.MemberMapper;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +42,13 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public long getLastMno() {
         return memberMapper.getLastMno();
+    }
+
+    @Override
+    public int saveAddressToServer(AddressVO addressVO) {
+        addressVO.setAddrName("기본 배송지");
+        addressVO.setIsDefault("Y");
+        return memberMapper.saveAddressToServer(addressVO);
     }
 
 

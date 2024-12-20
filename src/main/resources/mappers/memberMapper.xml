@@ -15,6 +15,12 @@
         values (#{loginId}, #{password}, #{email}, #{name}, #{phoneNumber}, #{nickName}, 'ROLE_USER', '1')
     </insert>
 
+    <insert id="saveAddressToServer">
+        insert into address (mno, rec_name, rec_phone, addr_code, addr, addr_detail, addr_name, is_default)
+        values
+        (#{mno}, #{recName}, #{recPhone}, #{addrCode}, #{addr}, #{addrDetail}, #{addrName}, #{isDefault})
+    </insert>
+
     <select id="findByLoginId" resultType="com.ezen.books.domain.MemberVO">
         select * from member
         where login_id = #{loginId}

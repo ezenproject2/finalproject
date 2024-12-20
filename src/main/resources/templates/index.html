@@ -10,7 +10,7 @@
     <a th:href="@{/product/register}">상품 등록하기</a>
     <a th:href="@{/product/list}">상품 목록보기</a>
     <a th:href="@{/store}">오프라인 매장 보기</a> <br>
-    <a th:href="@{/payment/cart(mno=${1})}"><button type="button">테스트용 장바구니</button></a> <br>
+    <p>! 로그인을 해야 장바구니 버튼이 나타납니다.</p> <br>
     <a sec:authorize="isAuthenticated()" th:href="@{/payment/cart(mno=${#authentication.getPrincipal().memberVO.getMno()})}"><button type="button">로그인 기반 장바구니</button></a>
 
     <script>

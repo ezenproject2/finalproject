@@ -63,21 +63,26 @@ public class MemberController {
         return new ResponseEntity<>("1", HttpStatus.OK);
     }
 
+    // 배송지 입력 용도로 준희가 추가한 메서드.
     @PostMapping("/address")
     public ResponseEntity<String> storeAddressToServer(@RequestBody AddressVO addressVO) {
         // The addressVO from the client: AddressVO(adno=0, mno=0, recName=Test, recPhone=83892928383, addrCode=13536, addr=경기 성남시 분당구 판교역로 4 (백현동), addrDetail=test address detail, addrName=null, isDefault=null)
         log.info("The addressVO from the client: {}", addressVO);
 
-        // TODO
-        // 가장 최근에 생성된 mno를 받아와서: select max(mno) from member;
+        // 가장 최근에 회원가입한 mno를 address의 mno로 넣음.
         long mno = memberService.getLastMno();
         addressVO.setMno(mno);
-        // memberService를 통해 데이터를 저장할 것. 기본 배송지 여부는 Y로 줌.
 
-        return new ResponseEntity<>("1", HttpStatus.OK);
+        // The address from the client: AddressVO(adno=0, mno=9, recName=Tester, recPhone=83892928383, addrCode=13536, addr=경기 성남시 분당구 판교역로 4 (백현동), addrDetail=test address detail, addrName=null, isDefault=Y)
+        log.info("The address from the client: {}", addressVO);
+        int isDone = memberService.saveAddressToServer(addressVO);
+
+        return (isDone > 0) ?
+                new ResponseEntity<>("1", HttpStatus.OK) :
+                new ResponseEntity<>("0", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    // join 메서드를 한 후 /index로 가기 위한 .
+    // join 메서드를 한 후 /index로 가기 위한 메서드.
     @GetMapping("/go-to-index")
     public String goToIndex() {
         return "/index";
