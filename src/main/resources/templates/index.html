@@ -16,5 +16,23 @@
     <!--/* TODO: merge 후에 로그인 한 정보를 바탕으로 mno=${mno}로 넣을 것.  */-->
     <a th:href="@{/payment/cart(mno=${1})}"><button type="button">Shopping Cart</button></a>
 
+    <script>
+        let modify_msg = `[[${mod_msg}]]`;
+        console.log(modify_msg);
+        if(modify_msg === 'ok'){
+            alert("회원정보가 수정되었습니다. 다시 로그인해주세요.");
+        }
+        if (modify_msg === 'fail') {
+            alert("회원정보수정이 실패되었습니다. 다시 시도해주세요.");
+        }
 
+        let remove_msg = `[[${del_msg}]]`;
+        console.log(remove_msg);
+        if(remove_msg === 'ok'){
+            alert("회원 탈퇴가 완료되었습니다. 안녕히가세요.");
+        }
+        if (remove_msg === 'fail'){
+            alert("회원 탈퇴가 실패되었습니다. 다시 시도해주세요.");
+        }
+    </script>
 </main>

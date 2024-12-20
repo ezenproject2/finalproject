@@ -95,19 +95,19 @@
                 <button type="submit" class="btn join_btn"><span class="btn_text">회 원 수 정</span></button>
             </div>
         </form>
-            <div class="btn-area">
-                <a th:href="@{/member/remove(loginId=${loginId})}" style="width: 100%;">
-                    <button type="button" class="btn join_btn" style="margin: 0 auto;"><span class="btn_text">회 원 탈 퇴</span></button>
-                </a>
-            </div>
+        <div class="btn-area">
+            <a th:href="@{/member/remove(loginId=${loginId})}" style="width: 100%;">
+                <button type="button" class="btn join_btn" style="margin: 0 auto;"><span class="btn_text">회 원 탈 퇴</span></button>
+            </a>
+        </div>
     </div>
 
     <script src="/js/memberJoin.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="/js/privateAddress.js"></script>
-    <script src="/js/memberModify.js"></script>
 
 
 </main>
 
 </html>
+
