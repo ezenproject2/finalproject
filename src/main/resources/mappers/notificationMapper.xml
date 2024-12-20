@@ -5,4 +5,9 @@
 
 <mapper namespace="com.ezen.books.repository.NotificationMapper">
 
+    <!-- 회원 번호(mno)로 알림 목록 조회 -->
+    <select id="findNotificationsByMno" resultType="com.ezen.books.domain.Notification">
+        SELECT * FROM notification WHERE mno = #{mno} ORDER BY reg_at DESC
+    </select>
+
 </mapper>
