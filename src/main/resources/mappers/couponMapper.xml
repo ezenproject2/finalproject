@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ezen.books.repository.CouponMapper">
+
+    <!-- 등급에 맞는 쿠폰 조회 -->
+    <select id="getCouponsForGrade" resultType="com.ezen.books.domain.CouponVO">
+        select * from coupon
+        where gno = #{gno}
+    </select>
+
+    <!-- 쿠폰 ID로 조회 -->
+    <select id="getCouponById" resultType="com.ezen.books.domain.CouponVO">
+        select * from coupon
+        where cno = #{cno}
+    </select>
+
+    <!-- 쿠폰 적용 -->
+    <update id="applyCoupon">
+        insert into coupon_log (mno, cno, orno, status, useAt)
+        values (#{mno}, #{cno}, #{orno}, '사용 가능', now())
+    </update>
+
+
+</mapper>

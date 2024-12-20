@@ -1,8 +1,11 @@
 package com.ezen.books.oauth2.service;
 
+import com.ezen.books.domain.MemberVO;
 import com.ezen.books.oauth2.exception.OAuth2AuthenticationProcessingException;
 import com.ezen.books.oauth2.user.OAuth2UserInfo;
 import com.ezen.books.oauth2.user.OAuth2UserInfoFactory;
+import com.ezen.books.repository.MemberMapper;
+import com.ezen.books.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -16,6 +19,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
+
+    private final MemberMapper memberMapper;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest){
@@ -42,10 +47,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             throw new OAuth2AuthenticationProcessingException("Email not found OAuth2 provider");
         }
 
+        MemberVO memberVO = memberMapper.findById(oAuth2UserInfo.getId());
+
         // 사용자에게 기본 역할 추가 (예: "ROLE_USER")
         List<String> roles = List.of("ROLE_USER");  // 기본적인 역할 할당 (추가적인 역할은 상황에 맞게 설정 가능)
 
-        return new OAuth2UserPrincipal(oAuth2UserInfo, roles);
+        return new OAuth2UserPrincipal(oAuth2UserInfo, memberVO,  roles);
     }
 
 
