@@ -40,6 +40,16 @@
     <script th:src="@{/js/chatbot.js}"></script>
     <!--/* 챗봇영역 (끝) */-->
 
+    <!--/* 알림 SSE 영역 (시작) */-->
+    <div id="notBox">알림</div>
+    <script th:src="@{/js/notification.js}"></script>
+    <!--/* 알림 SSE 영역 (끝) */-->
+
+
+
+
+
+
     <script>
         let modify_msg = `<c:out value="${mod_msg}" />`;
         console.log(mod_msg);
