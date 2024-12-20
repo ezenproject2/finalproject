@@ -207,7 +207,7 @@ async function sendCartVoArrayToServer(cartDtoArray) {
     const textResult = await result.text();
     if(textResult == "1") {
         console.log("sendCartVoArrayToServer: Succeeded.");
-        window.location.href = "/payment/payout"; // 이게 GET요청을 보내는 거라고 함.
+        window.location.href = "/payment/payout"; // GET 요청 생성
     } else {
         console.log("sendCartVoArrayToServer: Failed.");
     }

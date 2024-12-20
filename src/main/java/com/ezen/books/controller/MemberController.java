@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,7 +37,7 @@ public class MemberController {
     public void join(){}
 
     @PostMapping("/join")
-    public String join(MemberVO memberVO, Model model){
+    public ResponseEntity<String> join(@RequestBody MemberVO memberVO, Model model){
 //        // 아이디 중복 체크
 //        if(memberService.checkLoginIdDuplicate(memberVO.getLoginId())){
 //            model.addAttribute("errorMessage", "이미 존재하는 ID입니다.");
@@ -48,6 +49,7 @@ public class MemberController {
 //            model.addAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
 //            return "/member/join";
 //        }
+
         String pwd = passwordEncoder.encode(memberVO.getPassword());
         String pwdCheck = passwordEncoder.encode(memberVO.getPasswordCheck());
         memberVO.setPassword(pwd);
@@ -57,6 +59,24 @@ public class MemberController {
 
         memberService.insert(memberVO);
         log.info(">>>>> Join USER Info  {}", memberVO);
+        return new ResponseEntity<>("1", HttpStatus.OK);
+    }
+
+    @PostMapping("/address")
+    public ResponseEntity<String> storeAddressToServer(@RequestBody AddressVO addressVO) {
+        // The addressVO from the client: AddressVO(adno=0, mno=0, recName=Test, recPhone=83892928383, addrCode=13536, addr=경기 성남시 분당구 판교역로 4 (백현동), addrDetail=test address detail, addrName=null, isDefault=null)
+        log.info("The addressVO from the client: {}", addressVO);
+
+        // TODO
+        // 가장 최근에 생성된 mno를 받아와서: select max(mno) from member;
+        // memberService를 통해 데이터를 저장할 것. 기본 배송지 여부는 Y로 줌.
+
+        return new ResponseEntity<>("1", HttpStatus.OK);
+    }
+
+    // join 메서드를 한 후 /index로 가기 위한 .
+    @GetMapping("/go-to-index")
+    public String goToIndex() {
         return "/index";
     }
 

@@ -1,3 +1,6 @@
+console.log("paymentPayoutBusiness.js recognized.");
+
+// 결제 api에 쓰일 파라미터를 보관하는 전역 객체
 let pgData = {
     channelKey: "",
     pg: "",
@@ -9,12 +12,14 @@ let pgData = {
     m_redirect_url: "http://localhost:8087"
 };
 
-document.querySelector('[data-pay-btn-container="payBtnContainer"]').addEventListener('click', (e) => {
+// 결제 수단 버튼을 감싸는 div에 부여한 이벤트
+document.querySelector('.pay-btn-container').addEventListener('click', (e) => {
 
     if(e.target.classList.contains('pay-btn')) {
         pgData.pg = selectPg(e.target.classList);
     }
 
+    // 주문 버튼 클릭 시 결제 수단이 있나 없나 판별
     if(e.target.id == 'orderBtn') {
         if(pgData.pg == "") {
             alert('결제 수단을 선택해주세요.');
@@ -27,7 +32,7 @@ document.querySelector('[data-pay-btn-container="payBtnContainer"]').addEventLis
             pgData.amount = getTotalPrice();
 
             payWithIamport(pgObj);
-            // pgData 초기화
+            // 결제 완료 후 pgData 초기화
             pgData = {
                 channelKey: "",
                 pg: "",
@@ -40,7 +45,7 @@ document.querySelector('[data-pay-btn-container="payBtnContainer"]').addEventLis
     }
 })
 
-
+// pay-btn을 누르면 그에 따라 pdData의 pg를 설정함
 function selectPg(targetClassList) {
     
     let pgVal = "";
@@ -63,12 +68,14 @@ function selectPg(targetClassList) {
     return pgVal;
 }
 
+// 화면에 표시된 총 액수를 가져옴
 function getTotalPrice() {
     const totalPrice = document.querySelector('[data-total-price="totalPrice"]').textContent;
 
     return parseInt(totalPrice);
 }
 
+// 결제 수단이 있으면 서버로부터 channelKey, payMethod, merchantUid를 가져옴
 async function getPayDataFromServer(selectedPg) {
     const url = `/payment/payout/prepare`;
 
@@ -88,6 +95,7 @@ async function getPayDataFromServer(selectedPg) {
     return pgDataObj;
 }
 
+// 결제 요청 api 사용
 async function payWithIamport() {
 
     // 결제 api 사용 시 필요한 파라미터들
@@ -126,6 +134,7 @@ async function payWithIamport() {
     });
 }
 
+// 결제 api를 성공적으로 수행했을 시 DB에 데이터 반영
 async function checkFlags(paymentDataAmount, impResPaidAmount, impResponse) {
 
     const result = {
@@ -146,6 +155,7 @@ async function checkFlags(paymentDataAmount, impResPaidAmount, impResponse) {
     return result;
 }
 
+// 1차 검증: api에서 가져온 금액과 결제해야 했을 금액 비교
 function comparePayment (supposeAmount, actualAmount) {
     if(supposeAmount == actualAmount) {
         console.log("Verification 1: Pass");
@@ -159,6 +169,7 @@ function comparePayment (supposeAmount, actualAmount) {
     }
 }
 
+// 2차 검증: 결제 데이터를 서버로 보내 "단건 조회" api로 결제 금액 다시 대조
 async function sendPaymentResultToServer(impResponse) {
     const url = `/payment/payout/result`;
     const config = {
@@ -184,6 +195,7 @@ async function sendPaymentResultToServer(impResponse) {
     }
 }
 
+// orders 테이블에 주문 정보 저장
 async function preserveOrdersToServer(impResponse) {
     const url = `/payment/payout/preserve-orders`;
 
@@ -217,6 +229,7 @@ async function preserveOrdersToServer(impResponse) {
     }
 }
 
+// order_detail 테이블에 주문 상세 데이터 저장
 async function preserveOrderDetailToServer(respMerchantUid) {
     const url = `/payment/payout/preserve-order-detail`;
 
@@ -231,9 +244,12 @@ async function preserveOrderDetailToServer(respMerchantUid) {
             price: ""
         }
 
-        orderDetail.prno = document.querySelector(`[data-list-book-prno="${i}"]`).value;
-        orderDetail.bookQty = document.querySelector(`[data-list-book-qty="${i}"]`).innerText;
-        orderDetail.price = document.querySelector(`[data-list-book-price="${i}"]`).innerText;
+        // orderDetail.prno = document.querySelector(`[data-list-book-prno="${i}"]`).value;
+        // orderDetail.bookQty = document.querySelector(`[data-list-book-qty="${i}"]`).innerText;
+        // orderDetail.price = document.querySelector(`[data-list-book-price="${i}"]`).innerText;
+        orderDetail.prno = document.querySelector(`[data-payout="${i}"].list-data-storage`).dataset.listBookPrno;
+        orderDetail.bookQty = document.querySelector(`[data-payout="${i}"].book-qty`).innerText;
+        orderDetail.price = document.querySelector(`[data-payout="${i}"].book-price`).innerText;
         
         orderDetailArr.push(orderDetail);
     }
@@ -255,6 +271,7 @@ async function preserveOrderDetailToServer(respMerchantUid) {
     }
 }
 
+// payment 테이블에 결제 데이터 저장
 async function preservePaymentToServer(impResponse) {
     const url = `/payment/payout/preserve-payment`;
     const paymentData = {
@@ -305,11 +322,12 @@ function selectStatus(impResponseStatus) {
     return status;
 }
 
+// cart 테이블에서 결제된 주문 내역 삭제
 async function removeCartToServer() {
     const mnoVal = document.getElementById('dataContainer').dataset.mno;
     
     // 주문한 prno를 다 받아서 CartVO의 JSON으로 만들 것.
-    const index = document.querySelector(`input[type="hidden"].data-storage-input`).dataset.listSize;
+    const index = document.querySelector(`.list-data-storage`).dataset.listSize;
     const cartVoArr = [];
 
     for(let i = 0; i < parseInt(index); i++) {
@@ -319,9 +337,10 @@ async function removeCartToServer() {
             bookQty: -1 // TODO: NOT NULL 컬럼이라 혹시 몰라 보냄. 빼도 이상 없으면 뺄 예정.
         };
 
-        cartVoObj.prno = document.querySelector(`input[type="hidden"][data-payout="${i}"].data-storage-input`).value;
-        // let prno = document.querySelector(`input[type="hidden"][data-payout="${i}"].data-storage-input`).value;
-        // console.log("prno " + prno);
+        cartVoObj.prno = document.querySelector(`[data-payout="${i}"].list-data-storage`).dataset.listBookPrno;
+
+        console.log("The cartVoObj: ");
+        console.log(cartVoObj);
 
         cartVoArr.push(cartVoObj);
     }

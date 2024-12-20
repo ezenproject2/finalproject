@@ -39,12 +39,12 @@
       <!--/* 사용자가 장바구니에서 선택한 주문 상세들을 보여주는 div. */-->
       <div>
         <!--/* 데이터 저장용 input. 디자인 필요 없음 */-->
-        <input type="hidden" class="data-storage-input" th:value="${cartProduct.productVO.prno}" th:data-payout="${iterStat.index}" th:data-list-size="${cartProductList.size}">
+        <div class="list-data-storage" th:data-list-book-prno="${cartProduct.productVO.prno}" th:data-payout="${iterStat.index}" th:data-list-size="${cartProductList.size}">
         <!--/* 도서 표지를 보여주는 img */-->
         <img>
         <p>[[${cartProduct.productVO.title} ?: '도서 제목']]</p>
-        <p th:data-list-book-price="${iterStat.index}">[[${cartProduct.productVO.discount} ?: '도서 가격']]</p> <!--/*  */-->
-        <p>[[${cartProduct.cartVO.bookQty} ?: '도서 수량']]</p> <!--/* th:data-list-book-qty="${iterStat.index}" */-->
+        <p class="book-price" th:data-payout="${iterStat.index}">[[${cartProduct.productVO.discount} ?: '도서 가격']]</p> <!--/*  */-->
+        <p class="book-qty" th:data-payout="${iterStat.index}">[[${cartProduct.cartVO.bookQty} ?: '도서 수량']]</p> <!--/* th:data-list-book-qty="${iterStat.index}" */-->
       </div>
 
     </div>
@@ -67,7 +67,7 @@
   </div>
 
   <!--/* >>>>> "결제 수단" 영역<<<<< */-->
-  <div data-pay-btn-container="payBtnContainer">
+  <div class="pay-btn-container">
     <input type="hidden" data-payment-mno="${mno}">
     <button type="button" class="pay-btn credit-card-btn">Credit Card, 미지원</button>
     <button type="button" class="pay-btn phone-btn">Phone</button>

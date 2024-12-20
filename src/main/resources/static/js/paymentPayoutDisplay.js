@@ -1,4 +1,4 @@
-console.log("paymentDisplay.js recognized.");
+console.log("paymentPayoutDisplay.js recognized.");
 
 const mno = document.getElementById("dataContainer").getAttribute("data-mno");
 console.log("The mno in paymentDisplay.js: " + mno);
@@ -14,7 +14,7 @@ function initializeTotalPrice() {
     let sumPrice = 0;
 
     for(let i=0; i < parseInt(index); i++) {
-        let price = document.querySelector(`[data-list-book-price="${i}"]`).innerText;
+        let price = document.querySelector(`[data-payout="${i}"].book-price`).innerText;
         sumPrice += parseInt(price);
     }
 
