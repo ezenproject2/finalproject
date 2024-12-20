@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
 <head>
   <meta charset="UTF-8">
   <title>Payout</title>
@@ -9,36 +10,79 @@
   <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 </head>
 
-<div layout:fragment="main">
-  <div id="dataContainer" th:data-mno="${mno}"></div>
+<main layout:fragment="main">
+  <div id="dataContainer" th:data-mno="${mno}" th:data-cart-product-list="${cartProductList}" th:data-is-pickup="${isPickup}"></div>
 
-  <!-- 배송지의 class="address_info_box"의 기본 구성요소 -->
-  <div class="address_info_box">
-    <div class="address_name">
-      <span class="name"></span>
+  <div th:if="${isPickup} == 'N'">
+    <!--/* >>>>> "배송지" 영역 <<<<< */-->
+    <!-- 주문 배송지의 정보를 담는 div -->
+    <div>
+      <button type="button">배송지 변경</button>
+      <p>[[${defaultAddress.addrName} ?: '배송지']]</p>
+      <p>[[${defaultAddress.recName} ?: '수령인 이름']]</p>
+      <p>[[${defaultAddress.recPhone} ?: '수령인 전화번호']]</p>
+      <p>[[${defaultAddress.addrCode} ?: '우편번호']]</p>
+      <p>[[${defaultAddress.addr} ?: '배송지']]</p>
+      <p>[[${defaultAddress.addrDetail} ?: '상세 주소']]</p>
+      <textarea placeholder="배송 요청사항 남기기"></textarea>
     </div>
-    <div class="address_person"></div>
-    <div class="address"></div>
   </div>
 
-  <!--/* 사용자가 "배송지 변경" 버튼을 눌렀을 때 나올 div: 사용자 배송지 목록을 보여주는 역할 */-->
+  <div th:if="${isPickup} == 'Y'">
+    <p>픽업용 주문/결제 페이지</p>
+  </div>
 
-  <!--/* 사용자가 "배송지 변경" div에 있는 "배송지 추가" 버튼을 눌렀을 때 나올 div: 배송지 추가를 위한 정보를 입력받는 역할 */-->
+  <!--/* >>>>> "주문 상품" 영역<<<<< */-->
+  <div>
+    주문 상품 : 총 <span th:data-list-total="listTotal">[[${cartProductList.size}]]</span>개
+    <div th:each="cartProduct, iterStat:${cartProductList}">
+      <!--/* 사용자가 장바구니에서 선택한 주문 상세들을 보여주는 div. */-->
+      <div>
+        <!--/* 데이터 저장용 input. 디자인 필요 없음 */-->
+        <div class="list-data-storage" th:data-list-book-prno="${cartProduct.productVO.prno}" th:data-payout="${iterStat.index}" th:data-list-size="${cartProductList.size}">
+        <!--/* 도서 표지를 보여주는 img */-->
+        <img>
+        <p>[[${cartProduct.productVO.title} ?: '도서 제목']]</p>
+        <p class="book-price" th:data-payout="${iterStat.index}">[[${cartProduct.productVO.discount} ?: '도서 가격']]</p> <!--/*  */-->
+        <p class="book-qty" th:data-payout="${iterStat.index}">[[${cartProduct.cartVO.bookQty} ?: '도서 수량']]</p> <!--/* th:data-list-book-qty="${iterStat.index}" */-->
+      </div>
 
-  <div id="payBtnContainer">
-    <button type="button" id="creditCard" class="pay-btn credit-card-btn">Credit Card, 미지원</button>
-    <button type="button" id="phone" class="pay-btn phone-btn">Phone</button>
-    <button type="button" id="naverpay" class="pay-btn naverpay-btn">Naver Pay, 미지원</button>
-    <button type="button" id="kakaopay" class="pay-btn kakaopay-btn">Kakao Pay</button>
-    <button type="button" id="tosspay" class="pay-btn tosspay-btn">Toss Pay</button>
+    </div>
+  </div>
+
+  <!--/* >>>>> "쿠폰" 영역<<<<< */-->
+  <div>
+    사용 가능한 쿠폰이 없어서 화면이 어떻게 생겼는지 모름... 테이블 기준으로 만듦.
+    <!--/* 사용자의 가용한 쿠폰들을 나열하는 div. th:each로 반복함. */-->
+    <div>
+      <p>사용을 위한 최소 금액</p>
+      <p>할인 액수</p>
+    </div>
+  </div>
+
+  <!--/* >>>>> "마일리지" 영역<<<<< */-->
+  <div>
+    보유 마일리지: <span></span> 포인트
+    사용할 액수: <input type="text"> <button>전액 사용</button>
+  </div>
+
+  <!--/* >>>>> "결제 수단" 영역<<<<< */-->
+  <div class="pay-btn-container">
+    <input type="hidden" data-payment-mno="${mno}">
+    <button type="button" class="pay-btn credit-card-btn">Credit Card, 미지원</button>
+    <button type="button" class="pay-btn phone-btn">Phone</button>
+    <button type="button" class="pay-btn naverpay-btn">Naver Pay, 미지원</button>
+    <button type="button" class="pay-btn kakaopay-btn">Kakao Pay</button>
+    <button type="button" class="pay-btn tosspay-btn">Toss Pay</button>
     <br>
+    총 가격: <span data-total-price="totalPrice"></span>
     <button type="button" id="orderBtn">주문하기</button>
+    <button type="button" id="testRemove">Execute removeCart</button>
   </div>
 
   <a th:href="@{/}">Go to index.html</a>
-</div>
 
-<script th:src="@{/js/payoutBusiness.js}"></script>
-<script th:src="@{/js/payoutDisplay.js}"></script>
-
+  <script defer th:src="@{/js/paymentPayoutBusiness.js}"></script>
+  <script defer th:src="@{/js/paymentPayoutDisplay.js}"></script>
+</main>
 </html>

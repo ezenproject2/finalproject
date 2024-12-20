@@ -21,4 +21,6 @@ public interface MemberMapper {
     int deleteMember(String loginId);
 
     int checkUser(@Param("loginId") String loginId, @Param("password") String password);
+
+    long getLastMno();
 }

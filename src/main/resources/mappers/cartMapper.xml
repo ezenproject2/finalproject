@@ -8,14 +8,29 @@
         values(#{mno}, #{prno}, #{bookQty})
     </insert>
 
+    <insert id="storeCartDataToServer">
+        insert into cart(mno, prno, book_qty)
+        values (#{mno}, #{prno}, #{bookQty})
+    </insert>
+
     <select id="getAllCartItems" resultType="com.ezen.books.domain.CartVO">
         select * from cart
         where mno = #{mno}
     </select>
 
+    <select id="checkMnoAndPrno" resultType="int">
+        select count(*) from cart
+        where mno = #{mno} and prno=#{prno}
+    </select>
+
     <select id="getProductInfo" resultType="com.ezen.books.domain.ProductVO">
-        select prno, title, discount, discount_rate from product
+        select prno, title, link, image, author, publisher, discount, discount_rate from product
         where prno = #{prno} and is_del = "N"
     </select>
 
+    <update id="increaseBookQty">
+        update cart
+        set book_qty = book_qty + #{bookQty}
+        where mno = #{mno} and prno = #{prno}
+    </update>
 </mapper>

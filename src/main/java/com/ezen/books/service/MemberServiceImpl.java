@@ -38,5 +38,10 @@ public class MemberServiceImpl implements MemberService{
         return memberMapper.checkUser(loginId, password) > 0;
     }
 
+    @Override
+    public long getLastMno() {
+        return memberMapper.getLastMno();
+    }
+
 
 }

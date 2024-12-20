@@ -39,6 +39,26 @@ public class MemberVO {
     private String accessToken;
     // 리프레시 토큰
     private String refreshToken;
-
-
 }
+/*
+CREATE TABLE member (
+    mno bigint NOT NULL AUTO_INCREMENT,
+    gno bigint NOT NULL,
+    login_id VARCHAR(50) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    name VARCHAR(100),
+    email VARCHAR(255),
+    phone_number VARCHAR(30),
+    nick_name VARCHAR(100),
+    reg_at DATETIME default now(),
+    last_login DATETIME,
+    is_del VARCHAR(5) DEFAULT 'N',
+    delete_reason VARCHAR(255),
+    delete_date DATETIME,
+    grade_log DATETIME,
+    auth ENUM('ROLE_USER','RMANAGER','ADMIN'),
+    provider varchar(50),
+    provider_id varchar(255),
+    PRIMARY KEY (mno)
+);
+*/
