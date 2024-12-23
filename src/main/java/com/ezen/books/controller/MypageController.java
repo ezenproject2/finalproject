@@ -58,14 +58,14 @@ public class MypageController {
 
     /*-- 포인트 적립 및 사용 --*/
     @PostMapping("/points/earn")
-    public String earnPoints(@RequestParam("mno") long mno, @RequestParam("orno") long orno, @RequestParam("earnedPoints") int earnedPoints) {
+    public String earnPoints(@RequestParam("mno") long mno, @RequestParam("orno") String orno, @RequestParam("earnedPoints") int earnedPoints) {
         pointService.earnPoints(mno, orno, earnedPoints);  // 포인트 적립
 
         return "redirect:/order/confirmation?orno=" + orno;  // 주문 확인 페이지로 리다이렉트
     }
 
     @PostMapping("/points/use")
-    public String usePoints(@RequestParam("mno") long mno, @RequestParam("orno") long orno, @RequestParam("usePoints") int usePoints) {
+    public String usePoints(@RequestParam("mno") long mno, @RequestParam("orno") String orno, @RequestParam("usePoints") int usePoints) {
         pointService.usePoints(mno, orno, usePoints);  // 포인트 사용
 
         return "redirect:/order/confirmation?orno=" + orno;  // 주문 확인 페이지로 리다이렉트
@@ -73,7 +73,7 @@ public class MypageController {
 
     /*-- 쿠폰 적용 --*/
     @PostMapping("/coupons/apply")
-    public String applyCoupon(@RequestParam("mno") long mno, @RequestParam("cno") long cno, @RequestParam("orno") long orno) {
+    public String applyCoupon(@RequestParam("mno") long mno, @RequestParam("cno") long cno, @RequestParam("orno") String orno) {
         couponService.applyCoupon(mno, cno, orno);  // 쿠폰 적용
 
         return "redirect:/order/confirmation?orno=" + orno;  // 주문 확인 페이지로 리다이렉트
@@ -83,7 +83,7 @@ public class MypageController {
     @PostMapping("/order/place")
     public String placeOrder(@ModelAttribute OrdersVO ordersVO, @RequestParam(value = "cno", required = false) Long cno) {
         long mno = ordersVO.getMno();
-        long orno = ordersVO.getOrno();
+        String orno = ordersVO.getOrno();
 
         // 회원 등급 업데이트
         memberService.updateMemberGrade(mno);

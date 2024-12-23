@@ -15,7 +15,7 @@ public interface CouponMapper {
     /*------------------------------------------------------------*/
     List<CouponVO> getCouponsByGradeAndPrice(long gno, int totalPrice);
 
-    void applyCoupon(long mno, long cno, long orno);
+    void applyCoupon(long mno, long cno, String orno);
 
     List<CouponVO> getCouponsForGrade(Long gno);
 }

@@ -14,4 +14,10 @@ public interface CartMapper {
     List<CartVO> getAllCartItems(long mno);
 
     ProductVO getProductInfo(long prno);
+
+    int storeCartDataToServer(CartVO cartData);
+
+    int checkMnoAndPrno(long mno, long prno);
+
+    void increaseBookQty(CartVO cartData);
 }

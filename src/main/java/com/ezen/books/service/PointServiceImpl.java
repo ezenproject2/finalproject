@@ -18,7 +18,7 @@ public class PointServiceImpl implements PointService{
     private final GradeService gradeService;    // 등급 서비스 추가 (포인트 비율 조회용)
 
     @Override
-    public void earnPoints(long mno, long orno, int earnedPoints) {
+    public void earnPoints(long mno, String orno, int earnedPoints) {
         // 등급에 따른 포이트 적립 비율 계산
         int pointRate = gradeService.getPointRate(mno); //회원 등급에 따른 포인트 비율
         int calculatedPoints = (earnedPoints * pointRate) / 100;    //적립할 포인트 계산
@@ -34,7 +34,7 @@ public class PointServiceImpl implements PointService{
     }
 
     @Override
-    public void usePoints(long mno, long orno, int usePoints) {
+    public void usePoints(long mno, String orno, int usePoints) {
         int currentBalance = getBalance(mno);
         if(currentBalance < usePoints){
             throw new IllegalArgumentException("포인트가 부족합니다.");
@@ -63,7 +63,7 @@ public class PointServiceImpl implements PointService{
     }
 
     @Override
-    public void addPoints(long mno, int pointsEarned, long orno) {
+    public void addPoints(long mno, int pointsEarned, String orno) {
 
     }
 }

@@ -1,6 +1,6 @@
 package com.ezen.books.service;
 
-import com.ezen.books.domain.IamportAccessToken;
+import com.ezen.books.domain.*;
 import com.ezen.books.repository.PayoutMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -27,11 +28,45 @@ public class PayoutServiceImpl implements PayoutService {
 
     @Autowired
     public PayoutServiceImpl(
-            PayoutMapper payoutMapper, @Value("${iamport_rest_api_key}") String iamportApiKey,
+            PayoutMapper payoutMapper,
+            @Value("${iamport_rest_api_key}") String iamportApiKey,
             @Value("${iamport_rest_api_secret}") String iamportApiSecret) {
         this.payoutMapper = payoutMapper;
         this.iamportApiKey = iamportApiKey;
         this.iamportApiSecret = iamportApiSecret;
+    }
+
+    @Override
+    public AddressVO getDefaultAddress(long mno) {
+        AddressVO defaultAddress = payoutMapper.getDefaultAddress(mno);
+        return defaultAddress;
+    }
+
+    @Override
+    public int saveOrdersToServer(OrdersVO ordersVO) {
+        return payoutMapper.saveOrdersToServer(ordersVO);
+    }
+
+    @Override
+    public int saveOrderDetailToServer(OrderDetailVO orderDetail) {
+        return payoutMapper.saveOrderDetailToServer(orderDetail);
+    }
+
+    @Override
+    public int savePaymentToServer(PaymentVO paymentData) {
+        return payoutMapper.savePaymentToServer(paymentData);
+    }
+
+    @Override
+    public int removeCartToServer(long mno, long prno) {
+        // TODO: 만약 DB에 해당 mno와 prno가 이미 있으면 수량만 증가. 이후 JavaScript에 2를 반환하여 "수량이 추가되었습니다"가 나올 수 있게 할 것.
+        try {
+            payoutMapper.removeCartToServer(mno, prno);
+            return 1;
+        } catch (Exception e) {
+            log.info("Error during removing cart table. Content: {}", e);
+        }
+        return 0;
     }
 
     @Override
@@ -80,4 +115,5 @@ public class PayoutServiceImpl implements PayoutService {
             return false;
         }
     }
+
 }

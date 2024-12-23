@@ -1,44 +1,215 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
 <head>
   <meta charset="UTF-8">
   <title>Payout</title>
   <!--/* 결제 api와 연결하기 위한 js파일. */-->
+  <link rel="stylesheet" href="/css/payout.css"/>
+  <link rel="stylesheet" href="/css/cart.css"/>
   <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 </head>
 
-<div layout:fragment="main">
-  <div id="dataContainer" th:data-mno="${mno}"></div>
+<main layout:fragment="main">
+  <!--/* <div id="dataContainer" th:data-mno="${mno}" th:data-cart-product-list="${cartProductList}" th:data-is-pickup="${isPickup}"></div>의 어트리뷰트를 class="cart_inner inner"에 넣음 */-->
+  <div class="cart_inner inner" id="dataContainer" th:data-mno="${mno}" th:data-cart-product-list="${cartProductList}" th:data-is-pickup="${isPickup}">
+    <div class="cart_list">
+      <div class="cart_title_area">
+        <p class="cart_title">주문/결제</p>
+      </div>
 
-  <!-- 배송지의 class="address_info_box"의 기본 구성요소 -->
-  <div class="address_info_box">
-    <div class="address_name">
-      <span class="name"></span>
+      <div class="order_table_wrap1">
+        <table class="order_table address_table">
+          <tr>
+            <th> 배송지 정보</th>
+            <td>
+              <div class="address_info_wrap">
+                <p>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#497248" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                    <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
+                  </svg>
+                  <span class="location_name">[[${defaultAddress.addrName} ?: '배송지 이름']]</span>
+                  <span class="default_location">기본 배송지</span>
+                  <button type="button" class="change_address">변경</button>
+                </p>
+                <p class="custom_info"> <span class="custom_name">[[${defaultAddress.recName} ?: '수령인 이름']]</span><span class="phone_number">[[${defaultAddress.recPhone} ?: '수령인 전화번호']]</span></p>
+                <p class="address"><span>[[${defaultAddress.addr} ?: '배송지']]</span></p>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th> 배송 요청사항 </th>
+            <td>
+              <div class="shipping_request">
+                <div class="shipping_request_select select_box">
+                  <select name="Request" id="Request" aria-label="배송 메모를 선택해 주세요." class="request_select select">
+                    <option value hidden>배송 메모를 선택해 주세요.</option>
+                    <option value="문 앞에 놓아주세요.">문 앞에 놓아주세요.</option>
+                    <option value="부재 시 경비실에 맡겨 주세요.">부재 시 경비실에 맡겨 주세요.</option>
+                    <option value="부재 시 연락 주세요.">부재 시 연락 주세요.</option>
+                    <option value="배송 전 연락 주세요.">배송 전 연락 주세요.</option>
+                    <option value="직접 입력">직접 입력</option>
+                  </select>
+                  <i class="ic ic_arrow_down"></i>
+                </div>
+                <div class="shipping_request_text" style="display: none;">
+                  <textarea id="" placeholder="배송 메모를 입력해 주세요." maxlength="50" class="request_text"></textarea>
+                  <div class="text_count"><span>0/50</span></div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="order_table_wrap">
+        <p class="order_title_wrap">
+                            <span>
+                                <span class="order_title">주문상품</span>
+                                <span>총 <strong th:data-list-total="listTotal">[[${cartProductList.size}]]</strong> 개</span>
+                            </span>
+          <i class="ic ic_arrow_down"></i>
+        </p>
+
+        <div class="order_item order_goods_list">
+          <ul>
+            <li class="list-data-storage" th:each="cartProduct, iterStat:${cartProductList}" th:data-list-book-prno="${cartProduct.productVO.prno}" th:data-payout="${iterStat.index}" th:data-list-size="${cartProductList.size}"> <!-- 책(상품) 반복문 적용 -->
+              <div class="goods_image" >
+                <img th:src="${cartProduct.productVO.image}" class="thumbnail"/>
+              </div>
+
+              <div class="goods_title">
+                <p> [[${cartProduct.productVO.title} ?: '도서 제목']] </p>
+              </div>
+
+              <div class="goods_quantity">
+                <p><strong class="book-qty" th:data-payout="${iterStat.index}">[[${cartProduct.cartVO.bookQty} ?: '도서 수량']]</strong>개</p>
+              </div>
+
+              <div class="goods_price">
+                <p><strong class="book-sale-price" th:data-payout="${iterStat.index}">[[${cartProduct.productVO.realPrice} ?: '도서 판매가']]</strong>원</p>
+                <p class="book_original_price book-price" th:data-payout="${iterStat.index}">[[${cartProduct.productVO.discount} ?: '도서 원가']]원</p> <!--/* <p> 태그 안에 있던 "원"을 밖으로 뺌. */-->
+              </div>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+
+      <div class="order_table_wrap">
+        <p class="order_title_wrap">
+          <span class="order_title">할인</span>
+          <i class="ic ic_arrow_down"></i>
+        </p>
+
+        <div class="order_benefit order_item order_table active">
+          <table>
+            <tr>
+              <th>쿠폰</th>
+              <td>
+                <div class="coupon_wrap">
+                  <span class="coupon_name">[교보문고 배송] 배송비 적용</span>
+                  <span class="coupon_discount_amount"><strong>2,500</strong></span>
+                  <button type="button" class="btn benefit_btn">변경</button>
+                </div>
+              </td>
+            </tr>
+
+            <tr class="point_tr">
+              <th>포인트</th>
+              <td class="point_td">
+                <div class="point_wrap">
+                  <div class="point_input_wrap">
+                    <input type="text" class="point_input">
+                    <span class="unit">원</span>
+                  </div>
+                  <button type="button" class="btn benefit_btn">전액사용</button>
+                </div>
+                <span class="point">보유 : <strong>5,000</strong> P</span>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="order_table_wrap">
+        <p class="order_title_wrap">
+          <span class="order_title">결제 수단</span>
+        </p>
+
+        <div class="payment_method_list pay-btn-container">
+          <div class="pay_btn_container" data-pay-btn-container="payBtnContainer">
+            <input type="hidden" data-payment-mno="${mno}">
+            <button type="button" class="pay-btn credit-card-btn">신용카드</button>
+            <button type="button" class="pay-btn phone-btn">핸드폰</button>
+            <button type="button" class="pay-btn account-btn">계좌이체</button>
+            <button type="button" class="pay-btn naverpay-btn"><span class="naver"></span></button>
+            <button type="button" class="pay-btn kakaopay-btn"><span class="kakao"></span></button>
+            <button type="button" class="pay-btn tosspay-btn"><span class="toss"></span></button>
+          </div>
+          <div class="select_credit_card">
+            <div class="select_credit_card_box select_box">
+              <select class="select">
+                <option value="select-card">카드사 선택</option>
+                <option value="C_KB">KB국민카드</option>
+                <option value="C_SHINHAN">신한카드</option>
+                <option value="C_SAMSUNG">삼성카드</option>
+                <option value="C_BC">비씨카드</option>
+                <option value="C_NH">NH농협카드</option>
+                <option value="C_HYUNDAI">현대카드</option>
+                <option value="C_LOTTE">롯데카드</option>
+                <option value="C_HANA">하나카드</option>
+                <option value="C_KAKAOBANK">카카오뱅크카드</option>
+                <option value="C_KBANK">케이뱅크카드</option>
+                <option value="C_WOORI">우리카드</option>
+                <option value="C_CITY">씨티카드</option>
+                <option value="C_SHINHYUP">신협카드</option>
+                <option value="C_SUHYUP">수협카드</option>
+                <option value="C_POST">우체국카드</option>
+                <option value="C_JEONBUK">전북카드</option>
+                <option value="C_JEJU">제주카드</option>
+                <option value="C_KDB">KDB산업은행카드</option>
+                <option value="C_GWANGJU">광주카드</option>
+              </select>
+              <i class="ic ic_arrow_down cardIcon"></i>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
     </div>
-    <div class="address_person"></div>
-    <div class="address"></div>
+
+    <div class="cart_sidebar">
+      <div class="aside_container">
+        <div class="aside_wrap">
+          <div class="tap"></div>
+          <aside>
+            <p class="cart_aside_title"><strong style="font-size: 1.3rem; letter-spacing: 1px;">주문 합계</strong></p>
+            <div class="cart_aside_top">
+              <p><span class="label">상품 금액</span><span><strong class="total-original-price"></strong>원</span></p>
+              <p><span class="label">배송비 <i class="ic ic_question"></i></span><span>+ 0원</span></p>
+              <p><span class="label">상품 할인</span><span><strong class="discount_price discount-amount" style="color: #39553F;"></strong>원</span></p>
+              <p><span class="label">쿠폰 할인</span><span><strong class="discount_price" style="color: #39553F;">- 10,000</strong>원</span></p>
+              <p><span class="label">포인트 사용</span><span>0원</span></p>
+            </div>
+            <div class="cart_aside_bottom">
+              <p><strong>최종 결제 금액</strong> <span><strong class="total-price" data-total-price="totalPrice"></strong>원</span></p>
+              <p><span>적립 예정 포인트 <i class="ic ic_question"></i></span><span>2,000P</span></p>
+            </div>
+            <div class="cart_order_btn">
+              <p><button type="button" id="orderBtn" >결제하기</button></p>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!--/* 사용자가 "배송지 변경" 버튼을 눌렀을 때 나올 div: 사용자 배송지 목록을 보여주는 역할 */-->
-
-  <!--/* 사용자가 "배송지 변경" div에 있는 "배송지 추가" 버튼을 눌렀을 때 나올 div: 배송지 추가를 위한 정보를 입력받는 역할 */-->
-
-  <div id="payBtnContainer">
-    <button type="button" id="creditCard" class="pay-btn credit-card-btn">Credit Card, 미지원</button>
-    <button type="button" id="phone" class="pay-btn phone-btn">Phone</button>
-    <button type="button" id="naverpay" class="pay-btn naverpay-btn">Naver Pay, 미지원</button>
-    <button type="button" id="kakaopay" class="pay-btn kakaopay-btn">Kakao Pay</button>
-    <button type="button" id="tosspay" class="pay-btn tosspay-btn">Toss Pay</button>
-    <br>
-    <button type="button" id="orderBtn">주문하기</button>
-  </div>
-
-  <a th:href="@{/}">Go to index.html</a>
-</div>
-
-<script th:src="@{/js/payoutBusiness.js}"></script>
-<script th:src="@{/js/payoutDisplay.js}"></script>
-
+  <script defer th:src="@{/js/paymentPayoutBusiness.js}"></script>
+  <script defer th:src="@{/js/paymentPayoutDisplay.js}"></script>
+  <script defer th:src="@{/js/paymentPayoutStyle.js}"></script>
+</main>
 </html>

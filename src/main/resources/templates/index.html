@@ -2,19 +2,16 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layout/layout}">
 
 <main layout:fragment="main">
     <h3>Main Area!!</h3>
     <a th:href="@{/product/register}">상품 등록하기</a>
     <a th:href="@{/product/list}">상품 목록보기</a>
-    <a th:href="@{/store}">오프라인 매장 보기</a>
-
-    <!--/* 결제를 위해 임시로 만든 경로. */-->
-    <!--/* 장바구니 페이지에 들어갈 때 "로그인 된 사용자"가 들어가기 때문에 */-->
-    <!--/* mno를 path variable로 넘겨줄 수 있을 것이라 가정했음. */-->
-    <!--/* TODO: merge 후에 로그인 한 정보를 바탕으로 mno=${mno}로 넣을 것.  */-->
-    <a th:href="@{/payment/cart(mno=${1})}"><button type="button">Shopping Cart</button></a>
+    <a th:href="@{/store}">오프라인 매장 보기</a> <br>
+    <p>! 로그인을 해야 장바구니 버튼이 나타납니다.</p> <br>
+    <a sec:authorize="isAuthenticated()" th:href="@{/payment/cart(mno=${#authentication.getPrincipal().memberVO.getMno()})}"><button type="button">로그인 기반 장바구니</button></a>
 
     <script>
         let modify_msg = `[[${mod_msg}]]`;

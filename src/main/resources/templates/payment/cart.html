@@ -1,87 +1,153 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
 <head>
   <meta charset="UTF-8">
   <title>Shopping Cart</title>
+  <link rel="stylesheet" href="/css/cart.css"/>
 </head>
+<body>
 
-<!--/* TODO: merge한 후 DB의 값을 반영하여 화면에 보여줄 것. */-->
-<div layout:fragment="main">
-  <div id="dataContainer" th:data-mno="${mno}"></div>
 
-  <!-- /* 쇼핑카트 상품 목록 */ -->
-  <div>
-    <!--/*장바구니 전체 선택 버튼을 담는 div*/-->
-    <div>
-      <!--/* 전체 선택 버튼 */-->
-      <input type="checkbox" id="allItemBtn" name="itemBtn"> <- 모두 선택 버튼
+<main layout:fragment="main">
+  <div class="cart_inner inner" id="dataContainer" th:data-mno="${mno}" th:data-is-cart-empty="${isCartEmpty}">
+    <!--/* <div id="dataContainer" th:data-mno="${mno}" th:data-is-cart-empty="${isCartEmpty}"></div> */--> <!--/* 레이아웃이 깨져서 없앰. */-->
+    <div class="cart_list">
+      <div class="cart_title_area">
+        <p class="cart_title">장바구니</p>
+        <div class="cart_title2">
+          <div class="cart_check_box_area">
+            <label class="cart_check_box"><input type="checkbox" id="allItemBtn" name="itemBtn" class="cart_check"></label>
+            <span>전체 선택</span>
+          </div>
+
+          <button type="button"><i class="ic ic_wastebasket"></i></button>
+        </div>
+      </div>
+
+      <div class="cart_list_none">
+        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 16 16">
+          <circle cx="8" cy="8" r="8" fill="#c6c6c6"></circle>
+          <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" fill="white"></path>
+        </svg>
+        <p class="title">장바구니에 담긴 상품이 없습니다.</p>
+        <p class="sub">마음에 드는 상품을 담아보세요!</p>
+        <a href="">계속 쇼핑하기</a> <!-- 메인 페이지로 이동 -->
+      </div>
+
+
+      <div class="cart_list_table" style="display: none;"> <!--/* 레이아웃 보려고 style="display: none;"을 잠시 빼봄 */-->
+      <!--/* <div th:each="cartProduct, iterStat:${cartProductList}"> &lt;!&ndash;/* th:each 용로도 사용하는 div */&ndash;&gt; */-->
+
+          <table>
+            <tr>
+              <th>상품 정보</th>
+              <th>수량</th>
+              <th>금액</th>
+            </tr>
+
+
+            <tr th:each="cartProduct, iterStat:${cartProductList}">
+              <!--/* 데이터 저장용 div, input type = hidden. */-->
+              <input type="hidden" id="listDataStorage" th:data-list-size="${cartProductList.size}">
+              <input type="hidden" th:value="${cartProduct.cartVO.mno}" th:class="mno" th:data-cart="${iterStat.index}">
+              <input type="hidden" th:value="${cartProduct.cartVO.prno}" th:class="prno" th:data-cart="${iterStat.index}">
+
+              <td class="product_info">
+                <div class="td_wrap product_info_wrap">
+                  <label class="cart_check_box">
+                    <!--/* 체크박스 input에 내 HTML 데이터를 합침 */-->
+                    <input type="checkbox" class="cart_check single-item-btn" name="itemBtn" th:data-cart="${iterStat.index}">
+                  </label> <!--/* Extract duplicate id="allItemBtn" */-->
+                  <div class="book_image_wrap">
+                    <!--/* src="https://cdn.ypbooks.co.kr/image/product/202410/06f4de7c-b904-4e43-b64f-5c7e20c459df_100.jpg" */-->
+                    <a href=""><img th:src="${cartProduct.productVO.image}" alt=""></a>
+                  </div>
+                  <div class="book_info_wrap">
+                    <p class="book_title"><a href="">[[${cartProduct.productVO.title} ?: '도서 제목']]</a></p> <!--/* 원본 파일에서는 "소년이 온다"가 있었음 */-->
+                    <p class="book_write">
+                      <span class="book_author">[[${cartProduct.productVO.author} ?: '작가']]</span>
+                      <span class="book_publisher">[[${cartProduct.productVO.publisher} ?: '출판사']]</span>
+                    </p>
+                    <p class="book_price_wrap">
+                      <span class="discount"><strong>[[${cartProduct.productVO.discountRate} ?: '할인 없음']]%</strong></span> <!--/* 원본 파일에서는 "소년이 온다"가 있었음 */-->
+                      <span class="book_discount_price sale-price" th:data-cart="${iterStat.index}"><strong>[[${cartProduct.productVO.realPrice}]]</strong>원</span>
+                      <span class="book_original_price original-price" th:data-cart="${iterStat.index}">[[${cartProduct.productVO.discount} ?: '도서 원가']]원</span>
+                    </p>
+                  </div>
+                </div>
+              </td>
+
+              <td class="product_quantity">
+                <div class="td_wrap product_quantity_wrap">
+                  <div class="prod_count_btn_wrap"> <!-- +, - 버튼 -->
+                    <button type="button" class="btn minus_btn desc-btn" th:data-cart="${iterStat.index}"> <!--/* 반복되는 id 삭제. id="bookQtyDescBtn" */-->
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#555" stroke="#555" stroke-width="1.5" class="bi bi-dash-lg" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8"/>
+                      </svg>
+                    </button>
+                    <!--/* <input type="text" th:class="book-qty" th:value="${cartProduct.cartVO.bookQty}" th:data-cart="${iterStat.index}">이 아래 span에 대응함. */-->
+                    <!--/* 해당 <input>이 쓰이는 JS 함수 확인 후 span에 맞게 바꿀 것. */-->
+                    <span th:class="book-qty" th:data-cart="${iterStat.index}">[[${cartProduct.cartVO.bookQty}]]</span> <!--/* CSS에 없는 것을 확인하고 삭제 조치함. id="qtyPrice" */-->
+                    <button type="button" class="btn plus_btn asc-btn" th:data-cart="${iterStat.index}"> <!--/* CSS에 없는 것을 확인하고 삭제 조치함. id="bookQtyAscBtn" */-->
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#555" stroke="#555" stroke-width="1.5" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </td>
+
+              <!--/* <p class="qty-price" th:data-cart="${iterStat.index}"></p>의 정보를 아래 <strong>에 넣어봄. */-->
+              <td class="product_total_price"><strong style="font-size: 1.1rem;" class="qty-price" th:data-cart="${iterStat.index}">30,000</strong>원 <i class="ic ic_delete"></i></td>
+            </tr>
+
+          </table>
+        </div> <!--/* th:each 용로도 사용하는 div */-->
+
+        <div class="cart_recautions">
+          <p>장바구니 유의사항</p>
+          <ul>
+            <li>상품별 배송 일정이 서로 다를 시 가장 늦은 일정의 상품 기준으로 모두 함께 배송됩니다.</li>
+            <li>배송지 수정 시 예상일이 변경될 수 있으며, 주문서에서 배송 일정을 꼭 확인하시기 바랍니다.</li>
+            <li>바로픽업의 수령가능일은 나의 기본매장 기준으로 노출됩니다.</li>
+            <li>쿠폰, 통합포인트, 교환권 사용 시 적립예정포인트가 변동 될 수 있습니다.</li>
+          </ul>
+        </div>
+        <!--/* </div> */-->
     </div>
-    <!--/* 장바구니에 담긴 각각의 내역을 보여주는 div */-->
-    <div th:each="cartProduct, iterStat:${cartProductList}">
-      <div>
-        <input type="hidden" th:value="${cartProduct.cartVO.mno}" th:class="mno" th:data-cart="${iterStat.index}">
-        <input type="hidden" th:value="${cartProduct.cartVO.prno}" th:class="prno" th:data-cart="${iterStat.index}">
-        <!--/* 해당 항목을 결제할지 말지 선택하는 checkbox를 담는 div */-->
-        <div>
-          <input type="checkbox" class="single-item-btn" name="itemBtn" th:data-cart="${iterStat.index}">
-        </div>
-        <!--/* 장바구니에 담긴 도서에 대한 정보를 담는 div */-->
-        <div>
-          <!--/* 도서 표지를 보여주는 img */-->
-          <img>
-          <p>[[${cartProduct.productVO.title} ?: '도서 제목']]</p>
-          <p>[[${cartProduct.productVO.discountRate} ?: '할인 없음']]</p>
-          <p>[[${cartProduct.productVO.discount} ?: '도서 가격']]</p>
-        </div>
-        <!--/* 장바구니에 담을 도서 개수를 줄이고 올리는 버튼이 들어가는 div */-->
-        <div>
-          <!--/* TODO: 미구현. 가격을 반영한 도서의 금액 */-->
-          <p id="qtyPrice" ></p>
-          <button id="bookQtyDescBtn" >-</button>
-          <!--/* 구매할 도서 개수 */-->
-          <input type="text" th:class="bookQty" th:value="${cartProduct.cartVO.bookQty}" th:data-cart="${iterStat.index}">
-          <button id="bookQtyAscBtn" >+</button>
+
+    <div class="cart_sidebar">
+      <div class="aside_container">
+        <div class="aside_wrap">
+          <div class="tap"></div>
+          <aside>
+            <p class="cart_aside_title"><strong style="font-size: 1.3rem; letter-spacing: 1px;">주문 합계</strong></p>
+            <div class="cart_aside_top">
+              <p><span class="label">상품 금액</span><span><strong class="total-original-price"></strong>원</span></p>
+              <p><span class="label">배송비 <i class="ic ic_question"></i></span><span class="delivery-fee">배송비</span></p>
+              <p><span class="label">상품 할인</span><span><strong class="discount_price total-discount-price" style="color: #39553F;"></strong></span></p>
+            </div>
+            <div class="cart_aside_bottom">
+              <p><strong>결제 예정 금액</strong> <span><strong
+
+
+                      class="estimated-payment-amount"></strong>원</span></p>
+              <p><span>적립 예정 포인트 <i class="ic ic_question"></i></span> <span><span class="estimated-point-amount"></span>P</span> </p>
+            </div>
+            <div class="cart_order_btn">
+              <p class="order_btn"><button type="button" id="orderBtn">주문하기</button></p>
+              <p class="pick_up_btn"><button type="button" id="pickupBtn">픽업하기</button></p>
+            </div>
+          </aside>
         </div>
       </div>
     </div>
   </div>
-
-
-  <!--/* 화면 오른쪽에 등장하여 결제 정보를 알려주는 div */-->
-  <div>
-    <ul>
-      <li>
-        <!--/* 장바구니에 담긴 모든 도서의 금액을 합친 금액 */-->
-        <span id="infoSumList" th:data-sum-cart-list>장바구니 도서 금액 총합</span>
-      </li>
-      <li>
-        <!--/* 배송비 */-->
-        <span id="infoDeliver" th:data-deliver-fee>배송비</span>
-      </li>
-      <li>
-        <!--/* 도서 할인 금액 */-->
-        <span id="infoDiscount" th:data-discount-amount>도서 할인 금액</span>
-      </li>
-    </ul>
-    <ul>
-      <li>
-        <!--/* 위 <ul>의 정보를 반영한 결제 예정 금액 */-->
-        <span id="infoTotalPrice" th:data-total-price>결제 예정 금액</span>
-      </li>
-      <li>
-        <!--/* 적립 예정 포인트 */-->
-        <span id="infoPoint" th:data-sum-point>적립 예정 포인트</span>
-      </li>
-    </ul>
-
-  </div>
-  <!--/* TODO: 선택된 장바구니 내역들의 데이터를 꺼내 JS에 넘겨주고, 그것을 payout에 전달. */-->
-  <!--/* 결제 페이지로 넘어가는 버튼 */-->
-  <button id="orderBtn" type="button">주문하기</button>
-  <button id="pickupBtn" type="button">픽업하기</button>
-</div>
-
-<script defer th:src="@{/js/cart.js}"></script>
+  <script defer th:src="@{/js/paymentCart.js}"></script>
+  <script defer th:src="@{/js/paymentPayoutStyle.js}"></script>
+</main>
+</body>
 </html>
