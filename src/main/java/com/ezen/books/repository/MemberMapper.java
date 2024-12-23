@@ -1,8 +1,8 @@
 package com.ezen.books.repository;
 
-import com.ezen.books.domain.AddressVO;
 import com.ezen.books.domain.MemberAuth;
 import com.ezen.books.domain.MemberVO;
+import com.ezen.books.domain.PointsVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.data.repository.query.Param;
 
@@ -17,13 +17,21 @@ public interface MemberMapper {
 
     void saveTokens(MemberVO memberVO);
 
+    String existingPassword(String loginId);
+
     int updateMember(MemberVO memberVO);
 
     int deleteMember(String loginId);
 
-    int checkUser(@Param("loginId") String loginId, @Param("password") String password);
+    double getTotalSpentInLast3Months(long mno);
 
-    long getLastMno();
+    void updateMemberGrade(long mno, long gno);
 
-    int saveAddressToServer(AddressVO addressVO);
+    MemberVO getMemberByInfo(String loginId);
+
+    MemberVO getMemberById(long mno);
+
+    MemberVO findById(String id);
+
+    int updateLastLogin(String authLoginId);
 }

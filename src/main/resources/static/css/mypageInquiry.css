@@ -1,0 +1,42 @@
+.inner {
+    width: 1200px;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+.form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+.form-group input[type="file"] {
+    padding: 0;
+}
+.file-info {
+    font-size: 12px;
+    color: #888;
+}
+.btn-group {
+    text-align: center;
+}
+.btn-group button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.btn-group button.cancel {
+    background-color: #f44336;
+}

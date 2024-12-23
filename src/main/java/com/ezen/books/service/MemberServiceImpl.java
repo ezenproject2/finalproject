@@ -1,7 +1,8 @@
 package com.ezen.books.service;
 
-import com.ezen.books.domain.AddressVO;
-import com.ezen.books.domain.MemberVO;
+import com.ezen.books.domain.*;
+import com.ezen.books.repository.CouponMapper;
+import com.ezen.books.repository.GradeMapper;
 import com.ezen.books.repository.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 public class MemberServiceImpl implements MemberService{
 
     private final MemberMapper memberMapper;
+    private final GradeMapper gradeMapper;
+    private final CouponMapper couponMapper;
 
     @Override
     public boolean checkLoginIdDuplicate(String loginId) {
@@ -25,6 +28,11 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
+    public String getExistingPassword(String loginId) {
+        return memberMapper.existingPassword(loginId);
+    }
+
+    @Override
     public int updateMember(MemberVO memberVO) {
         return memberMapper.updateMember(memberVO);
     }
@@ -34,21 +42,50 @@ public class MemberServiceImpl implements MemberService{
         return memberMapper.deleteMember(loginId);
     }
 
+    /*---------------------------------------*/
+
     @Override
-    public boolean validateUser(String loginId, String password) {
-        return memberMapper.checkUser(loginId, password) > 0;
+    public MemberVO getMemberByInfo(String loginId) {
+        return memberMapper.getMemberByInfo(loginId);
     }
 
     @Override
-    public long getLastMno() {
-        return memberMapper.getLastMno();
+    public void updateMemberGrade(long mno) {
+        // 3개월 이내의 구매 금액 합계
+        double totalSpent = memberMapper.getTotalSpentInLast3Months(mno);
+
+        // 구매 금액에 따른 금액 갱신
+        long gno = calculateGrade(totalSpent);
+
+        // 등급 업데이트
+        memberMapper.updateMemberGrade(mno, gno);
+    }
+
+    private long calculateGrade(double totalSpent){
+        if(totalSpent >= 300000){
+            return 4;    // 플래티넘
+        } else if(totalSpent >= 200000){
+            return 3;    // 골드
+        } else if(totalSpent >= 100000){
+            return 2;    // 실버
+        } else {
+            return 1;    // 새싹
+        }
     }
 
     @Override
-    public int saveAddressToServer(AddressVO addressVO) {
-        addressVO.setAddrName("기본 배송지");
-        addressVO.setIsDefault("Y");
-        return memberMapper.saveAddressToServer(addressVO);
+    public double getPointRateByGrade(long mno) {
+        return 0;
+    }
+
+    @Override
+    public MemberVO getMemberById(long mno) {
+        return memberMapper.getMemberById(mno);
+    }
+
+    @Override
+    public int updateLastLogin(String authLoginId) {
+        return memberMapper.updateLastLogin(authLoginId);
     }
 
 

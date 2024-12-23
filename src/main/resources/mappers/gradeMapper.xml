@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ezen.books.repository.GradeMapper">
+
+    <!-- 회원의 등급 조회 -->
+    <select id="getGradeByMember" resultType="com.ezen.books.domain.GradeVO">
+        select g.* from grade g
+        join member m on g.gno = m.gno
+        where m.mno = #{mno}
+    </select>
+
+    <select id="getGradeByGrade" resultType="com.ezen.books.domain.GradeVO">
+        select * from grade
+        where gno = #{gno}
+    </select>
+    
+</mapper>

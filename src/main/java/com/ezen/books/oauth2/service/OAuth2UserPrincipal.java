@@ -1,6 +1,8 @@
 package com.ezen.books.oauth2.service;
 
+import com.ezen.books.domain.MemberVO;
 import com.ezen.books.oauth2.user.OAuth2UserInfo;
+import com.ezen.books.security.CustomPrincipal;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,13 +13,15 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public class OAuth2UserPrincipal implements OAuth2User, UserDetails {
+public class OAuth2UserPrincipal implements OAuth2User, UserDetails, CustomPrincipal {
 
     private final OAuth2UserInfo userInfo;
     private final List<String> roles;
+    private final MemberVO memberVO;
 
-    public OAuth2UserPrincipal(OAuth2UserInfo userInfo, List<String> roles) {
+    public OAuth2UserPrincipal(OAuth2UserInfo userInfo, MemberVO memberVO, List<String> roles) {
         this.userInfo = userInfo;
+        this.memberVO = memberVO;
         this.roles = roles;
     }
 
@@ -29,7 +33,7 @@ public class OAuth2UserPrincipal implements OAuth2User, UserDetails {
 
     @Override
     public String getUsername() {
-        return userInfo.getEmail();
+        return userInfo.getProvider()+"_"+userInfo.getId();
     }
 
     @Override
@@ -79,4 +83,8 @@ public class OAuth2UserPrincipal implements OAuth2User, UserDetails {
         return userInfo;  // OAuth2 사용자 정보 반환
     }
 
+    @Override
+    public MemberVO getMemberVO() {
+        return memberVO;
+    }
 }
