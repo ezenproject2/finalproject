@@ -21,7 +21,7 @@
       </div>
 
       <div class="order_table_wrap1">
-        <table class="order_table address_table">
+        <table class="order_table address_table" th:if="${defaultAddress != null}">
           <tr>
             <th> 배송지 정보</th>
             <td>
@@ -62,6 +62,8 @@
             </td>
           </tr>
         </table>
+
+
       </div>
 
       <div class="order_table_wrap">

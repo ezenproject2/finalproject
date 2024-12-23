@@ -41,4 +41,15 @@ public class CartServiceImpl implements CartService {
             return 1;
         }
     }
+
+    @Override
+    public int deleteCartToServer(long mno, long prno) {
+        try{
+            cartMapper.deleteCartToServer(mno, prno);
+            return 1;
+        } catch (Exception e) {
+            log.info("Error in deleteCartToServer. Content: {}", e);
+        }
+        return 0;
+    }
 }

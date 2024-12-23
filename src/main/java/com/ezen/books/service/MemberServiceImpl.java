@@ -88,5 +88,17 @@ public class MemberServiceImpl implements MemberService{
         return memberMapper.updateLastLogin(authLoginId);
     }
 
+    @Override
+    public long getLastMno() {
+        return memberMapper.getLastMno();
+    }
+
+    @Override
+    public int saveAddressToServer(AddressVO addressVO) {
+        addressVO.setAddrName("기본 배송지");
+        addressVO.setIsDefault("Y");
+        return memberMapper.saveAddressToServer(addressVO);
+    }
+
 
 }

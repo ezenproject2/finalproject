@@ -237,7 +237,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   });
 
-
 // ----- 배송지를 입력받기 위해 준희가 삽입한 코드 -----
 document.querySelector('.join_btn').addEventListener('click', () => {
   console.log("join btn clicked!");
@@ -248,14 +247,22 @@ document.querySelector('.join_btn').addEventListener('click', () => {
   const name = document.querySelector('[name="name"].input_name').value;
   const phoneNumber = document.querySelector('[name="phoneNumber"].input_number').value;
   const nickName = document.querySelector('[name="nickName"].input_nickName').value;
-  
+
   const postcode = document.getElementById('postcode').value;
   const homeAddress = document.getElementById('homeAddress').value;
   const detailAddress = document.getElementById('detailAddress').value;
 
-  saveMemberToServer(loginId, password, passwordCheck, email, name, phoneNumber, nickName);
-  saveAddressToServer(name, phoneNumber, postcode, homeAddress, detailAddress);
+  operateSignIn(loginId, password, passwordCheck, email, name, phoneNumber, nickName, name, phoneNumber, postcode, homeAddress, detailAddress);
 })
+
+async function operateSignIn(loginId, password, passwordCheck, email, name, phoneNumber, nickName, name, phoneNumber, postcode, homeAddress, detailAddress) {
+  try {
+    await saveMemberToServer(loginId, password, passwordCheck, email, name, phoneNumber, nickName);
+    await saveAddressToServer(name, phoneNumber, postcode, homeAddress, detailAddress); 
+  } catch (error) {
+    console.error("Transaction failed. Content: ", error);
+  }
+}
 
 async function saveMemberToServer(loginIdVal, passwordVal, passwordCheckVal, emailVal, nameVal, phoneNumberVal, nickNameVal) {
   const url = "/member/join";

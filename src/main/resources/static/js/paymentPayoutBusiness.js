@@ -428,8 +428,7 @@ async function removeCartToServer() {
     for(let i = 0; i < parseInt(index); i++) {
         let cartVoObj = {
             mno: mnoVal,
-            prno:"",
-            bookQty: -1 // TODO: NOT NULL 컬럼이라 혹시 몰라 보냄. 빼도 이상 없으면 뺄 예정.
+            prno:""
         };
 
         cartVoObj.prno = document.querySelector(`[data-payout="${i}"].list-data-storage`).dataset.listBookPrno;

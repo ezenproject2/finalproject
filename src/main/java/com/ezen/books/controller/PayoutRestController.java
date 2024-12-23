@@ -179,7 +179,7 @@ public class PayoutRestController {
     @PostMapping("/remove-cart")
     public ResponseEntity<String> removeCartToServer(@RequestBody String cartListData) {
         log.info(" >>> PaymentRestController: removeCartToServer start.");
-        // The cartListData from the client: [{"mno":"4","prno":"84","bookQty":1},{"mno":"4","prno":"82","bookQty":1},{"mno":"4","prno":"84","bookQty":1},{"mno":"4","prno":"84","bookQty":1},{"mno":"4","prno":"80","bookQty":1}]
+        // The cartListData from the client: [{"mno":"15","prno":"83"},{"mno":"15","prno":"82"},{"mno":"15","prno":"65"}]
         log.info("The cartListData from the client: {}", cartListData);
 
         List<CartVO> cartList =  parseCartVoArray(cartListData);
@@ -233,8 +233,7 @@ public class PayoutRestController {
         return pgMap;
     }
 
-    // NOTE: 똑같은 메서드가 PaymentController에도 있음. 한 메서드를 같이 쓸 수 없나?
-    // 메서드 하나인데 굳이 싶기도 하고.
+    // NOTE: 똑같은 메서드가 PaymentController에도 있음.
     private List<CartVO> parseCartVoArray(String cartListData) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();

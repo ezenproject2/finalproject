@@ -33,4 +33,9 @@
         set book_qty = book_qty + #{bookQty}
         where mno = #{mno} and prno = #{prno}
     </update>
+
+    <delete id="deleteCartToServer">
+        delete from cart
+        where mno = #{mno} and prno = #{prno}
+    </delete>
 </mapper>

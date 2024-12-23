@@ -33,6 +33,7 @@ public class PaymentController {
     @GetMapping("/cart")
     public String showCartItems(@RequestParam("mno") long mno, Model model) {
         log.info(" >>> PaymentController: showCartItems start.");
+        log.info("The mno of showCartItems: {}", mno);
         List<CartVO> cartList = cartService.getAllCartItems(mno);
         log.info(" >>> cartList: {}", cartList);
 
@@ -143,12 +144,6 @@ public class PaymentController {
             log.info("Exception occurred. Content: {}", e);
             return null;
         }
-    }
-
-    // HTML 템플릿 보려고 임시로 만든 메서드.
-    @GetMapping("/cartTemp")
-    public String goCartTemp() {
-        return "/payment/cartTemp";
     }
 
 }

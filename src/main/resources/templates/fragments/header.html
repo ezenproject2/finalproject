@@ -59,7 +59,10 @@
 
                 <div class="header_user_wrap">
                     <ul class="user_menu_list">
-                        <li class="user_menu_item"> <i class="ic ic_cart"></i></li>
+                        <li class="user_menu_item">
+                            <a sec:authorize="isAuthenticated()" th:href="@{/payment/cart(mno=${#authentication.getPrincipal().memberVO.getMno()})}"><i class="ic ic_cart"></i></a>
+                            <i sec:authorize="isAnonymous()" class="ic ic_cart"></i>
+                        </li>
                         <li class="user_menu_item"> <i class="ic ic_bell"></i> </li>
 <!--                        <li class="user_menu_item"> <a th:href="${#authentication.name != 'anonymousUser' ? '/mypage/main/' + #authentication.principal.memberVO.mno : '/member/login'}"><i class="ic ic_myPage"></i></a> </li>-->
                         <li class="user_menu_item"> <a th:href="@{/mypage/main}"><i class="ic ic_myPage"></i></a> </li>

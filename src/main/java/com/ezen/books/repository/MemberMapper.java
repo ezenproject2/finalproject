@@ -1,5 +1,6 @@
 package com.ezen.books.repository;
 
+import com.ezen.books.domain.AddressVO;
 import com.ezen.books.domain.MemberAuth;
 import com.ezen.books.domain.MemberVO;
 import com.ezen.books.domain.PointsVO;
@@ -34,4 +35,8 @@ public interface MemberMapper {
     MemberVO findById(String id);
 
     int updateLastLogin(String authLoginId);
+
+    long getLastMno();
+
+    int saveAddressToServer(AddressVO addressVO);
 }
