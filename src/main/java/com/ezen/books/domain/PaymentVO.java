@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class PaymentVO {
     private long pano;
-    private long orno;
+    private String orno;
     private String measure;
     private int price;
     private String status;
@@ -23,7 +23,7 @@ public class PaymentVO {
 /*
 CREATE TABLE payment (
     pano bigint NOT NULL AUTO_INCREMENT,
-    orno bigint NOT NULL,
+    orno VARCHAR(250) NOT NULL,
     measure VARCHAR(50) NOT NULL,
     price int NOT NULL,
     status VARCHAR(100) NOT NULL,

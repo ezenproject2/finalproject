@@ -1,0 +1,289 @@
+.order_table_wrap, .order_table, .order_table tr, .shipping_request_text, .shipping_request_text > textarea  {
+    width: 100%;
+}
+.order_table_wrap, .order_table_wrap1, .payment_method_list {
+    width: 100%;
+    padding: 20px 0 10px 0;
+}
+.order_table_wrap1, .payment_method_list {
+    margin-top: 30px;
+}
+.order_table_wrap {
+    margin-top: 70px;
+}
+.order_table {
+    text-align: left;
+}
+.order_table th {
+    width: 30%;
+    font-size: 1.15rem;
+    font-weight: 700;
+    padding-left: 10px;
+}
+.order_table td {
+    width: 70%;
+    padding-right: 10px;
+    padding-bottom: 20px;
+}
+.address_table td > div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.address_table td > div > p {
+    display: flex;
+    align-items: center;
+    gap : 7px;
+}
+
+.location_name {
+    color: #497248;
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+.default_location {
+    font-size: 0.7rem;
+    color: white;
+    background-color: #ABBC86;
+    padding: 5px;
+    border-radius: 6px;
+}
+.change_address {
+    font-size: 0.9rem;
+    padding: 5px;
+    border: 1px solid #c6c6c6;
+    border-radius: 6px;
+}
+.custom_name::after {
+    content: " /";
+}
+.select_box, .point_input_wrap {
+    position: relative;
+    width: 100%;
+    border: 1.5px solid #c6c6c6;
+    border-radius: 6px;
+    padding: 15px 25px;
+    transition: border-color 0.2s ease-out;
+}
+.select_box > select {
+    position: relative;
+    width: 100%;
+}
+.select_box > .ic_arrow_down, .select_box > .ic_arrow_up {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 25px;
+}
+.ic_arrow_down, .ic_arrow_up {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+}
+
+.shipping_request_text {
+    padding: 10px;
+    border: 1px solid #c6c6c6;
+    border-radius: 8px;
+}
+
+.shipping_request_text > textarea {
+    height: 80px;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    resize: none;
+}
+.text_count {
+    border-top: 1px solid #c6c6c6;
+    padding-top: 15px;
+    text-align: right;
+    color: #555;
+}
+
+.order_title_wrap {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+    margin-bottom: 10px;
+}
+.order_title_wrap > span {
+    display: inline-flex;
+    align-items: center;
+}
+.order_title {
+    display: inline-block;
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-right: 10px;
+}
+.order_item {
+    /* display: none; 기본적으로 숨김 */
+    overflow: hidden; /* 내용물이 넘치지 않도록 설정 */
+    max-height: 0; /* 초기 높이를 0으로 설정 */
+    opacity: 0; /* 투명도 설정 */
+    transition: max-height 0.5s ease, opacity 0.5s ease; /* 부드러운 애니메이션 */
+}
+.order_item > * {
+    opacity: 0;
+    transform: scaleY(0); /* 높이를 제거하는 효과 */
+    transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.order_item.active > * {
+    opacity: 1;
+    transform: scaleY(1); /* 원래 높이 복원 */
+}
+
+.order_item.active {
+    display: block; /* 보여줄 때 block으로 변경 */
+    max-height: 1000px; /* 충분히 큰 값으로 설정 (내용물보다 커야 함) */
+    opacity: 1; /* 투명도 복원 */
+}
+.order_goods_list {
+    padding: 0 10px;
+}
+.order_goods_list > ul{
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+.order_goods_list li {
+    width: 100%;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    margin-top: 20px;
+}
+.goods_image { width: 25%; }
+.goods_title { width: 40%; }
+.goods_quantity { width: 15%; }
+.goods_price { width: 20%; }
+
+.order_goods_list li > div {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.1rem;
+    gap: 5px;
+}
+
+.goods_title p { text-align: start;}
+.goods_image img {
+    width: 148px;
+    height: 210px;
+}
+.goods_price > p > strong { font-size: 1.2rem;}
+.goods_price > p { font-size: 0.9rem;}
+
+
+.order_benefit > table {
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.coupon_wrap {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    gap: 20px;
+}
+.coupon_name {
+    color: #8E8E8E;
+    font-size: 0.8rem;
+}
+.coupon_discount_amount > strong{
+    font-size: 1.1rem;
+}
+.coupon_discount_amount > strong::before {
+    content: "-";
+    margin-right: 5px;
+}
+.coupon_discount_amount > strong::after {
+    content: "원";
+    margin-left: 3px;
+    font-weight: 500;
+}
+.benefit_btn {
+    color: #000B17;
+    height: 44px;
+    border: 1px solid #c6c6c6;
+    border-radius: 8px;
+    padding: 0 15px;
+    transition: background-color 0.2s ease-out, border-color 0.2s ease-out;
+}
+.benefit_btn:hover, .pay-btn:hover {
+    background-color: #F8F8F8;
+    border: 1px solid #717171;
+}
+.point_wrap {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.point_input_wrap {
+    position: relative;
+    width: 80%;
+    border: 1.5px solid #c6c6c6;
+    border-radius: 6px;
+
+}
+.point_input {
+    width: 100%;
+    text-align: end;
+    padding-right: 20px;
+}
+.unit {
+    position: absolute;
+    transform: translateY(-50%);
+    top: 51%;
+    right: 23px;
+}
+
+.point_td, .point_tr, .order_benefit {
+    position: relative;
+    overflow: visible;
+}
+.point {
+    position: absolute;
+    right: 8px;
+    bottom: -10px;
+}
+
+.pay_btn_container {
+    display: flex;
+    flex-wrap: wrap; /* 줄바꿈 가능하게 설정 */
+    justify-content: space-between; /* 양쪽 끝 버튼 붙게 설정 */
+    gap: 10px; /* 버튼 간 간격 */
+}
+.select_credit_card_box.focused {
+    border-color: #717171;
+}
+.pay-btn {
+    width: 250px;
+    height: 60px;
+    border: 1px solid #c6c6c6;
+    background-color: #fff;
+    border-radius: 5px;
+    transition: background-color 0.2s ease-out, border-color 0.2s ease-out;
+}
+.pay-btn.pushed {
+    border: 1.5px solid #497248;
+    background-color: #497248;
+    color: white;
+}
+.pay-btn > span{
+    display: inline-block;
+    width: 150px;
+    height: 38.4px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.naver { background-image: url("https://contents.kyobobook.co.kr/resources/fo/images/common/ink/ico_payment_npay@2x.png");}
+.kakao {background-image: url("https://contents.kyobobook.co.kr/resources/fo/images/common/ink/ico_payment_kakaopay@2x.png");}
+.toss {background-image: url("https://contents.kyobobook.co.kr/resources/fo/images/common/ink/ico_payment_toss@2x.png");}
+
+.select_credit_card {display: none;}
+.select_credit_card_box {
+    margin-top: 20px;
+}

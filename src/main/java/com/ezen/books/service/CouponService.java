@@ -10,7 +10,7 @@ public interface CouponService {
     List<CouponVO> getMemberCoupons(long mno);
 
     // 쿠폰 적용
-    void applyCoupon(long mno, long cno, long orno);
+    void applyCoupon(long mno, long cno, String orno);
 
     // 사용 가능한 쿠폰 조회
     List<CouponVO> getAvailableCoupons(long gno, int purchaseAmount);

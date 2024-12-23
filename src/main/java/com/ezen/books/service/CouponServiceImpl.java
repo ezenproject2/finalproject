@@ -36,7 +36,7 @@ public class CouponServiceImpl implements CouponService{
     }
 
     @Override
-    public void applyCoupon(long mno, long cno, long orno) {
+    public void applyCoupon(long mno, long cno, String orno) {
 
         couponMapper.applyCoupon(mno, cno, orno);  // 쿠폰을 주문에 적용
 

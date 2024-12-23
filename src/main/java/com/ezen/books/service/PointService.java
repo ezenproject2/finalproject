@@ -7,10 +7,10 @@ import java.util.List;
 public interface PointService {
 
     // 포인트 적립
-    void earnPoints(long mno, long orno, int earnedPoints);
+    void earnPoints(long mno, String orno, int earnedPoints);
 
     // 포인트 사용
-    void usePoints(long mno, long orno, int usePoints);
+    void usePoints(long mno, String orno, int usePoints);
 
     // 포인트 잔액 조회
     int getBalance(long mno);
@@ -19,5 +19,5 @@ public interface PointService {
     List<PointsVO> getPointHistory(long mno);
 
     // 포인트 추가
-    void addPoints(long mno, int pointsEarned, long orno);
+    void addPoints(long mno, int pointsEarned, String orno);
 }

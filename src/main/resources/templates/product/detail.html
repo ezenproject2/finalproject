@@ -104,7 +104,7 @@
                 <h2 class="book_title">[[${productVO.title}]]</h2>
                 <p class="book_write">
                   <span class="book_writer">[[${productVO.author}]]</span>
-                  <span class="book_publisher"> [[${productVO.publisher}]]</span>
+                  <span class="book_publisher">[[${productVO.publisher}]]</span>
                 </p>
                 <p class="book_publication_date" id="book_publication_date">[[${productVO.pubdate}]]</p>
               </div>
@@ -410,6 +410,9 @@
             </svg>
           </button>
         </div>
+
+        <!--/* 장바구니 저장 용도로 만든 <input> 엘리먼트. */-->
+        <input type="hidden" id="cartMno" th:value="${#authentication.name != 'anonymousUser' ? #authentication.getPrincipal().memberVO.getMno() : '-1'}">
         <button type="button" class="btn shopping_basket_btn">장바구니</button>
         <button type="button" class="btn purchase_btn">바로구매</button>
         <button type="button" class="btn pick_up_btn">바로픽업</button>
@@ -473,6 +476,8 @@
         }
     });
   </script>
+  <!--/* 장바구니 용도로 추가한 js파일. */-->
+  <script th:src="@{/js/detailCart.js}"></script>
   <script th:src="@{/js/sticker.min.js}"></script>
   <script type="text/javascript"> window.onload = function() {Sticker.init('.sticker');}</script>
 </main>

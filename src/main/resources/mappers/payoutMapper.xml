@@ -4,4 +4,31 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ezen.books.repository.PayoutMapper">
 
+    <insert id="saveOrdersToServer">
+        insert into orders(orno, mno, status, total_price, order_at, is_pickup)
+        values
+        (#{orno}, #{mno}, #{status}, #{totalPrice}, now(), #{isPickup})
+    </insert>
+
+    <insert id="saveOrderDetailToServer">
+        insert into order_detail(orno, prno, book_qty, price)
+        values
+        (#{orno}, #{prno}, #{bookQty}, #{price})
+    </insert>
+
+    <insert id="savePaymentToServer">
+        insert into payment(orno, measure, price, status, reg_at, card_name, imp_uid)
+        values
+        (#{orno}, #{measure}, #{price}, #{status}, now(), #{cardName}, #{impUid})
+    </insert>
+
+    <select id="getDefaultAddress" resultType="com.ezen.books.domain.AddressVO">
+        select * from address
+        where mno = #{mno} and is_default = "Y"
+    </select>
+
+    <delete id="removeCartToServer">
+        delete from cart
+        where mno = #{mno} and prno = #{prno}
+    </delete>
 </mapper>

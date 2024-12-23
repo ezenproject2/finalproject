@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrdersVO {
-    private long orno;
+    private String orno;
     private long mno;
     private String status;
     private int totalPrice;
@@ -19,7 +19,7 @@ public class OrdersVO {
 }
 /*
 CREATE TABLE orders (
-    orno bigint NOT NULL AUTO_INCREMENT,
+    orno VARCHAR(250) NOT NULL,
     mno bigint NOT NULL,
     status VARCHAR(100) NOT NULL,
     total_price int NOT NULL,

@@ -15,7 +15,7 @@ public class PointsVO {
     CREATE TABLE points (
     pno bigint NOT NULL AUTO_INCREMENT,
     mno bigint NOT NULL,
-    orno bigint NOT NULL,
+    orno varchar(250) NOT NULL,
     earned int,
     used int,
     balance int NOT NULL,
@@ -25,7 +25,7 @@ public class PointsVO {
 
     private long pno; // 포인트 번호
     private long mno; // 회원 번호
-    private long orno; // 주문 번호
+    private String orno; // 주문 번호
     private int earned; // 적립된 포인트
     private int used; // 사용된 포인트
     private int balance; // 잔액
