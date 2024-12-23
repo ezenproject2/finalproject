@@ -248,7 +248,7 @@ document.querySelector('.join_btn').addEventListener('click', () => {
   const name = document.querySelector('[name="name"].input_name').value;
   const phoneNumber = document.querySelector('[name="phoneNumber"].input_number').value;
   const nickName = document.querySelector('[name="nickName"].input_nickName').value;
-  
+
   const postcode = document.getElementById('postcode').value;
   const homeAddress = document.getElementById('homeAddress').value;
   const detailAddress = document.getElementById('detailAddress').value;
