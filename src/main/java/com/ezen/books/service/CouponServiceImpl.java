@@ -48,7 +48,6 @@ public class CouponServiceImpl implements CouponService{
         couponLogVO.setCno(cno);
         couponLogVO.setStatus("사용 완료");
         couponLogVO.setUsedAt(new Date());
-        couponLogVO.setExpAt(couponVO.getExpDay());
         couponLogMapper.insertCouponLog(couponLogVO);
 
     }

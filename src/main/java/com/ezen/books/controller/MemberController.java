@@ -1,5 +1,6 @@
 package com.ezen.books.controller;
 
+import com.ezen.books.domain.AddressVO;
 import com.ezen.books.domain.MemberVO;
 import com.ezen.books.domain.OrdersVO;
 import com.ezen.books.service.MemberService;
@@ -8,7 +9,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,6 +29,7 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/member/*")
+@EnableScheduling
 @Controller
 public class MemberController {
 
@@ -36,7 +41,19 @@ public class MemberController {
     public void join(){}
 
     @PostMapping("/join")
-    public String join(MemberVO memberVO, Model model){
+    public ResponseEntity<String> join(@RequestBody MemberVO memberVO, Model model){
+//        // 아이디 중복 체크
+//        if(memberService.checkLoginIdDuplicate(memberVO.getLoginId())){
+//            model.addAttribute("errorMessage", "이미 존재하는 ID입니다.");
+//            return "/member/join";
+//        }
+//
+//        // 비밀번호 체크
+//        if(!memberVO.getPassword().equals(memberVO.getPasswordCheck())){
+//            model.addAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
+//            return "/member/join";
+//        }
+
         String pwd = passwordEncoder.encode(memberVO.getPassword());
         String pwdCheck = passwordEncoder.encode(memberVO.getPasswordCheck());
         memberVO.setPassword(pwd);
@@ -46,9 +63,9 @@ public class MemberController {
 
         memberService.insert(memberVO);
         log.info(">>>>> Join USER Info  {}", memberVO);
-
-        return "/index";
+        return new ResponseEntity<>("1", HttpStatus.OK);
     }
+
 
     @ResponseBody
     @GetMapping("/check-id")
@@ -125,17 +142,15 @@ public class MemberController {
         new SecurityContextLogoutHandler().logout(request, response, authentication);
     }
 
-
-//    @PutMapping("/udate-grade/{mno}")
-//    public ResponseEntity<Void> udateGrade(@PathVariable long mno){
-//        memberService.updateMemberGrade(mno);
-//        return ResponseEntity.ok().build();
-//    }
-    @PostMapping("/updateGrade")
-    public String updateGrade(@RequestParam("mno") long mno){
-        // 회원의 등급을 갱신
-        memberService.updateMemberGrade(mno);
-        return "redirect:/member/profile?mno=" + mno;
+    // (cron="59 59 23 * * *") : 매일 23시59분59초에 실행
+    @Scheduled(cron="00 17 17 * * *")
+    public void updateAllMemberGrades() {
+        try {
+            memberService.updateAllMemberGrades(); // 모든 회원의 등급 갱신
+            System.out.println("모든 회원 등급 갱신 완료");
+        } catch (Exception e) {
+            System.err.println("회원 등급 갱신 중 오류 발생: " + e.getMessage());
+        }
     }
 
 

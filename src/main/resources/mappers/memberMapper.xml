@@ -15,12 +15,6 @@
         values (#{loginId}, #{password}, #{email}, #{name}, #{phoneNumber}, #{nickName}, 'ROLE_USER', '1')
     </insert>
 
-    <insert id="saveAddressToServer">
-        insert into address (mno, rec_name, rec_phone, addr_code, addr, addr_detail, addr_name, is_default)
-        values
-        (#{mno}, #{recName}, #{recPhone}, #{addrCode}, #{addr}, #{addrDetail}, #{addrName}, #{isDefault})
-    </insert>
-
     <select id="findByLoginId" resultType="com.ezen.books.domain.MemberVO">
         select * from member
         where login_id = #{loginId}
@@ -64,9 +58,12 @@
     </update>
 
     <!-- 최근 3개월 동안의 총 구매 내역 -->
-    <select id="getTotalSpentInLast3Months" resultType="double">
-        select sum(total_price) from orders
-        where mno = #{mno} and order_date > now() - interval 3 month
+    <select id="getTotalSpentInLast3Months" resultType="Double">
+        select coalesce(sum(total_price), 0)
+        from orders
+        where mno = #{mno}
+        and order_at >= date_sub(curdate(), Interval 3 month)
+        and status = 'completed'
     </select>
 
     <!-- 회원 등급 업데이트 -->
@@ -75,6 +72,28 @@
         set gno = #{gno}, grade_log = now()
         where mno = #{mno}
     </update>
+
+    <!-- gno에 맞는 쿠폰 조회 -->
+    <select id="getCouponsForGrade" resultType="com.ezen.books.domain.CouponVO">
+        select * from coupon
+        where gno = #{gno}
+    </select>
+    <!-- coupon_log에 쿠폰 기록 -->
+    <insert id="insertCouponLog">
+        insert into coupon_log (mno, cno, status, used_at, exp_at)
+        values (#{mno}, #{cno}, '사용 가능', now(), #{expAt})
+    </insert>
+    <!-- 기존 쿠폰 상태를 '만료'로 변경 -->
+    <update id="updateCouponStatusToExpired">
+        update coupon_log
+        set status = '만료', used_at = now()
+        where mno = #{mno} and status = '사용 가능';
+    </update>
+
+
+    <select id="getAllMembers" resultType="com.ezen.books.domain.MemberVO">
+        select * from member
+    </select>
 
     <!-- 회원 정보 조회 -->
     <select id="getMemberByInfo" resultType="com.ezen.books.domain.MemberVO">
@@ -97,5 +116,6 @@
         set last_login = now()
         where login_id = #{loginId}
     </update>
+
 
 </mapper>

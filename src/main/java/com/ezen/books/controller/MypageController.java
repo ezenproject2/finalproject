@@ -29,7 +29,7 @@ public class MypageController {
     private final InquiryService inquiryService;
 
     /*-- 마이페이지 --*/
-    @GetMapping(value = "/main")
+    @GetMapping("/main")
     public String myPageMain(Model model) {
         // 인증된 사용자 정보 가져오기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

@@ -8,6 +8,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -49,29 +53,93 @@ public class MemberServiceImpl implements MemberService{
         return memberMapper.getMemberByInfo(loginId);
     }
 
-    @Override
-    public void updateMemberGrade(long mno) {
-        // 3개월 이내의 구매 금액 합계
-        double totalSpent = memberMapper.getTotalSpentInLast3Months(mno);
+    public void updateAllMemberGrades() {
+        List<MemberVO> members = memberMapper.getAllMembers();  // 모든 회원을 가져옴
 
-        // 구매 금액에 따른 금액 갱신
-        long gno = calculateGrade(totalSpent);
-
-        // 등급 업데이트
-        memberMapper.updateMemberGrade(mno, gno);
-    }
-
-    private long calculateGrade(double totalSpent){
-        if(totalSpent >= 300000){
-            return 4;    // 플래티넘
-        } else if(totalSpent >= 200000){
-            return 3;    // 골드
-        } else if(totalSpent >= 100000){
-            return 2;    // 실버
-        } else {
-            return 1;    // 새싹
+        for (MemberVO member : members) {
+            long mno = member.getMno();  // MemberVO에서 mno 값을 추출
+            updateMemberGrade(mno);  // 해당 회원의 등급 갱신
         }
     }
+
+    @Override
+    public void updateMemberGrade(long mno) {
+        // 3개월 이내 총 구매 금액 가져오기
+        Double totalSpent = memberMapper.getTotalSpentInLast3Months(mno);
+        log.info(">>> Total Spent for mno= "+mno+": "+totalSpent);
+
+        // 만약 totalSpent가 null이면 0으로 간주
+        if (totalSpent == null) {
+            totalSpent = 0.0;
+        }
+
+        // 구매 금액에 따라 등급 계산
+        long gno = calculateGrade(totalSpent);
+        log.info("Calculated Grade for mno=" + mno + ": " + gno);
+
+        // 등급 업데이트
+        try {
+            memberMapper.updateMemberGrade(mno, gno);
+            log.info("Successfully updated grade for mno=" + mno + " to gno=" + gno);
+
+            // 등급에 맞는 쿠폰 지급
+            giveCouponToMember(mno, gno);
+        } catch (Exception e) {
+            log.error("회원 등급 갱신 중 오류 발생: mno=" + mno + ", Error: " + e.getMessage(), e);
+        }
+    }
+    private long calculateGrade(double totalSpent) {
+        if (totalSpent >= 300000) {
+            return 4;  // 플래티넘
+        } else if (totalSpent >= 200000) {
+            return 3;  // 골드
+        } else if (totalSpent >= 100000) {
+            return 2;  // 실버
+        } else {
+            return 1;  // 새싹
+        }
+    }
+
+    private void giveCouponToMember(long mno, long gno) {
+        try{
+            // 해당 등급에 맞는 쿠폰 조회
+            List<CouponVO> coupons = memberMapper.getCouponsForGrade(gno);
+
+            if(coupons != null && !coupons.isEmpty()){
+                // 쿠폰 리스트에서 하나씩 쿠폰 지급
+                for(CouponVO coupon : coupons){
+                    CouponLogVO couponLogVO = new CouponLogVO();
+                    couponLogVO.setMno(mno);
+                    couponLogVO.setCno(coupon.getCno());
+                    couponLogVO.setStatus("사용 가능");
+                    couponLogVO.setUsedAt(new Date());
+                    couponLogVO.setExpAt(calculateExpirationDate(3));  // 만료 날짜는 지급 날짜로부터 3개월 후
+
+                    memberMapper.insertCouponLog(couponLogVO);  // 쿠폰 로그에 추가
+                    log.info("쿠폰 지급 완료: mno=" + mno + ", coupon=" + coupon.getCno());
+                }
+            }
+        } catch (Exception e) {
+            log.error("쿠폰 지급 중 오류 발생: mno=" + mno + ", Error: " + e.getMessage(), e);
+        }
+    }
+
+    // 만료일 계산: 기본 3개월 후로 설정
+    private Date calculateExpirationDate(int monthsToAdd) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, monthsToAdd);  // 지정된 개월 수 만큼 추가
+        return calendar.getTime();  // 만료일 반환
+    }
+    // 기존 쿠폰 만료 처리
+    private void expireOldCoupons(long mno){
+        try{
+            memberMapper.updateCouponStatusToExpired(mno);
+            log.info("기존 쿠폰 만료 처리 완료: mno = "+mno);
+        } catch (Exception e){
+            log.error("기존 쿠폰 만료 처리 중 오류 발생: mno=" + mno + ", Error: " + e.getMessage(), e);
+        }
+    }
+
 
     @Override
     public double getPointRateByGrade(long mno) {

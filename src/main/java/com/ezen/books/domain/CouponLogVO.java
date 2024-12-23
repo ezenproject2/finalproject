@@ -30,9 +30,6 @@ public class CouponLogVO {
     private Date usedAt; // 사용 일자
     private Date expAt; // 만료 일자
 
-    public void setExpAt(int expDay) {
-    }
-
 
 
 

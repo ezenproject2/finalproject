@@ -1,0 +1,172 @@
+.myPage_right { gap: 50px;}
+.list_menu {
+    position: relative;
+    height: 2.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    border-bottom : 1px solid #c6c6c6;
+}
+.list_menu_item {
+    width: 150px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border : 1px solid #E4E4E4;
+    border-bottom: none;
+    border-top-left-radius: .375rem;
+    border-top-right-radius: .375rem;
+    z-index: 1;
+    background-color: #f9f9f9;
+}
+.list_menu_item a{
+    padding-left: .875rem;
+    padding-right: .875rem;
+    color: #8E8E8E;
+}
+.list_menu_item.tap {
+    z-index: 2;
+    background-color: white;
+    border: 1.5px solid #c6c6c6;
+    border-bottom: 1px solid white;
+    box-sizing: content-box;
+}
+.list_menu_item.tap a {
+    color: #1D1D1D;
+}
+.list_menu > a {
+    position: relative;
+    background-color: #39553fd5;
+    padding: 10px 10px 10px 35px;
+    border-radius: 8px;
+    margin: 0 0 10px auto;
+    transition: background-color 0.3s ease-in-out;
+}
+.list_menu > a:hover {
+    background-color: #39553F;
+}
+.list_menu > a > span {
+    color: #fff;
+    font-size: 1rem;
+}
+.list_menu > a > span::before {
+    display: inline;
+    position: absolute;
+    left: 10px;
+    top : 20%;
+    content: "";
+    background-image: url("/image/svg/pencil.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 20px;
+    height: 20px;
+    border-bottom: 1px solid #fff;
+}
+.inquiry_list> ul {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+.inquriy_item {
+    border-top: 1.5px solid #c6c6c6;
+    border-bottom: 1.5px solid #c6c6c6;
+    margin-top: 20px;
+}
+.inquriy_item_wrap {
+    padding: 24px 20px;
+    padding-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+.inquriy_item_header, .inquriy_item_title_wrap, .inquriy_item_content_wrap{
+    display: flex;
+    align-items: center;
+}
+.inquriy_item_title_wrap {
+    justify-content: space-between;
+}
+.inquriy_item_title_wrap > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+.inquriy_state {
+    padding: 5px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    margin-right: 5px;
+}
+.inquriy_state.stay {
+    background-color: #F0F0F0;
+    border: 0.5px solid #c6c6c6;
+    color: #555;
+}
+.inquriy_state.completion {
+    background-color: #ABBC86;
+    color: #fff;
+}
+.inquiry_type, .inquiry_date {
+    font-size: 0.95rem;
+    color: #2d2d2d;
+}
+.inquiry_title {
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+    font-weight: 700
+}
+.inquiry_title::before {
+    content: "Q";
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: #fff;
+    background-color: #497248;
+    border-radius: 100%;
+    padding: 4px 7px 6px;
+}
+.inquriy_item_title_wrap i {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s ease; /* 부드러운 회전 애니메이션 */
+    cursor: pointer;
+}
+
+.inquriy_item_content_wrap {
+    width: 100%;
+    flex-wrap: wrap;
+    overflow: hidden;
+    max-height: 0; /* 기본적으로 숨김 상태 */
+    transition: max-height 0.5s ease, opacity 0.35s ease, padding 0.5s ease;
+    padding: 0 24px;
+    opacity: 0;
+}
+.inquriy_item_content_wrap.active {
+    max-height: 600px; /* 적당히 큰 값으로 설정 (내용 길이에 따라 조절) */
+    transition: max-height 0.5s ease, opacity 0.35s ease, padding 0.5s ease;
+    background-color: #F8F8F8;
+    padding: 24px;
+    margin-bottom: 24px;
+    opacity: 1;
+}
+.inquriy_item_content_wrap.active > .inquriy, .inquriy_item_content_wrap.active > .inquiry_answer {
+    line-height: 1.5rem;
+}
+.inquriy_item_content_wrap.active > .inquriy > img {
+    display: block;
+    max-width: 300px;
+    max-height: 300px;
+    object-fit: contain; /* 이미지가 잘리지 않도록 contain 처리 */
+    margin: 0px auto;
+    margin-bottom: 24px;
+}
+.inquriy {
+    margin-bottom: 24px;
+}
+.inquiry_answer {
+    border-top: 1px solid #c6c6c6;
+    padding-top: 24px;
+}
