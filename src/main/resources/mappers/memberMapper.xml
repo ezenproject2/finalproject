@@ -15,6 +15,12 @@
         values (#{loginId}, #{password}, #{email}, #{name}, #{phoneNumber}, #{nickName}, 'ROLE_USER', '1')
     </insert>
 
+    <insert id="saveAddressToServer">
+        insert into address (mno, rec_name, rec_phone, addr_code, addr, addr_detail, addr_name, is_default)
+        values
+        (#{mno}, #{recName}, #{recPhone}, #{addrCode}, #{addr}, #{addrDetail}, #{addrName}, #{isDefault})
+    </insert>
+
     <select id="findByLoginId" resultType="com.ezen.books.domain.MemberVO">
         select * from member
         where login_id = #{loginId}
@@ -34,6 +40,11 @@
         values (#{loginId}, #{password}, #{email}, #{name}, #{phoneNumber}, #{nickName}, 'ROLE_USER' , '1' ,#{provider}, #{providerId})
     </insert>
 
+    <select id="existingPassword" resultType="com.ezen.books.domain.MemberVO">
+        select password from member
+        where login_id = #{loginId}
+    </select>
+
     <update id="updateMember">
         update member
         <set>
@@ -52,7 +63,39 @@
         where login_id = #{loginId}
     </update>
 
+    <!-- 최근 3개월 동안의 총 구매 내역 -->
+    <select id="getTotalSpentInLast3Months" resultType="double">
+        select sum(total_price) from orders
+        where mno = #{mno} and order_date > now() - interval 3 month
+    </select>
 
+    <!-- 회원 등급 업데이트 -->
+    <update id="updateMemberGrade">
+        update member
+        set gno = #{gno}, grade_log = now()
+        where mno = #{mno}
+    </update>
 
+    <!-- 회원 정보 조회 -->
+    <select id="getMemberByInfo" resultType="com.ezen.books.domain.MemberVO">
+        select * from member
+        where login_id = #{loginId}
+    </select>
+
+    <select id="getMemberById" resultType="com.ezen.books.domain.MemberVO">
+        select * from member
+        where mno = #{mno}
+    </select>
+
+    <select id="findById" resultType="com.ezen.books.domain.MemberVO">
+        select * from member
+        where  provider_id = #{providerId}
+    </select>
+    
+    <update id="updateLastLogin">
+        update member
+        set last_login = now()
+        where login_id = #{loginId}
+    </update>
 
 </mapper>

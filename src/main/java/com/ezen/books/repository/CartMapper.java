@@ -3,6 +3,7 @@ package com.ezen.books.repository;
 import com.ezen.books.domain.CartVO;
 import com.ezen.books.domain.ProductVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface CartMapper {
 
     int storeCartDataToServer(CartVO cartData);
 
-    int checkMnoAndPrno(long mno, long prno);
+    int checkMnoAndPrno(@Param("mno") long mno, @Param("prno") long prno);
 
     void increaseBookQty(CartVO cartData);
 }

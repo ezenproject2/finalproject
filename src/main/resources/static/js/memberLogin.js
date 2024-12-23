@@ -59,23 +59,30 @@ document.addEventListener("DOMContentLoaded", () => {
     // -----------------------------------------------------------------
     // 서버쪽
     document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
         const loginId = document.getElementById('id').value;
         const password = document.getElementById('pw').value;
-        let errorMessage = '';
 
-        if (!loginId) {
-            errorMessage = '아이디 또는 이메일을 입력해 주세요.';
-        } else if (!password) {
-            errorMessage = '비밀번호를 입력해 주세요.';
-        }
+        const errorMessageId = document.getElementById('err_id');
+        const errorMessagePw = document.getElementById('err_pw');
 
-        if (errorMessage) {
-            event.preventDefault();  // Prevent form submission
-            document.getElementById('err_common').style.display = 'block';  // Show error message
-            document.getElementById('err_common').querySelector('span').innerText = errorMessage;
+        errorMessageId.style.display = 'none';
+        errorMessagePw.style.display = 'none';
+
+        if (loginId === '' && password === '') {
+             errorMessageId.innerHTML = '<i class="ic ic_error"></i> 아이디와 비밀번호를 입력해주세요.';
+             errorMessageId.style.display = 'block';
+        } else if (loginId === '') {
+            errorMessageId.innerHTML = '<i class="ic ic_error"></i> 아이디를 입력해주세요.';
+            errorMessageId.style.display = 'block';
+        } else if (password === '') {
+            errorMessagePw.innerHTML = '<i class="ic ic_error"></i> 비밀번호를 입력해주세요.';
+            errorMessagePw.style.display = 'block';
         } else {
-            document.getElementById('err_common').style.display = 'none';  // Hide error message if everything is valid
+            document.getElementById('loginForm').submit();
         }
     });
 
-  });
+
+});

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<head>
+  <title> 이젠문고 </title>
+  <meta charset="UTF-8"/>
+  <link rel="stylesheet" href="/css/mypageInquiry.css"/>
+</head>
+
+<main layout:fragment="main">
+  <div class="inner">
+    <h2>1:1 문의 접수</h2>
+    <form action="/mypage/inquiry" method="post" enctype="multipart/form-data" th:each="memberVO:${#authentication.getPrincipal().memberVO}">
+      <div class="form-group">
+        <label for="inquiry-type">문의유형</label>
+        <select id="inquiry-type" name="type" required>
+          <option value="">문의 유형을 먼저 선택 후 입력해주세요.</option>
+          <option value="general">일반 문의</option>
+          <option value="product">제품 문의</option>
+          <option value="service">서비스 문의</option>
+          <!-- 기타 옵션 추가 가능 -->
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="title">제목</label>
+        <input type="text" id="title" name="title" placeholder="제목을 입력해 주세요." required>
+      </div>
+
+      <div class="form-group">
+        <label for="content">내용</label>
+        <textarea id="content" name="content" rows="5" placeholder="문의 내용을 작성해주세요." required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="files">사진첨부</label>
+        <input type="file" id="files" name="files" accept="image/jpeg, image/png, image/gif" multiple>
+        <div class="file-info">
+          JPG, PNG, GIF 파일만 1장 업로드 가능합니다.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="phoneNum">연락처</label>
+        <input type="text" id="phoneNum" name="phoneNum" th:value="${memberVO.phoneNumber}" placeholder="연락처를 입력해주세요." required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">이메일</label>
+        <input type="email" id="email" name="email" th:value="${memberVO.email}" placeholder="이메일을 입력해주세요." required>
+      </div>
+
+      <div class="btn-group">
+        <button type="reset" class="cancel">취소</button>
+        <button type="submit">문의접수</button>
+      </div>
+    </form>
+  </div>
+
+
+
+
+
+</main>
+

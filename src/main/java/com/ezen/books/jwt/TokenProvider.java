@@ -57,7 +57,6 @@ public class TokenProvider {
             List<String> roles = oAuth2UserPrincipal.getAuthorities().stream()
                     .map(GrantedAuthority::getAuthority)
                     .collect(Collectors.toList());
-            log.info(">>> username : {}", username);
             // JWT의 payload에 'roles' 정보를 추가하고, 만료 시간을 설정하여 생성합니다.
             Date date = new Date();
             Date expiryDate = new Date(date.getTime() + ACCESS_TOKEN_EXPIRE_TIME_IN_MILLISECONDS);

@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Getter
-public class CustomUserDetails extends User {
+public class CustomUserDetails extends User implements CustomPrincipal {
     private MemberVO memberVO;
 
     public CustomUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities) {
@@ -23,5 +23,10 @@ public class CustomUserDetails extends User {
         );
         this.memberVO = memberVO;
 
+    }
+
+    @Override
+    public MemberVO getMemberVO() {
+        return memberVO;
     }
 }

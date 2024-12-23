@@ -36,10 +36,10 @@ public class PayoutRestController {
     @Autowired
     private Environment env;
 
-    private String iamportApiKey; // api 키와 시크릿을 여기서 지금 쓰고 있지는 않음. 추후에는 쓸지도.
+    private String iamportApiKey;
     private String iamportApiSecret;
 
-    private final IamportClient iamportClient; // Private field 'iamportClient' is assigned but never accessed
+    private final IamportClient iamportClient;
     private PayoutService payoutService;
 
     @Autowired
@@ -189,7 +189,6 @@ public class PayoutRestController {
         for(CartVO cartVO : cartList) {
             long mno = cartVO.getMno();
             long prno = cartVO.getPrno();
-            // TODO: mno, prno에 해당하는 cart의 데이터를 없애야 함.
             resultList.add(payoutService.removeCartToServer(mno, prno));
         }
 
