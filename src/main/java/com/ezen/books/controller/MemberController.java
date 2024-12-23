@@ -1,5 +1,6 @@
 package com.ezen.books.controller;
 
+import com.ezen.books.domain.AddressVO;
 import com.ezen.books.domain.MemberVO;
 import com.ezen.books.domain.OrdersVO;
 import com.ezen.books.service.MemberService;
@@ -8,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,7 +38,19 @@ public class MemberController {
     public void join(){}
 
     @PostMapping("/join")
-    public String join(MemberVO memberVO, Model model){
+    public ResponseEntity<String> join(@RequestBody MemberVO memberVO, Model model){
+//        // 아이디 중복 체크
+//        if(memberService.checkLoginIdDuplicate(memberVO.getLoginId())){
+//            model.addAttribute("errorMessage", "이미 존재하는 ID입니다.");
+//            return "/member/join";
+//        }
+//
+//        // 비밀번호 체크
+//        if(!memberVO.getPassword().equals(memberVO.getPasswordCheck())){
+//            model.addAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
+//            return "/member/join";
+//        }
+
         String pwd = passwordEncoder.encode(memberVO.getPassword());
         String pwdCheck = passwordEncoder.encode(memberVO.getPasswordCheck());
         memberVO.setPassword(pwd);
@@ -46,7 +60,31 @@ public class MemberController {
 
         memberService.insert(memberVO);
         log.info(">>>>> Join USER Info  {}", memberVO);
+        return new ResponseEntity<>("1", HttpStatus.OK);
+    }
 
+    // 배송지 입력 용도로 준희가 추가한 메서드.
+    @PostMapping("/address")
+    public ResponseEntity<String> storeAddressToServer(@RequestBody AddressVO addressVO) {
+        // The addressVO from the client: AddressVO(adno=0, mno=0, recName=Test, recPhone=83892928383, addrCode=13536, addr=경기 성남시 분당구 판교역로 4 (백현동), addrDetail=test address detail, addrName=null, isDefault=null)
+        log.info("The addressVO from the client: {}", addressVO);
+
+        // 가장 최근에 회원가입한 mno를 address의 mno로 넣음.
+        long mno = memberService.getLastMno();
+        addressVO.setMno(mno);
+
+        // The address from the client: AddressVO(adno=0, mno=9, recName=Tester, recPhone=83892928383, addrCode=13536, addr=경기 성남시 분당구 판교역로 4 (백현동), addrDetail=test address detail, addrName=null, isDefault=Y)
+        log.info("The address from the client: {}", addressVO);
+        int isDone = memberService.saveAddressToServer(addressVO);
+
+        return (isDone > 0) ?
+                new ResponseEntity<>("1", HttpStatus.OK) :
+                new ResponseEntity<>("0", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    // join 메서드를 한 후 /index로 가기 위한 메서드.
+    @GetMapping("/go-to-index")
+    public String goToIndexgoToIndex() {
         return "/index";
     }
 

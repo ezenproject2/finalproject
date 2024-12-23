@@ -6,9 +6,9 @@
 <head>
   <meta charset="UTF-8">
   <title>Payout</title>
-  <!--/* 결제 api와 연결하기 위한 js파일. */-->
   <link rel="stylesheet" href="/css/payout.css"/>
   <link rel="stylesheet" href="/css/cart.css"/>
+  <!--/* 결제 api와 연결하기 위한 js파일. */-->
   <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 </head>
 
@@ -21,7 +21,7 @@
       </div>
 
       <div class="order_table_wrap1">
-        <table class="order_table address_table">
+        <table class="order_table address_table" th:if="${defaultAddress != 'empty'}">
           <tr>
             <th> 배송지 정보</th>
             <td>
@@ -62,6 +62,19 @@
             </td>
           </tr>
         </table>
+
+        <!--/* defaultAddress가 null인 경우에 기본 배송지를 받을 table */-->
+        <table class="order_table address_table" th:unless="${defaultAddress != 'empty'}">
+          <tr>
+            <th> 배송지 정보</th>
+            <td class="form_data address">
+              <!--/* 미구현 */-->
+            </td>
+          </tr>
+          <!--/* "배송 요청사항" 부분은 받을 필요가 없어서 제외함. */-->
+        </table>
+
+
       </div>
 
       <div class="order_table_wrap">
@@ -211,5 +224,8 @@
   <script defer th:src="@{/js/paymentPayoutBusiness.js}"></script>
   <script defer th:src="@{/js/paymentPayoutDisplay.js}"></script>
   <script defer th:src="@{/js/paymentPayoutStyle.js}"></script>
+  <!--/* 배송지가 없을 때 카카오 도로명주소 api를 사용하기 위한 js 파일. */-->
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <script th:src="@{/js/payoutKakaoAddress.js}"></script>
 </main>
 </html>
