@@ -38,4 +38,16 @@ public class CartRestController {
         }
     }
 
+    @PostMapping("/delete")
+    public ResponseEntity<String> deleteCartToServer(@RequestBody CartVO cartData) {
+        log.info(" >>> CartRestController: deleteCartToServer start.");
+        log.info("The cart data from the client: {}", cartData);
+
+        int isDone = cartService.deleteCartToServer(cartData.getMno(), cartData.getPrno());
+
+        return (isDone > 0) ?
+                new ResponseEntity<>("1", HttpStatus.OK) :
+                new ResponseEntity<>("0", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }

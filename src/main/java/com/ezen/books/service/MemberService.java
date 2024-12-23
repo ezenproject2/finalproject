@@ -30,5 +30,9 @@ public interface MemberService {
 
     int updateLastLogin(String authLoginId);
 
+    long getLastMno();
+
+    int saveAddressToServer(AddressVO addressVO);
+
     void updateAllMemberGrades();
 }

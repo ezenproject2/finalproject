@@ -21,4 +21,8 @@ public interface CartMapper {
     int checkMnoAndPrno(@Param("mno") long mno, @Param("prno") long prno);
 
     void increaseBookQty(CartVO cartData);
+
+    void deleteCartToServer(@Param("mno") long mno, @Param("prno") long prno);
+
+    int getCartAmount(long mno);
 }

@@ -143,6 +143,19 @@ itemBtns.forEach(itemBtn => {
     })
 });
 
+// x 아이콘을 누르면 장바구니 내역에서 삭제됨
+document.addEventListener('click', (e) => {
+    if(e.target.classList.contains('ic_delete')) {
+        let index = e.target.dataset.cart;
+
+        let mnoVal = document.querySelector(`.mno[data-cart="${index}"]`).value;
+        let prnoVal = document.querySelector(`.prno[data-cart="${index}"]`).value;
+    
+        applyDeletion(mnoVal, prnoVal);
+    }
+})
+
+
 // 주문 버튼 누르면 CartDTO와 매핑할 JSON 생성
 document.getElementById('orderBtn').addEventListener('click', () => {
     console.log("orderBtn clicked.");
@@ -210,5 +223,42 @@ async function sendCartVoArrayToServer(cartDtoArray) {
         window.location.href = "/payment/payout"; // GET 요청 생성
     } else {
         console.log("sendCartVoArrayToServer: Failed.");
+    }
+}
+
+// x 버튼 누르면 순서대로 서버에서 cart의 데이터를 없애고 /cart를 다시 불러오는 함수
+async function applyDeletion(mnoVal, prnoVal) {
+    try {
+        await deleteCartToServer(mnoVal, prnoVal);
+        window.location.href = "/payment/cart?mno=" + mnoVal;
+    } catch (error) {
+        console.error("Error during applying deletion. Content", error);
+    }   
+}
+
+// cart 테이블에서 선택된 cart 데이터 삭제
+async function deleteCartToServer(mnoVal, prnoVal) {
+    
+    const url = "/payment/cart/delete";
+
+    const cartData = {
+        mno: mnoVal,
+        prno: prnoVal
+    }
+
+    const config = {
+        method: "POST",
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        body: JSON.stringify(cartData)
+    };
+    
+    const response = await fetch(url, config);
+    const result = await response.text();
+    if(result == "1") {
+        console.log("Delete cart: Succeeded.");
+    } else if (result == "0") {
+        console.log("Delete cart: Failed.");
+    } else {
+        console.log("Delete cart: Unknown.");
     }
 }

@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,9 +31,20 @@ public class PaymentController {
     private final CartService cartService;
     private List<CartVO> cartList;
 
+    @PostMapping("/header-cart")
+    @ResponseBody
+    public int provideCartAmount(@RequestBody long mno) {
+        log.info(" >>> PaymentController: provideCartAmount start.");
+        log.info("The mno from the client: {}", mno);
+
+        int cartAmount = cartService.getCartAmount(mno);
+        return cartAmount;
+    }
+
     @GetMapping("/cart")
     public String showCartItems(@RequestParam("mno") long mno, Model model) {
         log.info(" >>> PaymentController: showCartItems start.");
+        log.info("The mno of showCartItems: {}", mno);
         List<CartVO> cartList = cartService.getAllCartItems(mno);
         log.info(" >>> cartList: {}", cartList);
 
@@ -79,12 +91,23 @@ public class PaymentController {
         log.info("The default address: {}", defaultAddress);
 
         // TODO: pickup 주문이면 isPickup을 Y로 보낼 것.
-        Map<String, Object> modelAttrs = Map.of(
-                "cartProductList", cartProductList,
-                "defaultAddress", defaultAddress,
-                "mno", mno,
-                "isPickup", "N"
-        );
+        // 기본 배송지가 있냐 없냐에 따라 보낼 값이 달라짐
+        Map<String, Object> modelAttrs = new HashMap<>();
+        if(defaultAddress == null) {
+            modelAttrs = Map.of(
+                    "cartProductList", cartProductList,
+                    "defaultAddress", "empty",
+                    "mno", mno,
+                    "isPickup", "N"
+            );
+        } else {
+            modelAttrs = Map.of(
+                    "cartProductList", cartProductList,
+                    "defaultAddress", defaultAddress,
+                    "mno", mno,
+                    "isPickup", "N"
+            );
+        }
 
         log.info("CartProductList from PaymentController: {}", cartProductList);
         model.addAllAttributes(modelAttrs);
@@ -143,12 +166,6 @@ public class PaymentController {
             log.info("Exception occurred. Content: {}", e);
             return null;
         }
-    }
-
-    // HTML 템플릿 보려고 임시로 만든 메서드.
-    @GetMapping("/cartTemp")
-    public String goCartTemp() {
-        return "/payment/cartTemp";
     }
 
 }

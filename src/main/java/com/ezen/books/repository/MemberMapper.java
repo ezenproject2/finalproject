@@ -1,5 +1,9 @@
 package com.ezen.books.repository;
 
+import com.ezen.books.domain.AddressVO;
+import com.ezen.books.domain.MemberAuth;
+import com.ezen.books.domain.MemberVO;
+import com.ezen.books.domain.PointsVO;
 import com.ezen.books.domain.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -35,10 +39,6 @@ public interface MemberMapper {
 
     int updateLastLogin(String authLoginId);
 
-    long getLastMno();
-
-    int saveAddressToServer(AddressVO addressVO);
-
     List<MemberVO> getAllMembers();
 
     List<CouponVO> getCouponsForGrade(long gno);
@@ -46,4 +46,8 @@ public interface MemberMapper {
     void insertCouponLog(CouponLogVO couponLogVO);
 
     void updateCouponStatusToExpired(long mno);
+
+    long getLastMno();
+
+    int saveAddressToServer(AddressVO addressVO);
 }

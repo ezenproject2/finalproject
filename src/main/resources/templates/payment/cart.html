@@ -49,7 +49,7 @@
             </tr>
 
 
-            <tr th:each="cartProduct, iterStat:${cartProductList}">
+            <tr th:each="cartProduct, iterStat:${cartProductList}" th:data-cart="${iterStat.index}">
               <!--/* 데이터 저장용 div, input type = hidden. */-->
               <input type="hidden" id="listDataStorage" th:data-list-size="${cartProductList.size}">
               <input type="hidden" th:value="${cartProduct.cartVO.mno}" th:class="mno" th:data-cart="${iterStat.index}">
@@ -101,7 +101,7 @@
               </td>
 
               <!--/* <p class="qty-price" th:data-cart="${iterStat.index}"></p>의 정보를 아래 <strong>에 넣어봄. */-->
-              <td class="product_total_price"><strong style="font-size: 1.1rem;" class="qty-price" th:data-cart="${iterStat.index}">30,000</strong>원 <i class="ic ic_delete"></i></td>
+              <td class="product_total_price"><strong style="font-size: 1.1rem;" class="qty-price" th:data-cart="${iterStat.index}">30,000</strong>원 <i class="ic ic_delete" th:data-cart="${iterStat.index}"></i></td>
             </tr>
 
           </table>

@@ -25,10 +25,6 @@
         where login_id = #{loginId} and password = #{password}
     </select>
 
-    <select id="getLastMno" resultType="long">
-        select max(mno) from member
-    </select>
-
     <insert id="saveTokens" parameterType="com.ezen.books.domain.MemberVO">
         insert into member (login_id, password, email, name, phone_number, nick_name, auth, gno, provider, provider_id)
         values (#{loginId}, #{password}, #{email}, #{name}, #{phoneNumber}, #{nickName}, 'ROLE_USER' , '1' ,#{provider}, #{providerId})
@@ -117,5 +113,14 @@
         where login_id = #{loginId}
     </update>
 
+    <select id="getLastMno" resultType="long">
+        select max(mno) from member
+    </select>
+
+    <insert id="saveAddressToServer">
+        insert into address (mno, rec_name, rec_phone, addr_code, addr, addr_detail, addr_name, is_default)
+        values
+        (#{mno}, #{recName}, #{recPhone}, #{addrCode}, #{addr}, #{addrDetail}, #{addrName}, #{isDefault})
+    </insert>
 
 </mapper>
