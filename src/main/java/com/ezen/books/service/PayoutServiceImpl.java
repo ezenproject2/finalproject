@@ -39,6 +39,7 @@ public class PayoutServiceImpl implements PayoutService {
     @Override
     public AddressVO getDefaultAddress(long mno) {
         AddressVO defaultAddress = payoutMapper.getDefaultAddress(mno);
+        log.info(">>>> defaultAddress > {}", defaultAddress);
         return defaultAddress;
     }
 

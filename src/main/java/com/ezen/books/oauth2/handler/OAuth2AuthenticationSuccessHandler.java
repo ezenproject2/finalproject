@@ -104,8 +104,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 //            MemberVO memberVO = memberMapper.findByLoginId(loginId);
             log.info("Searching for loginId: {}", loginId);
             MemberVO memberVO = memberMapper.findByLoginId(loginId);
-            log.info("Found memberVO: {}", memberVO);
-            log.info("Found memberVO.mno: {}", memberVO.getMno());
+//            log.info("Found memberVO: {}", memberVO);
+//            log.info("Found memberVO.mno: {}", memberVO.getMno());
 
             if (memberVO != null) {
                 // 이미 존재하는 사용자인 경우, DB에 저장하지 않고 바로 리디렉션

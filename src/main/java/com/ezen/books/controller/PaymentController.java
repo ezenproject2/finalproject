@@ -69,6 +69,7 @@ public class PaymentController {
     @GetMapping("/payout")
     public String goToPayout(Model model) {
         log.info(" >>> PaymentController: goToPayout start.");
+        log.info(">>>> cartList > {}", cartList);
         List<CartProductDTO> cartProductList = buildCartProductList(cartList);
         // mno는 단독적으로 쓰이는 경우가 많아 편의상 따로 빼서 model로 보냄.
         long mno = cartProductList.get(0).getCartVO().getMno();
