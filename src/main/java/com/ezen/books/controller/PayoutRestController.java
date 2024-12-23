@@ -52,6 +52,13 @@ public class PayoutRestController {
         this.iamportClient = new IamportClient(iamportApiKey, iamportApiSecret);
     }
 
+    @PostMapping("/payment/payout/default-addr")
+    public String setDefaultAddress(@RequestBody AddressVO addressData) {
+        log.info(" >>> PaymentRestController: setDefaultAddress start.");
+        log.info("The address data from the client: {}", addressData);
+        return "success";
+    }
+
     @PostMapping("/prepare")
     public ResponseEntity<Map<String, String>> sendDataToClient(@RequestBody String pgData) {
         // The received pgVal: {"pg":"kakaopay"}
@@ -84,7 +91,7 @@ public class PayoutRestController {
         String requestBody = StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8);
         log.info("The result body: {}", requestBody);
 
-        // 일단 단건 조회만 해볼 거라서 imp_uid를 제외한 모든 결제 데이터를 받지 않았다.
+        // 단건 조회만 해볼 거라서 imp_uid를 제외한 모든 결제 데이터를 받지 않았다.
         String impUid = "";
         String amount = "";
 

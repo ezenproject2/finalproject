@@ -14,4 +14,6 @@ public interface CartService {
     int storeCartDataToServer(CartVO cartData);
 
     int deleteCartToServer(long mno, long prno);
+
+    int getCartAmount(long mno);
 }

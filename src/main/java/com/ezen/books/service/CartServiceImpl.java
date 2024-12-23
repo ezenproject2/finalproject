@@ -52,4 +52,9 @@ public class CartServiceImpl implements CartService {
         }
         return 0;
     }
+
+    @Override
+    public int getCartAmount(long mno) {
+        return cartMapper.getCartAmount(mno);
+    }
 }
