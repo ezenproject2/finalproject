@@ -38,12 +38,12 @@ function calculateQtyPrice() {
     const numIndex = parseInt(index);
 
     for (let i=0; i < numIndex; i++) {
-        let salePrice = document.querySelector(`span[data-cart="${i}"].sale-price`).innerText;
+        let salePrice = document.querySelector(`span[data-cart="${i}"].sale-price`).dataset.salePrice;
         let bookQty = document.querySelector(`span[data-cart="${i}"].book-qty`).innerText;
 
         let qtyPrice = parseInt(salePrice) * parseInt(bookQty);
 
-        document.querySelector(`strong[data-cart="${i}"].qty-price`).innerText = qtyPrice.toString();
+        document.querySelector(`strong[data-cart="${i}"].qty-price`).innerText = qtyPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
 }
@@ -56,21 +56,24 @@ function calculateReceipt() {
     let sumSalePrice = 0;
 
     for (let i = 0; i < index; i++) {
-        let originalPrice = document.querySelector(`span[data-cart="${i}"].original-price`).innerText;
-        let salePrice = document.querySelector(`span[data-cart="${i}"].sale-price`).innerText;
+        let originalPrice = document.querySelector(`span[data-cart="${i}"].original-price`).dataset.originalPrice;
+        let salePrice = document.querySelector(`span[data-cart="${i}"].sale-price`).dataset.salePrice;
         let bookQty = document.querySelector(`[data-cart="${i}"].book-qty`).innerText;
 
         sumOriginalPrice += parseInt(originalPrice) * parseInt(bookQty);
         sumSalePrice += parseInt(salePrice) * parseInt(bookQty);
     }
 
-    document.querySelector(`.total-original-price`).innerText = sumOriginalPrice;
-    document.querySelector(`.total-discount-price`).innerText = "- " + `${sumOriginalPrice - sumSalePrice}`;
+    // 전체 도서 원가 합계 데이터를 .total-original-price의 data-total-original-price에 저장
+    let totalOriginalPriceEle = document.querySelector(`.total-original-price`);
+    totalOriginalPriceEle.dataset.totalOriginalPrice = sumOriginalPrice;
 
-    let deliverFeeEle = document.querySelector(`.delivery-fee`);
-    deliverFeeEle.innerText = 3000;
+    document.querySelector(`.total-original-price`).innerText = sumOriginalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원";
+    document.querySelector(`.total-discount-price`).innerText = "- " + `${sumOriginalPrice - sumSalePrice}`.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원";
 
-    document.querySelector(`.estimated-payment-amount`).innerText = (sumSalePrice + parseInt(deliverFeeEle.innerText));
+    let deliveryFee = document.querySelector(`.delivery-fee`).dataset.deliveryFee;
+
+    document.querySelector(`.estimated-payment-amount`).innerText = `${sumSalePrice + parseInt(deliveryFee)}`.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     document.querySelector(`.estimated-point-amount`).innerText = 300;
 }
 
@@ -83,7 +86,7 @@ ascBtns.forEach(ascBtn => {
         console.log("asc index: " + index);
         
         // 도서 개수 +1
-        let bookQty = document.querySelector(`span.book-qty[data-cart="${index}"]`);
+        let bookQty = document.querySelector(`.book-qty[data-cart="${index}"]`);
         let bookQtyVal = parseInt(bookQty.innerText);
         bookQty.innerText = bookQtyVal + 1;
 
@@ -101,7 +104,7 @@ descBtns.forEach(descBtn => {
         console.log("desc index: " + index);
 
         // 도서 개수 -1
-        let bookQty = document.querySelector(`span.book-qty[data-cart="${index}"]`);
+        let bookQty = document.querySelector(`.book-qty[data-cart="${index}"]`);
         let bookQtyVal = parseInt(bookQty.innerText);
 
         if((bookQtyVal - 1) == 0) {

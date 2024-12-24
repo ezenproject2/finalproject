@@ -74,7 +74,7 @@ function jehoInitializeTotalPrice() {
 
     let totalPrice = 0;
     for (let i = 0; i < indexNum; i++) {
-        let salePrice = document.querySelector(`[data-payout="${i}"].book-sale-price`).innerText;
+        let salePrice = document.querySelector(`[data-payout="${i}"].book-sale-price`).dataset.salePrice;
         let bookQty = document.querySelector(`[data-payout="${i}"].book-qty`).innerText;
 
         console.log("the salePrice: " + salePrice);
@@ -85,7 +85,7 @@ function jehoInitializeTotalPrice() {
     }
     console.log("totalPrice" + totalPrice);
 
-    document.querySelector(`[data-total-price="totalPrice"].total-price`).innerText = totalPrice;
+    document.querySelector(`[data-total-price="totalPrice"].total-price`).innerText = totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 // 총 할인받은 금액 설정
@@ -96,8 +96,8 @@ function jehoInitializeTotalDiscountAmount() {
 
     let totalAmount = 0;
     for (let i = 0; i < indexNum; i++) {
-        let salePrice = document.querySelector(`[data-payout="${i}"].book-sale-price`).innerText;
-        let originalPrice = document.querySelector(`[data-payout="${i}"].book_original_price`).innerText;
+        let salePrice = document.querySelector(`[data-payout="${i}"].book-sale-price`).dataset.salePrice;
+        let originalPrice = document.querySelector(`[data-payout="${i}"].book_original_price`).dataset.bookOriginalPrice;
         let bookQty = document.querySelector(`[data-payout="${i}"].book-qty`).innerText;
 
         console.log("the salePrice: " + salePrice);
@@ -111,7 +111,7 @@ function jehoInitializeTotalDiscountAmount() {
     }
     console.log("totalAmount" + totalAmount);
 
-    document.querySelector(`.discount-amount`).innerText = '- ' + totalAmount;
+    document.querySelector(`.discount-amount`).innerText = '- ' + totalAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 // 도서들의 전체 원가 합계 첫 설정
@@ -122,7 +122,7 @@ function jehoInitializeTotalOriginalPrice() {
 
     let totalPrice = 0;
     for (let i = 0; i < indexNum; i++) {
-        let originalPrice = document.querySelector(`[data-payout="${i}"].book_original_price`).innerText;
+        let originalPrice = document.querySelector(`[data-payout="${i}"].book_original_price`).dataset.bookOriginalPrice;
         let bookQty = document.querySelector(`[data-payout="${i}"].book-qty`).innerText;
 
         console.log("the originalPrice: " + originalPrice);
@@ -133,7 +133,7 @@ function jehoInitializeTotalOriginalPrice() {
     }
     console.log("totalPrice" + totalPrice);
     
-    document.querySelector(`.total-original-price`).innerText = totalPrice;
+    document.querySelector(`.total-original-price`).innerText = totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 // pay-btn을 누르면 그에 따라 pdData의 pg를 설정함
@@ -340,7 +340,7 @@ async function preserveOrderDetailToServer(respMerchantUid) {
         // orderDetail.price = document.querySelector(`[data-list-book-price="${i}"]`).innerText;
         orderDetail.prno = document.querySelector(`[data-payout="${i}"].list-data-storage`).dataset.listBookPrno;
         orderDetail.bookQty = document.querySelector(`[data-payout="${i}"].book-qty`).innerText;
-        let bookPriceVal = document.querySelector(`[data-payout="${i}"].book-price`).innerText;
+        let bookPriceVal = document.querySelector(`[data-payout="${i}"].book-price`).dataset.bookOriginalPrice;
         
         // bookPriceVal이 숫자+원 임. "원"을 제거하고 숫자만 추출한 후에  문자열을 int로 전환.
         let onlyPriceVal = bookPriceVal.match(/\d+/);
