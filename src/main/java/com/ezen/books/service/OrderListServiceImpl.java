@@ -146,4 +146,14 @@ public class OrderListServiceImpl implements OrderListService {
         return isDone;
     }
 
+    @Override
+    public MemberVO getMember(long mno) {
+        return null;
+    }
+
+    @Override
+    public GradeVO getMemberGrade(Long gno) {
+        return null;
+    }
+
 }

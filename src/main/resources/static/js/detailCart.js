@@ -11,15 +11,12 @@ document.querySelector('.shopping_basket_btn').addEventListener('click', () => {
     // console.log("The total price: ");
     // console.log(totalPriceVal);
 
-    // mno 가져오기
     const mno = document.getElementById('cartMno').value;
     console.log("mno: " + mno);
 
-    // prno 가져오기
     const prno = document.getElementById('prnoEl').value;
     console.log("prno: " + prno);
 
-    // bookQty 가져오기
     const bookQty = document.getElementById('number').innerText;
     console.log("bookQty: " + bookQty);
 
@@ -32,7 +29,17 @@ document.querySelector('.shopping_basket_btn').addEventListener('click', () => {
 
 // "바로구매" 버튼에 이벤트를 부여하여 /payment/payout으로 이동.
 document.querySelector('.purchase_btn').addEventListener('click', () => {
-    //
+
+    const mnoVal = document.getElementById('cartMno').value;
+
+    if(mnoVal == "-1") {
+        alert("로그인 먼저 해주세요.");
+    } else {
+        const prnoVal = document.getElementById('prnoEl').value;
+        const bookQtyVal = document.getElementById('number').innerText;
+    
+        processBuyNow(mnoVal, prnoVal, bookQtyVal);
+    }
 })
 
 
@@ -65,5 +72,40 @@ async function storeCartVoToServer(mnoVal, prnoVal, bookQtyVal) {
     } else {
         console.log("Insert cart: Unknown.");
         alert("알 수 없는 오류: 실패했습니다.");
+    }
+}
+
+// 
+async function processBuyNow(mnoVal, prnoVal, bookQtyVal) {
+
+    await prepareForBuyNow(mnoVal, prnoVal, bookQtyVal);
+    window.location.href = "/payment/payout";
+}
+
+// 서버에 cart의 정보를 전달하여 Cart에 데이터를 입력하도록 요청함
+async function prepareForBuyNow(mnoVal, prnoVal, bookQtyVal) {
+    const url = "/payment/buy-now";
+
+    const cartData = {
+        mno: mnoVal,
+        prno: prnoVal,
+        bookQty: bookQtyVal
+    }
+
+    const config = {
+        method: "POST",
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        body: JSON.stringify(cartData)
+    }
+
+    const response = await fetch(url, config);
+    const result = await response.text();
+
+    if(result == "1") {
+        console.log("Prepare for buy-now: Succeeded.");
+    } else if (result == "0") {
+        console.log("Prepare for buy-now: Failed.");
+    } else {
+        console.log("Prepare for buy-now: Unknown.");
     }
 }

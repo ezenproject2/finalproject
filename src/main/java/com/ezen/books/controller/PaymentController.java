@@ -81,14 +81,15 @@ public class PaymentController {
         return "1";
     }
 
-//    @PostMapping("/prepare-cart-list")
-//    public String prepareCartList(@RequestBody long mno) {
-//        log.info(" >>> PaymentController: prepareCartList start.");
-//
-//        List<CartVO> cartList = payoutService.getCartList(mno);
-//        this.cartList = cartList;
-//        return "1";
-//    }
+    @PostMapping("/buy-now")
+    public String prepareCartList(@RequestBody CartVO cartData) {
+        log.info(" >>> PaymentController: prepareCartList start.");
+
+        List<CartVO> cartList = new ArrayList<>();
+        cartList.add(cartData);
+        this.cartList = cartList;
+        return "1";
+    }
 
     @GetMapping("/payout")
     public String goToPayout(Model model) {

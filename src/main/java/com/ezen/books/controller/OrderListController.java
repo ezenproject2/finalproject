@@ -31,10 +31,15 @@ public class OrderListController  {
     public String showOrderList(@RequestParam("mno") long mno, Model model) {
         log.info(" >>> OrderListController: showOrderList start.");
 
+        // 화면에 띄울 order_detail과 product의 정보를 가져옴.
         List<List<OrderDetailProductDTO>> orderDetailProductGroup = orderListService.getOrderDetailProductList(mno);
-//        log.info("orderDetailProductGroup is empty or not :{}", orderDetailProductGroup.isEmpty());
+        log.info("orderDetailProductGroup is empty or not :{}", orderDetailProductGroup.isEmpty());
 
         boolean isOrderEmpty = orderListService.isOrderEmpty(mno);
+
+        // 화면에 띄울 사용자 정보와 등급 정보를 가져옴.
+//        MemberVO memberInfo = orderListService.getMember(mno);
+//        GradeVO memberGrade = orderListService.getMemberGrade(memberInfo.getGno());
 
         model.addAttribute("mno", mno);
         model.addAttribute("isOrderEmpty", isOrderEmpty);

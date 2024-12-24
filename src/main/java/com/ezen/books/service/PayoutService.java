@@ -22,20 +22,6 @@ public interface PayoutService {
 
     Logger log = LoggerFactory.getLogger(PayoutService.class);
 
-    boolean checkSinglePayment(String impUid, String amount) throws IOException, URISyntaxException, InterruptedException;
-
-    AddressVO getDefaultAddress(long mno);
-
-    int saveOrdersToServer(OrdersVO ordersVO);
-
-    int saveOrderDetailToServer(OrderDetailVO orderDetail);
-
-    int savePaymentToServer(PaymentVO paymentData);
-
-    int removeCartToServer(long mno, long prno);
-
-    int registerDefaultAddress(AddressVO addressData);
-
     // PaymentRestController에 있던 토큰 발급 메서드를 그대로 옮겨옴.
     default IamportAccessToken issueIamportToken(
             @Value("${iamport_rest_api_key}") String iamportApiKey,
@@ -73,4 +59,19 @@ public interface PayoutService {
 //        iamportToken.setExpiredAt(jsonNode.get("expired_at").asInt());
         return iamportToken;
     }
+
+    boolean checkSinglePayment(String impUid, String amount) throws IOException, URISyntaxException, InterruptedException;
+
+    AddressVO getDefaultAddress(long mno);
+
+    int saveOrdersToServer(OrdersVO ordersVO);
+
+    int saveOrderDetailToServer(OrderDetailVO orderDetail);
+
+    int savePaymentToServer(PaymentVO paymentData);
+
+    int removeCartToServer(long mno, long prno);
+
+    int registerDefaultAddress(AddressVO addressData);
+
 }

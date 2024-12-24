@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     jehoInitializeTotalOriginalPrice();
     jehoInitializeTotalDiscountAmount();
     jehoCalculateTotalPrice();
+    // jehoCalculateDeliveryFee();
 })
 
 // 사용자의 입력으로 .point_input의 value가 변화하면 즉시 포인트 액수를 저장하고 ,를 찍음
@@ -32,7 +33,9 @@ document.querySelector('.point_input').addEventListener('input', (e) => {
     e.target.value = pointVal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 })
 
-// 도서들의 전체 원가 합계 첫 설정
+
+
+// 도서들의 전체 원가 합계 설정
 function jehoInitializeTotalOriginalPrice() {
     const index = document.querySelector(`[data-list-total="listTotal"]`).innerText;
     let indexNum = parseInt(index);
@@ -82,7 +85,7 @@ function jehoInitializeTotalDiscountAmount() {
     document.querySelector(`.discount-amount`).innerText = '- ' + totalAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-// 총 결제 금액 첫 설정
+// 총 결제 금액 설정
 function jehoCalculateTotalPrice() {
     const index = document.querySelector(`[data-list-total="listTotal"]`).innerText;
     let indexNum = parseInt(index);
@@ -101,29 +104,47 @@ function jehoCalculateTotalPrice() {
     }
     // console.log("totalPrice" + totalPrice);
 
-    // 포인트와 쿠폰 반영
-    totalPrice = applyPointAndCoupon(totalPrice);
+    // 포인트, 쿠폰, 배송비 반영
+    totalPrice = applyPointCoupon(totalPrice);
+
+    // 배송비 설정
+    let deliveryFee = 0;
+    if(20000 < totalPrice) {
+        // 2만 원 이상 구매 시 배송비 무료
+    } else {
+        deliveryFee = 3000;
+    }
+
+    // 결정된 배송비를 화면에 반영
+    document.querySelector('.delivery-fee').dataset.deliveryFee = deliveryFee;
+    document.querySelector('.delivery-fee').innerText = "+ " + deliveryFee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원";
+
+    totalPrice - deliveryFee;
 
     document.querySelector(`.total-price`).dataset.totalPrice = totalPrice;
     document.querySelector(`.total-price`).innerText = totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-// 최종 결제 금액에 포인트와 쿠폰 값 반영
-function applyPointAndCoupon(totalPrice) {
+// 최종 결제 금액에 포인트, 쿠폰, 배송비 반영
+function applyPointCoupon(totalPrice) {
     let pointVal = document.querySelector('.discount-point').dataset.discountPoint;
     let couponVal = document.querySelector('.discount-coupon').dataset.discountCoupon;
-    // console.log("The pointVal from applyPointAndCoupon: ", pointVal);
+    // let deliveryFeeVal = document.querySelector('.delivery-fee').dataset.deliveryFee;
+    console.log("The pointVal from applyPointCoupon: ", pointVal);
 
     // 포인트의 값이 없으면("") 포인트를 0으로 할당
     if(pointVal == "") {
         pointVal = 0;
     } else {
         pointVal = parseInt(pointVal);
-        // console.log("The result of parseInt: ", pointVal);
+        console.log("The result of parseInt: ", pointVal);
     }
+
     couponVal = parseInt(couponVal);
+    // deliveryFeeVal = parseInt(deliveryFeeVal);
 
     totalPrice = (totalPrice - pointVal - couponVal);
+    console.log("total price: ", totalPrice);
 
     return totalPrice;
 }

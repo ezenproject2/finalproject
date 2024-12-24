@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // 화면 로딩 시 페이지에 보여질 값들 계산
         calculateQtyPrice();
         calculateReceipt();
+        // calculateDeliveryFee();
 
         // 모든 itemBtn이 클릭되있게 함
         const selectItemBtns = document.getElementsByName('itemBtn');
@@ -70,14 +71,48 @@ function calculateReceipt() {
     let totalOriginalPriceEle = document.querySelector(`.total-original-price`);
     totalOriginalPriceEle.dataset.totalOriginalPrice = sumOriginalPrice;
 
-    document.querySelector(`.total-original-price`).innerText = sumOriginalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원";
+    document.querySelector(`.total-original-price`).innerText = sumOriginalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     document.querySelector(`.total-discount-price`).innerText = "- " + `${sumOriginalPrice - sumSalePrice}`.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원";
 
-    let deliveryFee = document.querySelector(`.delivery-fee`).dataset.deliveryFee;
+    // 결제 예정 금액 설정
+    let deliveryFee = 0;
 
-    document.querySelector(`.estimated-payment-amount`).innerText = `${sumSalePrice + parseInt(deliveryFee)}`.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    // 할인된 가격의 총합에 따라 배송비 설정
+    if(20000 < sumSalePrice) {
+        // 20,000 이상 결제 시 배송비 무료
+    } else {
+        deliveryFee = 3000;
+    }
+
+    // 배송비 설정 후 화면에 반영
+    document.querySelector('.delivery-fee').dataset.deliveryFee = deliveryFee;
+    document.querySelector('.delivery-fee').innerText = "+ " + deliveryFee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원";
+
+    // 배송비에 따라 최종 결제 예상 금액 설정
+    document.querySelector(`.estimated-payment-amount`).innerText = `${sumSalePrice + deliveryFee}`.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    // NOTE: 포인트는 일괄적으로 300P 적용.
     document.querySelector(`.estimated-point-amount`).innerText = 300;
 }
+
+// function calculateDeliveryFee() {
+//     let estimatedPriceVal = document.querySelector(`.estimated-payment-amount`).innerText;
+    
+//     // 금액에 찍힌 , 제거
+//     estimatedPriceVal = estimatedPriceVal.replace(/,/g, "");
+
+//     // 숫자로 변환
+//     estimatedPriceVal = parseInt(estimatedPriceVal);
+
+//     let deliveryFee = 0;
+//     // 2만원 이상 구매 시 무료배송, 아니면 3천원 부과
+//     if(20000 <= estimatedPriceVal) {
+//     } else {
+//         deliveryFee = 3000;
+//     }
+
+//     document.querySelector('.delivery-fee').dataset.deliveryFee = deliveryFee;
+//     document.querySelector('.delivery-fee').innerText = "+ " + deliveryFee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원";
+// };
 
 // 재고 + 버튼에 맞춰 가격 변동
 const ascBtns = document.querySelectorAll('.asc-btn');

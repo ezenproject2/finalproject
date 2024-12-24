@@ -1,9 +1,6 @@
 package com.ezen.books.service;
 
-import com.ezen.books.domain.IamportAccessToken;
-import com.ezen.books.domain.OrderDetailProductDTO;
-import com.ezen.books.domain.OrderDetailVO;
-import com.ezen.books.domain.OrdersVO;
+import com.ezen.books.domain.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -21,16 +18,6 @@ import java.util.List;
 public interface OrderListService {
 
     Logger log = LoggerFactory.getLogger(PayoutService.class);
-
-    List<OrdersVO> getAllOrderList(long mno);
-
-    List<OrderDetailVO> getOrderDetailList(String orno);
-
-    List<List<OrderDetailProductDTO>> getOrderDetailProductList(long mno);
-
-    boolean isOrderEmpty(long mno);
-
-    int refundWithIamport(long odno, String orno, int qtyPrice) throws IOException, URISyntaxException, InterruptedException;
 
     // PaymentRestController에 있던 토큰 발급 메서드를 그대로 옮겨옴.
     default IamportAccessToken issueIamportToken(
@@ -69,4 +56,18 @@ public interface OrderListService {
 //        iamportToken.setExpiredAt(jsonNode.get("expired_at").asInt());
         return iamportToken;
     }
+
+    List<OrdersVO> getAllOrderList(long mno);
+
+    List<OrderDetailVO> getOrderDetailList(String orno);
+
+    List<List<OrderDetailProductDTO>> getOrderDetailProductList(long mno);
+
+    boolean isOrderEmpty(long mno);
+
+    int refundWithIamport(long odno, String orno, int qtyPrice) throws IOException, URISyntaxException, InterruptedException;
+
+    MemberVO getMember(long mno);
+
+    GradeVO getMemberGrade(Long gno);
 }
