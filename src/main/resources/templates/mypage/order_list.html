@@ -225,6 +225,9 @@
         <!--/* orderDetailProductList의 값: List<OrderDetailProductList> */-->
         <div class="cart_inner inner outer-data-container" th:each="orderDetailProductList, outerStat: ${orderDetailProductGroup}" th:data-outer-list-size="${orderDetailProductGroup.size}" th:data-mno="${mno}" th:data-is-order-empty="${isOrderEmpty}">
           <div class="cart_list" th:data-order-list="${outerStat.index}">
+            <div class="cart_title_area">
+              <p class="cart_title">주문 내역</p>
+            </div>
 
             <div class="cart_list_table"> <!--/* style="display: none;"을 잠시 뺐음. */-->
               <table>
@@ -263,18 +266,8 @@
 
                   <td class="product_quantity">
                     <div class="td_wrap product_quantity_wrap">
-                      <div class="prod_count_btn_wrap"> <!-- +, - 버튼 -->
-                        <button type="button" class="btn minus_btn desc-btn" th:data-order-detail="${innerStat.index}"> <!--/* 반복되는 id 삭제. id="bookQtyDescBtn" */-->
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#555" stroke="#555" stroke-width="1.5" class="bi bi-dash-lg" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8"/>
-                          </svg>
-                        </button>
+                      <div class="prod_count_btn_wrap"> <!-- +, - 버튼이 있던 곳-->
                         <span th:class="book-qty" th:data-order-detail="${innerStat.index}">[[${orderDetailProduct.orderDetailVO.bookQty}]]</span>
-                        <button type="button" class="btn plus_btn asc-btn" th:data-order-detail="${innerStat.index}">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#555" stroke="#555" stroke-width="1.5" class="bi bi-plus-lg" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
-                          </svg>
-                        </button>
                       </div>
                     </div>
                   </td>

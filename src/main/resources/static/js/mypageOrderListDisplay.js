@@ -23,11 +23,11 @@ function calculateQtyPrice() {
     // NOTE: outerStat의 크기 만큼 반복하고, 그 안에서 innerStat을 반복해야 함.
 
     const outerIndex = document.querySelector(`.outer-data-container`).dataset.outerListSize;
-    // console.log("outerIndex: " + outerIndex);
+    console.log("outerIndex: " + outerIndex);
 
     for(let outer=0; outer < parseInt(outerIndex); outer++) {
         let innerIndex = document.querySelector(`.cart_list[data-order-list="${outer}"] .inner-data-container`).dataset.innerListSize;
-        // console.log("innerIndex: " + innerIndex);
+        console.log("innerIndex: " + innerIndex);
 
         for(let inner=0; inner < parseInt(innerIndex); inner++) {
             let salePrice = document.querySelector(`.cart_list[data-order-list="${outer}"] .sale-price[data-order-detail="${inner}"]`).innerText;

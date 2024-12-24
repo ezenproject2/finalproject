@@ -17,9 +17,9 @@
     </insert>
 
     <insert id="saveOrderDetailToServer">
-        insert into order_detail(orno, prno, book_qty, price)
+        insert into order_detail(orno, prno, book_qty, price, status)
         values
-        (#{orno}, #{prno}, #{bookQty}, #{price})
+        (#{orno}, #{prno}, #{bookQty}, #{price}, #{status})
     </insert>
 
     <insert id="savePaymentToServer">

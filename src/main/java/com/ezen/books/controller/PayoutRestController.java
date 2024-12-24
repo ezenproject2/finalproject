@@ -132,8 +132,8 @@ public class PayoutRestController {
         // The orderDetailArr from JavaScript: [{"orno":"nobody_1734504395832","prno":"1","bookQty":"5","price":"10000"},{"orno":"nobody_1734504395832","prno":"3","bookQty":"2","price":"30000"}]
         log.info("The orderDetailArr from JavaScript: {}", orderDetailArr);
 
+        // 가져온 orderDetailArr 문자열을 List<OrderDetailVO>로 파싱
         List<OrderDetailVO> orderDetailList = null;
-
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             orderDetailList = objectMapper.readValue(orderDetailArr, new TypeReference<>() {});
@@ -141,6 +141,7 @@ public class PayoutRestController {
             log.info("Error during parsing orderDetailArr. Content: {}", e);
         }
 
+        // orderDetailList의 각 OrderDetailVO들을 하나씩 DB에 저장
         List<Integer> resultList = new ArrayList<>();
         for(OrderDetailVO orderDetail : orderDetailList) {
             int isDone = payoutService.saveOrderDetailToServer(orderDetail);

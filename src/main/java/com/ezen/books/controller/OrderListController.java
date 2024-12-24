@@ -34,6 +34,7 @@ public class OrderListController  {
 
         // 화면에 띄울 order_detail과 product의 정보를 가져옴.
         List<List<OrderDetailProductDTO>> orderDetailProductGroup = orderListService.getOrderDetailProductList(mno);
+//        log.info("The orderDetailProductGroup: {}", orderDetailProductGroup);
         log.info("orderDetailProductGroup is empty or not :{}", orderDetailProductGroup.isEmpty());
 
         boolean isOrderEmpty = orderListService.isOrderEmpty(mno);
@@ -82,45 +83,5 @@ public class OrderListController  {
     public String goToIndex() {
         return "redirect:/";
     }
-
-
-//    @GetMapping("/cart")
-//    public String showOrderList(@RequestParam("mno") long mno, Model model) {
-//        log.info(" >>> OrderListController: showOrderList start.");
-////
-////        List<OrderWithDetailDTO> orderWithDetailList = new ArrayList<>();
-////
-////        // 사용자의 주문 내역을 모두 가져옴
-////        List<OrdersVO> orderList = orderListService.getAllOrderList(mno);
-////        log.info("The order List: {}", orderList);
-////
-////        // 사용자의 주문 내역이 비었는지 아닌지 판별하기 위한 값
-////        boolean isOrderListEmpty;
-////        if(orderList.isEmpty()) {
-////            isOrderListEmpty = true;
-////        } else {
-////            isOrderListEmpty = false;
-////        }
-////
-////        List<List<OrderDetailVO>> listOfDetailList = new ArrayList<>();
-////        if(isOrderListEmpty) {
-////            //
-////        } else {
-////            for(OrdersVO order : orderList) {
-////                // 주문에 맞는 모든 주문 상세 가져오기. Mapper에서 List<>로 받을 것.
-////                List<OrderDetailVO> orderDetailList = orderListService.getOrderDetailList(order.getOrno());
-////                log.info("The order detail List: {}", orderDetailList);
-////
-////                listOfDetailList.add(orderDetailList);
-////            }
-////
-////            log.info("The list to store detail list is: {}", listOfDetailList);
-////        }
-////
-////        model.addAttribute("mno", mno);
-////        model.addAttribute("orderList", orderList);
-////        model.addAttribute("listOfDetailList", listOfDetailList);
-//        return "/mypage/order-list";
-//    }
 
 }

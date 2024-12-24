@@ -99,6 +99,7 @@ function jehoCalculateTotalPrice() {
         // console.log("the salePrice: " + salePrice);
         // console.log("the book qty: " + bookQty);
 
+        // totalPrice = 도서 할인가 * 도서 개수를 누적하여 더한 값
         totalPrice += parseInt(salePrice) * parseInt(bookQty);
         // console.log("The total price: " + totalPrice);
     }
@@ -119,7 +120,8 @@ function jehoCalculateTotalPrice() {
     document.querySelector('.delivery-fee').dataset.deliveryFee = deliveryFee;
     document.querySelector('.delivery-fee').innerText = "+ " + deliveryFee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원";
 
-    totalPrice - deliveryFee;
+    // 결제 예상 금액에 배송비를 더함
+    totalPrice += deliveryFee;
 
     document.querySelector(`.total-price`).dataset.totalPrice = totalPrice;
     document.querySelector(`.total-price`).innerText = totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
