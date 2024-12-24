@@ -65,7 +65,7 @@ public class PaymentController {
         return "/payment/cart";
     }
 
-    @PostMapping("/get-cart-list")
+    @PostMapping("/provide-cart-list")
     @ResponseBody
     public String getCartList(Model model, @RequestBody String cartListData) {
         log.info(" >>> PaymentController: getCartList start.");
@@ -77,6 +77,15 @@ public class PaymentController {
         // TODO: pickup이면 return을 2로 하든가 해서 구분하기.
         return "1";
     }
+
+//    @PostMapping("/prepare-cart-list")
+//    public String prepareCartList(@RequestBody long mno) {
+//        log.info(" >>> PaymentController: prepareCartList start.");
+//
+//        List<CartVO> cartList = payoutService.getCartList(mno);
+//        this.cartList = cartList;
+//        return "1";
+//    }
 
     @GetMapping("/payout")
     public String goToPayout(Model model) {
@@ -90,21 +99,26 @@ public class PaymentController {
         AddressVO defaultAddress = getDefaultAddress(mno);
         log.info("The default address: {}", defaultAddress);
 
+        // 기본 배송지가 null인지 아닌지 가리는 값
+        boolean isDefaultAddrNull = (defaultAddress == null) ? true : false;
+
         // TODO: pickup 주문이면 isPickup을 Y로 보낼 것.
         // 기본 배송지가 있냐 없냐에 따라 보낼 값이 달라짐
         Map<String, Object> modelAttrs = new HashMap<>();
         if(defaultAddress == null) {
             modelAttrs = Map.of(
+                    "mno", mno,
                     "cartProductList", cartProductList,
                     "defaultAddress", "empty",
-                    "mno", mno,
+                    "isDefaultAddrNull", isDefaultAddrNull,
                     "isPickup", "N"
             );
         } else {
             modelAttrs = Map.of(
+                    "mno", mno,
                     "cartProductList", cartProductList,
                     "defaultAddress", defaultAddress,
-                    "mno", mno,
+                    "isDefaultAddrNull", isDefaultAddrNull,
                     "isPickup", "N"
             );
         }

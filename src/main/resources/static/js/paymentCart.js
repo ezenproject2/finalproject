@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 })
 
+// 수량 X 가격을 한 값 계산
 function calculateQtyPrice() {
     console.log("calculateQtyPrice start.");
 
@@ -48,6 +49,7 @@ function calculateQtyPrice() {
 
 }
 
+// 영수증에 들어갈 모든 값들 계산
 function calculateReceipt() {
     // NOTE: 임시로 배송비는 3,000원 적용, 포인트는 일괄적으로 300P 적용.
     const index = document.getElementById('listDataStorage').dataset.listSize;
@@ -77,7 +79,7 @@ function calculateReceipt() {
     document.querySelector(`.estimated-point-amount`).innerText = 300;
 }
 
-// 재고 + - 버튼에 맞춰 가격 변동
+// 재고 + 버튼에 맞춰 가격 변동
 const ascBtns = document.querySelectorAll('.asc-btn');
 ascBtns.forEach(ascBtn => {
     ascBtn.addEventListener('click', () => {
@@ -96,6 +98,7 @@ ascBtns.forEach(ascBtn => {
     })
 });
 
+// 재고 - 버튼에 맞춰 가격 변동
 const descBtns = document.querySelectorAll('.desc-btn');
 descBtns.forEach(descBtn => {
     descBtn.addEventListener('click', () => {
@@ -212,7 +215,7 @@ function getDataForCartDto(singleItemBtnDataCart) {
 
 async function sendCartVoArrayToServer(cartDtoArray) {
     console.log(" >>> sendCartVoArrayToServer start.");
-    const url = '/payment/get-cart-list';
+    const url = '/payment/provide-cart-list';
     const config = {
         method: "post",
         headers: { "Content-Type": "application/json; charset=utf-8" },

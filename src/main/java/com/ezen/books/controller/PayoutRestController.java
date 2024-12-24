@@ -52,11 +52,14 @@ public class PayoutRestController {
         this.iamportClient = new IamportClient(iamportApiKey, iamportApiSecret);
     }
 
-    @PostMapping("/payment/payout/default-addr")
-    public String setDefaultAddress(@RequestBody AddressVO addressData) {
-        log.info(" >>> PaymentRestController: setDefaultAddress start.");
+    @PostMapping("/payment/payout/register-address")
+    public String registerDefaultAddress(@RequestBody AddressVO addressData) {
+        log.info(" >>> PaymentRestController: registerDefaultAddress start.");
         log.info("The address data from the client: {}", addressData);
-        return "success";
+
+        int isDone = payoutService.registerDefaultAddress(addressData);
+
+        return (0 < isDone) ? "1" : "0";
     }
 
     @PostMapping("/prepare")

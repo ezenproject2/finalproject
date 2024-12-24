@@ -18,4 +18,6 @@ public interface PayoutMapper {
     int savePaymentToServer(PaymentVO paymentData);
 
     void removeCartToServer(long mno, long prno);
+
+    int registerDefaultAddress(AddressVO addressData);
 }

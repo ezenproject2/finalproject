@@ -14,7 +14,7 @@
 
 <main layout:fragment="main">
   <!--/* <div id="dataContainer" th:data-mno="${mno}" th:data-cart-product-list="${cartProductList}" th:data-is-pickup="${isPickup}"></div>의 어트리뷰트를 class="cart_inner inner"에 넣음 */-->
-  <div class="cart_inner inner" id="dataContainer" th:data-mno="${mno}" th:data-cart-product-list="${cartProductList}" th:data-is-pickup="${isPickup}">
+  <div class="cart_inner inner" id="dataContainer" th:data-mno="${mno}" th:data-cart-product-list="${cartProductList}" th:data-is-pickup="${isPickup}" th:data-is-default-addr-null="${isDefaultAddrNull}">
     <div class="cart_list">
       <div class="cart_title_area">
         <p class="cart_title">주문/결제</p>
@@ -65,10 +65,30 @@
 
         <!--/* defaultAddress가 null인 경우에 기본 배송지를 받을 table */-->
         <table class="order_table address_table" th:unless="${defaultAddress != 'empty'}">
+          <!--/* 스타일 js 충돌 방지용 div. 기본 배송지가 없을 땐 클래스 shipping_request, select_box 등이 없어져서 에러 뜸. 그리고 스타일링 js가 작동하지 않음. */-->
+          <div style="display: none;" class="request_select"></div>
+          <div style="display: none;" class="shipping_request_select">
+            <div style="display: none;" class="ic_arrow_down"></div>
+          </div>
+          <div style="display: none;" class="request_text" maxlength="1"></div>
+          <div style="display: none;" class="request_select"></div>
           <tr>
             <th> 배송지 정보</th>
             <td class="form_data address">
-              <!--/* 미구현 */-->
+              <div>
+                <input type="text" class="postcode address-input" id="postcode" readonly name="addrCode"> <!--/* 원본 name값. name="address" */-->
+                <button type="button" onclick="execDaumPostcode()" class="addrBtn" id="non_member_addrBtn">주소 찾기</button>
+              </div>
+              <div>
+                <input type="text" class="homeAddress addressform address-input" id="homeAddress" readonly name="addr">
+                <input type="text" class="detailAddress addressform address-input" id="detailAddress" placeholder="상세주소" name="addrDetail">
+                <input type="text" class="address-name addressform address-input" id="addressName" placeholder="배송지 이름(선택사항)" name="addrName">
+              </div>
+              <div>
+                <input type="text" class="rec-name addressform address-input" id="recName" placeholder="수취인 이름" name="recName">
+                <input type="text" class="rec-phone addressform address-input" placeholder="수취인 전화번호(- 없이 입력)" id="recPhone" name="recPhone">
+              </div>
+              <button type="button" id="registerAddrBtn">기본 배송지 등록</button>
             </td>
           </tr>
           <!--/* "배송 요청사항" 부분은 받을 필요가 없어서 제외함. */-->

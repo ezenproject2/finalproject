@@ -72,4 +72,6 @@ public interface PayoutService {
     int savePaymentToServer(PaymentVO paymentData);
 
     int removeCartToServer(long mno, long prno);
+
+    int registerDefaultAddress(AddressVO addressData);
 }
