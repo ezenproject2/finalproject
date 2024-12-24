@@ -1,8 +1,6 @@
 package com.ezen.books.repository;
 
-import com.ezen.books.domain.OrderDetailVO;
-import com.ezen.books.domain.OrdersVO;
-import com.ezen.books.domain.ProductVO;
+import com.ezen.books.domain.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -22,4 +20,8 @@ public interface OrderListMapper {
     String getImpUid(String orno);
 
     int applyRefundToOrderDetail(long odno, String orno);
+
+    MemberVO getMember(long mno);
+
+    GradeVO getMemberGrade(Long gno);
 }

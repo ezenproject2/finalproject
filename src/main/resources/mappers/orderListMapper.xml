@@ -24,6 +24,16 @@
         where prno = #{prno}
     </select>
 
+    <select id="getMember" resultType="com.ezen.books.domain.MemberVO">
+        select * from member
+        where mno = #{mno}
+    </select>
+
+    <select id="getMemberGrade" resultType="com.ezen.books.domain.GradeVO">
+        select * from grade
+        where gno = #{gno}
+    </select>
+
     <!--  아래부터 환불을 위해 추가된 쿼리들.  -->
     <select id="getImpUid" resultType="String">
         select imp_uid from payment

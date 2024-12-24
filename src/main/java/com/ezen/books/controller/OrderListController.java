@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,12 +39,14 @@ public class OrderListController  {
         boolean isOrderEmpty = orderListService.isOrderEmpty(mno);
 
         // 화면에 띄울 사용자 정보와 등급 정보를 가져옴.
-//        MemberVO memberInfo = orderListService.getMember(mno);
-//        GradeVO memberGrade = orderListService.getMemberGrade(memberInfo.getGno());
+        MemberVO memberInfo = orderListService.getMember(mno);
+        GradeVO memberGrade = orderListService.getMemberGrade(memberInfo.getGno());
 
         model.addAttribute("mno", mno);
         model.addAttribute("isOrderEmpty", isOrderEmpty);
         model.addAttribute("orderDetailProductGroup", orderDetailProductGroup);
+        model.addAttribute("memberInfo", memberInfo);
+        model.addAttribute("memberGrade", memberGrade);
         return "/mypage/order_list";
     }
 

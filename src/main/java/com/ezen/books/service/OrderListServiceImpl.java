@@ -148,12 +148,12 @@ public class OrderListServiceImpl implements OrderListService {
 
     @Override
     public MemberVO getMember(long mno) {
-        return null;
+        return orderListMapper.getMember(mno);
     }
 
     @Override
     public GradeVO getMemberGrade(Long gno) {
-        return null;
+        return orderListMapper.getMemberGrade(gno);
     }
 
 }
