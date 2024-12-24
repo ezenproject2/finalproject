@@ -7,7 +7,29 @@ document.addEventListener('DOMContentLoaded', () => {
     // 화면 로딩 시 최종 결제 금액을 화면에 띄움.
     jehoInitializeTotalOriginalPrice();
     jehoInitializeTotalDiscountAmount();
-    jehoInitializeTotalPrice();
+    jehoCalculateTotalPrice();
+})
+
+// 사용자의 입력으로 .point_input의 value가 변화하면 즉시 포인트 액수를 저장하고 ,를 찍음
+document.querySelector('.point_input').addEventListener('input', (e) => {
+    // console.log("The target: ", e.target);
+    let pointVal = e.target.value;
+
+    // 콤마가 찍혀 있다면 제거하기
+    pointVal = pointVal.replace(/,/g, "");
+
+    // 포인트 액수를 데이터로 저장
+    e.target.dataset.pointAmount = pointVal;
+
+    // 영수증의 "포인트 사용"에 반영
+    document.querySelector('.discount-point').dataset.discountPoint = pointVal;
+    document.querySelector('.discount-point').innerText = pointVal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원";
+
+    // 포인트 액수를 계산하여 영수증 액수 갱신
+    jehoCalculateTotalPrice();
+
+    // 포인트 액수에 다시 , 찍어서 .point_input 안에 넣기
+    e.target.value = pointVal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 })
 
 // 도서들의 전체 원가 합계 첫 설정
@@ -61,10 +83,10 @@ function jehoInitializeTotalDiscountAmount() {
 }
 
 // 총 결제 금액 첫 설정
-function jehoInitializeTotalPrice() {
+function jehoCalculateTotalPrice() {
     const index = document.querySelector(`[data-list-total="listTotal"]`).innerText;
     let indexNum = parseInt(index);
-    console.log("The index: " + indexNum);
+    // console.log("The index: " + indexNum);
 
     let totalPrice = 0;
     for (let i = 0; i < indexNum; i++) {
@@ -77,8 +99,31 @@ function jehoInitializeTotalPrice() {
         totalPrice += parseInt(salePrice) * parseInt(bookQty);
         // console.log("The total price: " + totalPrice);
     }
-    console.log("totalPrice" + totalPrice);
+    // console.log("totalPrice" + totalPrice);
+
+    // 포인트와 쿠폰 반영
+    totalPrice = applyPointAndCoupon(totalPrice);
 
     document.querySelector(`.total-price`).dataset.totalPrice = totalPrice;
     document.querySelector(`.total-price`).innerText = totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+// 최종 결제 금액에 포인트와 쿠폰 값 반영
+function applyPointAndCoupon(totalPrice) {
+    let pointVal = document.querySelector('.discount-point').dataset.discountPoint;
+    let couponVal = document.querySelector('.discount-coupon').dataset.discountCoupon;
+    // console.log("The pointVal from applyPointAndCoupon: ", pointVal);
+
+    // 포인트의 값이 없으면("") 포인트를 0으로 할당
+    if(pointVal == "") {
+        pointVal = 0;
+    } else {
+        pointVal = parseInt(pointVal);
+        // console.log("The result of parseInt: ", pointVal);
+    }
+    couponVal = parseInt(couponVal);
+
+    totalPrice = (totalPrice - pointVal - couponVal);
+
+    return totalPrice;
 }

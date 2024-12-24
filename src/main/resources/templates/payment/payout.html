@@ -99,10 +99,10 @@
 
       <div class="order_table_wrap">
         <p class="order_title_wrap">
-                            <span>
-                                <span class="order_title">주문상품</span>
-                                <span>총 <strong th:data-list-total="listTotal">[[${cartProductList.size}]]</strong> 개</span>
-                            </span>
+          <span>
+              <span class="order_title">주문상품</span>
+              <span>총 <strong th:data-list-total="listTotal">[[${cartProductList.size}]]</strong> 개</span>
+          </span>
           <i class="ic ic_arrow_down"></i>
         </p>
 
@@ -145,7 +145,8 @@
                 <div class="coupon_wrap">
                   <span class="coupon_name">[교보문고 배송] 배송비 적용</span>
                   <span class="coupon_discount_amount"><strong>2,500</strong></span>
-                  <button type="button" class="btn benefit_btn">변경</button>
+                  <!--/*  */-->
+                  <button type="button" class="btn benefit_btn coupon-change-btn">변경</button>
                 </div>
               </td>
             </tr>
@@ -155,8 +156,9 @@
               <td class="point_td">
                 <div class="point_wrap">
                   <div class="point_input_wrap">
-                    <input type="text" class="point_input">
-                    <span class="unit">원</span>
+                    <!--/* TODO. th:max="${데이터로 넘긴 포인트 보유 액수}"로 설정하여 보유한 포인트 이상으로 입력하지 못하게 할 것. */-->
+                    <input type="text" class="point_input" data-point-amount="0">
+                    <span class="unit point-input-unit">원</span>
                   </div>
                   <button type="button" class="btn benefit_btn">전액사용</button>
                 </div>
@@ -225,12 +227,13 @@
               <p><span class="label">상품 금액</span><span><strong class="total-original-price" data-total-original-price="10"></strong>원</span></p>
               <p><span class="label">배송비 <i class="ic ic_question"></i></span><span>+ 0원</span></p>
               <p><span class="label">상품 할인</span><span><strong class="discount_price discount-amount" style="color: #39553F;" data-discount-amount="10"></strong>원</span></p>
-              <p><span class="label">쿠폰 할인</span><span><strong class="discount_price" style="color: #39553F;">- 10,000</strong>원</span></p>
-              <p><span class="label">포인트 사용</span><span>0원</span></p>
+              <!--/* TODO: 쿠폰 할인의 data-는 DB에서 직접 가져올 것. */-->
+              <p><span class="label">쿠폰 할인</span><span><strong class="discount_price discount-coupon" style="color: #39553F;" data-discount-coupon="10000">- 10,000</strong>원</span></p>
+              <p><span class="label">포인트 사용</span><span class="discount-point" data-discount-point="0">0원</span></p>
             </div>
             <div class="cart_aside_bottom">
               <p><strong>최종 결제 금액</strong> <span><strong class="total-price" data-total-price="10"></strong>원</span></p>
-              <p><span>적립 예정 포인트 <i class="ic ic_question"></i></span><span>2,000P</span></p>
+              <p><span>적립 예정 포인트 <i class="ic ic_question"></i></span><span data-earned-point="2000">2,000P</span></p>
             </div>
             <div class="cart_order_btn">
               <p><button type="button" id="orderBtn" >결제하기</button></p>

@@ -236,13 +236,12 @@ async function payWithIamport() {
         if(impResponse.success) {
             console.log("The result of the payment: " + JSON.stringify(impResponse));
             console.log("Start payment information verification.");
-            // 결제 데이터를 DB에 저장하기 전에 검증 먼저 실행.
-            // 결제 검증 1. 결제할 액수와 결제 결과로 반환된 결제 액수 동등성 비교.
+
             let verifyOneResult = false;
-            // 결제 검증 2. 포트원의 "결제 단건 조회" API를 통해 imp_uid와 액수 비교.
             let verifyTwoResult = false;
 
-            let verifyResult = checkFlags(paymentData.amount, impResponse.paid_amount, impResponse);
+            // let verifyResult = checkFlags(paymentData.amount, impResponse.paid_amount, impResponse);
+            checkFlags(paymentData.amount, impResponse.paid_amount, impResponse);
 
         (impResponse);
         } else if (impResponse.error_code != null) {
@@ -259,7 +258,10 @@ async function checkFlags(paymentDataAmount, impResPaidAmount, impResponse) {
         verify2: false
     }
 
+    // 결제 데이터를 DB에 저장하기 전에 검증 먼저 실행.
+    // 결제 검증 1. 결제할 액수와 결제 결과로 반환된 결제 액수 동등성 비교.
     result.verify1 = await comparePayment(paymentDataAmount, impResPaidAmount);
+    // 결제 검증 2. 포트원의 "결제 단건 조회" API를 통해 imp_uid와 액수 비교.
     result.verify2 = await sendPaymentResultToServer(impResponse);
     
     if(result.verify1 && result.verify2) {

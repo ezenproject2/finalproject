@@ -118,10 +118,9 @@ public class OrderListServiceImpl implements OrderListService {
         headers.set("Authorization", "Bearer " + iamportToken.getToken());
 
         String impUid = orderListMapper.getImpUid(orno);
-        // TODO: 클라이언트로부터 가져올 것.
+        // NOTE: 화면에서 가져올 수도 있음.
         String reason = "단순 변심";
 
-        // imp_uid는 payment에서 가져올 것.
         String requestBody = "{" +
                 "\"imp_uid\": \"" + impUid + "\", " +
                 "\"merchant_uid\": \"" + orno + "\"" +

@@ -1,5 +1,6 @@
 console.log("detailCart.js recognized.");
 
+// "장바구니" 버튼에 이벤트를 부여하여 /payment/cart로 이동.
 document.querySelector('.shopping_basket_btn').addEventListener('click', () => {
     // CartVO: mno, prno, bookQty
 
@@ -28,6 +29,11 @@ document.querySelector('.shopping_basket_btn').addEventListener('click', () => {
         storeCartVoToServer(mno, prno, bookQty);
     }
 });
+
+// "바로구매" 버튼에 이벤트를 부여하여 /payment/payout으로 이동.
+document.querySelector('.purchase_btn').addEventListener('click', () => {
+    //
+})
 
 
 async function storeCartVoToServer(mnoVal, prnoVal, bookQtyVal) {
