@@ -65,7 +65,7 @@
 
         <!--/* defaultAddress가 null인 경우에 기본 배송지를 받을 table */-->
         <table class="order_table address_table" th:unless="${defaultAddress != 'empty'}">
-          <!--/* 스타일 js 충돌 방지용 div. 기본 배송지가 없을 땐 클래스 shipping_request, select_box 등이 없어져서 에러 뜸. 그리고 스타일링 js가 작동하지 않음. */-->
+          <!--/* 스타일 js 충돌 방지용 div. 기본 배송지를 받는 레이아웃에 클래스 shipping_request, select_box 등이 없어서 에러 뜸. 그리고 스타일링 js가 작동하지 않음. */-->
           <div style="display: none;" class="request_select"></div>
           <div style="display: none;" class="shipping_request_select">
             <div style="display: none;" class="ic_arrow_down"></div>
@@ -229,7 +229,7 @@
               <p><span class="label">포인트 사용</span><span>0원</span></p>
             </div>
             <div class="cart_aside_bottom">
-              <p><strong>최종 결제 금액</strong> <span><strong class="total-price" data-total-price="totalPrice"></strong>원</span></p>
+              <p><strong>최종 결제 금액</strong> <span><strong class="total-price" data-total-price="10"></strong>원</span></p>
               <p><span>적립 예정 포인트 <i class="ic ic_question"></i></span><span>2,000P</span></p>
             </div>
             <div class="cart_order_btn">

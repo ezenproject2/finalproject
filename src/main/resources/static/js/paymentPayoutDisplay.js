@@ -77,5 +77,6 @@ function jehoInitializeTotalPrice() {
     }
     console.log("totalPrice" + totalPrice);
 
-    document.querySelector(`[data-total-price="totalPrice"].total-price`).innerText = totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    document.querySelector(`.total-price`).dataset.totalPrice = totalPrice;
+    document.querySelector(`.total-price`).innerText = totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }

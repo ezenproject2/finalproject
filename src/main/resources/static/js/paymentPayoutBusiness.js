@@ -115,7 +115,7 @@ function selectPg(targetClassList) {
 
 // 화면에 표시된 총 액수를 가져옴
 function getTotalPrice() {
-    const totalPrice = document.querySelector('[data-total-price="totalPrice"]').textContent;
+    const totalPrice = document.querySelector('.total-price').dataset.totalPrice;
 
     return parseInt(totalPrice);
 }
