@@ -13,6 +13,7 @@ public class OrderDetailVO {
     private long prno;
     private int bookQty;
     private int price;
+    private String status;
 }
 /*
 CREATE TABLE order_detail (
@@ -21,6 +22,7 @@ CREATE TABLE order_detail (
     prno bigint NOT NULL,
     book_qty int NOT NULL,
     price int NOT NULL,
+    status VARCHAR(100) NOT NULL,
     PRIMARY KEY (odno)
 );
  */

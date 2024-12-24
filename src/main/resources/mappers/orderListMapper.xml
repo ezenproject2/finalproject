@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ezen.books.repository.OrderListMapper">
+
+    <select id="getAllOrderList" resultType="com.ezen.books.domain.OrdersVO">
+        select * from orders
+        where mno = #{mno}
+    </select>
+
+    <select id="getOrderDetailList" resultType="com.ezen.books.domain.OrderDetailVO">
+        select * from order_detail
+        where orno = #{orno}
+    </select>
+
+    <select id="getOrnoList" resultType="String">
+        select orno from orders
+        where mno = #{mno}
+    </select>
+
+    <select id="getProduct" resultType="com.ezen.books.domain.ProductVO">
+        select * from product
+        where prno = #{prno}
+    </select>
+
+    <!--  아래부터 환불을 위해 추가된 쿼리들.  -->
+    <select id="getImpUid" resultType="String">
+        select imp_uid from payment
+        where orno = #{orno}
+    </select>
+
+    <update id="applyRefundToOrderDetail">
+        update order_detail
+        set status = "refunded"
+        where odno = #{odno} and orno = #{orno}
+    </update>
+</mapper>

@@ -29,6 +29,7 @@ function jehoInitializeTotalOriginalPrice() {
     }
     console.log("totalPrice" + totalPrice);
     
+    document.querySelector(`.total-original-price`).dataset.totalOriginalPrice = totalPrice;
     document.querySelector(`.total-original-price`).innerText = totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
@@ -55,6 +56,7 @@ function jehoInitializeTotalDiscountAmount() {
     }
     console.log("totalAmount" + totalAmount);
 
+    document.querySelector(`.discount-amount`).dataset.discountAmount = totalAmount;
     document.querySelector(`.discount-amount`).innerText = '- ' + totalAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 

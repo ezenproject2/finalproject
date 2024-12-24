@@ -264,9 +264,11 @@ async function checkFlags(paymentDataAmount, impResPaidAmount, impResponse) {
     
     if(result.verify1 && result.verify2) {
         await preserveOrdersToServer(impResponse);
-        await preserveOrderDetailToServer(impResponse.merchant_uid);
+        await preserveOrderDetailToServer(impResponse);
         await preservePaymentToServer(impResponse);
         await removeCartToServer();
+        alert("결제가 완료되었습니다.");
+        window.location.href = "/payment/go-to-index";
     }
 
     return result;
@@ -347,7 +349,7 @@ async function preserveOrdersToServer(impResponse) {
 }
 
 // order_detail 테이블에 주문 상세 데이터 저장
-async function preserveOrderDetailToServer(respMerchantUid) {
+async function preserveOrderDetailToServer(impResponse) {
     const url = `/payment/payout/preserve-order-detail`;
 
     const orderDetailArr = [];
@@ -355,10 +357,11 @@ async function preserveOrderDetailToServer(respMerchantUid) {
     
     for(let i=0; i < parseInt(index); i++) {
         let orderDetail = {
-            orno: respMerchantUid,
+            orno: impResponse.merchant_uid,
             prno: "",
             bookQty: "",
-            price: ""
+            price: "",
+            status: ""
         }
 
         // orderDetail.prno = document.querySelector(`[data-list-book-prno="${i}"]`).value;
@@ -368,6 +371,8 @@ async function preserveOrderDetailToServer(respMerchantUid) {
         orderDetail.bookQty = document.querySelector(`[data-payout="${i}"].book-qty`).innerText;
         let bookPriceVal = document.querySelector(`[data-payout="${i}"].book-price`).dataset.bookOriginalPrice;
         
+        orderDetail.status = selectStatus(impResponse.status);
+
         // bookPriceVal이 숫자+원 임. "원"을 제거하고 숫자만 추출한 후에  문자열을 int로 전환.
         let onlyPriceVal = bookPriceVal.match(/\d+/);
         orderDetail.price = parseInt(onlyPriceVal);
