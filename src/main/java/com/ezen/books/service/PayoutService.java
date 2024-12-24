@@ -74,4 +74,5 @@ public interface PayoutService {
 
     int registerDefaultAddress(AddressVO addressData);
 
+    int saveDeliveryToServer(DeliveryVO deliveryData);
 }

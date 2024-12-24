@@ -30,12 +30,14 @@
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#497248" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
                     <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
                   </svg>
-                  <span class="location_name">[[${defaultAddress.addrName} ?: '배송지 이름']]</span>
+                  <span class="location_name default-addr-name">[[${defaultAddress.addrName} ?: '배송지 이름']]</span>
                   <span class="default_location">기본 배송지</span>
                   <button type="button" class="change_address">변경</button>
                 </p>
-                <p class="custom_info"> <span class="custom_name">[[${defaultAddress.recName} ?: '수령인 이름']]</span><span class="phone_number">[[${defaultAddress.recPhone} ?: '수령인 전화번호']]</span></p>
-                <p class="address"><span>[[${defaultAddress.addr} ?: '배송지']]</span></p>
+                <p class="custom_info"> <span class="custom_name default-addr-rec-name">[[${defaultAddress.recName} ?: '수령인 이름']]</span><span class="phone_number default-addr-rec-phone">[[${defaultAddress.recPhone} ?: '수령인 전화번호']]</span></p>
+                <p class="address address-info" th:data-addr-postcode="${defaultAddress.addrCode}" th:data-addr-detail="${defaultAddress.addrDetail}">
+                  <span>[[${defaultAddress.addr} ?: '배송지']]</span>
+                </p>
               </div>
             </td>
           </tr>
@@ -55,7 +57,7 @@
                   <i class="ic ic_arrow_down"></i>
                 </div>
                 <div class="shipping_request_text" style="display: none;">
-                  <textarea id="" placeholder="배송 메모를 입력해 주세요." maxlength="50" class="request_text"></textarea>
+                  <textarea id="userDeliveryMemo" placeholder="배송 메모를 입력해 주세요." maxlength="50" class="request_text"></textarea>
                   <div class="text_count"><span>0/50</span></div>
                 </div>
               </div>

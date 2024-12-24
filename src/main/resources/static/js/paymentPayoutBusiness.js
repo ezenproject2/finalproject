@@ -269,8 +269,9 @@ async function checkFlags(paymentDataAmount, impResPaidAmount, impResponse) {
         await preserveOrderDetailToServer(impResponse);
         await preservePaymentToServer(impResponse);
         await removeCartToServer();
+        await preserveDeliveryToServer(impResponse);
         alert("결제가 완료되었습니다.");
-        window.location.href = "/payment/go-to-index";
+        // window.location.href = "/payment/go-to-index";
     }
 
     return result;
@@ -489,4 +490,75 @@ async function removeCartToServer() {
     } else {
         console.log("Remove cart: Unknown.");
     }
+}
+
+// 결제가 끝나면 delivery 테이블에 배송지 정보를 저장함.
+async function preserveDeliveryToServer(impResponse) {
+
+    const recNameVal = document.querySelector('.default-addr-rec-name').innerText;
+    const recPhoneVal = document.querySelector('.default-addr-rec-phone').innerText;
+    const addrVal = document.querySelector('.address-info span').innerText;
+    const addrCodeVal = document.querySelector('.address-info').dataset.addrPostcode;
+    const addrDetailVal = document.querySelector('.address-info').dataset.addrDetail;
+
+    const url = "/payment/payout/preserve-delivery";
+
+    const deliveryData = {
+        orno: impResponse.merchant_uid,
+        recName: recNameVal,
+        recPhone: recPhoneVal,
+        addrCode: addrVal,
+        addr: addrCodeVal,
+        addrDetail: addrDetailVal,
+        addrMemo: ""
+    }
+
+    deliveryData.addrMemo = getDeliveryMemo();
+
+    const config = {
+        method: "POST",
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        body: JSON.stringify(deliveryData)
+    };
+    
+    const response = await fetch(url, config);
+    const result = await response.text();
+    if(result == "1") {
+        console.log("Preserve delivery: Succeeded.");
+    } else if (result == "0") {
+        console.log("Preserve delivery: Failed.");
+    } else {
+        console.log("Preserve delivery: Unknown.");
+    }
+    
+}
+
+// 화면으로부터 배송 메모를 가져오는 함수.
+function getDeliveryMemo() {
+    const deliverySelect = document.getElementById('Request').value;
+    let deliveryMemoVal = "";
+
+    switch (deliverySelect) {
+        case "문 앞에 놓아주세요.":
+            deliveryMemoVal = "문 앞에 놓아주세요.";
+            break;
+        case "부재 시 경비실에 맡겨 주세요.":
+            deliveryMemoVal = "부재 시 경비실에 맡겨 주세요.";
+            break;
+        case "부재 시 연락 주세요.":
+            deliveryMemoVal = "부재 시 연락 주세요.";
+            break;
+        case "배송 전 연락 주세요.":
+            deliveryMemoVal = "배송 전 연락 주세요.";
+            break;
+        case "직접 입력":
+            const userMemo = document.querySelector('.shipping_request_text #userDeliveryMemo').value;
+            deliveryMemoVal = userMemo;
+            break;
+        default:
+            deliveryMemoVal = "메모 없음";
+            break;
+    }
+
+    return deliveryMemoVal;
 }

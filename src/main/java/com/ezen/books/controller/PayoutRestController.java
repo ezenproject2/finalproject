@@ -208,6 +208,18 @@ public class PayoutRestController {
                 new ResponseEntity<>("0", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @PostMapping("/preserve-delivery")
+    public ResponseEntity<String> saveDeliveryToServer(@RequestBody DeliveryVO deliveryData) {
+        log.info(" >>> PaymentRestController: saveDeliveryToServer start.");
+        log.info("The deliveryData from the client: {}", deliveryData);
+
+        int isDone = payoutService.saveDeliveryToServer(deliveryData);
+
+        return (isDone > 0) ?
+                new ResponseEntity<>("1", HttpStatus.OK) :
+                new ResponseEntity<>("0", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 
     private boolean checkSinglePayment(String impUid, String amount) throws IOException, URISyntaxException, InterruptedException {
         boolean verifyResult = payoutService.checkSinglePayment(impUid, amount);
