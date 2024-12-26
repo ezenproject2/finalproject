@@ -18,23 +18,24 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('orderBtn').disabled = false;
         document.getElementById('pickupBtn').disabled = false;
 
+        // 모든 itemBtn이 클릭되있게 함
+        const selectItemBtns = document.getElementsByName('itemBtn');
+        selectItemBtns.forEach(itemBtn => {
+            itemBtn.checked = true;
+        });
+        
         // 화면 로딩 시 페이지에 보여질 값들 계산
         calculateQtyPrice();
         calculateReceipt();
         // calculateDeliveryFee();
-
-        // 모든 itemBtn이 클릭되있게 함
-        const selectItemBtns = document.getElementsByName('itemBtn');
-    
-        selectItemBtns.forEach(itemBtn => {
-            itemBtn.checked = true;
-        });
     }
 })
 
+
+
 // 수량 X 가격을 한 값 계산
 function calculateQtyPrice() {
-    console.log("calculateQtyPrice start.");
+    // console.log("calculateQtyPrice start.");
 
     const index = document.getElementById('listDataStorage').dataset.listSize;
     const numIndex = parseInt(index);
@@ -52,20 +53,33 @@ function calculateQtyPrice() {
 
 // 영수증에 들어갈 모든 값들 계산
 function calculateReceipt() {
-    // NOTE: 임시로 배송비는 3,000원 적용, 포인트는 일괄적으로 300P 적용.
-    const index = document.getElementById('listDataStorage').dataset.listSize;
+    // const size = document.getElementById('listDataStorage').dataset.listSize;
 
+    // checked == true인 모든 single-item-btn들의 index를 가져옴.
+    let itemBtnIndexArr = [];
+
+    const allItemBtns = document.querySelectorAll('.single-item-btn');
+    allItemBtns.forEach(itemBtn => {
+        if(itemBtn.checked == true) {
+            let itemBtnIndex = parseInt(itemBtn.dataset.cart);
+            itemBtnIndexArr.push(itemBtnIndex);
+        }
+    })
+
+    // console.log("The itemBtnIndexArr: ", itemBtnIndexArr);
+
+    // 선택된 single-item-btns들의 index를 담은 배열을 바탕으로 영수증에 들어갈 값들 계산
     let sumOriginalPrice = 0;
     let sumSalePrice = 0;
 
-    for (let i = 0; i < index; i++) {
-        let originalPrice = document.querySelector(`span[data-cart="${i}"].original-price`).dataset.originalPrice;
-        let salePrice = document.querySelector(`span[data-cart="${i}"].sale-price`).dataset.salePrice;
-        let bookQty = document.querySelector(`[data-cart="${i}"].book-qty`).innerText;
+    itemBtnIndexArr.forEach(btnIndex => {
+        let originalPrice = document.querySelector(`span[data-cart="${btnIndex}"].original-price`).dataset.originalPrice;
+        let salePrice = document.querySelector(`span[data-cart="${btnIndex}"].sale-price`).dataset.salePrice;
+        let bookQty = document.querySelector(`[data-cart="${btnIndex}"].book-qty`).innerText;
 
         sumOriginalPrice += parseInt(originalPrice) * parseInt(bookQty);
         sumSalePrice += parseInt(salePrice) * parseInt(bookQty);
-    }
+    })
 
     // 전체 도서 원가 합계 데이터를 .total-original-price의 data-total-original-price에 저장
     let totalOriginalPriceEle = document.querySelector(`.total-original-price`);
@@ -78,9 +92,8 @@ function calculateReceipt() {
     let deliveryFee = 0;
 
     // 할인된 가격의 총합에 따라 배송비 설정
-    if(20000 < sumSalePrice) {
-        // 20,000 이상 결제 시 배송비 무료
-    } else {
+    // 총 가격이 20,000원 미만이고 + 하나 이상의 도서가 선택되어 sumSalePrice가 0이 아니라면 3,000원으로 책정
+    if(sumSalePrice < 20000 && sumSalePrice != 0) {
         deliveryFee = 3000;
     }
 
@@ -94,33 +107,13 @@ function calculateReceipt() {
     document.querySelector(`.estimated-point-amount`).innerText = 300;
 }
 
-// function calculateDeliveryFee() {
-//     let estimatedPriceVal = document.querySelector(`.estimated-payment-amount`).innerText;
-    
-//     // 금액에 찍힌 , 제거
-//     estimatedPriceVal = estimatedPriceVal.replace(/,/g, "");
-
-//     // 숫자로 변환
-//     estimatedPriceVal = parseInt(estimatedPriceVal);
-
-//     let deliveryFee = 0;
-//     // 2만원 이상 구매 시 무료배송, 아니면 3천원 부과
-//     if(20000 <= estimatedPriceVal) {
-//     } else {
-//         deliveryFee = 3000;
-//     }
-
-//     document.querySelector('.delivery-fee').dataset.deliveryFee = deliveryFee;
-//     document.querySelector('.delivery-fee').innerText = "+ " + deliveryFee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원";
-// };
-
 // 재고 + 버튼에 맞춰 가격 변동
 const ascBtns = document.querySelectorAll('.asc-btn');
 ascBtns.forEach(ascBtn => {
     ascBtn.addEventListener('click', () => {
         // 어느 order detail의 올리기 버튼인지 찾기
         let index = ascBtn.dataset.cart;
-        console.log("asc index: " + index);
+        // console.log("asc index: " + index);
         
         // 도서 개수 +1
         let bookQty = document.querySelector(`.book-qty[data-cart="${index}"]`);
@@ -139,7 +132,7 @@ descBtns.forEach(descBtn => {
     descBtn.addEventListener('click', () => {
         // 어느 order detail의 내리기 버튼인지 찾기
         let index = descBtn.dataset.cart;
-        console.log("desc index: " + index);
+        // console.log("desc index: " + index);
 
         // 도서 개수 -1
         let bookQty = document.querySelector(`.book-qty[data-cart="${index}"]`);
@@ -157,7 +150,7 @@ descBtns.forEach(descBtn => {
     })
 })
 
-// #allItemBtn을 누르면 모두 선택됨
+// #allItemBtn을 누르면 모든 [name="itemBtn"]들이 선택됨
 document.getElementById('allItemBtn').addEventListener('click', (e) => {
     console.log("e.target.checked: " + e.target.checked);
 
@@ -168,9 +161,9 @@ document.getElementById('allItemBtn').addEventListener('click', (e) => {
     });
 });
 
-// 모든 <input name="itemBtn">이 checked = false면 주문 버튼 비활성화
 const itemBtns = document.querySelectorAll('input[name="itemBtn"]');
 const singleItemBtns = document.querySelectorAll('input[name="itemBtn"].single-item-btn');
+// 모든 <input name="itemBtn">이 checked = false면 주문 버튼 비활성화
 itemBtns.forEach(itemBtn => {
 
     itemBtn.addEventListener('click', () => {
@@ -183,6 +176,14 @@ itemBtns.forEach(itemBtn => {
         }
     })
 });
+// single-item-btn이 눌릴 때 마다 오른쪽 영수증에 들어가는 값들 다시 계산
+singleItemBtns.forEach(singleBtn => {
+
+    singleBtn.addEventListener('click', () => {
+        console.log("single item btn clicked!");
+        calculateReceipt();
+    })
+})
 
 // x 아이콘을 누르면 장바구니 내역에서 삭제됨
 document.addEventListener('click', (e) => {

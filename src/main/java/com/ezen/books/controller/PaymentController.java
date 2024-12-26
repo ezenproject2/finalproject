@@ -41,6 +41,7 @@ public class PaymentController {
         return cartAmount;
     }
 
+    // /cart의 "주문하기", "픽업하기"를 눌렀을 시 cart list를 구성하는 메서드
     @PostMapping("/provide-cart-list/{pathString}")
     @ResponseBody
     public String getCartList(Model model,
@@ -62,6 +63,7 @@ public class PaymentController {
         }
     }
 
+    // /product/detail에서 "바로구매", "바로픽업" 버튼을 눌렀을 시 단일 cart 정보를 cart list에 넣어주는 메서드
     @PostMapping("/single-purchase")
     @ResponseBody
     public String prepareCartList(@RequestBody CartVO cartData) {
@@ -109,6 +111,7 @@ public class PaymentController {
     public String goToPayout(Model model) {
         log.info(" >>> PaymentController: goToPayout start.");
         List<CartProductDTO> cartProductList = buildCartProductList(cartList);
+
         // mno는 단독적으로 쓰이는 경우가 많아 편의상 따로 빼서 model로 보냄.
         long mno = cartProductList.get(0).getCartVO().getMno();
         log.info("mno: {}", mno);
@@ -118,7 +121,7 @@ public class PaymentController {
         log.info("The default address: {}", defaultAddress);
 
         // 기본 배송지가 null인지 아닌지 가리는 값
-        boolean isDefaultAddrNull = (defaultAddress == null) ? true : false;
+        boolean isDefaultAddrNull = defaultAddress == null;
 
         // 포인트와 쿠폰이 도입되어 merchant_uid(UUID)를 여기서 보내는 것으로 바뀜.
         String merchantUid = UUID.randomUUID().toString();
