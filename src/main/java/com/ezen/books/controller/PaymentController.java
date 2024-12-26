@@ -30,6 +30,7 @@ public class PaymentController {
     private final PayoutService payoutService;
     private final CartService cartService;
     private List<CartVO> cartList;
+    private List<OfflineStoreVO> storeList;
 
     @PostMapping("/header-cart")
     @ResponseBody
@@ -52,6 +53,7 @@ public class PaymentController {
         log.info(" >>> getCartList: cartList: {}", cartListData);
 
         List<CartVO> cartList =  parseCartVoArray(cartListData);
+
         this.cartList = cartList;
 
         if(pathString.equals("orderBtn")) {
@@ -101,15 +103,22 @@ public class PaymentController {
 
     @GetMapping("/pickUp")
     public String goToPickUP(Model model) {
-        log.info(" >>> PaymentController: goToPickUP start.");
+        // (차민주)장바구니에서 가져온 정보를 통해 픽업 가능한 매장 추출하기
+        // cartList 예시 > [CartVO(mno=1, prno=251, bookQty=1), CartVO(mno=1, prno=250, bookQty=2)]
+        List<OfflineStoreVO> storeList = payoutService.getPickupStores(cartList);
+        log.info(">>>> storeList > {}", storeList);
+        this.storeList = storeList;
 
+        model.addAttribute("storeList", storeList);
         model.addAttribute("cartList", cartList);
         return "/payment/pickUp";
     }
 
     @GetMapping(value = "/payout/{osno}")
-    public String goToPayout(Model model, @PathVariable("osno") long osno) {
+    public String goToPayout(Model model, @PathVariable("osno") long osno ) {
         log.info(" >>> PaymentController: goToPayout start.");
+        log.info(">>>> cartList > {}", cartList);
+
         List<CartProductDTO> cartProductList = buildCartProductList(cartList);
 
         // mno는 단독적으로 쓰이는 경우가 많아 편의상 따로 빼서 model로 보냄.
@@ -123,8 +132,22 @@ public class PaymentController {
         // 기본 배송지가 null인지 아닌지 가리는 값
         boolean isDefaultAddrNull = defaultAddress == null;
 
+        String orno = UUID.randomUUID().toString();
         // 포인트와 쿠폰이 도입되어 merchant_uid(UUID)를 여기서 보내는 것으로 바뀜.
-        String merchantUid = UUID.randomUUID().toString();
+        String merchantUid = orno;
+
+        // (차민주-픽업)**
+        if(osno != 0){
+            PickUpVO pickUpVO = PickUpVO.builder()
+                    .osno(osno)
+                    .status("주문완료")
+                    .orno(orno)
+                    .build();
+            log.info(">>>> pickUpVO > {}", pickUpVO);
+            // 픽업이라면? 루트 짜서 delevery 대신 pickUp 테이블 데이터 저장하기
+            // insert into pickUp (osno, orno, status) values (#{osno}, #{orno}, #{status});
+            // 밑에 Y로 바꾸는 것도 osno가 0이 아니라면으로 조건 걸어서 부여할것
+        }
 
         // Path variable로 받은 osno가 0이면 배달로, 0이 아니면 픽업 결제로 설정함.
         String isPickup = "";

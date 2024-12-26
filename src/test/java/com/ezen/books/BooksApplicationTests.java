@@ -157,7 +157,7 @@ class BooksApplicationTests {
 	void insertOfflineStock() {
 		// prno를 제공하면 해당 상품의 '오프라인' 재고를 랜덤(0~5) 생성해주는 메서드
 		// 상품 상세 페이지를 시연을 위해 만들었어요.
-		long prno = 6;
+		long prno = 251;
 		int isOk = offlineService.testStockInsert(prno);
 	}
 

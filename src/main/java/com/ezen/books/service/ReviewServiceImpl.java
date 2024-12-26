@@ -1,8 +1,11 @@
 package com.ezen.books.service;
 
+import com.ezen.books.controller.NotificationController;
+import com.ezen.books.domain.NotificationVO;
 import com.ezen.books.domain.PagingVO;
 import com.ezen.books.domain.ReviewVO;
 import com.ezen.books.handler.PagingHandler;
+import com.ezen.books.repository.NotificationMapper;
 import com.ezen.books.repository.ProductMapper;
 import com.ezen.books.repository.ReviewMapper;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,8 @@ public class ReviewServiceImpl implements ReviewService{
 
     private final ReviewMapper reviewMapper;
     private final ProductMapper productMapper;
+    private final NotificationMapper notificationMapper;
+    private final NotificationController notificationController;
 
     @Transactional
     @Override
@@ -70,4 +75,19 @@ public class ReviewServiceImpl implements ReviewService{
         return isOk;
     }
 
+    @Override
+    public void createAndSendNotification(long mno, String message) {
+        // 알림 객체 생성
+        NotificationVO notification = new NotificationVO();
+        notification.setMno(mno);
+        notification.setMessage(message);
+        notification.setStatus("UNREAD");
+
+        // 알림 저장
+        notificationMapper.insertNotification(notification);
+
+        // 생성된 알림을 컨트롤러에 전달하여 실시간 전송
+        notificationController.sendNotificationToClient(mno, notification);
+
+    }
 }

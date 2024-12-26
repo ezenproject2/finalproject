@@ -112,6 +112,13 @@ public class MemberController {
     @PostMapping("/modify")
     public String modify(MemberVO memberVO, HttpServletRequest request, HttpServletResponse response,
                          RedirectAttributes re){
+        if(memberVO.getPassword() != null && !memberVO.getPassword().isEmpty()){
+            String pwd = passwordEncoder.encode(memberVO.getPassword());
+            memberVO.setPassword(pwd);
+        } else {
+            memberVO.setPassword(null);
+        }
+
 
         int isOk = memberService.updateMember(memberVO);
         logout(request, response);

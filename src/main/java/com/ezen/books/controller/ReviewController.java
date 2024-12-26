@@ -85,5 +85,13 @@ public class ReviewController {
         return isOk>0? "1" : "0";
     }
 
+    @ResponseBody
+    @GetMapping("/insertTest/{mno}/{message}")
+    public String insertTest(@PathVariable("mno") long mno, @PathVariable("message") String message){
+        reviewService.createAndSendNotification(mno, message);
+
+        return "1";
+    }
+
 
 }

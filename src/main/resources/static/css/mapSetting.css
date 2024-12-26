@@ -1,0 +1,372 @@
+.location_container { margin-top: 5vh;}
+
+.location_header {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    box-sizing: content-box;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #c6c6c6;
+}
+.select_area_title{
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.select_area_title > span {
+    font-size: 25px;
+    line-height: 50px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+
+ .location_header.active .menu {
+    width: 1250px;
+ }
+
+ #locationHeader.active .toggle {
+    right: 1200px;
+}
+
+ .location_header.active .menu .toggle i {
+    width: 8px;
+    transition: width 400ms cubic-bezier(0.6, 0, 0.45, 0.99), transform 1000ms cubic-bezier(0.6, 0, 0.45, 0.99) 300ms, top 200ms cubic-bezier(0.6, 0, 0.45, 0.99) 200ms, bottom 200ms cubic-bezier(0.6, 0, 0.45, 0.99) 200ms;
+ }
+
+ .location_header.active .menu .toggle i:first-of-type {
+    top: 19px;
+    transform: rotate(45deg) translate(-1px, -2px);
+ }
+
+ .location_header.active .menu .toggle i:last-of-type {
+    bottom: 19px;
+    transform: rotate(-45deg) translate(-1px, 2px);
+ }
+
+ .location_header.active .menu .list {
+    visibility: visible;
+    flex-direction: row-reverse;
+ }
+
+ .location_header.active .menu .list li, .location_header.active .ctgBtn > span {
+    transform: scale(1);
+ }
+ .ctgBtn > span {transform: scale(0);}
+
+ .location_header .menu {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    border-radius: 100px;
+    background-color: #b8c3a1;
+    transform: translate(28px, -50%);
+    transition: 950ms cubic-bezier(0.79, 0, 0.22, 1);
+    top: 25px;
+    right: 30px;
+    z-index: 2;
+ }
+
+ .location_header .menu .toggle {
+    width: 40px;
+    height: 40px;
+    right: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: absolute;
+    border-radius: 100px;
+    cursor: pointer;
+    z-index: 100;
+    background-color: transparent;
+    transition: 950ms cubic-bezier(0.79, 0, 0.22, 1);
+ }
+
+ .location_header .menu .toggle:hover {
+    background-color: #ABBC86;
+ }
+
+ .location_header .menu .toggle i {
+    width: 12px;
+    height: 2px;
+    position: absolute;
+    display: flex;
+    border-radius: 100px;
+    background-color: #FFF;
+    transition: width 950ms cubic-bezier(0.6, 0, 0.45, 0.99), transform 950ms cubic-bezier(0.6, 0, 0.45, 0.99), top 950ms cubic-bezier(0.6, 0, 0.45, 0.99) 950ms, bottom 950ms cubic-bezier(0.6, 0, 0.45, 0.99) 950ms;
+ }
+
+ .location_header .menu .toggle i:first-of-type {
+    top: 16px;
+ }
+
+ .location_header .menu .toggle i:last-of-type {
+    bottom: 16px;
+ }
+
+ .location_header .menu .list {
+    flex-direction: row;
+    margin: 0;
+    right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+    position: absolute;
+ }
+
+ .location_header .menu .list li {
+    width: 55px;
+    height: 40px;
+    margin-left: 8px;
+    list-style: none;
+    border-radius: 100px;
+    background-color: #ffffff5e;
+    transform: scale(0);
+    transition: background-color 500ms ease, transform 950ms cubic-bezier(0.37, 0.01, 0.43, 1.3);
+    transition-delay: 950ms;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    cursor: pointer;
+ }
+ .location_header .menu .list li:hover {
+    background-color: #ffffffb6;
+ }
+ .ctgBtn > span {
+    display: inline-block;
+    max-width: 100%;
+    font-size: 0.73rem;
+    letter-spacing: -0.01rem;
+    line-height: 1rem;
+    overflow-wrap: break-word; /* 현대적인 브라우저에서 사용 */
+    word-wrap: break-word;
+    text-align: center;
+}
+
+.location_header .menu .list li:nth-child(1), .location_header .menu .list li:nth-child(1) span {
+    transition-delay: 30ms;
+}
+
+.location_header .menu .list li:nth-child(2), .location_header .menu .list li:nth-child(2) span {
+    transition-delay: 60ms;
+}
+
+.location_header .menu .list li:nth-child(3), .location_header .menu .list li:nth-child(3) span {
+    transition-delay: 90ms;
+}
+
+.location_header .menu .list li:nth-child(4), .location_header .menu .list li:nth-child(4) span {
+    transition-delay: 120ms;
+}
+
+.location_header .menu .list li:nth-child(5), .location_header .menu .list li:nth-child(5) span {
+    transition-delay: 150ms;
+}
+
+.location_header .menu .list li:nth-child(6), .location_header .menu .list li:nth-child(6) span {
+    transition-delay: 180ms;
+    padding: 0;
+}
+
+.location_header .menu .list li:nth-child(7), .location_header .menu .list li:nth-child(7) span {
+    transition-delay: 210ms;
+}
+
+.location_header .menu .list li:nth-child(8), .location_header .menu .list li:nth-child(8) span {
+    transition-delay: 240ms;
+}
+
+.location_header .menu .list li:nth-child(9), .location_header .menu .list li:nth-child(9) span {
+    transition-delay: 270ms;
+}
+
+.location_header .menu .list li:nth-child(10), .location_header .menu .list li:nth-child(10) span {
+    transition-delay: 300ms;
+}
+
+.location_header .menu .list li:nth-child(11), .location_header .menu .list li:nth-child(11) span {
+    transition-delay: 330ms;
+}
+
+.location_header .menu .list li:nth-child(12), .location_header .menu .list li:nth-child(12) span {
+    transition-delay: 360ms;
+}
+
+.location_header .menu .list li:nth-child(13), .location_header .menu .list li:nth-child(13) span {
+    transition-delay: 390ms;
+}
+
+.location_header .menu .list li:nth-child(14), .location_header .menu .list li:nth-child(14) span {
+    transition-delay: 420ms;
+}
+
+.location_header .menu .list li:nth-child(15), .location_header .menu .list li:nth-child(15) span {
+    transition-delay: 450ms;
+}
+
+.location_header .menu .list li:nth-child(16), .location_header .menu .list li:nth-child(16) span {
+    transition-delay: 480ms;
+}
+
+.location_header .menu .list li:nth-child(17), .location_header .menu .list li:nth-child(17) span {
+    transition-delay: 510ms;
+}
+
+.location_header .menu .list li:nth-child(18), .location_header .menu .list li:nth-child(18) span {
+    transition-delay: 540ms;
+}
+
+.location_header .menu .list li:nth-child(19), .location_header .menu .list li:nth-child(19) span {
+    transition-delay: 570ms;
+}
+
+/* location_content */
+
+.location_content {
+    width: 100%;
+    display: flex;
+}
+.location_content > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.location_info {
+    width: 40%;
+    gap: 20px;
+    padding: 20px;
+}
+.location_map {
+    width: 60%;
+    padding-top: 60px;
+    padding-left: 110px;
+    align-items: flex-end;
+}
+
+.location_info > h2{
+    font-size: 52px;
+    font-weight: 700;
+    line-height: 60px;
+    margin-bottom: 24px;
+    letter-spacing: 1px;
+}
+
+.map {
+    width: 650px;
+    height: 350px;
+    background-color: #c6c6c6;
+}
+
+.criterion {
+    display: inline-block;
+    position: relative;
+    padding-right: 20px;
+}
+.criterion::after {
+    position: absolute;
+    content: "|";
+    color: #c6c6c6;
+    top: 0px;
+    right: 5px;
+    font-size: 0.75rem;
+}
+.tel {
+    width: 250px;
+    padding: 15px 10px;
+    margin-top: 24px;
+    background-color: #b8c3a1;
+    border-radius: 6px;
+    transition: background-color 0.5s ease-in-out;
+    display: flex;
+    gap: 7px;
+    align-items: center;
+}
+.tel:hover { background-color: #ABBC86;}
+.tel > span {
+    color: white;
+}
+.tel > span:nth-child(1) {
+    letter-spacing: 1px;
+    margin-right: 5px;
+}
+
+
+
+.location_map > p {
+    margin: 0 0 14px auto;
+}
+.text {
+    position: relative;
+    margin-left: 4px;
+    font-size: 1.05rem;
+    line-height: 25px;
+}
+.text::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 1px; /* 밑줄 두께 */
+    background-color: #555;
+    transition: width 0.5s ease-in-out; /* 밑줄이 부드럽게 나타남 */
+}
+
+.currentLocationBtn:hover .text::after {
+    width: 100%; /* 호버 시 밑줄이 확장 */
+}
+
+.nearest_store {
+    margin-top: 40px;
+    width: 650px;
+    display: flex;
+    flex-direction: column;
+}
+#store-list {
+    margin-top: 24px;
+    width: 100%;
+    display: flex;
+}
+#store-list > li {
+    flex: 0 0 calc(100% / 3); /* 정확히 1/3로 계산 */
+    width: calc(100% / 3);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+#store-list > li > p {
+    display: flex;
+    align-items: center;
+}
+.nearest_store_name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 25px;
+    letter-spacing: 2px;
+}
+.bi-geo-fill { margin-right: 5px;}
+
+#store-list > li:nth-child(2) {
+    border-left: 1px solid #c6c6c6;
+    border-right: 1px solid #c6c6c6;
+}
+.ic_call {
+    width: 16px;
+    height: 16px;
+}
+.ic_location {
+    width : 25px;
+    height : 25px;
+}
+footer { margin: 0;}

@@ -18,12 +18,18 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('orderBtn').disabled = false;
         document.getElementById('pickupBtn').disabled = false;
 
+        // 화면 로딩 시 페이지에 보여질 값들 계산
+        calculateQtyPrice();
+        calculateReceipt();
+        // calculateDeliveryFee();
+
         // 모든 itemBtn이 클릭되있게 함
         const selectItemBtns = document.getElementsByName('itemBtn');
+    
         selectItemBtns.forEach(itemBtn => {
             itemBtn.checked = true;
         });
-        
+
         // 화면 로딩 시 페이지에 보여질 값들 계산
         calculateQtyPrice();
         calculateReceipt();
