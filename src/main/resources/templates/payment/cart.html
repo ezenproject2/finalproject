@@ -73,8 +73,8 @@
                     </p>
                     <p class="book_price_wrap">
                       <span class="discount"><strong>[[${cartProduct.productVO.discountRate} ?: '할인 없음']]%</strong></span> <!--/* 원본 파일에서는 "소년이 온다"가 있었음 */-->
-                      <span class="book_discount_price sale-price" th:data-cart="${iterStat.index}"><strong>[[${cartProduct.productVO.realPrice}]]</strong>원</span>
-                      <span class="book_original_price original-price" th:data-cart="${iterStat.index}">[[${cartProduct.productVO.discount} ?: '도서 원가']]원</span>
+                      <span class="book_discount_price sale-price" th:data-sale-price="${cartProduct.productVO.realPrice}" th:data-cart="${iterStat.index}"><strong>[[${#numbers.formatInteger(cartProduct.productVO.realPrice, 3, 'COMMA')}]]</strong>원</span>
+                      <span class="book_original_price original-price" th:data-original-price="${cartProduct.productVO.discount ?: '도서 원가'}" th:data-cart="${iterStat.index}">[[${#numbers.formatInteger(cartProduct.productVO.discount, 3, 'COMMA')}]]원</span>
                     </p>
                   </div>
                 </div>
@@ -126,15 +126,12 @@
           <aside>
             <p class="cart_aside_title"><strong style="font-size: 1.3rem; letter-spacing: 1px;">주문 합계</strong></p>
             <div class="cart_aside_top">
-              <p><span class="label">상품 금액</span><span><strong class="total-original-price"></strong>원</span></p>
-              <p><span class="label">배송비 <i class="ic ic_question"></i></span><span class="delivery-fee">배송비</span></p>
+              <p><span class="label">상품 금액</span><span><strong class="total-original-price" data-total-original-price=""></strong>원</span></p>
+              <p><span class="label">배송비 <i class="ic ic_question"></i></span><span class="delivery-fee" data-delivery-fee="배송비"></span></p>
               <p><span class="label">상품 할인</span><span><strong class="discount_price total-discount-price" style="color: #39553F;"></strong></span></p>
             </div>
             <div class="cart_aside_bottom">
-              <p><strong>결제 예정 금액</strong> <span><strong
-
-
-                      class="estimated-payment-amount"></strong>원</span></p>
+              <p><strong>결제 예정 금액</strong> <span><strong class="estimated-payment-amount"></strong>원</span></p>
               <p><span>적립 예정 포인트 <i class="ic ic_question"></i></span> <span><span class="estimated-point-amount"></span>P</span> </p>
             </div>
             <div class="cart_order_btn">

@@ -32,7 +32,7 @@
             <div class="myPage_menu">
                 <div class="myPage_menu_item">
                     <p class="menu_item_title"><a href="">쇼핑 내역<i class="ic ic_arrow_right"></i></a></p>
-                    <p class="menu_item_content"><a href="">주문/배송목록</a></p>
+                    <p class="menu_item_content"><a th:href="@{/mypage/order-list/intro(mno=${#authentication.getPrincipal().memberVO.getMno()})}">주문/배송목록</a></p> <!--/* 주문 목록을 띄우기 위해 준희가 경로를 추가함. */-->
                     <p class="menu_item_content"><a href="">선물함</a></p>
                     <p class="menu_item_content"><a href="">매장 구매 내역</a></p>
                     <p class="menu_item_content"><a href="">영수증</a></p>

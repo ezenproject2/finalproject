@@ -1,24 +1,24 @@
 package com.ezen.books.controller;
 
-import com.ezen.books.domain.AddressVO;
-import com.ezen.books.domain.CartVO;
-import com.ezen.books.domain.CartProductDTO;
-import com.ezen.books.domain.ProductVO;
+import com.ezen.books.domain.*;
 import com.ezen.books.service.CartService;
+import com.ezen.books.service.OrderListService;
 import com.ezen.books.service.PayoutService;
 import com.ezen.books.service.PayoutServiceImpl;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.*;
 
 @Slf4j
 @RequestMapping("/payment/*")
@@ -65,7 +65,7 @@ public class PaymentController {
         return "/payment/cart";
     }
 
-    @PostMapping("/get-cart-list")
+    @PostMapping("/provide-cart-list")
     @ResponseBody
     public String getCartList(Model model, @RequestBody String cartListData) {
         log.info(" >>> PaymentController: getCartList start.");
@@ -75,6 +75,16 @@ public class PaymentController {
         this.cartList = cartList;
 
         // TODO: pickup이면 return을 2로 하든가 해서 구분하기.
+        return "1";
+    }
+
+    @PostMapping("/buy-now")
+    public String prepareCartList(@RequestBody CartVO cartData) {
+        log.info(" >>> PaymentController: prepareCartList start.");
+
+        List<CartVO> cartList = new ArrayList<>();
+        cartList.add(cartData);
+        this.cartList = cartList;
         return "1";
     }
 
@@ -91,28 +101,43 @@ public class PaymentController {
         AddressVO defaultAddress = getDefaultAddress(mno);
         log.info("The default address: {}", defaultAddress);
 
+        // 기본 배송지가 null인지 아닌지 가리는 값
+        boolean isDefaultAddrNull = (defaultAddress == null) ? true : false;
+
+        // 포인트와 쿠폰이 도입되어 merchant_uid(UUID)를 여기서 보내는 것으로 바뀜.
+        String merchantUid = UUID.randomUUID().toString();
+
         // TODO: pickup 주문이면 isPickup을 Y로 보낼 것.
         // 기본 배송지가 있냐 없냐에 따라 보낼 값이 달라짐
         Map<String, Object> modelAttrs = new HashMap<>();
         if(defaultAddress == null) {
             modelAttrs = Map.of(
+                    "mno", mno,
                     "cartProductList", cartProductList,
                     "defaultAddress", "empty",
-                    "mno", mno,
-                    "isPickup", "N"
+                    "isDefaultAddrNull", isDefaultAddrNull,
+                    "isPickup", "N",
+                    "merchantUid", merchantUid
             );
         } else {
             modelAttrs = Map.of(
+                    "mno", mno,
                     "cartProductList", cartProductList,
                     "defaultAddress", defaultAddress,
-                    "mno", mno,
-                    "isPickup", "N"
+                    "isDefaultAddrNull", isDefaultAddrNull,
+                    "isPickup", "N",
+                    "merchantUid", merchantUid
             );
         }
 
         log.info("CartProductList from PaymentController: {}", cartProductList);
         model.addAllAttributes(modelAttrs);
         return "/payment/payout";
+    }
+
+    @GetMapping("/go-to-index")
+    public String goToIndex() {
+        return "redirect:/";
     }
 
     private AddressVO getDefaultAddress(long mno) {
@@ -168,5 +193,6 @@ public class PaymentController {
             return null;
         }
     }
+
 
 }
