@@ -25,6 +25,11 @@
         where login_id = #{loginId} and password = #{password}
     </select>
 
+    <select id="getMno" resultType="long">
+        select mno from member
+        where login_id = #{memberLoginId}
+    </select>
+
     <insert id="saveTokens" parameterType="com.ezen.books.domain.MemberVO">
         insert into member (login_id, password, email, name, phone_number, nick_name, auth, gno, provider, provider_id)
         values (#{loginId}, #{password}, #{email}, #{name}, #{phoneNumber}, #{nickName}, 'ROLE_USER' , '1' ,#{provider}, #{providerId})
