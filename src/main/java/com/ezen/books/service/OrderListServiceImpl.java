@@ -139,7 +139,7 @@ public class OrderListServiceImpl implements OrderListService {
         );
 
         log.info("The response status code: {}", result.getStatusCode());
-        log.info("The response body: {}", result.getBody());
+//        log.info("The response body: {}", result.getBody());
 
         // 환불이 끝나면 odno와 orno에 해당하는 order_detail의 status를 "refunded"로 바꿈
         int isDone = orderListMapper.applyRefundToOrderDetail(odno, orno);
