@@ -34,6 +34,12 @@
         (#{orno}, #{recName}, #{recPhone}, #{addrCode}, #{addr}, #{addrDetail}, #{addrMemo})
     </insert>
 
+    <insert id="savePickupToServer">
+        insert into pickUp(osno, orno, status)
+        values
+        (#{osno}, #{orno}, #{status});
+    </insert>
+
     <select id="getDefaultAddress" resultType="com.ezen.books.domain.AddressVO">
         select * from address
         where mno = #{mno} and is_default = "Y"

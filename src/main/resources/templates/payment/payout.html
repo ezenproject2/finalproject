@@ -95,7 +95,7 @@
           </tr> <!--/* "배송 요청사항" 부분은 받을 필요가 없어서 제외함. */-->
         </table>
 
-        <table class="order_table address_table" th:if="${isPickup == 'Y'}">
+        <table class="order_table pickup_table" th:if="${isPickup == 'Y'}" th:data-pickup-osno="${pickUpVO.osno}" th:data-pickup-status="${pickUpVO.status}" th:data-pickup-orno="${pickUpVO.orno}">
           <!--/* 스타일 js 충돌 방지용 div. 기본 배송지를 받는 레이아웃에 클래스 shipping_request, select_box 등이 없어서 에러 뜸. 그리고 스타일링 js가 작동하지 않음. */-->
           <div style="display: none;" class="request_select"></div>
           <div style="display: none;" class="shipping_request_select">

@@ -120,6 +120,11 @@ public class PayoutServiceImpl implements PayoutService {
     }
 
     @Override
+    public int savePickupToServer(PickUpVO pickupData) {
+        return payoutMapper.savePickupToServer(pickupData);
+    }
+
+    @Override
     public boolean checkSinglePayment(String impUid, String amount) throws IOException, URISyntaxException, InterruptedException {
         log.info(" >>> PaymentServiceImpl: checkSinglePayment start.");
         IamportAccessToken iamportToken = PayoutService.super.issueIamportToken(iamportApiKey, iamportApiSecret);
