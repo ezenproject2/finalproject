@@ -15,7 +15,7 @@ public interface PayoutMapper {
 
     int savePaymentToServer(PaymentVO paymentData);
 
-    void removeCartToServer(long mno, long prno);
+    void removeCartToServer(@Param("mno") long mno,@Param("prno") long prno);
 
     int registerDefaultAddress(AddressVO addressData);
 

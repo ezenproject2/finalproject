@@ -1,6 +1,7 @@
 package com.ezen.books.service;
 
 import com.ezen.books.domain.*;
+import com.ezen.books.repository.OfflineMapper;
 import com.ezen.books.repository.PayoutMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -23,17 +25,20 @@ import java.util.List;
 public class PayoutServiceImpl implements PayoutService {
 
     private PayoutMapper payoutMapper;
+    private OfflineMapper offlineMapper;
     private String iamportApiKey;
     private String iamportApiSecret;
 
     @Autowired
     public PayoutServiceImpl(
             PayoutMapper payoutMapper,
+            OfflineMapper offlineMapper,
             @Value("${iamport_rest_api_key}") String iamportApiKey,
             @Value("${iamport_rest_api_secret}") String iamportApiSecret) {
         this.payoutMapper = payoutMapper;
         this.iamportApiKey = iamportApiKey;
         this.iamportApiSecret = iamportApiSecret;
+        this.offlineMapper = offlineMapper;
     }
 
     @Override
@@ -78,6 +83,35 @@ public class PayoutServiceImpl implements PayoutService {
     @Override
     public int saveDeliveryToServer(DeliveryVO deliveryData) {
         return payoutMapper.saveDeliveryToServer(deliveryData);
+    }
+
+    @Override
+    public List<OfflineStoreVO> getPickupStores(List<CartVO> cartList) {
+        List<Long> osnoList = null;
+        List<OfflineStoreVO> storeList = new ArrayList<>();
+
+        for (CartVO cartVO : cartList) {
+            long prno = cartVO.getPrno();
+            int bookQty = cartVO.getBookQty();
+
+            List<Long> availableStores = offlineMapper.getPickupStoreOsno(prno, bookQty);
+
+            if (osnoList == null) {
+                osnoList = availableStores;
+            } else {
+                osnoList.retainAll(availableStores);
+            }
+
+            if (osnoList.isEmpty()) {
+                break;
+            }
+        }
+
+        // 결과 리스트 반환 (교집합된 매장 목록)
+        for(Long osno : osnoList){
+            storeList.add(offlineMapper.getStoreVOByOsno(osno));
+        }
+        return storeList;
     }
 
     @Override

@@ -206,6 +206,15 @@ document.getElementById('orderBtn').addEventListener('click', () => {
     sendCartVoArrayToServer(cartDtoArray);
 });
 
+// 주문 버튼 누르면 CartDTO와 매핑할 JSON 생성
+document.getElementById('pickupBtn').addEventListener('click', () => {
+    console.log("pickupBtn clicked.");
+    let cartDtoArray = createCartDtoArray();
+    console.log(" >>> CartDtoArray: " + cartDtoArray);
+
+    sendCartVoArrayToServer(cartDtoArray);
+});
+
 // 클릭된 class="single-item-btn"들을 선택
 function createCartDtoArray() {
     const singleItemBtns = document.querySelectorAll('input[type="checkbox"].single-item-btn:checked');

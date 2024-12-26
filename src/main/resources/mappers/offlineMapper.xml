@@ -31,4 +31,13 @@
     <select id="chatGetOfflineStoreVO" resultType="com.ezen.books.domain.OfflineStoreVO">
         select * from offline_store where name = #{userMessage}
     </select>
+
+    <select id="getPickupStoreOsno" resultType="Long">
+        select osno from offline_book where prno = #{prno} and stock >= #{bookQty};
+    </select>
+
+    <select id="getStoreVOByOsno" resultType="com.ezen.books.domain.OfflineStoreVO">
+        select name from offline_store where osno = #{osno}
+    </select>
+
 </mapper>

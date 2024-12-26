@@ -30,6 +30,7 @@ public class PaymentController {
     private final PayoutService payoutService;
     private final CartService cartService;
     private List<CartVO> cartList;
+    private List<OfflineStoreVO> storeList;
 
     @PostMapping("/header-cart")
     @ResponseBody
@@ -72,7 +73,14 @@ public class PaymentController {
         // cartList: [{"mno":"1","prno":"1","bookQty":"5"},{"mno":"1","prno":"2","bookQty":"1"}]
         log.info(" >>> getCartList: cartList: {}", cartListData);
         List<CartVO> cartList =  parseCartVoArray(cartListData);
+
+        // (차민주)장바구니에서 가져온 정보를 통해 픽업 가능한 매장 추출하기
+        // cartList 예시 > [CartVO(mno=1, prno=251, bookQty=1), CartVO(mno=1, prno=250, bookQty=2)]
+        List<OfflineStoreVO> storeList = payoutService.getPickupStores(cartList);
+        log.info(">>>> storeList > {}", storeList);
+
         this.cartList = cartList;
+        this.storeList = storeList;
 
         // TODO: pickup이면 return을 2로 하든가 해서 구분하기.
         return "1";
