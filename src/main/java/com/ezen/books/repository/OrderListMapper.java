@@ -20,7 +20,7 @@ public interface OrderListMapper {
 
     String getImpUid(String orno);
 
-    int applyRefundToOrderDetail(@Param("odno") long odno, @Param("orno") String orno);
+    int applyRefundToOrderDetail(@Param("odno") long odno,@Param("orno") String orno);
 
     MemberVO getMember(long mno);
 

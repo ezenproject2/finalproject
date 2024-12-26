@@ -199,11 +199,11 @@ document.addEventListener('click', (e) => {
 
 // 주문 버튼 누르면 CartDTO와 매핑할 JSON 생성
 document.getElementById('orderBtn').addEventListener('click', () => {
-    console.log("orderBtn clicked.");
+    // console.log("orderBtn clicked.");
     let cartDtoArray = createCartDtoArray();
     console.log(" >>> CartDtoArray: " + cartDtoArray);
 
-    sendCartVoArrayToServer(cartDtoArray);
+    sendCartVoArrayToServer(cartDtoArray, "orderBtn");
 });
 
 // 주문 버튼 누르면 CartDTO와 매핑할 JSON 생성
@@ -234,6 +234,13 @@ function createCartDtoArray() {
     return cartDtoArray;
 }
 
+document.getElementById('pickupBtn').addEventListener('click', () => {
+    let cartDtoArray = createCartDtoArray();
+    console.log(" >>> CartDtoArray: " + cartDtoArray);
+
+    sendCartVoArrayToServer(cartDtoArray, "pickUpBtn");
+})
+
 // single-item-btn의 data-cart 값을 바탕으로 mno, prno, bootQty 값 추출
 function getDataForCartDto(singleItemBtnDataCart) {
     const cartVoJson = {
@@ -257,9 +264,11 @@ function getDataForCartDto(singleItemBtnDataCart) {
     return cartVoJson;
 }
 
-async function sendCartVoArrayToServer(cartDtoArray) {
+async function sendCartVoArrayToServer(cartDtoArray, pathString) {
     console.log(" >>> sendCartVoArrayToServer start.");
-    const url = '/payment/provide-cart-list';
+    
+    const url = `/payment/provide-cart-list/${pathString}`;
+
     const config = {
         method: "post",
         headers: { "Content-Type": "application/json; charset=utf-8" },
@@ -271,6 +280,8 @@ async function sendCartVoArrayToServer(cartDtoArray) {
     if(textResult == "1") {
         console.log("sendCartVoArrayToServer: Succeeded.");
         window.location.href = "/payment/payout"; // GET 요청 생성
+    } else if (textResult == "2") {
+        window.location.href = "/payment/pickUp";
     } else {
         console.log("sendCartVoArrayToServer: Failed.");
     }

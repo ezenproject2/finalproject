@@ -30,7 +30,9 @@ public interface MemberService {
 
     int updateLastLogin(String authLoginId);
 
-    long getLastMno();
+    // 배송지 입력을 위해 pjh가 삽입한 코드.
+
+    long getMno(String memberLoginId);
 
     int saveAddressToServer(AddressVO addressVO);
 }

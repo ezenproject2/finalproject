@@ -26,7 +26,7 @@ public interface MemberMapper {
 
     double getTotalSpentInLast3Months(long mno);
 
-    void updateMemberGrade(@Param("mno") long mno, @Param("gno") long gno);
+    void updateMemberGrade(@Param("mno") long mno,@Param("gno") long gno);
 
     MemberVO getMemberByInfo(String loginId);
 
@@ -36,7 +36,7 @@ public interface MemberMapper {
 
     int updateLastLogin(String authLoginId);
 
-    long getLastMno();
+    long getMno(String memberLoginId);
 
     int saveAddressToServer(AddressVO addressVO);
 }

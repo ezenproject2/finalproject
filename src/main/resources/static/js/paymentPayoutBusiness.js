@@ -273,7 +273,7 @@ async function checkFlags(paymentDataAmount, impResPaidAmount, impResponse) {
         await removeCartToServer();
         await preserveDeliveryToServer(impResponse);
         alert("결제가 완료되었습니다.");
-        window.location.href = "/payment/go-to-index";
+        // window.location.href = "/payment/go-to-index";
     }
 
     return result;
