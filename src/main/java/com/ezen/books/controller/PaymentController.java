@@ -65,17 +65,25 @@ public class PaymentController {
         return "/payment/cart";
     }
 
-    @PostMapping("/provide-cart-list")
+    @PostMapping("/provide-cart-list/{pathString}")
     @ResponseBody
-    public String getCartList(Model model, @RequestBody String cartListData) {
+    public String getCartList(Model model,
+                              @RequestBody String cartListData,
+                              @PathVariable("pathString") String pathString) {
         log.info(" >>> PaymentController: getCartList start.");
         // cartList: [{"mno":"1","prno":"1","bookQty":"5"},{"mno":"1","prno":"2","bookQty":"1"}]
         log.info(" >>> getCartList: cartList: {}", cartListData);
+
         List<CartVO> cartList =  parseCartVoArray(cartListData);
         this.cartList = cartList;
 
-        // TODO: pickup이면 return을 2로 하든가 해서 구분하기.
-        return "1";
+        if(pathString.equals("orderBtn")) {
+            return "1";
+        } else if (pathString.equals("pickUpBtn")) {
+            return "2";
+        } else {
+            return "-1";
+        }
     }
 
     @PostMapping("/buy-now")
@@ -87,6 +95,14 @@ public class PaymentController {
         cartList.add(cartData);
         this.cartList = cartList;
         return "1";
+    }
+
+    @GetMapping("/pickUp")
+    public String goToPickUP(Model model) {
+        log.info(" >>> PaymentController: goToPickUP start.");
+
+        model.addAttribute("cartList", cartList);
+        return "/payment/pickUp";
     }
 
     @GetMapping("/payout")
