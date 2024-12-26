@@ -271,7 +271,14 @@ async function checkFlags(paymentDataAmount, impResPaidAmount, impResponse) {
         await preserveOrderDetailToServer(impResponse);
         await preservePaymentToServer(impResponse);
         await removeCartToServer();
-        await preserveDeliveryToServer(impResponse);
+
+        // 픽업이면 pickupVO를 저장, 아니면 delivery에 저장.
+        const isPickup = document.getElementById('dataContainer').dataset.isPickup;
+        if(isPickup == "Y") {
+            await preservePickupToServer();
+        } else {
+            await preserveDeliveryToServer(impResponse);   
+        }
         alert("결제가 완료되었습니다.");
         window.location.href = "/payment/go-to-index";
     }

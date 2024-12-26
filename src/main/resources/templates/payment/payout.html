@@ -21,7 +21,7 @@
       </div>
 
       <div class="order_table_wrap1">
-        <table class="order_table address_table" th:if="${defaultAddress != 'empty'}"> <!--/* 원본: th:if="${defaultAddress != 'empty'}" */-->
+        <table class="order_table address_table" th:if="${defaultAddress != 'empty'} and ${isPickup != 'Y'}">
           <tr>
             <th> 배송지 정보</th>
             <td>
@@ -66,7 +66,7 @@
         </table>
 
         <!--/* defaultAddress가 null인 경우에 기본 배송지를 받을 table */-->
-        <table class="order_table address_table" th:unless="${defaultAddress != 'empty'}"> <!--/* 원본: th:if="${defaultAddress != 'empty'}" */-->
+        <table class="order_table address_table" th:if="${defaultAddress == 'empty'} and ${isPickup != 'Y'}">
           <!--/* 스타일 js 충돌 방지용 div. 기본 배송지를 받는 레이아웃에 클래스 shipping_request, select_box 등이 없어서 에러 뜸. 그리고 스타일링 js가 작동하지 않음. */-->
           <div style="display: none;" class="request_select"></div>
           <div style="display: none;" class="shipping_request_select">
@@ -75,7 +75,7 @@
           <div style="display: none;" class="request_text" maxlength="1"></div>
           <div style="display: none;" class="request_select"></div>
           <tr>
-            <th> 배송지 정보</th>
+            <th>배송지 정보</th>
             <td class="form_data address">
               <div>
                 <input type="text" class="postcode address-input" id="postcode" readonly name="addrCode"> <!--/* 원본 name값. name="address" */-->
@@ -92,8 +92,31 @@
               </div>
               <button type="button" id="registerAddrBtn">기본 배송지 등록</button>
             </td>
+          </tr> <!--/* "배송 요청사항" 부분은 받을 필요가 없어서 제외함. */-->
+        </table>
+
+        <table class="order_table address_table" th:if="${isPickup == 'Y'}">
+          <!--/* 스타일 js 충돌 방지용 div. 기본 배송지를 받는 레이아웃에 클래스 shipping_request, select_box 등이 없어서 에러 뜸. 그리고 스타일링 js가 작동하지 않음. */-->
+          <div style="display: none;" class="request_select"></div>
+          <div style="display: none;" class="shipping_request_select">
+            <div style="display: none;" class="ic_arrow_down"></div>
+          </div>
+          <div style="display: none;" class="request_text" maxlength="1"></div>
+          <div style="display: none;" class="request_select"></div>
+          <tr>
+            <th>픽업 정보</th>
+            <td class="pickup-info">
+              <div>
+                <div>방문할 매장</div><div>[[${offlineStoreVO.name}]]</div>
+              </div>
+              <div>
+                <div>매장 주소</div><div>[[${offlineStoreVO.address}]]</div>
+              </div>
+              <div>
+                <div>매장 전화번호</div><div>[[${offlineStoreVO.phone}]]</div>
+              </div>
+            </td>
           </tr>
-          <!--/* "배송 요청사항" 부분은 받을 필요가 없어서 제외함. */-->
         </table>
       </div>
 

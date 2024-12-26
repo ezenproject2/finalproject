@@ -136,17 +136,20 @@ public class PaymentController {
         // 포인트와 쿠폰이 도입되어 merchant_uid(UUID)를 여기서 보내는 것으로 바뀜.
         String merchantUid = orno;
 
+        PickUpVO pickUpVO = new PickUpVO();
+        OfflineStoreVO offlineStoreVO = new OfflineStoreVO();
         // (차민주-픽업)**
         if(osno != 0){
-            PickUpVO pickUpVO = PickUpVO.builder()
-                    .osno(osno)
-                    .status("주문완료")
-                    .orno(orno)
-                    .build();
+            pickUpVO.setOsno(osno);
+            pickUpVO.setStatus("주문완료");
+            pickUpVO.setOrno(orno);
             log.info(">>>> pickUpVO > {}", pickUpVO);
             // 픽업이라면? 루트 짜서 delevery 대신 pickUp 테이블 데이터 저장하기
             // insert into pickUp (osno, orno, status) values (#{osno}, #{orno}, #{status});
             // 밑에 Y로 바꾸는 것도 osno가 0이 아니라면으로 조건 걸어서 부여할것
+
+            // 픽업이면 화면에 띄울 offlineStore를 가져옴
+            offlineStoreVO = payoutService.getStoreInfo(osno);
         }
 
         // Path variable로 받은 osno가 0이면 배달로, 0이 아니면 픽업 결제로 설정함.
@@ -166,7 +169,9 @@ public class PaymentController {
                     "defaultAddress", "empty",
                     "isDefaultAddrNull", isDefaultAddrNull,
                     "isPickup", isPickup,
-                    "merchantUid", merchantUid
+                    "merchantUid", merchantUid,
+                    "pickUpVO", pickUpVO,
+                    "offlineStoreVO", offlineStoreVO
             );
         } else {
             modelAttrs = Map.of(
@@ -175,7 +180,9 @@ public class PaymentController {
                     "defaultAddress", defaultAddress,
                     "isDefaultAddrNull", isDefaultAddrNull,
                     "isPickup", isPickup,
-                    "merchantUid", merchantUid
+                    "merchantUid", merchantUid,
+                    "pickUpVO", pickUpVO,
+                    "offlineStoreVO", offlineStoreVO
             );
         }
 
