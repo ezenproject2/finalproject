@@ -110,7 +110,7 @@
 
         <div class="order_item order_goods_list">
           <ul>
-            <li class="list-data-storage" th:each="cartProduct, iterStat:${cartProductList}" th:data-list-book-prno="${cartProduct.productVO.prno}" th:data-payout="${iterStat.index}" th:data-list-size="${cartProductList.size}"> <!-- 책(상품) 반복문 적용 -->
+            <li class="list-data-storage" th:each="cartProduct, iterStat:${cartProductList}" th:data-list-book-prno="${cartProduct.productVO.prno}" th:data-payout="${iterStat.index}" th:data-list-size="${cartProductList.size}" th:data-merchant-uid="${merchantUid}"> <!-- 책(상품) 반복문 적용 -->
               <div class="goods_image" >
                 <img th:src="${cartProduct.productVO.image}" class="thumbnail"/>
               </div>

@@ -77,11 +77,11 @@ public class PayoutRestController {
         }
 
         Map<String, String> pgMap = getChannelKeyAndMethod(pgVal);
-        pgMap.put("merchantUid", (UUID.randomUUID()).toString());
+//        pgMap.put("merchantUid", (UUID.randomUUID()).toString());
 
         log.info("The channel key: {}", pgMap.get("channelKey"));
         log.info("The pay method: {}", pgMap.get("payMethod"));
-        log.info("The merchant uid: {}", pgMap.get("merchantUid"));
+//        log.info("The merchant uid: {}", pgMap.get("merchantUid"));
 
         return ResponseEntity.ok(pgMap);
     }

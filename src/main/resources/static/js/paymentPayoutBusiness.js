@@ -71,7 +71,9 @@ document.getElementById('orderBtn').addEventListener('click', () => {
         const pgObj = getPayDataFromServer(pgData.pg);
         pgData.channelKey = pgObj.channelKey;
         pgData.pay_method = pgObj.payMethod;
-        pgData.merchant_uid = pgObj.merchantUid;
+        // pgData.merchant_uid = pgObj.merchantUid;
+        pgData.merchant_uid = document.querySelector('.list-data-storage').dataset.merchantUid;
+        console.log("The merchant uid: ", document.querySelector('.list-data-storage').dataset.merchantUid);
 
         pgData.amount = getTotalPrice();
         console.log("The total amount is: " + pgData.amount);
@@ -221,7 +223,7 @@ async function payWithIamport() {
         pg: pgData.pg, // pg provider
         pay_method: pgData.pay_method,
         merchant_uid: pgData.merchant_uid,
-        name : "주문명: 결제 테스트",
+        name : "이젠문고 주문",
         amount : pgData.amount,
         buyer_email : "qpfm111@naver.com",
         buyer_name : "박준희",
@@ -271,7 +273,7 @@ async function checkFlags(paymentDataAmount, impResPaidAmount, impResponse) {
         await removeCartToServer();
         await preserveDeliveryToServer(impResponse);
         alert("결제가 완료되었습니다.");
-        // window.location.href = "/payment/go-to-index";
+        window.location.href = "/payment/go-to-index";
     }
 
     return result;
