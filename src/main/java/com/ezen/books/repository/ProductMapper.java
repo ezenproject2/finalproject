@@ -27,4 +27,6 @@ public interface ProductMapper {
     void updateReviewCnt(@Param("prno") long prno, @Param("num") int i);
 
     ProductVO chatGetProductVO(String userMessage);
+
+    List<ProductVO> getSpecialList(String type);
 }

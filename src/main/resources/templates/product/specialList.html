@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/layout}">
+
+<head>
+  <meta charset="UTF-8">
+  <title>EzenBooks</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/productSpecialList.css}" />
+</head>
+
+<main layout:fragment="main">
+  <div class="inner">
+    <h3>[[${type}]]</h3>
+    <div class="book_list">
+      <th:block th:each="productVO:${list}">
+        <div class="book_item">
+          <a th:href="@{/product/detail(isbn=${productVO.isbn})}" class="book_img_wrap">
+            <img th:src="${productVO.image}" alt="bookImage" class="book_list_thum_img">
+          </a>
+
+          <div class="book_content">
+            <div class="book_title_wrap flex">
+              <span class="book_title">[[${productVO.title}]]</span>
+            </div>
+
+            <div class="book_write">
+              <span class="book_writer">[[${productVO.author}]]</span>
+              <span class="book_publisher">[[${productVO.publisher}]]</span>
+            </div>
+
+            <div class="book_info">
+              <div class="book_price_wrap">
+                <span class="book_price">[[${#numbers.formatInteger(productVO.discount, 3, 'COMMA')}]]</span>
+                <span class="won">원</span>
+              </div>
+              <div class="book_discount"> <span class="discount">[[${productVO.discountRate}]]%</span> </div>
+            </div>
+          </div>
+        </div>
+      </th:block>
+    </div>
+  </div>
+</main>

@@ -82,6 +82,25 @@ public class ProductController {
         model.addAttribute("list", list);
     }
 
+    @GetMapping(value = "/specialList/{type}")
+    public String specialList(Model model, @PathVariable("type") String type){
+        List<ProductVO> list = productService.getSpecialList(type);
+        model.addAttribute("list", list);
+
+        String returnType = "상품";
+        if(type.equals("best")){
+            returnType = "베스트 상품";
+        }else if(type.equals("new")){
+            returnType = "최근 출판 상품";
+        }else if(type.equals("hot")){
+            returnType = "MD 추천 상품";
+        }
+
+        model.addAttribute("type", returnType);
+
+        return "/product/specialList";
+    }
+
     @GetMapping("/detail")
     public void detail(Model model, @RequestParam("isbn") String isbn){
         // 상품 상세 페이지

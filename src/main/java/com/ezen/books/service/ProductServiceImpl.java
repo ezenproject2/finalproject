@@ -53,4 +53,9 @@ public class ProductServiceImpl implements ProductService{
     public ProductVO getDetail(String isbn) {
         return productMapper.getDetail(isbn);
     }
+
+    @Override
+    public List<ProductVO> getSpecialList(String type) {
+        return productMapper.getSpecialList(type);
+    }
 }

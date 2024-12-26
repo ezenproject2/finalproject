@@ -148,4 +148,8 @@
         select * from product where title like concat('%', #{userMessage}, '%') limit 1;
     </select>
 
+    <select id="getSpecialList" resultType="com.ezen.books.domain.ProductVO">
+        select p.* from product p join tag t on p.prno = t.prno where t.name = #{type};
+    </select>
+
 </mapper>

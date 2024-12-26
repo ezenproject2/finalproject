@@ -18,4 +18,6 @@ public interface ProductService {
     int getTotalCount(PagingVO pagingVO);
 
     ProductVO getDetail(String isbn);
+
+    List<ProductVO> getSpecialList(String type);
 }
