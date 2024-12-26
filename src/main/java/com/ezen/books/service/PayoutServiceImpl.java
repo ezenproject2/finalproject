@@ -115,6 +115,11 @@ public class PayoutServiceImpl implements PayoutService {
     }
 
     @Override
+    public OfflineStoreVO getStoreInfo(long osno) {
+        return offlineMapper.getStoreVOByOsno(osno);
+    }
+
+    @Override
     public boolean checkSinglePayment(String impUid, String amount) throws IOException, URISyntaxException, InterruptedException {
         log.info(" >>> PaymentServiceImpl: checkSinglePayment start.");
         IamportAccessToken iamportToken = PayoutService.super.issueIamportToken(iamportApiKey, iamportApiSecret);

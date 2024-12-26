@@ -279,7 +279,7 @@ async function sendCartVoArrayToServer(cartDtoArray, pathString) {
     const textResult = await result.text();
     if(textResult == "1") {
         console.log("sendCartVoArrayToServer: Succeeded.");
-        window.location.href = "/payment/payout"; // GET 요청 생성
+        window.location.href = "/payment/payout/0"; // GET 요청 생성
     } else if (textResult == "2") {
         window.location.href = "/payment/pickUp";
     } else {

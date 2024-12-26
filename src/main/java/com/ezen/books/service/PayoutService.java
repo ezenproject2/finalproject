@@ -78,4 +78,6 @@ public interface PayoutService {
     int saveDeliveryToServer(DeliveryVO deliveryData);
 
     List<OfflineStoreVO> getPickupStores(List<CartVO> cartList);
+
+    OfflineStoreVO getStoreInfo(long osno);
 }
