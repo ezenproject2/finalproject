@@ -31,8 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 })
 
-
-
 // 수량 X 가격을 한 값 계산
 function calculateQtyPrice() {
     // console.log("calculateQtyPrice start.");
@@ -226,6 +224,7 @@ function createCartDtoArray() {
     return cartDtoArray;
 }
 
+// 픽업버튼 누르면 픽업 화면으로 전환
 document.getElementById('pickupBtn').addEventListener('click', () => {
     let cartDtoArray = createCartDtoArray();
     console.log(" >>> CartDtoArray: " + cartDtoArray);
@@ -269,9 +268,10 @@ async function sendCartVoArrayToServer(cartDtoArray, pathString) {
 
     const result = await fetch(url, config);
     const textResult = await result.text();
+
     if(textResult == "1") {
         console.log("sendCartVoArrayToServer: Succeeded.");
-        window.location.href = "/payment/payout"; // GET 요청 생성
+        window.location.href = `/payment/payout/0`; // GET 요청 생성
     } else if (textResult == "2") {
         window.location.href = "/payment/pickUp";
     } else {

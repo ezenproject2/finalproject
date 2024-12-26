@@ -168,7 +168,7 @@ async function registerDefaultAddrFlag() {
     await registerDefaultAddrToServer(mnoVal);
     // /payment/payout으로 이동하기 전에 cartList를 준비하도록 요청하는 비동기 함수
     // await prepareCartListToServer(mnoVal);
-    window.location.href = "/payment/payout";
+    window.location.href = "/payment/payout/0";
     
 }
 
@@ -273,7 +273,7 @@ async function checkFlags(paymentDataAmount, impResPaidAmount, impResponse) {
         await removeCartToServer();
         await preserveDeliveryToServer(impResponse);
         alert("결제가 완료되었습니다.");
-        // window.location.href = "/payment/go-to-index";
+        window.location.href = "/payment/go-to-index";
     }
 
     return result;

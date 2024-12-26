@@ -5,7 +5,7 @@
       layout:decorate="~{layout/layout}">
 <head>
   <meta charset="UTF-8">
-  <title>Payout</title>
+  <title> 이젠문고 </title>
   <link rel="stylesheet" href="/css/payout.css"/>
   <link rel="stylesheet" href="/css/cart.css"/>
   <!--/* 결제 api와 연결하기 위한 js파일. */-->
@@ -21,7 +21,7 @@
       </div>
 
       <div class="order_table_wrap1">
-        <table class="order_table address_table" th:if="${defaultAddress != 'empty'}">
+        <table class="order_table address_table" th:if="${defaultAddress != 'empty'}"> <!--/* 원본: th:if="${defaultAddress != 'empty'}" */-->
           <tr>
             <th> 배송지 정보</th>
             <td>
@@ -66,7 +66,7 @@
         </table>
 
         <!--/* defaultAddress가 null인 경우에 기본 배송지를 받을 table */-->
-        <table class="order_table address_table" th:unless="${defaultAddress != 'empty'}">
+        <table class="order_table address_table" th:unless="${defaultAddress != 'empty'}"> <!--/* 원본: th:if="${defaultAddress != 'empty'}" */-->
           <!--/* 스타일 js 충돌 방지용 div. 기본 배송지를 받는 레이아웃에 클래스 shipping_request, select_box 등이 없어서 에러 뜸. 그리고 스타일링 js가 작동하지 않음. */-->
           <div style="display: none;" class="request_select"></div>
           <div style="display: none;" class="shipping_request_select">
@@ -95,8 +95,6 @@
           </tr>
           <!--/* "배송 요청사항" 부분은 받을 필요가 없어서 제외함. */-->
         </table>
-
-
       </div>
 
       <div class="order_table_wrap">

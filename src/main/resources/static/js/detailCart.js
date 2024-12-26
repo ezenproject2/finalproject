@@ -105,7 +105,7 @@ async function processSinglePurchase(mnoVal, prnoVal, bookQtyVal, pathString) {
 
     if(pathString == "buyNow") {        
         await prepareSinglePurchase(mnoVal, prnoVal, bookQtyVal);
-        window.location.href = "/payment/payout";
+        window.location.href = "/payment/payout/0";
 
     } else if (pathString == "pickUpNow") {
         await prepareSinglePurchase(mnoVal, prnoVal, bookQtyVal);

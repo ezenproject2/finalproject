@@ -107,8 +107,8 @@ public class PaymentController {
         return "/payment/pickUp";
     }
 
-    @GetMapping("/payout")
-    public String goToPayout(Model model) {
+    @GetMapping(value = "/payout/{osno}")
+    public String goToPayout(Model model, @PathVariable("osno") long osno) {
         log.info(" >>> PaymentController: goToPayout start.");
         List<CartProductDTO> cartProductList = buildCartProductList(cartList);
 
@@ -126,8 +126,15 @@ public class PaymentController {
         // 포인트와 쿠폰이 도입되어 merchant_uid(UUID)를 여기서 보내는 것으로 바뀜.
         String merchantUid = UUID.randomUUID().toString();
 
-        // TODO: pickup 주문이면 isPickup을 Y로 보낼 것.
-        // 기본 배송지가 있냐 없냐에 따라 보낼 값이 달라짐
+        // Path variable로 받은 osno가 0이면 배달로, 0이 아니면 픽업 결제로 설정함.
+        String isPickup = "";
+        if(osno == 0) {
+            isPickup = "N";
+        } else {
+            isPickup = "Y";
+        }
+
+        // 기본 배송지가 있냐 없냐에 따라 보낼 값이 달라짐. defaultAddress가 null이면 /payout에서 에러 뜸.
         Map<String, Object> modelAttrs = new HashMap<>();
         if(defaultAddress == null) {
             modelAttrs = Map.of(
@@ -135,7 +142,7 @@ public class PaymentController {
                     "cartProductList", cartProductList,
                     "defaultAddress", "empty",
                     "isDefaultAddrNull", isDefaultAddrNull,
-                    "isPickup", "N",
+                    "isPickup", isPickup,
                     "merchantUid", merchantUid
             );
         } else {
@@ -144,7 +151,7 @@ public class PaymentController {
                     "cartProductList", cartProductList,
                     "defaultAddress", defaultAddress,
                     "isDefaultAddrNull", isDefaultAddrNull,
-                    "isPickup", "N",
+                    "isPickup", isPickup,
                     "merchantUid", merchantUid
             );
         }

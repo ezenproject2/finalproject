@@ -45,7 +45,7 @@
                 </div>
                 <div class="myPage_menu_item">
                     <p class="menu_item_title"><a href="">회원정보<i class="ic ic_arrow_right"></i></a></p>
-                    <p class="menu_item_content"><a href="">배송주소록</a></p>
+                    <p class="menu_item_content"><a th:href="@{/mypage/address-list/intro(mno=${#authentication.getPrincipal().memberVO.getMno()})}">배송주소록</a></p>
                     <p class="menu_item_content"><a href="">회원정보관리</a></p>
                     <p class="menu_item_content"><a href="">나의 회원등급</a></p>
                 </div>
