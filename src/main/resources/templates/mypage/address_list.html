@@ -209,25 +209,26 @@
       </div>
 
 
-      <div class="order-list-container">
-        <div class="cart_list_none">
-          <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 16 16">
-            <circle cx="8" cy="8" r="8" fill="#c6c6c6"></circle>
-            <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" fill="white"></path>
-          </svg>
-          <p class="title">배송지가 없습니다.</p>
-          <p class="sub">배송지를 등록해주세요.</p>
-        </div>
-
+      <div class="addr-list-container addr-data-container" th:data-mno="${mno}" th:data-is-addr-empty="${isAddrEmpty}">
         <!--/* id=dataContainer를 사용할 수 없어서 뺐음. 클래스로 대체함. */-->
         <!--/* orderDetailProductList의 값: List<OrderDetailProductList> */-->
-        <div class="cart_inner inner outer-data-container" th:each="orderDetailProductList, outerStat: ${orderDetailProductGroup}" th:data-outer-list-size="${orderDetailProductGroup.size}" th:data-mno="${mno}" th:data-is-order-empty="${isOrderEmpty}">
-          <div class="cart_list" th:data-order-list="${outerStat.index}">
+        <div class="cart_inner inner">
+          <div class="cart_list" th:data-addr-index="${addrStat.index}">
             <div class="cart_title_area">
               <p class="cart_title">배송지 목록</p>
             </div>
 
-            <div class="addr_info" th:each="addr, addrStat:${}"> <!--/* style="display: none;"을 잠시 뺐음. */-->
+            <div class="cart_list_none">
+              <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 16 16">
+                <circle cx="8" cy="8" r="8" fill="#c6c6c6"></circle>
+                <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" fill="white"></path>
+              </svg>
+              <p class="title">배송지가 없습니다.</p>
+              <p class="sub">배송지를 등록해주세요.</p>
+            </div>
+
+            <div class="addr_info" th:each="addr, addrStat: ${addrList}" th:data-outer-list-size="${addrList.size}"> <!--/* style="display: none;"을 잠시 뺐음. */-->
+              [[${addrList}]]
               <!--/* 배송지를 반복할 div가 들어감 */-->
             </div> <!--/* th:each 용로도 사용하는 div */-->
           </div>
@@ -237,9 +238,4 @@
     </div>
   </div>
 
-
-  <script src="/js/mypageOrderListBusiness.js"></script>
-  <script src="/js/mypageOrderListDisplay.js"></script>
-  <script src="/js/mypageOrderListInnerStyle.js"></script>
-  <script src="/js/mypageOrderListOuterStyle.js"></script>
 </main>

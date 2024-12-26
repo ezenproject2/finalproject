@@ -32,7 +32,7 @@ public class AddressListController {
         // 화면에 띄울 List<AddressVO>를 가져옴.
         List<AddressVO> addrList =  addressListService.getAllAddr(mno);
 
-        boolean isAddrListEmpty = addrList.isEmpty();
+        boolean isAddrEmpty = addrList.isEmpty();
 
         // 화면에 띄울 사용자 정보와 등급 정보를 가져옴.
         MemberVO memberInfo = addressListService.getMember(mno);
@@ -40,9 +40,9 @@ public class AddressListController {
 
         model.addAttribute("mno", mno);
         model.addAttribute("addrList", addrList);
-        model.addAttribute("isAddrListEmpty", isAddrListEmpty);
+        model.addAttribute("isAddrEmpty", isAddrEmpty);
         model.addAttribute("memberInfo", memberInfo);
         model.addAttribute("memberGrade", memberGrade);
-        return "/mypage/order_list";
+        return "/mypage/address_list";
     }
 }
