@@ -14,7 +14,7 @@
 
 <main layout:fragment="main">
   <!--/* <div id="dataContainer" th:data-mno="${mno}" th:data-cart-product-list="${cartProductList}" th:data-is-pickup="${isPickup}"></div>의 어트리뷰트를 class="cart_inner inner"에 넣음 */-->
-  <div class="cart_inner inner" id="dataContainer" th:data-mno="${mno}" th:data-cart-product-list="${cartProductList}" th:data-is-pickup="${isPickup}">
+  <div class="cart_inner inner" id="dataContainer" th:data-mno="${mno}" th:data-cart-product-list="${cartProductList}" th:data-is-pickup="${isPickup}" th:data-is-default-addr-null="${isDefaultAddrNull}">
     <div class="cart_list">
       <div class="cart_title_area">
         <p class="cart_title">주문/결제</p>
@@ -30,12 +30,14 @@
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#497248" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
                     <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
                   </svg>
-                  <span class="location_name">[[${defaultAddress.addrName} ?: '배송지 이름']]</span>
+                  <span class="location_name default-addr-name">[[${defaultAddress.addrName} ?: '배송지 이름']]</span>
                   <span class="default_location">기본 배송지</span>
                   <button type="button" class="change_address">변경</button>
                 </p>
-                <p class="custom_info"> <span class="custom_name">[[${defaultAddress.recName} ?: '수령인 이름']]</span><span class="phone_number">[[${defaultAddress.recPhone} ?: '수령인 전화번호']]</span></p>
-                <p class="address"><span>[[${defaultAddress.addr} ?: '배송지']]</span></p>
+                <p class="custom_info"> <span class="custom_name default-addr-rec-name">[[${defaultAddress.recName} ?: '수령인 이름']]</span><span class="phone_number default-addr-rec-phone">[[${defaultAddress.recPhone} ?: '수령인 전화번호']]</span></p>
+                <p class="address address-info" th:data-addr-postcode="${defaultAddress.addrCode}" th:data-addr-detail="${defaultAddress.addrDetail}">
+                  <span>[[${defaultAddress.addr} ?: '배송지']]</span>
+                </p>
               </div>
             </td>
           </tr>
@@ -55,7 +57,7 @@
                   <i class="ic ic_arrow_down"></i>
                 </div>
                 <div class="shipping_request_text" style="display: none;">
-                  <textarea id="" placeholder="배송 메모를 입력해 주세요." maxlength="50" class="request_text"></textarea>
+                  <textarea id="userDeliveryMemo" placeholder="배송 메모를 입력해 주세요." maxlength="50" class="request_text"></textarea>
                   <div class="text_count"><span>0/50</span></div>
                 </div>
               </div>
@@ -65,10 +67,30 @@
 
         <!--/* defaultAddress가 null인 경우에 기본 배송지를 받을 table */-->
         <table class="order_table address_table" th:unless="${defaultAddress != 'empty'}">
+          <!--/* 스타일 js 충돌 방지용 div. 기본 배송지를 받는 레이아웃에 클래스 shipping_request, select_box 등이 없어서 에러 뜸. 그리고 스타일링 js가 작동하지 않음. */-->
+          <div style="display: none;" class="request_select"></div>
+          <div style="display: none;" class="shipping_request_select">
+            <div style="display: none;" class="ic_arrow_down"></div>
+          </div>
+          <div style="display: none;" class="request_text" maxlength="1"></div>
+          <div style="display: none;" class="request_select"></div>
           <tr>
             <th> 배송지 정보</th>
             <td class="form_data address">
-              <!--/* 미구현 */-->
+              <div>
+                <input type="text" class="postcode address-input" id="postcode" readonly name="addrCode"> <!--/* 원본 name값. name="address" */-->
+                <button type="button" onclick="execDaumPostcode()" class="addrBtn" id="non_member_addrBtn">주소 찾기</button>
+              </div>
+              <div>
+                <input type="text" class="homeAddress addressform address-input" id="homeAddress" readonly name="addr">
+                <input type="text" class="detailAddress addressform address-input" id="detailAddress" placeholder="상세주소" name="addrDetail">
+                <input type="text" class="address-name addressform address-input" id="addressName" placeholder="배송지 이름(선택사항)" name="addrName">
+              </div>
+              <div>
+                <input type="text" class="rec-name addressform address-input" id="recName" placeholder="수취인 이름" name="recName">
+                <input type="text" class="rec-phone addressform address-input" placeholder="수취인 전화번호(- 없이 입력)" id="recPhone" name="recPhone">
+              </div>
+              <button type="button" id="registerAddrBtn">기본 배송지 등록</button>
             </td>
           </tr>
           <!--/* "배송 요청사항" 부분은 받을 필요가 없어서 제외함. */-->
@@ -79,16 +101,16 @@
 
       <div class="order_table_wrap">
         <p class="order_title_wrap">
-                            <span>
-                                <span class="order_title">주문상품</span>
-                                <span>총 <strong th:data-list-total="listTotal">[[${cartProductList.size}]]</strong> 개</span>
-                            </span>
+          <span>
+              <span class="order_title">주문상품</span>
+              <span>총 <strong th:data-list-total="listTotal">[[${cartProductList.size}]]</strong> 개</span>
+          </span>
           <i class="ic ic_arrow_down"></i>
         </p>
 
         <div class="order_item order_goods_list">
           <ul>
-            <li class="list-data-storage" th:each="cartProduct, iterStat:${cartProductList}" th:data-list-book-prno="${cartProduct.productVO.prno}" th:data-payout="${iterStat.index}" th:data-list-size="${cartProductList.size}"> <!-- 책(상품) 반복문 적용 -->
+            <li class="list-data-storage" th:each="cartProduct, iterStat:${cartProductList}" th:data-list-book-prno="${cartProduct.productVO.prno}" th:data-payout="${iterStat.index}" th:data-list-size="${cartProductList.size}" th:data-merchant-uid="${merchantUid}"> <!-- 책(상품) 반복문 적용 -->
               <div class="goods_image" >
                 <img th:src="${cartProduct.productVO.image}" class="thumbnail"/>
               </div>
@@ -102,8 +124,8 @@
               </div>
 
               <div class="goods_price">
-                <p><strong class="book-sale-price" th:data-payout="${iterStat.index}">[[${cartProduct.productVO.realPrice} ?: '도서 판매가']]</strong>원</p>
-                <p class="book_original_price book-price" th:data-payout="${iterStat.index}">[[${cartProduct.productVO.discount} ?: '도서 원가']]원</p> <!--/* <p> 태그 안에 있던 "원"을 밖으로 뺌. */-->
+                <p><strong class="book-sale-price" th:data-sale-price="${cartProduct.productVO.realPrice ?: '도서 판매가'}" th:data-payout="${iterStat.index}">[[${#numbers.formatInteger(cartProduct.productVO.realPrice, 3, 'COMMA')}]]</strong>원</p>
+                <p class="book_original_price book-price" th:data-book-original-price="${cartProduct.productVO.discount ?: '도서 원가'}" th:data-payout="${iterStat.index}">[[${#numbers.formatInteger(cartProduct.productVO.discount, 3, 'COMMA')}]]원</p> <!--/* <p> 태그 안에 있던 "원"을 밖으로 뺌. */-->
               </div>
             </li>
 
@@ -138,6 +160,9 @@
                     <input type="text" class="point_input"
                            id="pointInput" value="0" data-max="${balancePoint}" oninput="validatePointInput()">
                     <span class="unit">원</span>
+                    <!--/* TODO. th:max="${데이터로 넘긴 포인트 보유 액수}"로 설정하여 보유한 포인트 이상으로 입력하지 못하게 할 것. */-->
+                    <input type="text" class="point_input" data-point-amount="0">
+                    <span class="unit point-input-unit">원</span>
                   </div>
                   <button type="button" class="btn benefit_btn" onclick="useFullPoints()">전액사용</button>
                 </div>
@@ -203,15 +228,16 @@
           <aside>
             <p class="cart_aside_title"><strong style="font-size: 1.3rem; letter-spacing: 1px;">주문 합계</strong></p>
             <div class="cart_aside_top">
-              <p><span class="label">상품 금액</span><span><strong class="total-original-price"></strong>원</span></p>
-              <p><span class="label">배송비 <i class="ic ic_question"></i></span><span>+ 0원</span></p>
-              <p><span class="label">상품 할인</span><span><strong class="discount_price discount-amount" style="color: #39553F;"></strong>원</span></p>
-              <p><span class="label">쿠폰 할인</span><span><strong class="discount_price" style="color: #39553F;">- 10,000</strong>원</span></p>
-              <p><span class="label">포인트 사용</span><span><strong id="usedPoints" th:text="${usedPoints}"></strong> 원</span></p>
+              <p><span class="label">상품 금액</span><span><strong class="total-original-price" data-total-original-price="10"></strong>원</span></p>
+              <p><span class="label">배송비 <i class="ic ic_question"></i></span><span class="delivery-fee" data-delivery-fee="0">+ 0원</span></p>
+              <p><span class="label">상품 할인</span><span><strong class="discount_price discount-amount" style="color: #39553F;" data-discount-amount="10"></strong>원</span></p>
+              <!--/* TODO: 쿠폰 할인의 data-는 DB에서 직접 가져올 것. */-->
+              <p><span class="label">쿠폰 할인</span><span><strong class="discount_price discount-coupon" style="color: #39553F;" data-discount-coupon="1000">- 1,000</strong>원</span></p>
+              <p><span class="label">포인트 사용</span><span class="discount-point" data-discount-point="0">0원</span></p>
             </div>
             <div class="cart_aside_bottom">
-              <p><strong>최종 결제 금액</strong> <span><strong class="total-price" data-total-price="totalPrice"></strong>원</span></p>
-              <p><span>적립 예정 포인트 <i class="ic ic_question"></i></span><span><strong id="earnedPoints" th:text="${earnedPoints}"></strong> P</span></p>
+              <p><strong>최종 결제 금액</strong> <span><strong class="total-price" data-total-price="10"></strong>원</span></p>
+              <p><span>적립 예정 포인트 <i class="ic ic_question"></i></span><span data-earned-point="2000">2,000P</span></p>
             </div>
             <div class="cart_order_btn">
               <p><button type="button" id="orderBtn" >결제하기</button></p>

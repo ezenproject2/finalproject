@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // 화면 로딩 시 페이지에 보여질 값들 계산
         calculateQtyPrice();
         calculateReceipt();
+        // calculateDeliveryFee();
 
         // 모든 itemBtn이 클릭되있게 함
         const selectItemBtns = document.getElementsByName('itemBtn');
@@ -31,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 })
 
+// 수량 X 가격을 한 값 계산
 function calculateQtyPrice() {
     console.log("calculateQtyPrice start.");
 
@@ -38,16 +40,17 @@ function calculateQtyPrice() {
     const numIndex = parseInt(index);
 
     for (let i=0; i < numIndex; i++) {
-        let salePrice = document.querySelector(`span[data-cart="${i}"].sale-price`).innerText;
+        let salePrice = document.querySelector(`span[data-cart="${i}"].sale-price`).dataset.salePrice;
         let bookQty = document.querySelector(`span[data-cart="${i}"].book-qty`).innerText;
 
         let qtyPrice = parseInt(salePrice) * parseInt(bookQty);
 
-        document.querySelector(`strong[data-cart="${i}"].qty-price`).innerText = qtyPrice.toString();
+        document.querySelector(`strong[data-cart="${i}"].qty-price`).innerText = qtyPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
 }
 
+// 영수증에 들어갈 모든 값들 계산
 function calculateReceipt() {
     // NOTE: 임시로 배송비는 3,000원 적용, 포인트는 일괄적으로 300P 적용.
     const index = document.getElementById('listDataStorage').dataset.listSize;
@@ -56,25 +59,62 @@ function calculateReceipt() {
     let sumSalePrice = 0;
 
     for (let i = 0; i < index; i++) {
-        let originalPrice = document.querySelector(`span[data-cart="${i}"].original-price`).innerText;
-        let salePrice = document.querySelector(`span[data-cart="${i}"].sale-price`).innerText;
+        let originalPrice = document.querySelector(`span[data-cart="${i}"].original-price`).dataset.originalPrice;
+        let salePrice = document.querySelector(`span[data-cart="${i}"].sale-price`).dataset.salePrice;
         let bookQty = document.querySelector(`[data-cart="${i}"].book-qty`).innerText;
 
         sumOriginalPrice += parseInt(originalPrice) * parseInt(bookQty);
         sumSalePrice += parseInt(salePrice) * parseInt(bookQty);
     }
 
-    document.querySelector(`.total-original-price`).innerText = sumOriginalPrice;
-    document.querySelector(`.total-discount-price`).innerText = "- " + `${sumOriginalPrice - sumSalePrice}`;
+    // 전체 도서 원가 합계 데이터를 .total-original-price의 data-total-original-price에 저장
+    let totalOriginalPriceEle = document.querySelector(`.total-original-price`);
+    totalOriginalPriceEle.dataset.totalOriginalPrice = sumOriginalPrice;
 
-    let deliverFeeEle = document.querySelector(`.delivery-fee`);
-    deliverFeeEle.innerText = 3000;
+    document.querySelector(`.total-original-price`).innerText = sumOriginalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    document.querySelector(`.total-discount-price`).innerText = "- " + `${sumOriginalPrice - sumSalePrice}`.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원";
 
-    document.querySelector(`.estimated-payment-amount`).innerText = (sumSalePrice + parseInt(deliverFeeEle.innerText));
+    // 결제 예정 금액 설정
+    let deliveryFee = 0;
+
+    // 할인된 가격의 총합에 따라 배송비 설정
+    if(20000 < sumSalePrice) {
+        // 20,000 이상 결제 시 배송비 무료
+    } else {
+        deliveryFee = 3000;
+    }
+
+    // 배송비 설정 후 화면에 반영
+    document.querySelector('.delivery-fee').dataset.deliveryFee = deliveryFee;
+    document.querySelector('.delivery-fee').innerText = "+ " + deliveryFee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원";
+
+    // 배송비에 따라 최종 결제 예상 금액 설정
+    document.querySelector(`.estimated-payment-amount`).innerText = `${sumSalePrice + deliveryFee}`.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    // NOTE: 포인트는 일괄적으로 300P 적용.
     document.querySelector(`.estimated-point-amount`).innerText = 300;
 }
 
-// 재고 + - 버튼에 맞춰 가격 변동
+// function calculateDeliveryFee() {
+//     let estimatedPriceVal = document.querySelector(`.estimated-payment-amount`).innerText;
+    
+//     // 금액에 찍힌 , 제거
+//     estimatedPriceVal = estimatedPriceVal.replace(/,/g, "");
+
+//     // 숫자로 변환
+//     estimatedPriceVal = parseInt(estimatedPriceVal);
+
+//     let deliveryFee = 0;
+//     // 2만원 이상 구매 시 무료배송, 아니면 3천원 부과
+//     if(20000 <= estimatedPriceVal) {
+//     } else {
+//         deliveryFee = 3000;
+//     }
+
+//     document.querySelector('.delivery-fee').dataset.deliveryFee = deliveryFee;
+//     document.querySelector('.delivery-fee').innerText = "+ " + deliveryFee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원";
+// };
+
+// 재고 + 버튼에 맞춰 가격 변동
 const ascBtns = document.querySelectorAll('.asc-btn');
 ascBtns.forEach(ascBtn => {
     ascBtn.addEventListener('click', () => {
@@ -83,7 +123,7 @@ ascBtns.forEach(ascBtn => {
         console.log("asc index: " + index);
         
         // 도서 개수 +1
-        let bookQty = document.querySelector(`span.book-qty[data-cart="${index}"]`);
+        let bookQty = document.querySelector(`.book-qty[data-cart="${index}"]`);
         let bookQtyVal = parseInt(bookQty.innerText);
         bookQty.innerText = bookQtyVal + 1;
 
@@ -93,6 +133,7 @@ ascBtns.forEach(ascBtn => {
     })
 });
 
+// 재고 - 버튼에 맞춰 가격 변동
 const descBtns = document.querySelectorAll('.desc-btn');
 descBtns.forEach(descBtn => {
     descBtn.addEventListener('click', () => {
@@ -101,7 +142,7 @@ descBtns.forEach(descBtn => {
         console.log("desc index: " + index);
 
         // 도서 개수 -1
-        let bookQty = document.querySelector(`span.book-qty[data-cart="${index}"]`);
+        let bookQty = document.querySelector(`.book-qty[data-cart="${index}"]`);
         let bookQtyVal = parseInt(bookQty.innerText);
 
         if((bookQtyVal - 1) == 0) {
@@ -209,7 +250,7 @@ function getDataForCartDto(singleItemBtnDataCart) {
 
 async function sendCartVoArrayToServer(cartDtoArray) {
     console.log(" >>> sendCartVoArrayToServer start.");
-    const url = '/payment/get-cart-list';
+    const url = '/payment/provide-cart-list';
     const config = {
         method: "post",
         headers: { "Content-Type": "application/json; charset=utf-8" },

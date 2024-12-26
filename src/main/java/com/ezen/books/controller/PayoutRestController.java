@@ -59,11 +59,14 @@ public class PayoutRestController {
         this.iamportClient = new IamportClient(iamportApiKey, iamportApiSecret);
     }
 
-    @PostMapping("/payment/payout/default-addr")
-    public String setDefaultAddress(@RequestBody AddressVO addressData) {
-        log.info(" >>> PaymentRestController: setDefaultAddress start.");
+    @PostMapping("/payment/payout/register-address")
+    public String registerDefaultAddress(@RequestBody AddressVO addressData) {
+        log.info(" >>> PaymentRestController: registerDefaultAddress start.");
         log.info("The address data from the client: {}", addressData);
-        return "success";
+
+        int isDone = payoutService.registerDefaultAddress(addressData);
+
+        return (0 < isDone) ? "1" : "0";
     }
 
     @PostMapping("/prepare")
@@ -81,11 +84,11 @@ public class PayoutRestController {
         }
 
         Map<String, String> pgMap = getChannelKeyAndMethod(pgVal);
-        pgMap.put("merchantUid", (UUID.randomUUID()).toString());
+//        pgMap.put("merchantUid", (UUID.randomUUID()).toString());
 
         log.info("The channel key: {}", pgMap.get("channelKey"));
         log.info("The pay method: {}", pgMap.get("payMethod"));
-        log.info("The merchant uid: {}", pgMap.get("merchantUid"));
+//        log.info("The merchant uid: {}", pgMap.get("merchantUid"));
 
         return ResponseEntity.ok(pgMap);
     }
@@ -159,8 +162,8 @@ public class PayoutRestController {
         // The orderDetailArr from JavaScript: [{"orno":"nobody_1734504395832","prno":"1","bookQty":"5","price":"10000"},{"orno":"nobody_1734504395832","prno":"3","bookQty":"2","price":"30000"}]
         log.info("The orderDetailArr from JavaScript: {}", orderDetailArr);
 
+        // 가져온 orderDetailArr 문자열을 List<OrderDetailVO>로 파싱
         List<OrderDetailVO> orderDetailList = null;
-
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             orderDetailList = objectMapper.readValue(orderDetailArr, new TypeReference<>() {});
@@ -168,6 +171,7 @@ public class PayoutRestController {
             log.info("Error during parsing orderDetailArr. Content: {}", e);
         }
 
+        // orderDetailList의 각 OrderDetailVO들을 하나씩 DB에 저장
         List<Integer> resultList = new ArrayList<>();
         for(OrderDetailVO orderDetail : orderDetailList) {
             int isDone = payoutService.saveOrderDetailToServer(orderDetail);
@@ -232,6 +236,18 @@ public class PayoutRestController {
         }
 
         return (resultList.stream().allMatch(n -> n == 1)) ?
+                new ResponseEntity<>("1", HttpStatus.OK) :
+                new ResponseEntity<>("0", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @PostMapping("/preserve-delivery")
+    public ResponseEntity<String> saveDeliveryToServer(@RequestBody DeliveryVO deliveryData) {
+        log.info(" >>> PaymentRestController: saveDeliveryToServer start.");
+        log.info("The deliveryData from the client: {}", deliveryData);
+
+        int isDone = payoutService.saveDeliveryToServer(deliveryData);
+
+        return (isDone > 0) ?
                 new ResponseEntity<>("1", HttpStatus.OK) :
                 new ResponseEntity<>("0", HttpStatus.INTERNAL_SERVER_ERROR);
     }

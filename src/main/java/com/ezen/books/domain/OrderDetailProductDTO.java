@@ -7,7 +7,8 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class CartProductDTO {
-    private CartVO cartVO;
+@Builder
+public class OrderDetailProductDTO {
+    private OrderDetailVO orderDetailVO;
     private ProductVO productVO;
 }

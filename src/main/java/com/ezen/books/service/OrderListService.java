@@ -3,11 +3,9 @@ package com.ezen.books.service;
 import com.ezen.books.domain.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import groovy.util.logging.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 
 import java.io.IOException;
 import java.net.URI;
@@ -15,10 +13,9 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
 
-@Slf4j
-@PropertySource("classpath:application-secrets.properties")
-public interface PayoutService {
+public interface OrderListService {
 
     Logger log = LoggerFactory.getLogger(PayoutService.class);
 
@@ -60,19 +57,17 @@ public interface PayoutService {
         return iamportToken;
     }
 
-    boolean checkSinglePayment(String impUid, String amount) throws IOException, URISyntaxException, InterruptedException;
+    List<OrdersVO> getAllOrderList(long mno);
 
-    AddressVO getDefaultAddress(long mno);
+    List<OrderDetailVO> getOrderDetailList(String orno);
 
-    int saveOrdersToServer(OrdersVO ordersVO);
+    List<List<OrderDetailProductDTO>> getOrderDetailProductList(long mno);
 
-    int saveOrderDetailToServer(OrderDetailVO orderDetail);
+    boolean isOrderEmpty(long mno);
 
-    int savePaymentToServer(PaymentVO paymentData);
+    int refundWithIamport(long odno, String orno, int qtyPrice) throws IOException, URISyntaxException, InterruptedException;
 
-    int removeCartToServer(long mno, long prno);
+    MemberVO getMember(long mno);
 
-    int registerDefaultAddress(AddressVO addressData);
-
-    int saveDeliveryToServer(DeliveryVO deliveryData);
+    GradeVO getMemberGrade(Long gno);
 }

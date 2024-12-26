@@ -59,7 +59,6 @@ public class PayoutServiceImpl implements PayoutService {
 
     @Override
     public int removeCartToServer(long mno, long prno) {
-        // TODO: 만약 DB에 해당 mno와 prno가 이미 있으면 수량만 증가. 이후 JavaScript에 2를 반환하여 "수량이 추가되었습니다"가 나올 수 있게 할 것.
         try {
             payoutMapper.removeCartToServer(mno, prno);
             return 1;
@@ -67,6 +66,17 @@ public class PayoutServiceImpl implements PayoutService {
             log.info("Error during removing cart table. Content: {}", e);
         }
         return 0;
+    }
+
+    @Override
+    public int registerDefaultAddress(AddressVO addressData) {
+        addressData.setIsDefault("Y");
+        return payoutMapper.registerDefaultAddress(addressData);
+    }
+
+    @Override
+    public int saveDeliveryToServer(DeliveryVO deliveryData) {
+        return payoutMapper.saveDeliveryToServer(deliveryData);
     }
 
     @Override
