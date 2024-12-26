@@ -32,4 +32,10 @@
         order by reg_at desc
     </select>
 
+    <insert id="savePoints">
+        insert into points (mno,orno, earned, used, balance, reg_at)
+        values (#{mno}, #{orno}, #{earned}, #{used}, #{balance}, now())
+    </insert>
+
+
 </mapper>

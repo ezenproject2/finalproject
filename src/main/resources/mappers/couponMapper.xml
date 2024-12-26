@@ -23,5 +23,11 @@
         values (#{mno}, #{cno}, #{orno}, '사용 가능', now())
     </update>
 
+    <select id="selectAvailableCoupons" resultType="com.ezen.books.domain.CouponLogVO">
+        SELECT * FROM coupon_log cl
+        JOIN coupon c ON cl.cno = c.cno
+        WHERE cl.mno = #{mno} AND cl.status = '사용 가능'
+    </select>
+
 
 </mapper>

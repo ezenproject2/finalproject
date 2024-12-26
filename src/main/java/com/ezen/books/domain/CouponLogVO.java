@@ -30,6 +30,11 @@ public class CouponLogVO {
     private Date usedAt; // 사용 일자
     private Date expAt; // 만료 일자
 
+    // Coupon 테이블의 추가 필드
+    private String couponName;
+    private long disAmount;
+    private long minPrice;
+
 
 
 

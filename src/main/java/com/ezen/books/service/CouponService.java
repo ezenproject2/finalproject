@@ -1,5 +1,6 @@
 package com.ezen.books.service;
 
+import com.ezen.books.domain.CouponLogVO;
 import com.ezen.books.domain.CouponVO;
 import com.ezen.books.domain.GradeVO;
 
@@ -19,4 +20,5 @@ public interface CouponService {
     GradeVO getMemberGrade(long mno);
 
 
+    List<CouponLogVO> findMemberCoupons(long mno);
 }

@@ -66,4 +66,10 @@ public class PointServiceImpl implements PointService{
     public void addPoints(long mno, int pointsEarned, String orno) {
 
     }
+
+    @Override
+    public void savePoint(PointsVO pointsVO) {
+        pointMapper.savePoints(pointsVO);
+    }
+
 }

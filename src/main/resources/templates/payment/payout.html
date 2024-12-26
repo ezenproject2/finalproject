@@ -125,7 +125,7 @@
                 <div class="coupon_wrap">
                   <span class="coupon_name">[교보문고 배송] 배송비 적용</span>
                   <span class="coupon_discount_amount"><strong>2,500</strong></span>
-                  <button type="button" class="btn benefit_btn">변경</button>
+                  <a th:href="@{/mypage/coupon}"><button type="button" class="btn benefit_btn">선택</button></a>
                 </div>
               </td>
             </tr>
@@ -135,12 +135,13 @@
               <td class="point_td">
                 <div class="point_wrap">
                   <div class="point_input_wrap">
-                    <input type="text" class="point_input">
+                    <input type="text" class="point_input"
+                           id="pointInput" value="0" data-max="${balancePoint}" oninput="validatePointInput()">
                     <span class="unit">원</span>
                   </div>
-                  <button type="button" class="btn benefit_btn">전액사용</button>
+                  <button type="button" class="btn benefit_btn" onclick="useFullPoints()">전액사용</button>
                 </div>
-                <span class="point">보유 : <strong>5,000</strong> P</span>
+                <span class="point">보유 : <strong th:text="${balancePoint}"></strong> P</span>
               </td>
             </tr>
           </table>
@@ -206,11 +207,11 @@
               <p><span class="label">배송비 <i class="ic ic_question"></i></span><span>+ 0원</span></p>
               <p><span class="label">상품 할인</span><span><strong class="discount_price discount-amount" style="color: #39553F;"></strong>원</span></p>
               <p><span class="label">쿠폰 할인</span><span><strong class="discount_price" style="color: #39553F;">- 10,000</strong>원</span></p>
-              <p><span class="label">포인트 사용</span><span>0원</span></p>
+              <p><span class="label">포인트 사용</span><span><strong id="usedPoints" th:text="${usedPoints}"></strong> 원</span></p>
             </div>
             <div class="cart_aside_bottom">
               <p><strong>최종 결제 금액</strong> <span><strong class="total-price" data-total-price="totalPrice"></strong>원</span></p>
-              <p><span>적립 예정 포인트 <i class="ic ic_question"></i></span><span>2,000P</span></p>
+              <p><span>적립 예정 포인트 <i class="ic ic_question"></i></span><span><strong id="earnedPoints" th:text="${earnedPoints}"></strong> P</span></p>
             </div>
             <div class="cart_order_btn">
               <p><button type="button" id="orderBtn" >결제하기</button></p>
@@ -227,5 +228,9 @@
   <!--/* 배송지가 없을 때 카카오 도로명주소 api를 사용하기 위한 js 파일. */-->
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <script th:src="@{/js/payoutKakaoAddress.js}"></script>
+  <script th:src="@{/js/payoutPoint.js}"></script>
+
+
+
 </main>
 </html>

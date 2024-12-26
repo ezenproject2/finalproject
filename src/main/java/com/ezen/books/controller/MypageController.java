@@ -186,5 +186,20 @@ public class MypageController {
         return isOk > 0 ? "/index" : "/mypage/inquiry";
     }
 
+    @GetMapping("/coupon")
+    public String memberCoupons(Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loginId = authentication.getName();
+        MemberVO memberVO = memberService.getMemberByInfo(loginId);
+        long mno = memberVO.getMno();
+        model.addAttribute("mno", mno);
+
+        // 사용자 쿠폰 목록 조회
+        List<CouponLogVO> couponList = couponService.findMemberCoupons(mno);
+        model.addAttribute("coupons", couponList);
+
+        return "/mypage/coupon";
+    }
+
 
 }

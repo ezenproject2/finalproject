@@ -62,4 +62,9 @@ public class CouponServiceImpl implements CouponService{
     public GradeVO getMemberGrade(long mno) {
         return gradeMapper.getGradeByMember(mno);
     }
+
+    @Override
+    public List<CouponLogVO> findMemberCoupons(long mno) {
+        return couponMapper.selectAvailableCoupons(mno);
+    }
 }

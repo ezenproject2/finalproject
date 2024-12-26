@@ -4,21 +4,18 @@ import com.ezen.books.domain.AddressVO;
 import com.ezen.books.domain.CartVO;
 import com.ezen.books.domain.CartProductDTO;
 import com.ezen.books.domain.ProductVO;
-import com.ezen.books.service.CartService;
-import com.ezen.books.service.PayoutService;
-import com.ezen.books.service.PayoutServiceImpl;
+import com.ezen.books.service.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @RequestMapping("/payment/*")
@@ -30,6 +27,8 @@ public class PaymentController {
     private final PayoutService payoutService;
     private final CartService cartService;
     private List<CartVO> cartList;
+
+    private final PointService pointService;
 
     @PostMapping("/header-cart")
     @ResponseBody
@@ -79,12 +78,18 @@ public class PaymentController {
     }
 
     @GetMapping("/payout")
-    public String goToPayout(Model model) {
+    public String goToPayout(Model model, HttpSession session) {
         log.info(" >>> PaymentController: goToPayout start.");
         List<CartProductDTO> cartProductList = buildCartProductList(cartList);
         // mno는 단독적으로 쓰이는 경우가 많아 편의상 따로 빼서 model로 보냄.
         long mno = cartProductList.get(0).getCartVO().getMno();
         log.info("mno: {}", mno);
+
+        /* yh-------------- */
+        String orno = UUID.randomUUID().toString();
+        log.info(">>>>>> 주문 번호(orno) 생성 : {}", orno);
+        session.setAttribute("orno", orno);
+        /* ---------------- */
 
         // 주문/결제 페이지에서 보여줄 사용자의 기본 배송지를 가져옴
         AddressVO defaultAddress = getDefaultAddress(mno);
@@ -111,8 +116,31 @@ public class PaymentController {
 
         log.info("CartProductList from PaymentController: {}", cartProductList);
         model.addAllAttributes(modelAttrs);
+
+        /* yh-------------- */
+        int balancePoint = pointService.getBalance(mno);
+        model.addAttribute("balancePoint", balancePoint);
+        /* ---------------- */
+
         return "/payment/payout";
     }
+
+    /* yh-------------- */
+    @GetMapping("/start-checkout")
+    public ResponseEntity<Map<String, String>> startCheckout(HttpSession session){
+        String orno = (String) session.getAttribute("orno");
+        if(orno == null){
+            orno = UUID.randomUUID().toString();
+            session.setAttribute("orno", orno);
+        }
+
+        Map<String, String> response = new HashMap<>();
+        response.put("orno", orno);
+
+        return ResponseEntity.ok(response);
+    }
+    /* ---------------- */
+
 
     private AddressVO getDefaultAddress(long mno) {
         AddressVO defaultAddress = payoutService.getDefaultAddress(mno);

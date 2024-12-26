@@ -20,4 +20,7 @@ public interface PointService {
 
     // 포인트 추가
     void addPoints(long mno, int pointsEarned, String orno);
+
+    void savePoint(PointsVO pointsVO);
+
 }

@@ -1,13 +1,13 @@
 package com.ezen.books.controller;
 
 import com.ezen.books.domain.*;
-import com.ezen.books.service.PayoutService;
-import com.ezen.books.service.PayoutServiceImpl;
+import com.ezen.books.service.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.siot.IamportRestClient.IamportClient;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
@@ -42,13 +42,20 @@ public class PayoutRestController {
     private final IamportClient iamportClient;
     private PayoutService payoutService;
 
+    private final MemberService memberService;
+    private final GradeService gradeService;
+    private final PointService pointService;
+
     @Autowired
     public PayoutRestController(
             @Value("${iamport_rest_api_key}") String iamportApiKey,
-            @Value("${iamport_rest_api_secret}") String iamportApiSecret, PayoutService payoutService) {
+            @Value("${iamport_rest_api_secret}") String iamportApiSecret, PayoutService payoutService, MemberService memberService, GradeService gradeService, PointService pointService) {
         this.iamportApiKey = iamportApiKey;
         this.iamportApiSecret = iamportApiSecret;
         this.payoutService = payoutService;
+        this.memberService = memberService;
+        this.gradeService = gradeService;
+        this.pointService = pointService;
         this.iamportClient = new IamportClient(iamportApiKey, iamportApiSecret);
     }
 
@@ -112,15 +119,38 @@ public class PayoutRestController {
     }
 
     @PostMapping("/preserve-orders")
-    public ResponseEntity<String> saveOrdersToServer(@RequestBody OrdersVO ordersVO) {
+    public ResponseEntity<String> saveOrdersToServer(@RequestBody OrdersVO ordersVO,
+                                                     HttpSession session) {
         log.info(" >>> PaymentRestController: saveOrdersToServer start.");
         // ordersVO: OrdersVO(orno=nobody_1734487688880, mno=1, status=completed, totalPrice=60000, orderAt=null, isPickup=N)
         log.info("ordersVO: {}", ordersVO);
+
+        /* yh-------------- */
+        String orno = (String) session.getAttribute("orno");
+        if(orno == null || orno.isEmpty()){
+            orno = UUID.randomUUID().toString();
+            session.setAttribute("orno",orno);
+        }
+        ordersVO.setOrno(orno);
+        /* ---------------- */
+
         int isDone = payoutService.saveOrdersToServer(ordersVO);
 
-        return (0 < isDone) ?
-                new ResponseEntity<>("1", HttpStatus.OK) :
-                new ResponseEntity<>("0", HttpStatus.INTERNAL_SERVER_ERROR);
+        /* yh-------------- */
+        if(isDone > 0){
+            earnPoints(ordersVO);
+
+            int totalPrice = calculateTotalPrice(ordersVO);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("orno", ordersVO.getOrno()); // 주문 번호
+            response.put("totalPrice", totalPrice);  // 계산된 총 금액
+        /* ---------------- */
+            return new ResponseEntity<>("1", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("0", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     @PostMapping("/preserve-order-detail")
@@ -196,6 +226,8 @@ public class PayoutRestController {
         for(CartVO cartVO : cartList) {
             long mno = cartVO.getMno();
             long prno = cartVO.getPrno();
+            log.info("mno: ", mno);
+            log.info("prno: ", prno);
             resultList.add(payoutService.removeCartToServer(mno, prno));
         }
 
@@ -261,5 +293,90 @@ public class PayoutRestController {
             return null;
         }
     }
+
+    /* yh-------------- */
+    private void earnPoints(OrdersVO ordersVO){
+        MemberVO memberVO = memberService.getMemberById(ordersVO.getMno());
+
+        GradeVO gradeVO = gradeService.getGradeByGno(memberVO.getGno());
+        double pointRate = gradeVO.getPointRate();
+        log.info(">>>>>> PointRate : {}", pointRate);
+
+        int earnedPoints = (int) (ordersVO.getTotalPrice() * pointRate);
+        int balancePoint = pointService.getBalance(memberVO.getMno());
+
+        // earned와 used가 모두 0이면 저장하지 않음
+        if (earnedPoints == 0 && balancePoint == 0) {
+            log.info(">> Earned points are 0 and balance is 0, skipping point save.");
+            return;
+        }
+
+        PointsVO pointsVO = new PointsVO();
+        pointsVO.setMno(memberVO.getMno());
+        pointsVO.setOrno(ordersVO.getOrno());
+        pointsVO.setEarned(earnedPoints);
+        pointsVO.setBalance(balancePoint + earnedPoints);
+        pointsVO.setRegAt(new Date());
+
+        pointService.savePoint(pointsVO);
+
+        log.info(">> 적립된 포인트 {}", earnedPoints);
+        log.info(">> 현재 포인트 {}", balancePoint);
+    }
+
+    private int calculateTotalPrice(OrdersVO ordersVO){
+        return ordersVO.getTotalPrice();
+    }
+
+
+    @PostMapping("/use-points")
+    public ResponseEntity<Map<String, Object>> usePoints(@RequestBody Map<String, Object> requestData,
+                                                         HttpSession session) {
+        int usedPoints = (Integer) requestData.get("usedPoints");
+        log.info(">>> 사용할 포인트 {}", usedPoints);
+
+        String mnoNo= (String) requestData.get("mno");
+        Long mno = Long.parseLong(mnoNo);
+        log.info(">>> 회원 번호(mno): {}", mno);
+
+        String orno = (String) session.getAttribute("orno");
+
+        MemberVO memberVO = memberService.getMemberById(mno);
+
+        int balancePoint = pointService.getBalance(memberVO.getMno());
+
+        if (usedPoints > balancePoint) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(Collections.singletonMap("message", "Insufficient points."));
+        }
+
+        // earned와 used가 모두 0일 경우 저장하지 않음
+        if (usedPoints == 0 && balancePoint == 0) {
+            log.info(">> Earned and used points are both 0, skipping point usage save.");
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("newPointsBalance", balancePoint); // 잔액 그대로 반환
+            return ResponseEntity.ok(response);
+        }
+
+        int remainingPoints = balancePoint - usedPoints;
+
+        PointsVO pointsVO = new PointsVO();
+        pointsVO.setMno(memberVO.getMno());
+        pointsVO.setOrno(orno);
+        pointsVO.setUsed(usedPoints);
+        pointsVO.setBalance(remainingPoints);
+        pointsVO.setRegAt(new Date());
+        pointService.savePoint(pointsVO);
+
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", true);
+        response.put("newPointsBalance", remainingPoints);
+
+        return ResponseEntity.ok(response);
+    }
+    /* ---------------- */
 
 }

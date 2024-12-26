@@ -1,5 +1,6 @@
 package com.ezen.books.repository;
 
+import com.ezen.books.domain.CouponLogVO;
 import com.ezen.books.domain.CouponVO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -18,4 +19,6 @@ public interface CouponMapper {
     void applyCoupon(long mno, long cno, String orno);
 
     List<CouponVO> getCouponsForGrade(Long gno);
+
+    List<CouponLogVO> selectAvailableCoupons(long mno);
 }

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<head>
+  <title> 이젠문고 </title>
+  <meta charset="UTF-8"/>
+  <style>
+    h1 {
+    text-align: center;
+    color: #333;
+    }
+
+    /* 테이블 스타일 */
+    table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    }
+
+    th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    }
+
+    th {
+    background-color: #3498db;
+    color: white;
+    }
+
+    td {
+    background-color: #fff;
+    }
+
+    /* 쿠폰 이름 */
+    td:first-child {
+    font-weight: bold;
+    }
+
+    /* 사용 가능한 쿠폰 버튼 */
+    .btn {
+    padding: 8px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    }
+
+    .btn:hover {
+    background-color: #218838;
+    }
+
+    /* 사용 불가 상태 */
+    .unavailable {
+    color: #e74c3c;
+    font-weight: bold;
+    }
+
+    /* 반응형 테이블 */
+    @media (max-width: 768px) {
+    .coupon_table {
+    width: 100%;
+    font-size: 12px;
+    }
+
+    th, td {
+    padding: 8px;
+    }
+
+    .btn {
+    font-size: 12px;
+    }
+    }
+
+  </style>
+</head>
+
+<main layout:fragment="main">
+  <h1>쿠폰 선택</h1>
+  <div class="container">
+    <h1>사용 가능한 쿠폰</h1>
+    <input type="hidden" name="mno" th:value="${mno}"/>
+    <table class="coupon_table">
+      <thead>
+      <tr>
+        <th>쿠폰 번호</th>
+        <th>최소 구매 금액</th>
+        <th>할인 금액</th>
+        <th>유효 기간</th>
+        <th>상태</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="coupon : ${coupons}">
+        <td th:text="${coupon.cno}"></td>
+        <td th:text="${coupon.disAmount}"></td>
+        <td th:text="${coupon.minPrice}"></td>
+        <td th:text="${#dates.format(coupon.expAt, 'yyyy-MM-dd')}"></td>
+        <td th:text="${coupon.status}"></td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+
+
+</main>
