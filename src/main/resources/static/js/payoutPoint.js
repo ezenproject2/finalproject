@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const orderBtn = document.getElementById("orderBtn");
     const pointInput = document.getElementById("pointInput");
     const maxPoints = parseInt(pointInput.getAttribute("data-max"));  // 보유 포인트
+    console.log(maxPoints);
     const dataContainer = document.getElementById("dataContainer");
     const totalOriginalPriceElement = document.querySelector('.total-original-price');
     const totalPriceElement = document.querySelector('.total-price');
@@ -10,7 +11,6 @@ document.addEventListener("DOMContentLoaded", function () {
     orderBtn.addEventListener("click", function () {
         const usedPoints = parseInt(pointInput.value);
 
-        // 포인트가 0일 경우는 그냥 진행
         if (usedPoints === 0) {
             return;
         }
@@ -91,9 +91,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // 포인트 입력 시 유효성 검증
     pointInput.addEventListener("input", validatePointInput);
 
-    // 전액 사용 버튼에 이벤트 리스너 추가
-    const fullPointsButton = document.querySelector('.benefit_btn');
-    if (fullPointsButton) {
-        fullPointsButton.addEventListener('click', useFullPoints);
-    }
+    // 전액 사용 버튼 클릭 이벤트
+    document.querySelector('.benefit_btn').addEventListener('click', useFullPoints);
 });

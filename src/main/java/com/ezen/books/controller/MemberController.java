@@ -152,7 +152,7 @@ public class MemberController {
     }
 
     // (cron="59 59 23 * * *") : 매일 23시59분59초에 실행
-    @Scheduled(cron="00 41 11 * * *")
+    @Scheduled(cron="30 57 13 * * *")
     public void updateAllMemberGrades() {
         try {
             memberService.updateAllMemberGrades(); // 모든 회원의 등급 갱신

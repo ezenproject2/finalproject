@@ -98,8 +98,8 @@
       <tbody>
       <tr th:each="coupon : ${coupons}">
         <td th:text="${coupon.cno}"></td>
-        <td th:text="${coupon.disAmount}"></td>
         <td th:text="${coupon.minPrice}"></td>
+        <td th:text="${coupon.disAmount}"></td>
         <td th:text="${#dates.format(coupon.expAt, 'yyyy-MM-dd')}"></td>
         <td th:text="${coupon.status}"></td>
       </tr>

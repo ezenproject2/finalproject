@@ -24,10 +24,35 @@
     </update>
 
     <select id="selectAvailableCoupons" resultType="com.ezen.books.domain.CouponLogVO">
-        SELECT * FROM coupon_log cl
-        JOIN coupon c ON cl.cno = c.cno
-        WHERE cl.mno = #{mno} AND cl.status = '사용 가능'
+        select * from coupon_log cl
+        join coupon c ON cl.cno = c.cno
+        where cl.mno = #{mno} and cl.status = '사용 가능'
     </select>
 
+    <!-- 쿠폰 적용을 위한 insert 쿼리 -->
+<!--    <insert id="applyCoupon">-->
+<!--        INSERT INTO coupon_log (mno, cno, status, apply_date)-->
+<!--        VALUES (#{mno}, #{couponId}, '사용 완료', NOW())-->
+<!--    </insert>-->
+
+    <select id="getCouponByCno" resultType="com.ezen.books.domain.CouponVO">
+        select * from coupon
+        where cno = #{cno}
+    </select>
+
+    <select id="getCouponLogByMnoAndCno" resultType="com.ezen.books.domain.CouponLogVO">
+        select * from coupon_log
+        where mno = #{mno} and cno = #{cno}
+    </select>
+
+    <insert id="saveCouponLog" parameterType="com.ezen.books.domain.CouponLogVO">
+        insert into coupon_log (mno, cno, orno, status, used_at, exp_at)
+        values  (#{mno}, #{cno}, #{orno}, #{status}, #{usedAt}, #{expAt})
+    </insert>
+
+    <select id="findMemberAllCoupons" resultType="com.ezen.books.domain.CouponLogVO">
+        select * from coupon_log
+        where mno = #{mno}
+    </select>
 
 </mapper>

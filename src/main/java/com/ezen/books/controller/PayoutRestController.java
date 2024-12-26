@@ -45,17 +45,19 @@ public class PayoutRestController {
     private final MemberService memberService;
     private final GradeService gradeService;
     private final PointService pointService;
+    private final CouponService couponService;
 
     @Autowired
     public PayoutRestController(
             @Value("${iamport_rest_api_key}") String iamportApiKey,
-            @Value("${iamport_rest_api_secret}") String iamportApiSecret, PayoutService payoutService, MemberService memberService, GradeService gradeService, PointService pointService) {
+            @Value("${iamport_rest_api_secret}") String iamportApiSecret, PayoutService payoutService, MemberService memberService, GradeService gradeService, PointService pointService, CouponService couponService) {
         this.iamportApiKey = iamportApiKey;
         this.iamportApiSecret = iamportApiSecret;
         this.payoutService = payoutService;
         this.memberService = memberService;
         this.gradeService = gradeService;
         this.pointService = pointService;
+        this.couponService = couponService;
         this.iamportClient = new IamportClient(iamportApiKey, iamportApiSecret);
     }
 
@@ -351,9 +353,8 @@ public class PayoutRestController {
         int usedPoints = (Integer) requestData.get("usedPoints");
         log.info(">>> 사용할 포인트 {}", usedPoints);
 
-        String mnoNo= (String) requestData.get("mno");
+        String mnoNo = (String) requestData.get("mno");
         Long mno = Long.parseLong(mnoNo);
-        log.info(">>> 회원 번호(mno): {}", mno);
 
         String orno = (String) session.getAttribute("orno");
 
@@ -393,6 +394,50 @@ public class PayoutRestController {
 
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping("/use-coupon")
+    public ResponseEntity<Map<String, Object>> useCoupon(@RequestBody Map<String, Object> requestData,
+                                                         HttpSession session) {
+        String mnoNo = (String) requestData.get("mno");
+        Long mno = Long.parseLong(mnoNo); // 회원 번호
+        String orno = (String) session.getAttribute("orno"); // 주문 번호
+        Long cno = Long.parseLong((String) requestData.get("cno")); // 쿠폰 번호
+
+        // 쿠폰 정보 조회 (쿠폰 번호로 쿠폰 정보 조회)
+        CouponVO couponVO = couponService.getCouponByCno(cno);
+
+        if (couponVO == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Collections.singletonMap("message", "Invalid coupon."));
+        }
+
+        // 쿠폰 사용 가능 여부 체크 (쿠폰 로그에서 해당 회원이 이미 사용한 적이 있는지 확인)
+        CouponLogVO couponLogVO = couponService.getCouponLogByMnoAndCno(mno, cno);
+        if (couponLogVO != null && couponLogVO.getStatus().equals("사용 완료")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Collections.singletonMap("message", "Coupon already used."));
+        }
+
+        // 쿠폰 사용 내역 기록
+        CouponLogVO newCouponLog = new CouponLogVO();
+        newCouponLog.setMno(mno);
+        newCouponLog.setCno(cno);
+        newCouponLog.setOrno(orno);
+        newCouponLog.setStatus("사용 완료");
+        newCouponLog.setUsedAt(new Date());
+        couponService.saveCouponLog(newCouponLog);
+
+        // 쿠폰 할인 금액 반환
+        int couponDiscount = couponVO.getDisAmount();
+
+        // 쿠폰 할인 금액반환
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", true);
+        response.put("discountAmount", couponDiscount);
+
+        return ResponseEntity.ok(response);
+    }
+
     /* ---------------- */
 
 }

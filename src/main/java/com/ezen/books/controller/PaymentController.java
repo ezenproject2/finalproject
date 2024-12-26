@@ -19,6 +19,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +42,8 @@ public class PaymentController {
     private List<CartVO> cartList;
 
     private final PointService pointService;
+    private final MemberService memberService;
+    private final CouponService couponService;
 
     @PostMapping("/header-cart")
     @ResponseBody
@@ -153,6 +157,15 @@ public class PaymentController {
         model.addAttribute("balancePoint", balancePoint);
         /* ---------------- */
 
+        /* yh-------------- */
+        model.addAttribute("mno", mno);
+
+        // 사용자 쿠폰 목록 조회
+        List<CouponLogVO> couponList = couponService.findMemberCoupons(mno);
+        model.addAttribute("coupons", couponList);
+        log.info("쿠폰들 {}", couponList);
+        /* ---------------- */
+
         return "/payment/payout";
     }
 
@@ -231,6 +244,7 @@ public class PaymentController {
             return null;
         }
     }
+
 
 
 }

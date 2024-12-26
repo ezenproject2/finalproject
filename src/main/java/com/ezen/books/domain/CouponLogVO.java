@@ -24,7 +24,7 @@ public class CouponLogVO {
 
     private long clno; // 쿠폰 기록 번호
     private long mno; // 회원 번호
-    private long orno; // 주문 번호
+    private String orno; // 주문 번호
     private long cno; // 쿠폰 번호
     private String status; // 상태 (사용 가능, 사용 완료, 만료)
     private Date usedAt; // 사용 일자

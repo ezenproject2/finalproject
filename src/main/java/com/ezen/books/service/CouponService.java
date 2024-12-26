@@ -10,15 +10,17 @@ public interface CouponService {
     // 회원 쿠폰 조회
     List<CouponVO> getMemberCoupons(long mno);
 
-    // 쿠폰 적용
-    void applyCoupon(long mno, long cno, String orno);
-
-    // 사용 가능한 쿠폰 조회
-    List<CouponVO> getAvailableCoupons(long gno, int purchaseAmount);
-
-    // 회원 등급 조회
-    GradeVO getMemberGrade(long mno);
-
-
     List<CouponLogVO> findMemberCoupons(long mno);
+
+    boolean applyCouponToMember(long mno, long cno);
+
+
+    CouponVO getCouponByCno(Long cno);
+
+    CouponLogVO getCouponLogByMnoAndCno(Long mno, Long cno);
+
+    void saveCouponLog(CouponLogVO newCouponLog);
+
+    // 회원의 모든 쿠폰 사용 내역 조회
+    List<CouponLogVO> findMemberAllCoupons(Long mno);
 }

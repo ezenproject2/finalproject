@@ -82,8 +82,11 @@ public class MemberServiceImpl implements MemberService{
             memberMapper.updateMemberGrade(mno, gno);
             log.info("Successfully updated grade for mno=" + mno + " to gno=" + gno);
 
+            expireOldCoupons(mno);
             // 등급에 맞는 쿠폰 지급
             giveCouponToMember(mno, gno);
+
+
         } catch (Exception e) {
             log.error("회원 등급 갱신 중 오류 발생: mno=" + mno + ", Error: " + e.getMessage(), e);
         }
@@ -112,7 +115,7 @@ public class MemberServiceImpl implements MemberService{
                     couponLogVO.setMno(mno);
                     couponLogVO.setCno(coupon.getCno());
                     couponLogVO.setStatus("사용 가능");
-                    couponLogVO.setUsedAt(new Date());
+                    couponLogVO.setUsedAt(null);
                     couponLogVO.setExpAt(calculateExpirationDate(3));  // 만료 날짜는 지급 날짜로부터 3개월 후
 
                     memberMapper.insertCouponLog(couponLogVO);  // 쿠폰 로그에 추가
