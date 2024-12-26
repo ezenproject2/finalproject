@@ -79,6 +79,7 @@ public class PaymentController {
     }
 
     @PostMapping("/buy-now")
+    @ResponseBody
     public String prepareCartList(@RequestBody CartVO cartData) {
         log.info(" >>> PaymentController: prepareCartList start.");
 
