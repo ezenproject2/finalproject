@@ -208,7 +208,7 @@
             <div class="page" style="max-height: 100%">
               <div class="page-inner" th:if="${bookInfo.publisherReviewContent != null and bookInfo.publisherReviewContent != ''}" style="max-height: 100%">
                 <p class="book_detail_title" th:text="${bookInfo.publisherReviewTitle}"></p> <!-- 출판사 서평 -->
-                <p class="book_detail_content" th:utext="${bookInfo.publisherReviewContent}" style="max-height: 58vh;"></p>
+                <p class="book_detail_content" th:utext="${bookInfo.publisherReviewContent}" style="max-height: 66vh;"></p>
               </div>
             </div>
             <div class="page">
@@ -265,6 +265,173 @@
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="book_detail_review">
+        <h3 class="book_detail_page_title">책 리뷰(3)</h3> <!-- 해당 책의 전체 리뷰 수 괄호 안 -->
+
+        <div class="book_rate_score_box">
+          <div class="book_rate_score_left">
+            <p>구매자 총점</p>
+            <i class="ic ic_star star-4_5"></i>
+            <span><strong>4.5</strong> / 5</span>
+          </div>
+
+          <div class="book_rate_score_right">
+            <div class="rate">
+              <div class="rate_1">
+                <i class="ic ic_star star-5"></i>
+                <!-- 별점 5.0 남긴 사람의 총 인원 수-->
+                <span class="rating-users-count">(23)</span>
+              </div>
+              <div class="rate_2">
+                <div class="gauge_bar">
+                  <div class="gauge"></div>
+                </div>
+              </div>
+              <div class="rate_3">
+                <!-- 리뷰 총인원(100%) / 별점 5.0 남긴 사람-->
+                <span class="score_number" data-value="73"> 73%</span>
+              </div>
+            </div>
+
+            <div class="rate">
+              <div class="rate_1">
+                <i class="ic ic_star star-4"></i>
+                <!-- 별점 4점대(4.5~4.0) 남긴 사람의 총 인원 수-->
+                <span class="rating-users-count">(1)</span>
+              </div>
+              <div class="rate_2">
+                <div class="gauge_bar">
+                  <div class="gauge"></div>
+                </div>
+              </div>
+              <div class="rate_3">
+                <!-- 리뷰 총인원(100%) / 별점 4점대(4.5~4.0) 남긴 사람-->
+                <span class="score_number" data-value="7"> 7%</span>
+              </div>
+            </div>
+
+            <div class="rate">
+              <div class="rate_1">
+                <i class="ic ic_star star-3"></i>
+                <!-- 별점 3점대(3.5~3.0) 남긴 사람의 총 인원 수-->
+                <span class="rating-users-count">(1)</span>
+              </div>
+              <div class="rate_2">
+                <div class="gauge_bar">
+                  <div class="gauge"></div>
+                </div>
+              </div>
+              <div class="rate_3">
+                <!-- 리뷰 총인원(100%) / 별점 3점대(3.5~3.0) 남긴 사람-->
+                <span class="score_number" data-value="7"> 7%</span>
+              </div>
+            </div>
+
+            <div class="rate">
+              <div class="rate_1">
+                <i class="ic ic_star star-2"></i>
+                <!-- 별점 2점대(2.5~2.0) 남긴 사람의 총 인원 수-->
+                <span class="rating-users-count">(1)</span>
+              </div>
+              <div class="rate_2">
+                <div class="gauge_bar">
+                  <div class="gauge"></div>
+                </div>
+              </div>
+              <div class="rate_3">
+                <!-- 리뷰 총인원(100%) / 별점 2점대(2.5~2.0) 남긴 사람-->
+                <span class="score_number" data-value="7"> 7%</span>
+              </div>
+            </div>
+
+            <div class="rate">
+              <div class="rate_1">
+                <i class="ic ic_star star-1"></i>
+                <!-- 별점 1점대(1.5~0.0) 남긴 사람의 총 인원 수-->
+                <span class="rating-users-count">(0)</span>
+              </div>
+              <div class="rate_2">
+                <div class="gauge_bar">
+                  <div class="gauge"></div>
+                </div>
+              </div>
+              <div class="rate_3">
+                <!-- 리뷰 총인원(100%) / 별점 1점대(1.5~0.0) 남긴 사람-->
+                <span class="score_number" data-value="0"> 0%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="book_detail_review_none"> <!-- 책의 리뷰가 없을 때 style="display: block;" -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 16 16">
+            <circle cx="8" cy="8" r="8" fill="#c6c6c6"></circle>
+            <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" fill="white"></path>
+          </svg>
+          <p class="title">아직 작성된 리뷰가 없어요.</p>
+          <p class="sub">이 책의 첫 리뷰어가 되어보세요!</p>
+          <a href="">계속 쇼핑하기</a> <!-- 메인 페이지로 이동 -->
+        </div>
+
+        <div class="book_review_box grid" style="display: none;">
+          <div class="review_item"> <!-- 리뷰 반복 -->
+            <div class="review_box">
+              <i class="ic ic_delete"></i>
+              <div class="review_box_header">
+                <div class="review_member">
+                  <div class="member_profile_photo"></div>
+                  <span class="member_nike_name">닉네임0516</span>
+                </div>
+                <div class="review_info">
+                  <i class="ic ic_star star-1_5"></i>
+                  <span class="review_date">2024.12.27</span>
+                </div>
+              </div>
+              <div class="review_content">
+                <img src="https://i.pinimg.com/736x/55/a5/d0/55a5d027addb0c84cb2df4b6a77311b6.jpg" alt="">
+                <p>Sed dictum non orci ut dignissim. Semper ut risus.
+                  Cras placerat metus et dolor sollicitudin, vel tempor libero tristique.
+                  Duis feugiat lectus et erat efficitur feugiat. Integer sed elit euismod,
+                  vehicula nunc vel, tincidunt sapien. Aliquam erat volutpat. Morbi facilisis
+                  vehicula lorem, a congue nunc mollis at.
+                </p>
+              </div>
+              <div class="review_like">
+                <strong class="like_count">1</strong>
+                <div class="panel">
+                  <a href="javascript:void(0);" class="like1">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 176.104 176.104">
+                      <path d="M150.383 18.301a49.633 49.633 0 0 0-24.033-6.187c-15.394 0-29.18 7.015-38.283 18.015-9.146-11-22.919-18.015-38.334-18.015-8.704 0-16.867 2.259-24.013 6.187C10.388 26.792 0 43.117 0 61.878 0 67.249.874 72.4 2.457 77.219c8.537 38.374 85.61 86.771 85.61 86.771s77.022-48.396 85.571-86.771a49.09 49.09 0 0 0 2.466-15.341c0-18.754-10.388-35.074-25.721-43.577z"/>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pagenation_area" style="display: none;">
+          <div class="pagenation">
+            <a href=""><i class="ic ic_carousel_left_white"></i></a>
+            <!-- <th:block th:each="i:${#numbers.sequence(ph.startPage, ph.endPage)}"> -->
+            <ul class="pagenation_num">
+              <li class="present"><a href="">1</a></li>
+              <li><a href="">2</a></li>
+              <li><a href="">3</a></li>
+              <li><a href="">4</a></li>
+              <li><a href="">5</a></li>
+              <li><a href="">6</a></li>
+              <li><a href="">7</a></li>
+              <li><a href="">8</a></li>
+              <li><a href="">9</a></li>
+              <li><a href="">10</a></li>
+            </ul>
+            <!-- </th:block> -->
+            <a href=""><i class="ic ic_carousel_right_white"></i></a>
           </div>
         </div>
       </div>
@@ -430,9 +597,7 @@
   <!--/* 리뷰 등록 관련 스크립트 */-->
   <script th:src="@{/js/reviewRegister.js}"></script>
   <script th:src="@{/js/reviewDetail.js}"></script>
-  <script th:inline="javascript">
-    printReviewBox([[${productVO.prno}]], 1, mno);
-  </script>
+  <script th:inline="javascript"> printReviewBox([[${productVO.prno}]], 1, mno); </script>
   <script th:src="@{/js/productDetail.js}"></script>
   <script>
     var pages = document.getElementsByClassName('page');
@@ -476,8 +641,7 @@
         }
     });
   </script>
-  <!--/* 장바구니 용도로 추가한 js파일. */-->
-  <script th:src="@{/js/detailCart.js}"></script>
+  <script th:src="@{/js/detailCart.js}"></script> <!--/* 장바구니 용도로 추가한 js파일. */-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.1/imagesloaded.pkgd.min.js"></script>
   <script th:src="@{/js/sticker.min.js}"></script>
-  <script type="text/javascript"> window.onload = function() {Sticker.init('.sticker');}</script>
 </main>
