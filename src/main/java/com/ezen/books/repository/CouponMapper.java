@@ -18,9 +18,9 @@ public interface CouponMapper {
 
     CouponVO getCouponByCno(Long cno);
 
-    CouponLogVO getCouponLogByMnoAndCno(Long mno, Long cno);
+    CouponLogVO getCouponLogByMnoAndCno(@Param("mno") long mno, @Param("cno") long cno);
 
-    void saveCouponLog(CouponLogVO newCouponLog);
+    void updateCouponLog(CouponLogVO newCouponLog);
 
     List<CouponLogVO> findMemberAllCoupons(Long mno);
 }

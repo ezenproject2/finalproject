@@ -12,14 +12,11 @@ public interface CouponService {
 
     List<CouponLogVO> findMemberCoupons(long mno);
 
-    boolean applyCouponToMember(long mno, long cno);
-
-
     CouponVO getCouponByCno(Long cno);
 
     CouponLogVO getCouponLogByMnoAndCno(Long mno, Long cno);
 
-    void saveCouponLog(CouponLogVO newCouponLog);
+    void updateCouponLog(CouponLogVO newCouponLog);
 
     // 회원의 모든 쿠폰 사용 내역 조회
     List<CouponLogVO> findMemberAllCoupons(Long mno);

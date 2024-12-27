@@ -403,15 +403,7 @@ public class PayoutRestController {
         String orno = (String) session.getAttribute("orno"); // 주문 번호
         Long cno = Long.parseLong((String) requestData.get("cno")); // 쿠폰 번호
 
-        // 쿠폰 정보 조회 (쿠폰 번호로 쿠폰 정보 조회)
-        CouponVO couponVO = couponService.getCouponByCno(cno);
-
-        if (couponVO == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Collections.singletonMap("message", "Invalid coupon."));
-        }
-
-        // 쿠폰 사용 가능 여부 체크 (쿠폰 로그에서 해당 회원이 이미 사용한 적이 있는지 확인)
+        // 쿠폰 로그 확인
         CouponLogVO couponLogVO = couponService.getCouponLogByMnoAndCno(mno, cno);
         if (couponLogVO != null && couponLogVO.getStatus().equals("사용 완료")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -425,12 +417,13 @@ public class PayoutRestController {
         newCouponLog.setOrno(orno);
         newCouponLog.setStatus("사용 완료");
         newCouponLog.setUsedAt(new Date());
-        couponService.saveCouponLog(newCouponLog);
+        couponService.updateCouponLog(newCouponLog);
 
         // 쿠폰 할인 금액 반환
+        CouponVO couponVO = couponService.getCouponByCno(cno);
         int couponDiscount = couponVO.getDisAmount();
 
-        // 쿠폰 할인 금액반환
+        // 응답 데이터
         Map<String, Object> response = new HashMap<>();
         response.put("success", true);
         response.put("discountAmount", couponDiscount);

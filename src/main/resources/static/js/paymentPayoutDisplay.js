@@ -167,51 +167,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const orderBtn = document.getElementById("orderBtn");
     const pointInput = document.getElementById("pointInput");
     const maxPoints = parseInt(pointInput.getAttribute("data-max"));  // 보유 포인트
-    console.log(maxPoints);
     const dataContainer = document.getElementById("dataContainer");
     const totalOriginalPriceElement = document.querySelector('.total-original-price');
     const totalPriceElement = document.querySelector('.total-price');
     const pointElement = document.querySelector(".point");
-
-    orderBtn.addEventListener("click", function () {
-        const usedPoints = parseInt(pointInput.value);
-
-        if (usedPoints === 0) {
-            return;
-        }
-
-        // 입력한 포인트가 보유 포인트를 초과하면 경고
-        if (usedPoints > maxPoints) {
-            alert("보유 포인트를 초과할 수 없습니다.");
-            return;
-        }
-
-        const requestData = {
-            usedPoints: usedPoints,
-            mno: dataContainer.getAttribute("data-mno")
-        };
-
-        fetch("/payment/payout/use-points", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(requestData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                updatePaymentSummary(data.newPointsBalance);
-                updateTotalPrice();
-            } else {
-                alert("포인트 사용에 실패했습니다.");
-            }
-        })
-        .catch(error => {
-            console.error("Error:", error);
-            alert("에러가 발생했습니다. 다시 시도해주세요.");
-        });
-    });
 
     function updatePaymentSummary(newPointsBalance) {
         const totalPrice = parseInt(totalOriginalPriceElement.textContent.replace(',', '').trim());
@@ -253,6 +212,46 @@ document.addEventListener("DOMContentLoaded", function () {
         pointInput.value = formatWithComma(maxPoints);
     }
 
+        orderBtn.addEventListener("click", function () {
+            const usedPoints = parseInt(pointInput.value);
+
+            if (usedPoints === 0) {
+                return;
+            }
+
+            // 입력한 포인트가 보유 포인트를 초과하면 경고
+            if (usedPoints > maxPoints) {
+                alert("보유 포인트를 초과할 수 없습니다.");
+                return;
+            }
+
+            const requestData = {
+                usedPoints: usedPoints,
+                mno: dataContainer.getAttribute("data-mno")
+            };
+
+            fetch("/payment/payout/use-points", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updatePaymentSummary(data.newPointsBalance);
+                    updateTotalPrice();
+                } else {
+                    alert("포인트 사용에 실패했습니다.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("에러가 발생했습니다. 다시 시도해주세요.");
+            });
+        });
+
     // 포인트 입력 시 유효성 검증
     pointInput.addEventListener("input", validatePointInput);
 
@@ -264,11 +263,52 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
     const orderBtn = document.getElementById("orderBtn");
     const couponSelect = document.getElementById("coupon");  // 쿠폰 선택 드롭다운
-    const dataContainer = document.getElementById("dataContainer");
     const totalOriginalPriceElement = document.querySelector('.total-original-price');
+    const dataContainer = document.getElementById("dataContainer");
     const couponElement = document.querySelector('.coupon-discount'); // 쿠폰 할인 요소
+    let couponDiscount = 0;  // 쿠폰 할인 금액
     let couponCno = 0;  // 쿠폰 번호
-    console.log(couponCno);
+
+    // 도서들의 전체 원가 합계를 가져오는 함수
+    function getTotalOriginalPrice() {
+        const totalOriginalPrice = parseInt(totalOriginalPriceElement.textContent.replace(',', '').trim());
+        return totalOriginalPrice;
+    }
+
+    // 전체 원가 합계에 맞춰 쿠폰 목록을 필터링하는 함수
+    function filterCouponsByPrice() {
+        const totalPrice = getTotalOriginalPrice();  // 도서들의 전체 원가 합계
+        const couponOptions = couponSelect.querySelectorAll("option");
+
+        couponOptions.forEach(option => {
+            const minPrice = parseInt(option.getAttribute("data-min-price"));
+
+            // 최소 금액보다 작은 쿠폰은 보이고, 그 외의 쿠폰은 숨김
+            if (minPrice > totalPrice) {
+                option.style.display = 'none';
+            } else {
+                option.style.display = 'block';
+            }
+        });
+    }
+
+    // 페이지 로딩 시에 쿠폰 필터링을 한 번 수행
+    filterCouponsByPrice();
+
+    // 쿠폰 선택 시 처리
+    couponSelect.addEventListener("change", function () {
+        const selectedOption = this.options[this.selectedIndex];
+        const couponDiscount = parseInt(selectedOption.getAttribute('data-discount'));
+        const minPrice = parseInt(selectedOption.getAttribute('data-min-price'));
+
+        // 선택된 쿠폰 정보로 필요한 처리
+        console.log("선택된 쿠폰 할인 금액: ", couponDiscount);
+        console.log("쿠폰 최소 금액: ", minPrice);
+
+        // 총 결제 금액 갱신
+        jehoCalculateTotalPrice();
+    });
+
 
     // 결제 버튼 클릭 시 처리
     orderBtn.addEventListener("click", function () {
@@ -286,10 +326,12 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then(response => response.json())
         .then(data => {
+        console.log("쿠폰 서버 응답 데이터: ", data);
             if (data.success) {
                 alert("쿠폰이 정상적으로 적용되었습니다.");
             } else {
                 alert("쿠폰 적용에 실패했습니다.");
+                /*alert(`쿠폰 적용에 실패했습니다.: ${data.errorMessage || '알 수 없는 오류'}`);*/
             }
 
             jehoCalculateTotalPrice();
@@ -299,24 +341,10 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("에러가 발생했습니다. 다시 시도해주세요.");
         });
     });
-
-    // 쿠폰 선택 시 처리
-    couponSelect.addEventListener("change", function () {
-        const selectedOption = this.options[this.selectedIndex];
-        couponDiscount = parseInt(selectedOption.getAttribute('data-discount'));  // 선택된 쿠폰의 할인 금액
-        console.log("선택한 쿠폰의 할인 금액: ", couponDiscount);
-
-        document.querySelector('.discount-coupon').dataset.discountCoupon = couponDiscount;
-        document.querySelector('.discount-coupon').innerText = "- " + formatWithComma(couponDiscount);
-
-        jehoCalculateTotalPrice();
-    });
 });
-
-
 
 // 숫자에 콤마를 추가하는 함수
 function formatWithComma(number) {
     return number.toLocaleString();
 }
-
+/* ---------------- */

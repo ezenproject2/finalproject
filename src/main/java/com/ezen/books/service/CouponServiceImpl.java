@@ -36,12 +36,6 @@ public class CouponServiceImpl implements CouponService{
     }
 
     @Override
-    public boolean applyCouponToMember(long mno, long cno) {
-        int result = couponMapper.applyCoupon(mno, cno);
-        return result > 0;
-    }
-
-    @Override
     public CouponVO getCouponByCno(Long cno) {
         return couponMapper.getCouponByCno(cno);
     }
@@ -52,8 +46,8 @@ public class CouponServiceImpl implements CouponService{
     }
 
     @Override
-    public void saveCouponLog(CouponLogVO newCouponLog) {
-        couponMapper.saveCouponLog(newCouponLog);
+    public void updateCouponLog(CouponLogVO newCouponLog) {
+        couponMapper.updateCouponLog(newCouponLog);
     }
 
     @Override
