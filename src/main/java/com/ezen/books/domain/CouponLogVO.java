@@ -24,14 +24,16 @@ public class CouponLogVO {
 
     private long clno; // 쿠폰 기록 번호
     private long mno; // 회원 번호
-    private long orno; // 주문 번호
+    private String orno; // 주문 번호
     private long cno; // 쿠폰 번호
     private String status; // 상태 (사용 가능, 사용 완료, 만료)
     private Date usedAt; // 사용 일자
     private Date expAt; // 만료 일자
 
-    public void setExpAt(int expDay) {
-    }
+    // Coupon 테이블의 추가 필드
+    private String couponName;
+    private long disAmount;
+    private long minPrice;
 
 
 

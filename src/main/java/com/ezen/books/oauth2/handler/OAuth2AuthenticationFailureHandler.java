@@ -25,6 +25,17 @@ public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationF
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException {
 
+        //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        OAuth2UserPrincipal oauth2UserPrincipal = (OAuth2UserPrincipal) authentication.getPrincipal();
+//
+//        // Get the username (provider + id)
+//        String username = oauth2UserPrincipal.getUsername();
+//        MemberVO member = memberMapper.findByLoginId(username);
+//
+//        if (member != null && "Y".equals(member.getIsDel())) {
+//            setErrorMessage("아이디 또는 비밀번호가 잘못 되었습니다. 아이디와 비밀번호를 정확히 입력해 주세요.");
+//        }
+
         String targetUrl = CookieUtils.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue)
                 .orElse(("/"));

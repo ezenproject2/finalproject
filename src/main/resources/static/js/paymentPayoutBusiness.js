@@ -175,7 +175,6 @@ async function registerDefaultAddrFlag() {
 // 서버에 mno를 보내 cartList를 생성할 수 있도록 하는 함수.
 // async function prepareCartListToServer(mnoVal) {
 //     const url = "/payment/prepare-cart-list";
-
 //     const config = {
 //         method: "post",
 //         headers: { "Content-Type": "application/json; charset=utf-8" },

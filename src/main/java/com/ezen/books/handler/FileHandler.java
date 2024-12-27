@@ -95,7 +95,7 @@ public class FileHandler {
         }
 
         // 저장한 경로
-        String fileAddr = "review/" + saveDir + "/" + fileName;
+        String fileAddr = "inquiry/" + saveDir + "/" + fileName;
         log.info(">>>> 실제 경로 > {}", storeFile.getAbsoluteFile());
         return fileAddr;
     }

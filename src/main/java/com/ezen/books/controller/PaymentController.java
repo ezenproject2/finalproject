@@ -1,5 +1,10 @@
 package com.ezen.books.controller;
 
+import com.ezen.books.domain.AddressVO;
+import com.ezen.books.domain.CartVO;
+import com.ezen.books.domain.CartProductDTO;
+import com.ezen.books.domain.ProductVO;
+import com.ezen.books.service.*;
 import com.ezen.books.domain.*;
 import com.ezen.books.service.CartService;
 import com.ezen.books.service.OrderListService;
@@ -8,14 +13,19 @@ import com.ezen.books.service.PayoutServiceImpl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.*;
@@ -31,6 +41,10 @@ public class PaymentController {
     private final CartService cartService;
     private List<CartVO> cartList;
     private List<OfflineStoreVO> storeList;
+
+    private final PointService pointService;
+    private final MemberService memberService;
+    private final CouponService couponService;
 
     @PostMapping("/header-cart")
     @ResponseBody
@@ -112,8 +126,9 @@ public class PaymentController {
         return "/payment/pickUp";
     }
 
-    @GetMapping(value = "/payout/{osno}")
-    public String goToPayout(Model model, @PathVariable("osno") long osno ) {
+    @GetMapping("/payout/{osno}")
+    public String goToPayout(Model model, @PathVariable("osno") long osno,
+                             HttpSession session) {
         log.info(" >>> PaymentController: goToPayout start.");
         log.info(">>>> cartList > {}", cartList);
 
@@ -122,6 +137,12 @@ public class PaymentController {
         long mno = cartProductList.get(0).getCartVO().getMno();
         log.info("mno: {}", mno);
 
+        /* yh-------------- */
+        String orno = UUID.randomUUID().toString();
+        log.info(">>>>>> 주문 번호(orno) 생성 : {}", orno);
+        session.setAttribute("orno", orno);
+        /* ---------------- */
+
         // 주문/결제 페이지에서 보여줄 사용자의 기본 배송지를 가져옴
         AddressVO defaultAddress = getDefaultAddress(mno);
         log.info("The default address: {}", defaultAddress);
@@ -129,7 +150,6 @@ public class PaymentController {
         // 기본 배송지가 null인지 아닌지 가리는 값
         boolean isDefaultAddrNull = (defaultAddress == null) ? true : false;
 
-        String orno = UUID.randomUUID().toString();
         // 포인트와 쿠폰이 도입되어 merchant_uid(UUID)를 여기서 보내는 것으로 바뀜.
         String merchantUid = orno;
 
@@ -171,8 +191,40 @@ public class PaymentController {
 
         log.info("CartProductList from PaymentController: {}", cartProductList);
         model.addAllAttributes(modelAttrs);
+
+        /* yh-------------- */
+        int balancePoint = pointService.getBalance(mno);
+        model.addAttribute("balancePoint", balancePoint);
+        /* ---------------- */
+
+        /* yh-------------- */
+        model.addAttribute("mno", mno);
+
+        // 사용자 쿠폰 목록 조회
+        List<CouponLogVO> couponList = couponService.findMemberCoupons(mno);
+        model.addAttribute("coupons", couponList);
+        log.info("쿠폰들 {}", couponList);
+        /* ---------------- */
+
         return "/payment/payout";
     }
+
+    /* yh-------------- */
+    @GetMapping("/start-checkout")
+    public ResponseEntity<Map<String, String>> startCheckout(HttpSession session){
+        String orno = (String) session.getAttribute("orno");
+        if(orno == null){
+            orno = UUID.randomUUID().toString();
+            session.setAttribute("orno", orno);
+        }
+
+        Map<String, String> response = new HashMap<>();
+        response.put("orno", orno);
+
+        return ResponseEntity.ok(response);
+    }
+    /* ---------------- */
+
 
     @GetMapping("/go-to-index")
     public String goToIndex() {
@@ -232,6 +284,7 @@ public class PaymentController {
             return null;
         }
     }
+
 
 
 }

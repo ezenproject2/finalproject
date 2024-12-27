@@ -11,7 +11,7 @@ public class GradeVO {
 
     private long gno;  // 등급 번호
     private String level; // 등급 (새싹, 실버, 골드, 플래티넘)
-    private int pointRate; // 포인트 비율
+    private double pointRate; // 포인트 비율
     private int period; // 등급 유지 기간
 
     /* sql 구문
