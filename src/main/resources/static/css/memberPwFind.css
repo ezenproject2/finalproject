@@ -1,0 +1,116 @@
+/* General reset and styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Form container */
+main {
+    width: 100%;
+    max-width: 400px;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Title */
+main h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Textbox container */
+.textbox {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+/* Input field */
+.textbox input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s;
+}
+
+.textbox input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Label */
+.textbox label {
+    position: absolute;
+    left: 12px;
+    top: 8px;
+    font-size: 16px;
+    color: #888;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Error messages */
+.error {
+    color: #D50136;
+    font-size: 14px;
+    display: none; /* Hidden by default */
+}
+
+.textbox input:invalid ~ .error {
+    display: block;
+}
+
+.textbox input:focus ~ .error {
+    display: none;
+}
+
+/* Submit button */
+input[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Input focus */
+.textbox input:focus {
+    border-color: #007bff;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 500px) {
+    main {
+        width: 90%;
+    }
+
+    .textbox input, input[type="submit"] {
+        font-size: 14px;
+    }
+
+    .textbox label {
+        font-size: 14px;
+    }
+}

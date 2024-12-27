@@ -171,5 +171,22 @@ public class MemberServiceImpl implements MemberService{
         return memberMapper.saveAddressToServer(addressVO);
     }
 
+    /* ---이메일 인증---*/
+    @Override
+    public MemberVO selectMember(String email, String name) {
+        return memberMapper.selectMember(email, name);
+    }
+
+    @Override
+    public MemberVO selectMemberByEmail(String email) {
+        return memberMapper.selectMemberByEmail(email);
+    }
+
+    @Override
+    public int pwUpdate(MemberVO memberVO) {
+        return memberMapper.pwUpdate(memberVO);
+    }
+    /* --------------*/
+
 
 }

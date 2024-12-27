@@ -37,4 +37,10 @@ public interface MemberService {
     int saveAddressToServer(AddressVO addressVO);
 
     void updateAllMemberGrades();
+
+    MemberVO selectMember(String email, String name);
+
+    MemberVO selectMemberByEmail(String email);
+
+    int pwUpdate(MemberVO memberVO);
 }

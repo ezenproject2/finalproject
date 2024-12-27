@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+  <title> 이젠문고 </title>
+  <meta charset="UTF-8"/>
+  <link rel="stylesheet" href="/css/memberPwAuth.css" />
+</head>
+<main layout:fragment="main">
+  <form action="pw_set.me" method="post">
+    <input type="hidden" name="email_injeung" value="${email}">
+    <div class="textbox">
+      <input type="text" name="num" placeholder="인증번호를 입력하세요"><label>인증번호 </label>
+      <div class="error"> </div>
+    </div><br><br>
+    <input type="submit" id="check" value="확인">
+  </form>
+</main>

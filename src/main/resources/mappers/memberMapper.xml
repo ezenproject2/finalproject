@@ -128,4 +128,21 @@
         (#{mno}, #{recName}, #{recPhone}, #{addrCode}, #{addr}, #{addrDetail}, #{addrName}, #{isDefault})
     </insert>
 
+    <select id="selectMemberByEmail" parameterType="String" resultType="com.ezen.books.domain.MemberVO">
+        select * from member
+        where email = #{email}
+    </select>
+
+    <update id="pwUpdate" parameterType="com.ezen.books.domain.MemberVO">
+        update member
+        set password = #{password}
+        where email = #{email}
+    </update>
+
+    <select id="selectMember" resultType="com.ezen.books.domain.MemberVO">
+        select * from member
+        where email = #{email}
+        and name = #{name}
+    </select>
+
 </mapper>

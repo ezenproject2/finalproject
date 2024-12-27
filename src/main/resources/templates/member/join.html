@@ -68,7 +68,7 @@
                                         </li>
                                         <li class="join_terms_item">
                                             <div class="join_terms_check">
-                                                <input type="checkbox" class="input_check">
+                                                <input type="checkbox" class="input_check essential_check">
                                                 <label for="check" class="check_text">프로모션 정보 수신 동의 <em>*</em></label>
                                             </div>
                                             <button type="button" class="join_terms_ex">
@@ -123,12 +123,28 @@
                                     </tr>
                                     <tr>
                                         <td class="form_table_label">이메일 <em>*</em></td>
-                                        <td class="form_data">
-                                            <div class="form_item email">
-                                                <input type="text" id="email" class="input_email" maxlength="20" name="email">
+                                        <td class="form_data id">
+                                            <div class="form_id_wrap">
+                                                <div class="form_item email">
+                                                    <input type="text" id="email" required="" class="input_email" maxlength="50" name="email">
+                                                </div>
+                                                <span class="error_message" id="emailErrorMessage"></span>
                                             </div>
-                                            <span class="error_message"></span>
+                                            <button type="button" class="email_check" id="emailAuthButton">이메일 확인</button>
                                         </td>
+                                        <!-- 이메일 인증 모달 -->
+                                        <div id="emailAuthModal" class="modal" style="display:none;">
+                                            <div class="modal-content">
+                                                <span id="closeModal" class="close">&times;</span>
+                                                <input type="hidden" id="hiddenEmail" name="hiddenEmail">
+                                                <div class="textbox">
+                                                    <input type="text" id="authCode" name="authCode" placeholder="인증번호를 입력하세요"><label>인증번호 </label>
+                                                    <div class="error"> </div>
+                                                </div><br><br>
+                                                <span class="error_message" id="authErrorMessage"></span>
+                                                <input type="button" id="verifyAuthCode" value="확인">
+                                            </div>
+                                        </div>
                                     </tr>
                                     <tr>
                                         <td class="form_table_label">이름 <em>*</em></td>

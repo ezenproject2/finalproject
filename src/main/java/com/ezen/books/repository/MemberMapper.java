@@ -51,4 +51,10 @@ public interface MemberMapper {
     long getMno(String memberLoginId);
 
     int saveAddressToServer(AddressVO addressVO);
+
+    MemberVO selectMember(@Param("email") String email, @Param("name") String name);
+
+    MemberVO selectMemberByEmail(String email);
+
+    int pwUpdate(MemberVO memberVO);
 }
