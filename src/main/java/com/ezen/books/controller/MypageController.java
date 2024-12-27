@@ -28,6 +28,10 @@ public class MypageController {
     private final FileHandler fileHandler;
     private final InquiryService inquiryService;
 
+    // 준희 담당 마이페이지를 위해 추가한 코드.
+    private final AddressListService addressListService;
+    private final OrderListService orderListService;
+
     /*-- 마이페이지 --*/
     @GetMapping(value = "/main")
     public String myPageMain(Model model) {
@@ -186,5 +190,68 @@ public class MypageController {
         return isOk > 0 ? "/index" : "/mypage/inquiry";
     }
 
+
+    // 준희 담당 마이페이지를 위해 추가한 코드.
+    @GetMapping("/order-list")
+    public String showOrderList(Model model) {
+        log.info(" >>> MypageController: showOrderList start.");
+
+        // mno를 얻기 위해 myPageMain의 있던 코드를 가져옴
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loginId = authentication.getName();
+
+        MemberVO memberVO = memberService.getMemberByInfo(loginId);
+        long mno = memberVO.getMno();
+
+        // 화면에 띄울 order_detail과 product의 정보를 가져옴.
+        List<List<OrderDetailProductDTO>> orderDetailProductGroup = orderListService.getOrderDetailProductList(mno);
+//        log.info("The orderDetailProductGroup: {}", orderDetailProductGroup);
+        log.info("orderDetailProductGroup is empty or not :{}", orderDetailProductGroup.isEmpty());
+
+        boolean isOrderEmpty = orderListService.isOrderEmpty(mno);
+
+        // 화면에 띄울 사용자 정보와 등급 정보를 가져옴.
+        MemberVO memberInfo = orderListService.getMember(mno);
+        GradeVO memberGrade = orderListService.getMemberGrade(memberInfo.getGno());
+
+        model.addAttribute("mno", mno);
+        model.addAttribute("isOrderEmpty", isOrderEmpty);
+        model.addAttribute("orderDetailProductGroup", orderDetailProductGroup);
+        model.addAttribute("memberInfo", memberInfo);
+        model.addAttribute("memberGrade", memberGrade);
+        return "/mypage/order_list";
+    }
+
+    @GetMapping("/address-list")
+    public String showAddressList(Model model) {
+        log.info(" >>> MypageController: showAddressList start.");
+
+        // mno를 얻기 위해 myPageMain의 있던 코드를 가져옴
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loginId = authentication.getName();
+
+        MemberVO memberVO = memberService.getMemberByInfo(loginId);
+        long mno = memberVO.getMno();
+        log.info("mno: {}", mno);
+
+        // 화면에 띄울 List<AddressVO>를 가져옴.
+        List<AddressVO> addrList =  addressListService.getAllAddr(mno);
+        log.info("addrList: {}", addrList);
+
+        boolean isAddrEmpty = addrList.isEmpty();
+
+        // 화면에 띄울 사용자 정보와 등급 정보를 가져옴.
+        MemberVO memberInfo = addressListService.getMember(mno);
+        GradeVO memberGrade = addressListService.getMemberGrade(memberInfo.getGno());
+        log.info("memberInfo: {}", memberInfo);
+        log.info("memberGrade: {}", memberGrade);
+
+        model.addAttribute("mno", mno);
+        model.addAttribute("addrList", addrList);
+        model.addAttribute("isAddrEmpty", isAddrEmpty);
+        model.addAttribute("memberInfo", memberInfo);
+        model.addAttribute("memberGrade", memberGrade);
+        return "/mypage/address_list";
+    }
 
 }

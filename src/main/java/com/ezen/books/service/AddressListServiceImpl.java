@@ -31,4 +31,45 @@ public class AddressListServiceImpl implements AddressListService {
     public GradeVO getMemberGrade(Long gno) {
         return addressListMapper.getMemberGrade(gno);
     }
+
+    @Override
+    public String registerAddr(AddressVO addressData) {
+
+        // 기본 배송지가 아니면 그냥 넣고, 기본 배송지면 기존의 기본 배송지를 isDefault = N으로 바꾼 후 넣음.
+        if(addressData.getIsDefault().equals("N")) {
+            log.info("The addr is not default.");
+            addressListMapper.registerAddr(addressData);
+            return "succeeded";
+        } else if (addressData.getIsDefault().equals("Y")) {
+            log.info("The addr is default.");
+            addressListMapper.setAllAddrNotDefault();
+            addressListMapper.registerAddr(addressData);
+            return "succeeded";
+        } else {
+            return "failed";
+        }
+    }
+
+    @Override
+    public int deleteAddr(long adnoData) {
+        try {
+            addressListMapper.deleteAddr(adnoData);
+            return 1;
+        } catch (Exception e) {
+            log.info("Error during deleting the addr. Content: {}", e);
+        }
+        return 0;
+    }
+
+    @Override
+    public int modifyAddr(AddressVO addressData) {
+        try {
+            addressListMapper.deleteAddr(addressData.getAdno());
+            addressListMapper.registerAddr(addressData);
+            return 1;
+        } catch (Exception e) {
+            log.info("Error modifying the addr. Content: {}", e);
+        }
+        return 0;
+    }
 }

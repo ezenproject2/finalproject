@@ -15,4 +15,10 @@ public interface AddressListMapper {
     GradeVO getMemberGrade(Long gno);
 
     List<AddressVO> getAllAddr(long mno);
+
+    void registerAddr(AddressVO addressData);
+
+    void setAllAddrNotDefault();
+
+    int deleteAddr(long adnoData);
 }

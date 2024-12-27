@@ -12,4 +12,10 @@ public interface AddressListService {
     MemberVO getMember(long mno);
 
     GradeVO getMemberGrade(Long gno);
+
+    String registerAddr(AddressVO addressData);
+
+    int deleteAddr(long adnoData);
+
+    int modifyAddr(AddressVO addressData);
 }

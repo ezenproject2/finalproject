@@ -7,13 +7,13 @@
 <head>
   <title> 이젠문고 </title>
   <meta charset="UTF-8"/>
-  <link rel="stylesheet" href="/css/mypageOrderList.css"/>
+  <link rel="stylesheet" href="/css/mypageMain.css"/>
+  <link rel="stylesheet" href="/css/mypageAddressList.css"/>
 </head>
 
 <main layout:fragment="main">
-  <div class="myPage_header"></div>
   <div class="myPage_inner inner">
-    <div class="myPage_left">
+    <div class="myPage_left" style="margin-top: 0;">
       <a href="" class="myPage_profile">
         <div class="member_profile_photo_area">
           <div class="member_profile_photo"></div>
@@ -23,16 +23,16 @@
             </svg>
           </i>
         </div>
-        <div class="member_name"> <!--/* 사용자 닉네임에 있던 값: [[${memberVO.nickName}]] id="memberGrade"에 있던 값: [[${gradeVO.level}]] */-->
+        <div class="member_name">
           <span><span id="memberName">[[${memberInfo.nickName}]]</span>님</span> <span id="memberGrade">[[${memberGrade.level}]]</span>
         </div>
-        <div class="member_email"> <span>[[${memberInfo.email}]]</span></div> <!--/* span 안에 있던 값: [[${memberVO.email}]] */-->
+        <div class="member_email"> <span>[[${memberInfo.email}]]</span></div>
       </a>
 
       <div class="myPage_menu">
         <div class="myPage_menu_item">
           <p class="menu_item_title"><a href="">쇼핑 내역<i class="ic ic_arrow_right"></i></a></p>
-          <p class="menu_item_content"><a th:href="@{/mypage/order-list/intro(mno=${#authentication.getPrincipal().memberVO.getMno()})}">주문/배송목록</a></p> <!--/* 주문 목록을 띄우기 위해 준희가 경로를 추가함. */-->
+          <p class="menu_item_content"><a th:href="@{/mypage/order-list(mno=${#authentication.getPrincipal().memberVO.getMno()})}">주문/배송목록</a></p>
           <p class="menu_item_content"><a href="">선물함</a></p>
           <p class="menu_item_content"><a href="">매장 구매 내역</a></p>
           <p class="menu_item_content"><a href="">영수증</a></p>
@@ -45,13 +45,13 @@
         </div>
         <div class="myPage_menu_item">
           <p class="menu_item_title"><a href="">회원정보<i class="ic ic_arrow_right"></i></a></p>
-          <p class="menu_item_content"><a href="">배송주소록</a></p>
+          <p class="menu_item_content"><a th:href="@{/mypage/address-list(mno=${#authentication.getPrincipal().memberVO.getMno()})}">배송주소록</a></p>
           <p class="menu_item_content"><a href="">회원정보관리</a></p>
           <p class="menu_item_content"><a href="">나의 회원등급</a></p>
         </div>
         <div class="myPage_menu_item">
           <p class="menu_item_title"><a href="">고객센터<i class="ic ic_arrow_right"></i></a></p>
-          <p class="menu_item_content"><a href="/mypage/inquiry">1:1 문의 내역</a></p>
+          <p class="menu_item_content"><a href="">1:1 문의 내역</a></p>
           <p class="menu_item_content"><a href="">업체배송 문의내역</a></p>
         </div>
         <div class="myPage_menu_item item_last">
@@ -61,181 +61,130 @@
         </div>
       </div>
     </div>
+
     <div class="myPage_right">
-      <div class="myPage_banner">
-        <div class="myPage_banner_header">
-          <div class="switch-btn">
-            <div class="circle"></div>
-            <div class="label left">추천</div>
-            <div class="label right">알림</div>
-          </div>
-
-          <div class="carousel_icon">
-            <i class="ic ic_left">
-              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="0.5" y="0.5" width="47" height="47" rx="23.5" fill="rgba(255, 255, 255, 0.3)"/>
-                <rect x="0.5" y="0.5" width="47" height="47" rx="23.5" stroke="rgba(255, 255, 255, 0.3)"/>
-                <path d="M27.8125 15.25L18.1875 24L27.8125 32.75" stroke="#555" stroke-width="1.8" stroke-linecap="round"/>
-                <path d="M27.8125 15.25L18.1875 24L27.8125 32.75" stroke="#555" stroke-opacity="1" stroke-width="1.8" stroke-linecap="round"/>
-                <path d="M27.8125 15.25L18.1875 24L27.8125 32.75" stroke="#555" stroke-opacity="1" stroke-width="1.8" stroke-linecap="round"/>
+      <div class="address_book_container">
+        <h1 class="address_book_title">배송주소록</h1>
+        <div class="address_book_box">
+          <!--
+          등록된 주소가 없으면 : address_book_wrap : display:none, address_book_none : display:none
+          등록된 주소가 있으면 : address_book_wrap -> display:block, address_book_none -> display:none
+          -->
+          <div class="address_book_box_none" th:if="${isAddrEmpty == 'true'}">
+            <i class="ic ic_exclamation_c6"></i>
+            <strong> 등록된 배송지가 없습니다. </strong>
+            <button type="button" class="registration_of_address_btn register-addr-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#000B17" class="bi bi-plus" viewBox="0 0 16 16">
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
               </svg>
-            </i>
-            <i class="ic ic_right">
-              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="0.5" y="0.5" width="47" height="47" rx="23.5" fill="rgba(255, 255, 255, 0.3)"/>
-                <rect x="0.5" y="0.5" width="47" height="47" rx="23.5" stroke="rgba(255, 255, 255, 0.3)"/>
-                <path d="M20.1875 32.75L29.8125 24L20.1875 15.25" stroke="#555" stroke-width="1.8" stroke-linecap="round"/>
-                <path d="M20.1875 32.75L29.8125 24L20.1875 15.25" stroke="#555" stroke-opacity="1" stroke-width="1.8" stroke-linecap="round"/>
-                <path d="M20.1875 32.75L29.8125 24L20.1875 15.25" stroke="#555" stroke-opacity="1" stroke-width="1.8" stroke-linecap="round"/>
+              새 배송지 등록
+            </button>
+          </div>
+
+
+          <div class="address_list_box" th:unless="${isAddrEmpty == 'true'}">
+            <button type="button" class="registration_of_address_btn register-addr-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#000B17" class="bi bi-plus" viewBox="0 0 16 16">
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
               </svg>
-            </i>
-          </div>
-        </div>
+              새 배송지 등록
+            </button>
 
-
-
-
-
-
-        9:49
-
-        <div class="myPage_banner_main">
-          <div class="banner_slide">
-            <div class="banner_item item1">
-              <div class="item_bage">
-                <span class="newBook">신간추천</span>
-              </div>
-              <div class="banner_book">
-                <div class="banner_book_img item1-img"></div>
-                <div class="banner_book_intro">
-                  <p class="intro1">1건의 신간이 출간되었어요.</p>
-                  <p class="intro2">[쉬다이닝] Human Acts</p>
+            <div class="address-container" th:data-mno="${mno}">
+              <div class="address-wrapper" th:each="addrInfo, addrStat: ${addrList}" th:data-list-size="${addrList.size}">
+                <input type="hidden" class="addr-adno-input" th:value="${addrInfo.adno}" th:data-addr-index="${addrStat.index}">
+                <div>
+                  <div>
+                    <div th:if="${addrInfo.isDefault == 'Y'}" class="is-default-mark" th:data-addr-index="${addrStat.index}">기본 배송지</div>
+                    <div th:unless="${addrInfo.isDefault == 'Y'}" class="is-default-mark" th:data-addr-index="${addrStat.index}">일반 배송지</div>
+                    <div th:if="${addrInfo.addrName != null}">[[${#strings.isEmpty(addrInfo.addrName) ? '배송지' : addrInfo.addrName}]]</div>
+                  </div>
+                  <div>
+                    <p>수령인 이름<span>[[${addrInfo.recName}]]</span></p>
+                    <p>수령인 전화<span>[[${addrInfo.recPhone}]]</span></p>
+                    <p><span>[[${addrInfo.addrCode}]]</span><span>[[${addrInfo.addr}]]</span><span>[[${addrInfo.addrDetail}]]</span></p>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div class="banner_item item2">
-              <div class="item_bage">
-                <span class="recommendMd">MD추천</span>
-              </div>
-              <div class="banner_book">
-                <div class="banner_book_img item2-img"></div>
-                <div class="banner_book_intro">
-                  <p class="intro1">1건의 신간이 출간되었어요.</p>
-                  <p class="intro2">일인칭 단수</p>
-                </div>
-              </div>
-            </div>
-            <div class="banner_item item3">
-              <div class="item_bage">
-                <span class="recommendMd">MD추천</span>
-              </div>
-              <div class="banner_book">
-                <div class="banner_book_img item3-img"></div>
-                <div class="banner_book_intro">
-                  <p class="intro1">1건의 신간이 출간되었어요.</p>
-                  <p class="intro2">유시민의 항소이유서</p>
-                </div>
-              </div>
-            </div>
-            <div class="banner_item item4">
-              <div class="item_bage">
-                <span class="recommendMd">MD추천</span>
-              </div>
-              <div class="banner_book">
-                <div class="banner_book_img item4-img"></div>
-                <div class="banner_book_intro">
-                  <p class="intro1">1건의 신간이 출간되었어요.</p>
-                  <p class="intro2">이기적 유전자</p>
-                </div>
-              </div>
-            </div>
-            <div class="banner_item item5">
-              <div class="item_bage">
-                <span class="recommendMd">MD추천</span>
-              </div>
-              <div class="banner_book">
-                <div class="banner_book_img item5-img"></div>
-                <div class="banner_book_intro">
-                  <p class="intro1">1건의 신간이 출간되었어요.</p>
-                  <p class="intro2">코스모스</p>
-                </div>
-              </div>
-            </div>
-            <div class="banner_item item6">
-              <div class="item_bage">
-                <span class="recommendMd">MD추천</span>
-              </div>
-              <div class="banner_book">
-                <div class="banner_book_img item6-img"></div>
-                <div class="banner_book_intro">
-                  <p class="intro1">1건의 신간이 출간되었어요.</p>
-                  <p class="intro2">진격의 거인</p>
+                <div>
+                  <button type="button" class="registration_of_address_btn modify-btn" th:data-addr-index="${addrStat.index}">수정</button>
+                  <button type="button" class="delete-addr-btn" th:if="${addrInfo.isDefault != 'Y'}" th:data-addr-index="${addrStat.index}">삭제</button>
                 </div>
               </div>
             </div>
           </div>
+
         </div>
       </div>
-
-      <div class="direct_banner">
-        <div class="direct_banner_item">
-          <p class="direct_banner_item_header">
-            <i class="ic ic_box"></i>
-            <span class="direct_banner_text">진행중인 주문</span>
-          </p>
-          <p class="direct_banner_item_content"><strong>0</strong> 건</p>
-        </div>
-        <div class="direct_banner_item">
-          <p class="direct_banner_item_header">
-            <i class="ic ic_coupon"></i>
-            <span class="direct_banner_text">쿠폰</span>
-          </p>
-          <p class="direct_banner_item_content"><strong>쿠폰-사이즈</strong> 장</p> <!--/* strong 안에 있던 값: [[${coupons.size()}]] */-->
-        </div>
-        <div class="direct_banner_item">
-          <p class="direct_banner_item_header">
-            <i class="ic ic_point"></i>
-            <span class="direct_banner_text">포인트</span>
-          </p>
-          <p class="direct_banner_item_content"><strong></strong> 원</p> <!--/* strong 안에 있던 값: [[${pointsBalance}]] */-->
-        </div>
-        <div class="direct_banner_item">
-          <p class="direct_banner_item_header">
-            <i class="ic ic_gift_card"></i>
-            <span class="direct_banner_text">기프트카드</span>
-          </p>
-          <p class="direct_banner_item_content"><strong>0</strong> 장</p>
-        </div>
-      </div>
-
-
-      <div class="addr-list-container addr-data-container" th:data-mno="${mno}" th:data-is-addr-empty="${isAddrEmpty}">
-        <!--/* id=dataContainer를 사용할 수 없어서 뺐음. 클래스로 대체함. */-->
-        <!--/* orderDetailProductList의 값: List<OrderDetailProductList> */-->
-        <div class="cart_inner inner">
-          <div class="cart_list">
-            <div class="cart_title_area">
-              <p class="cart_title">배송지 목록</p>
-            </div>
-
-            <div class="cart_list_none">
-              <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 16 16">
-                <circle cx="8" cy="8" r="8" fill="#c6c6c6"></circle>
-                <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" fill="white"></path>
-              </svg>
-              <p class="title">배송지가 없습니다.</p>
-              <p class="sub">배송지를 등록해주세요.</p>
-            </div>
-
-            <div class="addr_info" th:each="addr, addrStat: ${addrList}" th:data-outer-list-size="${addrList.size}"> <!--/* style="display: none;"을 잠시 뺐음. */-->
-              [[${addrList}]]
-              <!--/* 배송지를 반복할 div가 들어감 */-->
-            </div> <!--/* th:each 용로도 사용하는 div */-->
-          </div>
-        </div>
-      </div>
-
     </div>
   </div>
 
+  <div class="modal_overlay" data-is-register-or-modify="0" data-index-for-modify="0">
+    <div class="modal_registration_of_address">
+      <h2 class="modal_title">배송지 추가
+        <svg id="closeModal" xmlns="http://www.w3.org/2000/svg" width="23" height="23" class="bi bi-x-lg" viewBox="0 0 16 16">
+          <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" fill="none" stroke="currentColor" stroke-width="1"/>
+        </svg>
+      </h2>
+      <div class="modal_contents">
+        <form action="/mypage/address-list/register" method="post">
+          <input type="hidden" th:value="${mno}" name="mnoVal">
+          <div class="modal_content">
+            <p class="modal_content_title">배송지명</p>
+            <div class="input_box">
+              <input type="text" placeholder="최대 7글자까지 자유롭게 수정 가능" maxlength="7" name="addrName" value="" class="addr-name-input address-input">
+            </div>
+          </div>
+
+          <div class="modal_content">
+            <p class="modal_content_title">받는 분</p>
+            <div class="input_box">
+              <input type="text" placeholder="이름을 입력해 주세요." maxlength="7" name="recName" class="address-input addr-rec-name-input">
+            </div>
+            <div class="input_box number">
+              <input type="text" placeholder="휴대폰 번호를 - 없이 입력해 주세요." maxlength="11" name="recPhone" class="address-input addr-rec-phone-input">
+            </div>
+          </div>
+
+          <div class="modal_content">
+            <p class="modal_content_title">주소</p>
+            <div class="address">
+              <div class="form_addr1">
+                <div class="input_box addressform" style="width: 70%;">
+                  <input type="text" class="postcode address address-input addr-postcode-input" id="postcode" readonly name="addrCode">
+                </div>
+                <button type="button" onclick="execDaumPostcode()" class="addrBtn" id="non_member_addrBtn">주소 찾기</button>
+              </div>
+              <div class="form_addr2">
+                <div class="input_box addr1">
+                  <input type="text" class="homeAddress addressform address-input addr-input" id="homeAddress" readonly name="addr">
+                </div>
+                <div class="input_box addr2">
+                  <input type="text" class="detailAddress addressform address-input addr-detail-input" id="detailAddress" placeholder="상세 주소를 입력해 주세요." name="addrDetail">
+                </div>
+              </div>
+            </div>
+
+            <p class="defalut_address_check">
+              <i class="ic ic_checkbox_off"></i>
+              <input type="hidden" class="" name="isDefault" value="N"> <!--/* 기본 배송지를 선택하지 않았을 시 null 방지용 hidden input */-->
+              <input type="checkbox" class="check_box set-default-input" name="isDefault" value="Y">
+              <span>기본 배송지 등록</span>
+            </p>
+          </div>
+
+          <div class="modal_content">
+            <button type="submit" class="btn registration_btn addr-form-btn">확인</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script defer th:src="@{/js/addressListBusiness.js}"></script>
+  <script defer th:src="@{/js/addressListDisplay.js}"></script>
+  <script defer th:src="@{/js/addressListStyle.js}"></script>
+  <script src="/js/mypageMain.js"></script>
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <!--/* <script src="/js/private_address.js"></script> */-->
+  <script defer th:src="@{/js/payoutKakaoAddress.js}"></script>
 </main>

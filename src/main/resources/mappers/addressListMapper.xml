@@ -5,6 +5,12 @@
 
 <mapper namespace="com.ezen.books.repository.AddressListMapper">
 
+    <insert id="registerAddr">
+        insert into address(mno, rec_name, rec_phone, addr_code, addr, addr_detail, addr_name, is_default)
+        values
+        (#{mno}, #{recName}, #{recPhone}, #{addrCode}, #{addr}, #{addrDetail}, #{addrName}, #{isDefault})
+    </insert>
+
     <select id="getAllAddr" resultType="com.ezen.books.domain.AddressVO">
         select * from address
         where mno = #{mno}
@@ -20,4 +26,14 @@
         where gno = #{gno}
     </select>
 
+    <update id="setAllAddrNotDefault">
+        update address
+        set is_default = "N"
+        where is_default = "Y"
+    </update>
+
+    <delete id="deleteAddr">
+        delete from address
+        where adno = #{adno}
+    </delete>
 </mapper>
