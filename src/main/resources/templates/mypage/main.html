@@ -92,13 +92,6 @@
                     </div>
                 </div>
 
-
-
-
-
-
-                9:49
-
                 <div class="myPage_banner_main">
                     <div class="banner_slide">
                         <div class="banner_item item1">
@@ -187,7 +180,7 @@
                 </div>
                 <div class="direct_banner_item">
                     <p class="direct_banner_item_header">
-                        <i class="ic ic_coupon"></i>
+                        <a th:href="@{/mypage/coupon}"><i class="ic ic_coupon"></i></a>
                         <span class="direct_banner_text">쿠폰</span>
                     </p>
                     <p class="direct_banner_item_content"><strong>[[${coupons.size()}]]</strong> 장</p>
@@ -207,7 +200,213 @@
                     <p class="direct_banner_item_content"><strong>0</strong> 장</p>
                 </div>
             </div>
+
+            <div class="my_library">
+                <p class="my_library_title"><span>나의 서재</span> <a href=""><i class="ic ic_arrow_right"></i></a></p>
+
+                <!-- 책 선반 반복, book_shelf 안에 책(figure class='book')이 최대 3권만 들어감!! -->
+                <!-- 컨트롤러 예시
+                for (int i = 0; i < books.size(); i += 3) {
+                    bookShelves.add(books.subList(i, Math.min(i + 3, books.size())));
+                }-->
+                <div class="book_shelf" th:each="book : ${books}">//th:each="shelf : ${bookShelves}"
+                    <!-- 사용자가 책을 한 권도 구매하지 않았을 경우 -->
+                    <div class="book_none"  th:if="${#lists.size(bookShelves) == 0}">
+                        <span class="book_none_title">좋아하는 책들로 나만의 서재를 만들어보세요!</span>
+                        <span class="book_none_content">지금 바로 시작해볼까요?</span>
+                        <a href="" class="btn">
+                            추천 도서 보러 가기 &#8594;
+                        </a>
+                    </div>
+
+                    <!-- 책 리스트 -->
+                    <!-- 사용자가 책을 한 권 이상 구매한 경우 -->
+                    <div class="book_list" th:if="${books.size() > 0}" style="display:none;">
+                        <figure class='book'>
+                            <!-- Front -->
+                            <ul class='hardcover_front'>
+                                <li>
+                                    <div class="coverDesign">
+                                        <img src="https://cdn.ypbooks.co.kr/image/product/202410/06f4de7c-b904-4e43-b64f-5c7e20c459df.jpg" alt="">
+                                        <div class="effect"></div>
+                                        <div class="light"></div>
+                                    </div>
+                                </li>
+                                <li></li>
+                            </ul>
+
+                            <!-- Pages -->
+                            <ul class='page'>
+                                <li></li>
+                                <li>
+                                    <div class="page_btn">
+                                        <a class="btn book_btn1" href="#">주문 내역 보기 &#8594</a>
+                                        <a class="btn book_btn2" href="#">책 상세 보기 &#8594</a>
+                                    </div>
+                                </li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                            </ul>
+
+                            <!-- Back -->
+                            <ul class='hardcover_back'>
+                                <li></li>
+                                <li></li>
+                            </ul>
+                        </figure>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
+
+    <div class="footer_book">
+        <a class="shelf">
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+            <div class="book1"></div>
+        </a>
+        </a>
     </div>
 
     <script src="/js/mypageMain.js"></script>

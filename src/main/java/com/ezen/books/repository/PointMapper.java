@@ -14,4 +14,6 @@ public interface PointMapper {
     PointsVO getLastPointByMember(long mno);
 
     List<PointsVO> getPointByMember(long mno);
+
+    void savePoints(PointsVO pointsVO);
 }

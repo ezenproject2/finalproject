@@ -16,7 +16,7 @@ public class InquiryVO {
     private String title;  // 제목
     private String type;  // 유형
     private String content;  // 내용
-    private String files;   // 파일주소
+    private String fileAddr;   // 파일주소
     private String status;  // 상태(접수, 답변 대기, 완료,취소)
     private String response;  // 답변 내용
     private Date regAt;  // 작성일

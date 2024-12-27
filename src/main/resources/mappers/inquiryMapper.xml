@@ -6,9 +6,8 @@
 <mapper namespace="com.ezen.books.repository.InquiryMapper">
 
     <insert id="insert" parameterType="com.ezen.books.domain.InquiryVO">
-        insert into inquiry (mno, title, type, content, files, status, reg_at)
-        values (#{mno}, #{title}, #{type}, #{content}, #{files}, '접수', now())
+        insert into inquiry (mno, title, type, content, file_addr, status, reg_at)
+        values (#{mno}, #{title}, #{type}, #{content}, #{fileAddr}, '접수', now())
     </insert>
-
 
 </mapper>

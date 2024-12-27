@@ -12,57 +12,120 @@
 
 <main layout:fragment="main">
   <div class="inner">
-    <h2>1:1 문의 접수</h2>
-    <form action="/mypage/inquiry" method="post" th:each="memberVO:${#authentication.getPrincipal().memberVO}">
-      <div class="form-group">
-        <label for="inquiry-type">문의유형</label>
-        <select id="inquiry-type" name="type" required>
-          <option value="">문의 유형을 먼저 선택 후 입력해주세요.</option>
-          <option value="general">일반 문의</option>
-          <option value="product">제품 문의</option>
-          <option value="service">서비스 문의</option>
-          <!-- 기타 옵션 추가 가능 -->
-        </select>
+    <div class="inquiry_container">
+      <h1>1:1 문의 접수</h1>
+      <div class="info_box">
+        <p class="info_box_title" style="margin-bottom: 30px;">
+          <i class="ic ic_exclamation"></i>
+          <span>문의내용 답변 안내</span>
+        </p>
+        <ul>
+          <li>답변은 마이페이지 또는 회원정보에 등록된 이메일로 확인 가능합니다.</li>
+          <li>당일 17시 이후 문의건과 공휴일 1:1 문의는 문의 유형과 이름/연락처/이메일 주소를 남겨 주시면 확인 후 운영시간에 통지해 드립니다.</li>
+          <li>정상근무일 기준이며, 통지예정일이 휴일인 경우 다음 정상 근무일에 진행 됩니다.</li>
+          <li>이젠문고 고객센터는 산업안전보건법을 준수하여 고객응대근로자를 보호하고 있습니다.</li>
+          <li>성희롱, 욕설 등의 폭언을 하지 말아주세요. 폭언 시 상담이 제한되고 법령에 따라 조치될 수 있습니다.</li>
+        </ul>
       </div>
+      <div class="inquiry_box">
+        <form action="/mypage/inquiry" method="post" enctype="multipart/form-data" th:each="memberVO:${#authentication.getPrincipal().memberVO}">
+          <table class="inquiry_table">
+            <tr>
+              <th>문의 유형</th>
+              <td>
+                <div class="inquiry_table_wrap">
+                  <div class="inquiry_type_select_box input_wrap" data-state="closed">
+                    <select id="inquiry-type" name="type" class="inquiry_type" required>
+                      <option value hidden>문의 유형을 먼저 선택 후 입력해 주세요.</option>
+                      <option value="general">일반 문의</option>
+                      <option value="product">제품 문의</option>
+                      <option value="service">서비스 문의</option>
+                      <!-- 기타 옵션 추가 가능 -->
+                    </select>
+                    <i class="ic ic_arrow_down"></i>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th>내용</th>
+              <td>
+                <div class="inquiry_table_wrap">
+                  <div class="inquiry_title_wrap input_wrap" style="margin-bottom: 15px;">
+                    <input type="text" id="title" name="title" placeholder="제목을 입력해 주세요." required>
+                  </div>
 
-      <div class="form-group">
-        <label for="title">제목</label>
-        <input type="text" id="title" name="title" placeholder="제목을 입력해 주세요." required>
-      </div>
+                  <div class="inquiry_content_wrap input_wrap">
+                    <textarea id="content" name="content" class="content" placeholder="문의 내용을 작성해 주세요." maxlength="500" required></textarea>
+                    <div class="text_count"><span>0/500</span></div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th>사진 첨부</th>
+              <td>
+                <div class="inquiry_table_wrap">
+                  <div class="inquiry_photo_wrap empty"> <!-- 사진이 없을 때 inquiry_photo_wrap 에 empty 클래스 추가-->
+                    <input type="file" id="files" name="files" accept="image/jpeg, image/png, image/gif" class="btn files_btn" multiple>
+                    <span class="file_info">JPG, PNG, GIF 파일만 1장 업로드 가능합니다.</span>
+                  </div>
+                  <div class="inquiry_photo_wrap have" style="display: none;"> <!-- 사진이 있을 때 -->
+                    <span class="center">
+                      <i class="ic ic_photo"></i>
+                      <span class="photo_name">9788901290157.jpg</span>
+                    </span>
+                    <button>
+                      <span class="center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                          <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                        </svg>
+                        <span>삭제</span>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </table>
 
-      <div class="form-group">
-        <label for="content">내용</label>
-        <textarea id="content" name="content" rows="5" placeholder="문의 내용을 작성해주세요." required></textarea>
+          <p class="inquiry_info_p">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-envelope-exclamation" viewBox="0 0 16 16">
+              <path d="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2zm3.708 6.208L1 11.105V5.383zM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2z"/>
+              <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1.5a.5.5 0 0 1-1 0V11a.5.5 0 0 1 1 0m0 3a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0"/>
+            </svg>
+            <span>문의에 대한 답변 등록 시 알려드립니다.</span>
+          </p>
+          <table class="inquiry_table">
+            <tr>
+              <th>연락처</th>
+              <td>
+                <div class="inquiry_table_wrap">
+                  <div class="inquiry_title_wrap input_wrap">
+                    <input type="text" id="phoneNum" name="phoneNum" th:value="${memberVO.phoneNumber}" placeholder="연락처를 입력해 주세요." required>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th>이메일</th>
+              <td>
+                <div class="inquiry_email_wrap input_wrap">
+                  <input type="email" id="email" name="email" th:value="${memberVO.email}" placeholder="이메일을 입력해 주세요." required>
+                </div>
+              </td>
+            </tr>
+          </table>
+          <div class="inquiry_btn_area">
+            <button type="reset" class="inquiry_reset_btn">취소하기</button>
+            <button type="submit" class="inquiry_submit_btn">문의하기</button>
+          </div>
+        </form>
       </div>
-
-      <div class="form-group">
-        <label for="files">사진첨부</label>
-        <input type="file" id="files" name="files" accept="image/jpeg, image/png, image/gif" multiple>
-        <div class="file-info">
-          JPG, PNG, GIF 파일만 1장 업로드 가능합니다.
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="phoneNum">연락처</label>
-        <input type="text" id="phoneNum" name="phoneNum" th:value="${memberVO.phoneNumber}" placeholder="연락처를 입력해주세요." required>
-      </div>
-
-      <div class="form-group">
-        <label for="email">이메일</label>
-        <input type="email" id="email" name="email" th:value="${memberVO.email}" placeholder="이메일을 입력해주세요." required>
-      </div>
-
-      <div class="btn-group">
-        <button type="reset" class="cancel">취소</button>
-        <button type="submit">문의접수</button>
-      </div>
-    </form>
+    </div>
   </div>
-
-
-
-
-
+  <script src="/js/mypageInquiry.js"></script>
 </main>
+
+
 

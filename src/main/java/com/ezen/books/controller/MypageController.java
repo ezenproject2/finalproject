@@ -33,7 +33,7 @@ public class MypageController {
     private final OrderListService orderListService;
 
     /*-- 마이페이지 --*/
-    @GetMapping(value = "/main")
+    @GetMapping("/main")
     public String myPageMain(Model model) {
         // 인증된 사용자 정보 가져오기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -50,113 +50,16 @@ public class MypageController {
         GradeVO gradeVO = gradeService.getGradeByGno(memberVO.getGno());    // grade 정보 조회
         log.info(">>> GradeInfo > {}", gradeVO);
         int pointsBalance = pointService.getBalance(mno);
-        List<CouponVO> coupons = couponService.getMemberCoupons(mno);
+        List<CouponLogVO> couponList = couponService.findMemberCoupons(mno);
+        model.addAttribute("coupons", couponList);
 
         // 모델에 데이터 추가
         model.addAttribute("gradeVO", gradeVO);
         model.addAttribute("pointsBalance", pointsBalance);
-        model.addAttribute("coupons", coupons);
+        model.addAttribute("coupons", couponList);
 
         return "/mypage/main";
     }
-
-    /*-- 포인트 적립 및 사용 --*/
-    @PostMapping("/points/earn")
-    public String earnPoints(@RequestParam("mno") long mno, @RequestParam("orno") String orno, @RequestParam("earnedPoints") int earnedPoints) {
-        pointService.earnPoints(mno, orno, earnedPoints);  // 포인트 적립
-
-        return "redirect:/order/confirmation?orno=" + orno;  // 주문 확인 페이지로 리다이렉트
-    }
-
-    @PostMapping("/points/use")
-    public String usePoints(@RequestParam("mno") long mno, @RequestParam("orno") String orno, @RequestParam("usePoints") int usePoints) {
-        pointService.usePoints(mno, orno, usePoints);  // 포인트 사용
-
-        return "redirect:/order/confirmation?orno=" + orno;  // 주문 확인 페이지로 리다이렉트
-    }
-
-    /*-- 쿠폰 적용 --*/
-    @PostMapping("/coupons/apply")
-    public String applyCoupon(@RequestParam("mno") long mno, @RequestParam("cno") long cno, @RequestParam("orno") String orno) {
-        couponService.applyCoupon(mno, cno, orno);  // 쿠폰 적용
-
-        return "redirect:/order/confirmation?orno=" + orno;  // 주문 확인 페이지로 리다이렉트
-    }
-
-    /*-- 주문 생성 --*/
-    @PostMapping("/order/place")
-    public String placeOrder(@ModelAttribute OrdersVO ordersVO, @RequestParam(value = "cno", required = false) Long cno) {
-        long mno = ordersVO.getMno();
-        String orno = ordersVO.getOrno();
-
-        // 회원 등급 업데이트
-        memberService.updateMemberGrade(mno);
-
-        // 포인트 적립 (주문 금액에 따른 포인트 계산)
-        int pointsEarned = (int) (ordersVO.getTotalPrice() * getPointRate(mno));
-        pointService.addPoints(mno, pointsEarned, orno);
-
-        // 쿠폰 적용
-        if (cno != null) {
-            couponService.applyCoupon(mno, cno, orno);
-        }
-
-        return "redirect:/order/confirmation?orno=" + orno;  // 주문 확인 페이지로 리다이렉트
-    }
-
-    /*-- 주문 확인 페이지 --*/
-    @GetMapping("order/confirmation")
-    public String orderConfirmation(@RequestParam("orno") long orno, Model model) {
-        // 주문 정보 조회
-        OrdersVO ordersVO = getOrderInfo(orno);
-        model.addAttribute("orderVO", ordersVO);
-
-        return "order/confirmation";  // 주문 확인 뷰 반환
-    }
-
-    /*-- 헬퍼 메서드 --*/
-    private double getPointRate(long mno) {
-        // 회원 등급에 맞는 포인트 비율 반환
-        return memberService.getPointRateByGrade(mno);
-    }
-
-    private OrdersVO getOrderInfo(long orno) {
-        // 주문 정보를 가져오는 로직 (현재는 예시로 빈 객체 반환)
-        return new OrdersVO();
-    }
-
-    /*-- 데이터 조회 --*/
-
-    // 포인트 잔액 조회
-    @GetMapping("/points/balance/{mno}")
-    public int getBalance(@PathVariable long mno) {
-        return pointService.getBalance(mno);  // 포인트 잔액 조회
-    }
-
-    // 포인트 내역 조회
-    @GetMapping("/points/history/{mno}")
-    public List<PointsVO> getPointHistory(@PathVariable long mno) {
-        return pointService.getPointHistory(mno);  // 포인트 내역 조회
-    }
-
-    // 회원 등급 조회
-    @GetMapping("/grade/{mno}")
-    public GradeVO getMemberGrade(@PathVariable long mno) {
-        return couponService.getMemberGrade(mno);  // 회원 등급 조회
-    }
-
-    // 회원 쿠폰 조회
-    @GetMapping("/coupons/{mno}")
-    public List<CouponVO> getMemberCoupons(@PathVariable long mno) {
-        return couponService.getMemberCoupons(mno);  // 회원의 쿠폰 리스트 조회
-    }
-
-    // 사용 가능한 쿠폰 조회
-    @GetMapping("/coupons/available")
-    public List<CouponVO> getAvailableCoupons(@RequestParam long gno, @RequestParam int purchaseAmount) {
-        return couponService.getAvailableCoupons(gno, purchaseAmount);  // 사용 가능한 쿠폰 조회
-    }
-
 
     @GetMapping("/inquiry")
     public void inquiry(){}
@@ -183,12 +86,28 @@ public class MypageController {
         if(file != null ){
             String files = fileHandler.uploadInquiry(file);
             log.info("|| fileAddr > {}", files);
-            inquiryVO.setFiles(files);
+            inquiryVO.setFileAddr(files);
         }
         int isOk = inquiryService.insert(inquiryVO);
 
         return isOk > 0 ? "/index" : "/mypage/inquiry";
     }
+
+    @GetMapping("/coupon")
+    public String memberCoupons(Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loginId = authentication.getName();
+        MemberVO memberVO = memberService.getMemberByInfo(loginId);
+        long mno = memberVO.getMno();
+        model.addAttribute("mno", mno);
+
+        // 사용자 쿠폰 목록 조회
+        List<CouponLogVO> couponList = couponService.findMemberCoupons(mno);
+        model.addAttribute("coupons", couponList);
+
+        return "/mypage/coupon";
+    }
+
 
 
     // 준희 담당 마이페이지를 위해 추가한 코드.

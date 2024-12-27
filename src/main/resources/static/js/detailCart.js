@@ -10,7 +10,7 @@ document.addEventListener('click', (e) => {
         alert("로그인 먼저 해주세요.");
         return;
     }
-    
+
     const prnoVal = document.getElementById('prnoEl').value;
     const bookQtyVal = document.getElementById('number').innerText;
 
@@ -103,7 +103,7 @@ async function storeCartVoToServer(mnoVal, prnoVal, bookQtyVal) {
 // 
 async function processSinglePurchase(mnoVal, prnoVal, bookQtyVal, pathString) {
 
-    if(pathString == "buyNow") {        
+    if(pathString == "buyNow") {
         await prepareSinglePurchase(mnoVal, prnoVal, bookQtyVal);
         window.location.href = "/payment/payout/0";
 
