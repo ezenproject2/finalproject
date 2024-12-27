@@ -360,3 +360,10 @@
 .pagenation_num .present a {
     color: white;
 }
+
+.sub_title {
+    font-size : 24px;
+    font-weight : bold;
+    margin-top : 50px;
+    margin-left : 20px;
+}

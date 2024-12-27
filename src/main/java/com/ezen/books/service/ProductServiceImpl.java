@@ -58,4 +58,31 @@ public class ProductServiceImpl implements ProductService{
     public List<ProductVO> getSpecialList(String type) {
         return productMapper.getSpecialList(type);
     }
+
+    @Override
+    public void setBestTag() {
+        int isOk = productMapper.deletePrevTag("best");
+        if(isOk>0){
+            log.info(">>>> 태그 자동 설정 best");
+            productMapper.setBestTag();
+        }
+    }
+
+    @Override
+    public void setNewTag() {
+        int isOk = productMapper.deletePrevTag("new");
+        if(isOk>0){
+            log.info(">>>> 태그 자동 설정 new");
+            productMapper.setNewTag();
+        }
+    }
+
+    @Override
+    public void setHotTag() {
+        int isOk = productMapper.deletePrevTag("hot");
+        if(isOk>0){
+            log.info(">>>> 태그 자동 설정 hot");
+            productMapper.setHotTag();
+        }
+    }
 }

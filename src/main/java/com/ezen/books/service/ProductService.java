@@ -20,4 +20,10 @@ public interface ProductService {
     ProductVO getDetail(String isbn);
 
     List<ProductVO> getSpecialList(String type);
+
+    void setBestTag();
+
+    void setNewTag();
+
+    void setHotTag();
 }

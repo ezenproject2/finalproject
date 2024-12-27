@@ -29,4 +29,12 @@ public interface ProductMapper {
     ProductVO chatGetProductVO(String userMessage);
 
     List<ProductVO> getSpecialList(String type);
+
+    int deletePrevTag(String type);
+
+    void setBestTag();
+
+    void setNewTag();
+
+    void setHotTag();
 }

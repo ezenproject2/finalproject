@@ -152,4 +152,20 @@
         select p.* from product p join tag t on p.prno = t.prno where t.name = #{type};
     </select>
 
+    <delete id="deletePrevTag">
+        delete from tag where name = #{type}
+    </delete>
+
+    <insert id="setBestTag">
+        insert into tag (prno, name) select prno, 'best' from product order by sale_qty desc limit 10;
+    </insert>
+
+    <insert id="setNewTag">
+        insert into tag (prno, name) select prno, 'new' from product order by pubdate desc limit 10;
+    </insert>
+
+    <insert id="setHotTag">
+        insert into tag (prno, name) select prno, 'hot' from product order by review_avg desc limit 10;
+    </insert>
+
 </mapper>
