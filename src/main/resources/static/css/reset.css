@@ -83,7 +83,7 @@ main {
     min-height: 100vh;
 }
 .inner {
-    width: 1200px;
+    width: 1250px;
     max-width: 1280px;
     margin: 0 auto;
 }
@@ -168,6 +168,8 @@ button, input, select, textarea {
 .ic_question {
     background-image: url("/image/svg/question.svg");
 }
+.ic_call { background-image: url("/image/svg/call.svg");}
+.ic_location {background-image: url("/image/svg/location.svg");}
 strong {
     font-weight: 700;
 }

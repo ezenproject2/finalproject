@@ -160,8 +160,8 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public long getLastMno() {
-        return memberMapper.getLastMno();
+    public long getMno(String memberLoginId) {
+        return memberMapper.getMno(memberLoginId);
     }
 
     @Override

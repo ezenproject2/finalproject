@@ -12,6 +12,41 @@
     <a th:href="@{/store}">오프라인 매장 보기</a> <br>
 
 
+    <!--/* 챗봇영역 (시작) */-->
+    <!-- 플로팅 버튼 -->
+    <button id="chatBtn" class="chat-btn">채팅방 열기</button>
+    <!-- 채팅방 -->
+    <div id="chatBox" class="chat-box">
+        <div class="chat-header">
+            <span>이젠문고 챗봇</span>
+            <button id="closeChat" class="close-chat">닫기</button>
+        </div>
+        <div class="chat-content">
+            <!-- 채팅 내용이 여기에 표시됩니다 -->
+        </div>
+        <input type="text" id="userMessage" placeholder="메시지를 입력하세요...">
+        <button id="sendButton" data-classify="a-type">전송</button>
+    </div>
+    <script th:src="@{/js/chatbot.js}"></script>
+    <!--/* 챗봇영역 (끝) */-->
+
+    <!--/* 알림 SSE 영역 (시작) */-->
+    <div id="notification-container">
+        <div id="notification-icon">
+            <span id="unread-count"></span> <!-- 알림 개수 표시 -->
+            <i class="fas fa-bell"></i> <!-- 알림 아이콘 -->
+        </div>
+        <div id="notification-dropdown" class="dropdown-content">
+            <div id="notification-dropdown-content"></div> <!-- 알림 목록 -->
+        </div>
+    </div>
+
+    <input type="text" id="abc">
+    <button id="def">테스트데이터저장</button>
+
+    <script th:src="@{/js/notification.js}"></script>
+    <!--/* 알림 SSE 영역 (끝) */-->
+
     <script>
         let modify_msg = `[[${mod_msg}]]`;
         console.log(modify_msg);
@@ -31,4 +66,7 @@
             alert("회원 탈퇴가 실패되었습니다. 다시 시도해주세요.");
         }
     </script>
+
+
+
 </main>

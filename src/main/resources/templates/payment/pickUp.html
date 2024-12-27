@@ -2,10 +2,99 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layout/layout}">
 
-<main layout:fragment="main">
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/paymentPickUp.css}" />
+</head>
 
-    <!--/* 주문과 픽업 이동 방향 조정 필요함 */-->
+<main layout:fragment="main">
+    <div class="cart_inner inner">
+        <div class="cart_list">
+            <div class="cart_title_area">
+                <p class="cart_title">픽업 매장 선택</p>
+            </div>
+
+            <!--/* 픽업 가능 매장 없을 때 출력 */-->
+            <div class="cart_list_none" th:if="${#lists.isEmpty(storeList)}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 16 16">
+                    <circle cx="8" cy="8" r="8" fill="#c6c6c6"></circle>
+                    <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" fill="white"></path>
+                </svg>
+                <p class="title">픽업 가능한 매장이 없습니다.</p>
+                <p class="sub">매장 재고 부족</p>
+                <a sec:authorize="isAuthenticated()" th:href="@{/payment/cart(mno=${#authentication.getPrincipal().memberVO.getMno()})}">장바구니 돌아가기</a> <!-- 메인 페이지로 이동 -->
+            </div>
+
+            <!--/* 픽업 가능 매장 없을 때 출력 */-->
+            <div class="cart_list_table" th:if="${not #lists.isEmpty(storeList)}">
+                <table>
+                    <tr>
+                        <th>매장명</th>
+                        <th>주소</th>
+                    </tr>
+                    <tr th:each="store:${storeList}">
+                        <input type="hidden" th:value="${store.osno}">
+                        <td class="product_info">
+                            <div class="td_wrap product_info_wrap">
+                                <label class="cart_check_box">
+                                    <input type="checkbox" class="cart_check single-item-btn" name="itemBtn" th:data-osno="${store.osno}">
+                                </label>
+                                <div class="book_info_wrap">
+                                    <p class="book_title" style="text-align: center;">[[${store.name}]]</a></p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="product_info">
+                            <div class="book_info_wrap">
+                                <p class="book_title">[[${store.address}]]</a></p>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="cart_recautions" id="pickUpInfo">
+                <p>픽업 요청서</p>
+                <ul>
+                    <li id="nameEl" data-osno="0">매장명: </li>
+                    <li id="addrEl">주소: </li>
+                    <li id="hourEl">영업 시간: </li>
+                    <li>픽업 일시: 주문 후 7일 이내</li>
+                </ul>
+            </div>
+
+            <div class="cart_recautions">
+                <p>픽업주문 유의사항</p>
+                <ul>
+                    <li>픽업 주문은 전국 이젠문고 매장 및 교내서점에서 이용 가능합니다.</li>
+                    <li>잡지 및 일부 도서는 픽업 서비스 이용이 불가합니다.</li>
+                    <li>각 매장 운영시간에 따라 픽업 이용 시간이 달라질 수 있습니다.</li>
+                    <li>주문 후 7일간 찾아가지 않으시면, 자동으로 결제가 취소됩니다.</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="cart_sidebar">
+            <div class="aside_container">
+                <div class="aside_wrap">
+                    <div class="tap"></div>
+                    <aside>
+                        <p class="cart_aside_title"><strong style="font-size: 1.3rem; letter-spacing: 1px;">픽업 주문</strong></p>
+                        <div class="cart_order_btn">
+                            <p class="order_btn"><button type="button" id="orderBtn">결제하기</button></p>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        const storeList = [[${storeList}]]
+    </script>
+    <script th:src="@{/js/paymentPickUp.js}"></script>
 
 </main>

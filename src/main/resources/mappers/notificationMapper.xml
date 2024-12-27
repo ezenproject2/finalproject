@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ezen.books.repository.NotificationMapper">
+
+    <!-- 읽지 않은 알림 가져오기 -->
+    <select id="getNotificationsByMno" resultType="com.ezen.books.domain.NotificationVO">
+        select * from notification where mno = #{mno} order by nfno desc
+    </select>
+
+    <!-- 알림 상태 변경 (읽음 처리) -->
+    <update id="updateNotificationStatus">
+        update notification set status = 'READ', mod_at = now() where nfno = #{nfno}
+    </update>
+
+    <insert id="insertNotification">
+        insert into notification(mno, message) values (#{mno}, #{message})
+    </insert>
+
+</mapper>

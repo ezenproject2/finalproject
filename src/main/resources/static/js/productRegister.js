@@ -23,6 +23,12 @@ document.getElementById("searchBtn").addEventListener("click", ()=>{
     const searchEl = document.getElementById("searchEl");
     const printEl = document.getElementById("printEl");
 
+    if(searchEl.value == null || searchEl.value == ""){
+        printEl.innerText = "검색어를 정확히 입력해주세요!";
+        searchEl.value = "";
+        return false;
+    }
+
     searchBookByAPI(searchEl.value).then(result => {
         if(result != null){
             printEl.innerText = "미등록 확인 ✔️";

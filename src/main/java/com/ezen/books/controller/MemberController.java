@@ -60,17 +60,22 @@ public class MemberController {
         memberVO.setPasswordCheck(pwdCheck);
 
         model.addAttribute("memberVO", memberVO);
+        memberService.insert(memberVO);
 
-        // 배송지를 저장하는 로직
+        // ---- 배송지를 저장하기 위해 pjh가 삽입한 로직 ----
+        log.info("The memberVO from the client: {}", memberVO);
         log.info("The addressVO from the client: {}", addressVO);
-        addressVO.setMno(memberVO.getMno());
+
+        String memberLoginId = memberVO.getLoginId();
+        long memberMno = memberService.getMno(memberLoginId);
+
+        addressVO.setMno(memberMno);
         addressVO.setRecName(memberVO.getName());
         addressVO.setRecPhone(memberVO.getPhoneNumber());
         addressVO.setAddrName("기본 배송지");
         addressVO.setIsDefault("Y");
         memberService.saveAddressToServer(addressVO);
-
-        memberService.insert(memberVO);
+        // ---- 배송지 입력 로직 끝 ----
 
         log.info(">>>>> Join USER Info  {}", memberVO);
         return "/index";
@@ -110,6 +115,13 @@ public class MemberController {
     @PostMapping("/modify")
     public String modify(MemberVO memberVO, HttpServletRequest request, HttpServletResponse response,
                          RedirectAttributes re){
+        if(memberVO.getPassword() != null && !memberVO.getPassword().isEmpty()){
+            String pwd = passwordEncoder.encode(memberVO.getPassword());
+            memberVO.setPassword(pwd);
+        } else {
+            memberVO.setPassword(null);
+        }
+
 
         if(memberVO.getPassword() != null && !memberVO.getPassword().isEmpty()){
             String pwd = passwordEncoder.encode(memberVO.getPassword());

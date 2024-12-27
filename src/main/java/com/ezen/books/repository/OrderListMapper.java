@@ -2,6 +2,7 @@ package com.ezen.books.repository;
 
 import com.ezen.books.domain.*;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public interface OrderListMapper {
 
     String getImpUid(String orno);
 
-    int applyRefundToOrderDetail(long odno, String orno);
+    int applyRefundToOrderDetail(@Param("odno") long odno,@Param("orno") String orno);
 
     MemberVO getMember(long mno);
 

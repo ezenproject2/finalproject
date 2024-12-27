@@ -23,6 +23,8 @@ public class MainController {
     public String showMap(Model model) {
         model.addAttribute("appkey", appkey);
         return "/store";
+
+        // 주석이애용
     }
 
 }
