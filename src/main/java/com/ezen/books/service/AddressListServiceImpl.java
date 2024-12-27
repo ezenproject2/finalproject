@@ -7,6 +7,7 @@ import com.ezen.books.repository.AddressListMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -43,6 +44,7 @@ public class AddressListServiceImpl implements AddressListService {
         } else if (addressData.getIsDefault().equals("Y")) {
             log.info("The addr is default.");
             addressListMapper.setAllAddrNotDefault();
+            log.info("Successfully changed previous default addr.");
             addressListMapper.registerAddr(addressData);
             return "succeeded";
         } else {
@@ -61,6 +63,7 @@ public class AddressListServiceImpl implements AddressListService {
         return 0;
     }
 
+    @Transactional
     @Override
     public int modifyAddr(AddressVO addressData) {
         try {

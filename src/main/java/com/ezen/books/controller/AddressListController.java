@@ -46,6 +46,7 @@ public class AddressListController {
 
     @PostMapping("/register")
     public String registerAddr(AddressVO addressData,
+                               @RequestParam String defaultOrNot,
                                @RequestParam String mnoVal) {
         log.info(" >>> AddressListController: registerAddr start.");
         // AddressVO(adno=0, mno=0, recName=유한, recPhone=01073738282, addrCode=13536, addr=경기 성남시 분당구 판교역로 4 (백현동), addrDetail=콘트라베이스 12층, addrName=회사, isDefault=Y)
@@ -55,6 +56,8 @@ public class AddressListController {
         // AddressVO의 mno는 long인데 들어오는 mno는 String이라서 따로 가져온 후 넣어줌.
         addressData.setMno(Long.parseLong(mnoVal));
         String isDone = addressListService.registerAddr(addressData);
+
+
 
         if(isDone == "succeeded") {
             log.info("register addr succeeded.");
@@ -74,12 +77,15 @@ public class AddressListController {
         int isDone = addressListService.deleteAddr(adnoData);
         if(isDone == 1) {
             log.info("delete addr successfully.");
+        } else {
+            log.info("delete addr failed.");
         }
 
         return (isDone == 1) ? "1" : "0";
     }
 
     @PostMapping("/modify")
+    @ResponseBody
     public String modifyAddr(@RequestBody AddressVO addressData) {
         log.info(" >>> AddressListController: modifyAddr start.");
         log.info("The addressData from the client: {}", addressData);
@@ -87,6 +93,8 @@ public class AddressListController {
         int isDone = addressListService.modifyAddr(addressData);
         if(isDone == 1) {
             log.info("modify addr successfully.");
+        } else {
+            log.info("modify addr failed.");
         }
 
         return (isDone == 1) ? "1" : "0";

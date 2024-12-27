@@ -21,6 +21,8 @@ document.addEventListener('click', (e) => {
     // 모달의 "확인"버튼 클릭 시
     if(e.target.classList.contains('addr-form-btn')) {
 
+        // TODO: 기본 배송지 체크박스가 클릭되어 있으면 hidden-set-default-input을 form에서 뺌? 어쨌든 제외함.
+
         let isRegisterOrModify = document.querySelector('.modal_overlay').dataset.isRegisterOrModify;
 
         if(isRegisterOrModify == "1") { // 새 배송지를 등록하는 경우
@@ -113,6 +115,7 @@ function validateAddr() {
     return isAllFilled;
 }
 
+// 선택된 배송지 DB에서 삭제
 async function deleteAddrToServer(adnoVal) {
     const url = "/mypage/address-list/delete";
 
@@ -134,7 +137,9 @@ async function deleteAddrToServer(adnoVal) {
     }
 }
 
+// 선택된 배송지 수정
 async function modifyAddr(adnoData) {
+    const mnoVal = document.querySelector('.addr-mno-input').value;
     const adnoVal = adnoData;
     const addrNameVal = document.querySelector('.addr-name-input').value;
     const recNameVal = document.querySelector('.addr-rec-name-input').value;
@@ -158,6 +163,7 @@ async function modifyAddr(adnoData) {
         method: "POST",
         headers: { "Content-Type": "application/json; charset=utf-8" },
         body: JSON.stringify({
+            mno: mnoVal,
             adno: adnoVal,
             addrName: addrNameVal,
             recName: recNameVal,
@@ -174,7 +180,7 @@ async function modifyAddr(adnoData) {
     if(result == "1") {
         console.log("Delete addr: Succeeded.");
         alert("수정 완료되었습니다.");
-        // window.location.href = "/mypage/address-list";
+        window.location.href = "/mypage/address-list";
     } else if (result == "0") {
         console.log("Delete addr: Failed.");
     } else {

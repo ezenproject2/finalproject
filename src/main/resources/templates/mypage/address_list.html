@@ -91,6 +91,11 @@
             </button>
 
             <div class="address-container" th:data-mno="${mno}">
+              <div>
+                <p>기본 배송지는 수정 불가능합니다. 다른 배송지를 기본 배송지로 설정한 후에 수정해주세요.</p>
+              </div>
+
+
               <div class="address-wrapper" th:each="addrInfo, addrStat: ${addrList}" th:data-list-size="${addrList.size}">
                 <input type="hidden" class="addr-adno-input" th:value="${addrInfo.adno}" th:data-addr-index="${addrStat.index}">
                 <div>
@@ -106,7 +111,8 @@
                   </div>
                 </div>
                 <div>
-                  <button type="button" class="registration_of_address_btn modify-btn" th:data-addr-index="${addrStat.index}">수정</button>
+                  <button type="button" class="registration_of_address_btn modify-btn" th:if="${addrInfo.isDefault == 'N'}" th:data-addr-index="${addrStat.index}">수정</button>
+                  <button type="button" class="modify-btn" th:if="${addrInfo.isDefault == 'Y'}" th:data-addr-index="${addrStat.index}" disabled>수정</button>
                   <button type="button" class="delete-addr-btn" th:if="${addrInfo.isDefault != 'Y'}" th:data-addr-index="${addrStat.index}">삭제</button>
                 </div>
               </div>
@@ -127,7 +133,7 @@
       </h2>
       <div class="modal_contents">
         <form action="/mypage/address-list/register" method="post">
-          <input type="hidden" th:value="${mno}" name="mnoVal">
+          <input type="hidden" th:value="${mno}" name="mnoVal" class="addr-mno-input">
           <div class="modal_content">
             <p class="modal_content_title">배송지명</p>
             <div class="input_box">
@@ -166,7 +172,7 @@
 
             <p class="defalut_address_check">
               <i class="ic ic_checkbox_off"></i>
-              <input type="hidden" class="" name="isDefault" value="N"> <!--/* 기본 배송지를 선택하지 않았을 시 null 방지용 hidden input */-->
+              <input type="hidden" class="hidden-set-default-input" name="isDefault" value="N"> <!--/* 기본 배송지를 선택하지 않았을 시 null 방지용 hidden input */-->
               <input type="checkbox" class="check_box set-default-input" name="isDefault" value="Y">
               <span>기본 배송지 등록</span>
             </p>
