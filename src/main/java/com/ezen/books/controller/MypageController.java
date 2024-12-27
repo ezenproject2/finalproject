@@ -46,12 +46,13 @@ public class MypageController {
         GradeVO gradeVO = gradeService.getGradeByGno(memberVO.getGno());    // grade 정보 조회
         log.info(">>> GradeInfo > {}", gradeVO);
         int pointsBalance = pointService.getBalance(mno);
-        List<CouponVO> coupons = couponService.getMemberCoupons(mno);
+        List<CouponLogVO> couponList = couponService.findMemberCoupons(mno);
+        model.addAttribute("coupons", couponList);
 
         // 모델에 데이터 추가
         model.addAttribute("gradeVO", gradeVO);
         model.addAttribute("pointsBalance", pointsBalance);
-        model.addAttribute("coupons", coupons);
+        model.addAttribute("coupons", couponList);
 
         return "/mypage/main";
     }

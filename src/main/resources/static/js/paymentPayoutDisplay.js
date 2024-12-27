@@ -248,7 +248,7 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch(error => {
                 console.error("Error:", error);
-                alert("에러가 발생했습니다. 다시 시도해주세요.");
+                alert("에러가 발생했습니다. 다시 시도해주세요.(Point)");
             });
         });
 
@@ -298,20 +298,30 @@ document.addEventListener("DOMContentLoaded", function () {
     // 쿠폰 선택 시 처리
     couponSelect.addEventListener("change", function () {
         const selectedOption = this.options[this.selectedIndex];
-        const couponDiscount = parseInt(selectedOption.getAttribute('data-discount'));
-        const minPrice = parseInt(selectedOption.getAttribute('data-min-price'));
+        couponCno = selectedOption.value;  // 선택된 쿠폰의 cno
+        couponDiscount = parseInt(selectedOption.getAttribute('data-discount'));  // 선택된 쿠폰의 할인 금액
 
-        // 선택된 쿠폰 정보로 필요한 처리
-        console.log("선택된 쿠폰 할인 금액: ", couponDiscount);
-        console.log("쿠폰 최소 금액: ", minPrice);
+        console.log("선택한 쿠폰의 할인 금액: ", couponDiscount);
 
-        // 총 결제 금액 갱신
+        // 쿠폰 할인 정보 업데이트
+        if (couponCno !== "0") {  // 쿠폰이 선택된 경우에만
+            document.querySelector('.discount-coupon').dataset.discountCoupon = couponDiscount;
+            document.querySelector('.discount-coupon').innerText = "- " + formatWithComma(couponDiscount);
+        } else {
+            document.querySelector('.discount-coupon').dataset.discountCoupon = 0;
+        }
+
         jehoCalculateTotalPrice();
     });
 
 
     // 결제 버튼 클릭 시 처리
     orderBtn.addEventListener("click", function () {
+
+        if (couponCno === 0) {
+            couponCno = null; // 쿠폰을 사용하지 않으면 null로 설정
+        }
+
         const requestData = {
             mno: dataContainer.getAttribute("data-mno"),
             cno: couponCno
@@ -328,17 +338,16 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
         console.log("쿠폰 서버 응답 데이터: ", data);
             if (data.success) {
-                alert("쿠폰이 정상적으로 적용되었습니다.");
+
             } else {
                 alert("쿠폰 적용에 실패했습니다.");
-                /*alert(`쿠폰 적용에 실패했습니다.: ${data.errorMessage || '알 수 없는 오류'}`);*/
             }
 
             jehoCalculateTotalPrice();
         })
         .catch(error => {
             console.error("Error:", error);
-            alert("에러가 발생했습니다. 다시 시도해주세요.");
+            alert("에러가 발생했습니다. 다시 시도해주세요.(Coupon)");
         });
     });
 });

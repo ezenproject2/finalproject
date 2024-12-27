@@ -79,7 +79,7 @@ async function storeCartVoToServer(mnoVal, prnoVal, bookQtyVal) {
 async function processBuyNow(mnoVal, prnoVal, bookQtyVal) {
 
     await prepareForBuyNow(mnoVal, prnoVal, bookQtyVal);
-    window.location.href = "/payment/payout";
+    window.location.href = "/payment/payout/0";
 }
 
 // 서버에 cart의 정보를 전달하여 Cart에 데이터를 입력하도록 요청함

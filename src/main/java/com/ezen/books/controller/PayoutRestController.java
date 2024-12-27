@@ -401,7 +401,20 @@ public class PayoutRestController {
         String mnoNo = (String) requestData.get("mno");
         Long mno = Long.parseLong(mnoNo); // 회원 번호
         String orno = (String) session.getAttribute("orno"); // 주문 번호
-        Long cno = Long.parseLong((String) requestData.get("cno")); // 쿠폰 번호
+
+        Object cnoObj = requestData.get("cno");
+        Long cno = null;
+        if (cnoObj != null) {
+            cno = Long.parseLong(cnoObj.toString()); // 쿠폰 번호
+        }
+
+        if (cno == null || cno == 0) {
+            // 쿠폰을 사용하지 않음 처리
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message", "쿠폰 미적용");
+            return ResponseEntity.ok(response);
+        }
 
         // 쿠폰 로그 확인
         CouponLogVO couponLogVO = couponService.getCouponLogByMnoAndCno(mno, cno);
