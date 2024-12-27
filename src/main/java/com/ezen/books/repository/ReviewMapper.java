@@ -1,10 +1,10 @@
 package com.ezen.books.repository;
 
+import com.ezen.books.domain.BookInfo;
 import com.ezen.books.domain.PagingVO;
 import com.ezen.books.domain.ReviewVO;
 import com.ezen.books.handler.PagingHandler;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.*;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -25,4 +25,8 @@ public interface ReviewMapper {
     int cancel(@Param("rno") long rno, @Param("mno") long mno);
 
     int updateCnt(@Param("rno") long rno, @Param("num") int i);
+
+    BookInfo getReviewCnt(long prno);
+
+    int getTotalCountByPrno(long prno);
 }

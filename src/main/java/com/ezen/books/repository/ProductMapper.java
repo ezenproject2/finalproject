@@ -1,5 +1,6 @@
 package com.ezen.books.repository;
 
+import com.ezen.books.domain.BookInfo;
 import com.ezen.books.domain.ProductVO;
 import com.ezen.books.domain.PagingVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -37,4 +38,5 @@ public interface ProductMapper {
     void setNewTag();
 
     void setHotTag();
+
 }

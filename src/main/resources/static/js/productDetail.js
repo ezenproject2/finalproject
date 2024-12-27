@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+    Sticker.init('.sticker');
 
     // 책 이미지 움직임 이벤트
     const wrapper = document.querySelector('.book_thum_wrap');
@@ -92,13 +93,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // 매장 재고 업데이트 함수
-    function updateOfflineStock(){
+    function updateOfflineStock() {
 
-        getOfflineStockFromServer(prnoData).then(result=>{
-            if(result != null){
+        getOfflineStockFromServer(prno).then(result => {
+            if (result != null) {
                 result.forEach(data => {
                     const td = document.querySelector(`.td_stock[data-osno="${data.osno}"]`);
-                    
+
                     if (td) {
                         // 일치하는 td 요소가 있으면, 그 안의 텍스트를 stock 값으로 변경
                         td.innerText = data.stock;
@@ -108,9 +109,10 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     }
 
-    async function getOfflineStockFromServer(prnoData) {
+    // (비동기요청) 오프라인 매장 재고 확인
+    async function getOfflineStockFromServer(prno) {
         try {
-            const url = "/offline/getStock/" + prnoData;
+            const url = "/offline/getStock/" + prno;
             const resp = await fetch(url);
             const result = await resp.json();
             return result;
@@ -207,6 +209,62 @@ document.addEventListener("DOMContentLoaded", () => {
     // 변환된 데이터 삽입
     document.getElementById("book_publication_date").innerText = formatDate(pubdate);
 
+    // 별점 이미지 업데이트---------------------------------------------------
+    function updateStarImgSet(){
+        // 서버에서 전달된 점수를 가져오기 (data-score에서 가져옴)
+        let score = parseFloat(document.getElementById('review_avg_star_1').dataset.score);
+        // 0.5단위로 반 내림 함수
+        function roundToHalf(score) {
+            return Math.floor(score * 2) / 2;
+        }
+        
+        // 소수점을 _로 바꾸는 함수
+        function formatClassName(score) {
+            return score.toString().replace('.', '_');
+        }
+        
+        // 0.5단위로 반 내림하여 클래스명과 텍스트 값 계산
+        let roundedScore = roundToHalf(score);
+        let className = formatClassName(roundedScore);
+        
+        // 기존 클래스를 보존하고, star- 클래스만 추가
+        let iconElement1 = document.getElementById('review_avg_star_1');
+        let iconElement2 = document.getElementById('review_avg_star_2');
+        iconElement1.classList.add('star-' + className);  // 새로운 클래스 추가
+        iconElement2.classList.add('star-' + className);  // 새로운 클래스 추가
+    }
+    
+    updateStarImgSet();
+    //------------------------------------------------------------------------
+
+    // 별점 게이지 넓이 계산
+    const rateElements = document.querySelectorAll(".rate");
+
+    rateElements.forEach((rate) => {
+        const scoreElement = rate.querySelector(".score_number");
+        const gaugeElement = rate.querySelector(".gauge");
+
+        // data-value 속성에서 점수 가져오기
+        const score = parseInt(scoreElement.getAttribute("data-value"), 10);
+
+        // 점수에 따른 width 계산
+        let widthPercentage = 0;
+        if (score == 0) widthPercentage = 0;
+        else if (score <= 10) widthPercentage = 10;
+        else if (score <= 19) widthPercentage = 20;
+        else if (score <= 29) widthPercentage = 30;
+        else if (score <= 39) widthPercentage = 40;
+        else if (score <= 49) widthPercentage = 50;
+        else if (score <= 59) widthPercentage = 60;
+        else if (score <= 69) widthPercentage = 70;
+        else if (score <= 79) widthPercentage = 80;
+        else if (score <= 89) widthPercentage = 90;
+        else if (score <= 100) widthPercentage = 100;
+
+        // width 적용
+        const gaugeWidth = (330 * widthPercentage) / 100;
+        gaugeElement.style.width = `${gaugeWidth}px`;
+    });
 
 });
 

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequestMapping("/product/*")
@@ -104,18 +105,17 @@ public class ProductController {
     @GetMapping("/detail")
     public void detail(Model model, @RequestParam("isbn") String isbn){
         // 상품 상세 페이지
-//        log.info(">>>> isbn > {}", isbn);
         ProductVO productVO = productService.getDetail(isbn);
-//        log.info(">>>> productVO > {}", productVO);
-        BookInfo bookInfo = new BookInfo();
 
         // 할인율을 적용한 가격 계산
         double discountedPrice = productVO.getDiscount() * (1 - productVO.getDiscountRate() / 100.0);
-        // 가격을 10으로 나누고 내림한 후, 다시 10을 곱해서 10원 단위로 맞춘다.
         int roundedPrice = (int) Math.floor(discountedPrice / 10.0) * 10;
         productVO.setRealPrice(roundedPrice);
 
-        // 자주 테스트할 때 켜두면 네이버가 화내용...
+        // 리뷰의 각 별점별 인원수와 퍼센트를 bookInfo에 담아서 같이 보냄
+        BookInfo bookInfo = productService.getReviewInfo(productVO.getPrno());
+
+        // 상품 상세 정보를 bookInfo에 추가함
 //        try {
 //            bookInfo = bookAPIHandler.getDetailDate(productVO.getLink());
 //            log.info(">>>> detail > {}", bookInfo);
@@ -123,7 +123,6 @@ public class ProductController {
 //            throw new RuntimeException(e);
 //        }
         model.addAttribute("bookInfo", bookInfo);
-
         model.addAttribute("productVO", productVO);
     }
 

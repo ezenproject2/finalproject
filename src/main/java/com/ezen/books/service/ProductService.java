@@ -1,5 +1,6 @@
 package com.ezen.books.service;
 
+import com.ezen.books.domain.BookInfo;
 import com.ezen.books.domain.PagingVO;
 import com.ezen.books.domain.ProductVO;
 
@@ -26,4 +27,6 @@ public interface ProductService {
     void setNewTag();
 
     void setHotTag();
+
+    BookInfo getReviewInfo(long prno);
 }
