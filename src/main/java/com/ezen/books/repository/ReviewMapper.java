@@ -35,4 +35,6 @@ public interface ReviewMapper {
     int delete(long rno);
 
     long getPrnoByRno(@Param("rno") long rno);
+
+    long getMnoByRno(long rno);
 }

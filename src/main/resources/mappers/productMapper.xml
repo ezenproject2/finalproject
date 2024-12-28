@@ -168,4 +168,8 @@
         insert into tag (prno, name) select prno, 'hot' from product order by review_avg desc limit 10;
     </insert>
 
+    <update id="setSaleQty">
+        update product set sale_qty = sale_qty + #{qty} where prno = #{prno}
+    </update>
+
 </mapper>

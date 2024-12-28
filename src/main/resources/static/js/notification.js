@@ -5,7 +5,7 @@ let unreadCount = 0; // 읽지 않은 알림 개수를 저장할 변수
 let notificationList = []; // 알림 목록을 저장할 배열
 
 // SSE 연결 설정
-const eventSource = new EventSource('/notification/subscribe/' + 3);
+const eventSource = new EventSource('/notification/subscribe/' + 1);
 
 // SSE로 알림 수신
 eventSource.onmessage = function(event) {

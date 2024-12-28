@@ -60,4 +60,8 @@
         select prno from review where rno = #{rno}
     </select>
 
+    <select id="getMnoByRno" resultType="long">
+        select mno from review where rno = #{rno}
+    </select>
+
 </mapper>

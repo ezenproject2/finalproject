@@ -22,4 +22,6 @@ public interface PayoutMapper {
     int saveDeliveryToServer(DeliveryVO deliveryData);
 
     int savePickupToServer(PickUpVO pickupData);
+
+    long getMnoByOrno(String orno);
 }

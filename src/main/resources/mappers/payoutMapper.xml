@@ -49,4 +49,9 @@
         delete from cart
         where mno = #{mno} and prno = #{prno}
     </delete>
+
+    <select id="getMnoByOrno" resultType="long">
+        select mno from orders where orno = #{orno}
+    </select>
+
 </mapper>

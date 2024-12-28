@@ -65,6 +65,21 @@ public class ReviewServiceImpl implements ReviewService{
             // 동작 후 리뷰에 좋아요 수 업데이트
             isOk *= reviewMapper.updateCnt(rno, 1);
             isOk = reviewMapper.getLikeCntByRno(rno);
+
+            // 리뷰 작성자에게 알림 데이터 저장시키기
+            long writerMno = reviewMapper.getMnoByRno(rno);
+            NotificationVO notificationVO = NotificationVO.builder()
+                    .mno(writerMno)
+                    .message("회원님의 리뷰에 누군가 좋아요를 눌렀습니다!")
+                    .type("리뷰")
+                    .rno(rno)
+                    .build();
+
+            // 알림 저장
+            notificationMapper.insertNotificationRVer(notificationVO);
+
+            // 생성된 알림을 컨트롤러에 전달하여 실시간 전송
+//            notificationController.sendNotificationToClient(mno, notificationVO);
         }
         return isOk;
     }
