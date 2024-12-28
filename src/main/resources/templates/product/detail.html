@@ -13,6 +13,7 @@
 
 <main layout:fragment="main">
   <div class="inner">
+    <!--/* 카테고리 영역 */-->
     <section class="breadcrumb_wrap">
       <ul class="breadcrumb_list">
         <li class="breadcrumb_item">
@@ -76,7 +77,9 @@
       </ul>
     </section>
 
+    <!--/* 상품 설명 영역 */-->
     <section class="contents">
+      <!--/* 상품 설명 요약 */-->
       <div class="book_detail_header">
         <div class="book_detail_left">
           <div class="book_thum_wrap">
@@ -187,6 +190,7 @@
         </div>
       </div>
 
+      <!--/* 책 이미지의 책 소개 영역 */-->
       <div class="book_detail_body">
         <div class="book">
           <div id="pages" class="pages">
@@ -266,9 +270,11 @@
         </div>
       </div>
 
+      <!--/* 리뷰 출력 영역 */-->
       <div class="book_detail_review">
-        <h3 class="book_detail_page_title">책 리뷰([[${productVO.reviewCnt}]])</h3> <!-- 해당 책의 전체 리뷰 수 괄호 안 -->
+        <h3 class="book_detail_page_title" id="book_detail_page_title" tabindex="0">책 리뷰([[${productVO.reviewCnt}]])</h3>
 
+        <!--/* 별점 현황 영역 */-->
         <div class="book_rate_score_box">
           <div class="book_rate_score_left">
             <p>구매자 총점</p>
@@ -376,63 +382,17 @@
         </div>
 
         <!--/* 리뷰가 있을 때 등장 */-->
-        <div class="book_review_box grid" id="book_review_box" th:if="${productVO.reviewCnt != 0}">
-          <div class="review_item"> <!-- 리뷰 반복 -->
-            <div class="review_box">
-              <i class="ic ic_delete"></i>
-              <div class="review_box_header">
-                <div class="review_member">
-                  <div class="member_profile_photo"></div>
-                  <span class="member_nike_name">여긴 닉네임이구요</span>
-                </div>
-                <div class="review_info">
-                  <i class="ic ic_star star-1_5"></i>
-                  <span class="review_date">여기는 작성일이구요</span>
-                </div>
-              </div>
-              <div class="review_content">
-                <img src="https://i.pinimg.com/736x/55/a5/d0/55a5d027addb0c84cb2df4b6a77311b6.jpg" alt="">
-                <p>여기는 내용이에요</p>
-              </div>
-              <div class="review_like">
-                <strong class="like_count">여긴좋아요숫자</strong>
-                <div class="panel">
-                  <a href="javascript:void(0);" class="like1">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 176.104 176.104">
-                      <path d="M150.383 18.301a49.633 49.633 0 0 0-24.033-6.187c-15.394 0-29.18 7.015-38.283 18.015-9.146-11-22.919-18.015-38.334-18.015-8.704 0-16.867 2.259-24.013 6.187C10.388 26.792 0 43.117 0 61.878 0 67.249.874 72.4 2.457 77.219c8.537 38.374 85.61 86.771 85.61 86.771s77.022-48.396 85.571-86.771a49.09 49.09 0 0 0 2.466-15.341c0-18.754-10.388-35.074-25.721-43.577z"/>
-                    </svg>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div class="book_review_box grid" id="book_review_box" th:if="${productVO.reviewCnt != 0}"></div>
 
+        <!--/* 리뷰가 있을 때 페이지네이션 등장 */-->
         <div class="pagenation_area" th:if="${productVO.reviewCnt != 0}">
-          <div class="pagenation" id="pagenation">
-            <a href=""><i class="ic ic_carousel_left_white"></i></a>
-            <!-- <th:block th:each="i:${#numbers.sequence(ph.startPage, ph.endPage)}"> -->
-            <ul class="pagenation_num">
-              <li class="present"><a href="">1</a></li>
-              <li><a href="">2</a></li>
-              <li><a href="">3</a></li>
-              <li><a href="">4</a></li>
-              <li><a href="">5</a></li>
-              <li><a href="">6</a></li>
-              <li><a href="">7</a></li>
-              <li><a href="">8</a></li>
-              <li><a href="">9</a></li>
-              <li><a href="">10</a></li>
-            </ul>
-            <!-- </th:block> -->
-            <a href=""><i class="ic ic_carousel_right_white"></i></a>
-          </div>
+          <div class="pagenation" id="pagenation"></div>
         </div>
       </div>
     </section>
   </div>
 
-  <!-- 원본 이미지 뷰 영역 -->
+  <!-- 모달, 오프라인 매장 재고 영역 -->
   <div class="modal" id="imageModal">
     <img src="" id="fullImage"/>
   </div>
@@ -529,7 +489,7 @@
   </div>
 
 
-
+  <!--/* (시작) */-->
   리뷰 내용 >> <input type="text" name="content" id="contentEl"> <br>
   별점 >> <input type="text" name="rating" id="ratingEl"> <br>
   파일 첨부 >> <input type="file" name="file" id="fileEl"> <br>
@@ -537,11 +497,8 @@
   <input type="hidden" name="prno" id="prnoEl" th:value="${productVO.prno}">
   <input type="hidden" name="mno" id="mnoEl" value=1><br>
   <button type="button" id="regBtn">리뷰 등록하기</button>
-  <!--/* 리뷰 출력 라인*/-->
-  <div id="reviewBox">리뷰가 없다면 출력됩니다. ex) 리뷰가 없습니다!</div>
-  <!--/* 리뷰 페이지네이션 */-->
-  <div id="pagingBox">페이지네이션 출력될 박스!</div>
-  <!--/* 여기까진 수정될 HTML 조각 */-->
+  <!--/* (끝) */-->
+
 
   <!--/* 장바구니 추가를 위한 버튼 요소 */-->
   <div class="prod_purchase_wrap">
@@ -582,7 +539,7 @@
     let realPrice = [[${productVO.realPrice}]];
     let primaryCtgData = [[${ productVO.primaryCtg }]];
     let prno = [[${productVO.prno}]];
-    let mno = 1;
+    let mno = document.getElementById('cartMno').value;;
   </script>
 
   <!--/* 상세페이지 JS */-->

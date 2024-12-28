@@ -5,6 +5,7 @@ import com.ezen.books.domain.NotificationVO;
 import com.ezen.books.domain.PagingVO;
 import com.ezen.books.domain.ReviewVO;
 import com.ezen.books.handler.PagingHandler;
+import com.ezen.books.repository.MemberMapper;
 import com.ezen.books.repository.NotificationMapper;
 import com.ezen.books.repository.ProductMapper;
 import com.ezen.books.repository.ReviewMapper;
@@ -24,12 +25,15 @@ public class ReviewServiceImpl implements ReviewService{
     private final ProductMapper productMapper;
     private final NotificationMapper notificationMapper;
     private final NotificationController notificationController;
+    private final MemberMapper memberMapper;
 
     @Transactional
     @Override
     public int register(ReviewVO reviewVO) {
+        // 리뷰 등록
         int isOk = reviewMapper.register(reviewVO);
         if(isOk>0){
+            // 등록 후 상품 별점, 리뷰 수 업데이트
             productMapper.updateReviewAvg(reviewVO.getPrno());
             productMapper.updateReviewCnt(reviewVO.getPrno(), 1);
         }
@@ -43,11 +47,10 @@ public class ReviewServiceImpl implements ReviewService{
 
     @Override
     public List<ReviewVO> getList(PagingVO pagingVO) {
+        // 리뷰 출력
         List<ReviewVO> list = reviewMapper.getList(pagingVO);
         for(ReviewVO reviewVO : list){
-            // member 연결하면 넣을 예정
-//            reviewVO.setName(reviewMapper.getName(reviewVO.getMno()));
-            reviewVO.setName("홍길동");
+            reviewVO.setName(memberMapper.getNickName(reviewVO.getMno()));
             reviewVO.setIsLike(reviewMapper.isLike(reviewVO.getRno(), pagingVO.getMno()));
         }
         return list;
@@ -61,6 +64,7 @@ public class ReviewServiceImpl implements ReviewService{
         if(isOk>0){
             // 동작 후 리뷰에 좋아요 수 업데이트
             isOk *= reviewMapper.updateCnt(rno, 1);
+            isOk = reviewMapper.getLikeCntByRno(rno);
         }
         return isOk;
     }
@@ -71,6 +75,7 @@ public class ReviewServiceImpl implements ReviewService{
         int isOk = reviewMapper.cancel(rno, mno);
         if(isOk>0){
             isOk *= reviewMapper.updateCnt(rno, -1);
+            isOk = reviewMapper.getLikeCntByRno(rno);
         }
         return isOk;
     }
@@ -89,5 +94,22 @@ public class ReviewServiceImpl implements ReviewService{
         // 생성된 알림을 컨트롤러에 전달하여 실시간 전송
         notificationController.sendNotificationToClient(mno, notification);
 
+    }
+
+    @Transactional
+    @Override
+    public int delete(long rno) {
+        // 리뷰 삭제 전 rno 를 통해 prno 가져와 저장
+        long prno = reviewMapper.getPrnoByRno(rno);
+
+        // 리뷰 삭제
+        int isOk = reviewMapper.delete(rno);
+
+        if(isOk>0){
+            // 리뷰 삭제 후 상품 별점, 리뷰 수 업데이트
+            productMapper.updateReviewAvg(prno);
+            productMapper.updateReviewCnt(prno, -1);
+        }
+        return isOk;
     }
 }

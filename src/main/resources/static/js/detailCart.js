@@ -6,19 +6,22 @@ document.addEventListener('click', (e) => {
 
     const mnoVal = document.getElementById('cartMno').value;
 
-    if(mnoVal == "-1") {
-        alert("로그인 먼저 해주세요.");
-        return;
-    }
-
     const prnoVal = document.getElementById('prnoEl').value;
     const bookQtyVal = document.getElementById('number').innerText;
 
     if(targetClassList.contains('purchase_btn')) { // 바로구매 버튼 클릭 시
+        if(mnoVal == "-1") {
+            alert("로그인 먼저 해주세요.");
+            return;
+        }
 
         pathString = "buyNow";
         processSinglePurchase(mnoVal, prnoVal, bookQtyVal, pathString);
     } else if (targetClassList.contains('pick_up_btn')) { // 바로픽업 버튼 클릭 시
+        if(mnoVal == "-1") {
+            alert("로그인 먼저 해주세요.");
+            return;
+        }
 
         pathString = "pickUpNow";
         processSinglePurchase(mnoVal, prnoVal, bookQtyVal, pathString);

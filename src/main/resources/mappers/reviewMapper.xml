@@ -48,4 +48,16 @@
         where prno = #{prno} and is_del = 'N'
     </select>
 
+    <select id="getLikeCntByRno" resultType="int">
+        select like_cnt from review where rno = #{rno}
+    </select>
+
+    <delete id="delete">
+        delete from review where rno = #{rno}
+    </delete>
+
+    <select id="getPrnoByRno" resultType="long">
+        select prno from review where rno = #{rno}
+    </select>
+
 </mapper>

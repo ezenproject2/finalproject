@@ -59,7 +59,7 @@ public class ReviewController {
                                    @PathVariable("mno") long mno){
         // 리뷰 출력을 위한 메서드
         // 상품 상세페이지에서 해당 상품의 리뷰를 출력한다. 페이징 있음
-        PagingVO pagingVO = new PagingVO(pageNo, 5, prno, mno);
+        PagingVO pagingVO = new PagingVO(pageNo, 8, prno, mno);
         int totalCount = reviewService.getTotalCount(pagingVO);
         PagingHandler pagingHandler = new PagingHandler(pagingVO, totalCount);
         List<ReviewVO> list = reviewService.getList(pagingVO);
@@ -69,20 +69,20 @@ public class ReviewController {
 
     @ResponseBody
     @GetMapping(value = "/doLike/{rno}/{mno}")
-    public String doLike(@PathVariable("rno") long rno, @PathVariable("mno") long mno){
+    public int doLike(@PathVariable("rno") long rno, @PathVariable("mno") long mno){
         // 좋아요 ㄱㄱ 메서드
         int isOk = reviewService.doLike(rno, mno);
 
-        return isOk>0? "1" : "0";
+        return isOk>=0? isOk : -1;
     }
 
     @ResponseBody
     @GetMapping(value = "/cancel/{rno}/{mno}")
-    public String cancel(@PathVariable("rno") long rno, @PathVariable("mno") long mno){
+    public int cancel(@PathVariable("rno") long rno, @PathVariable("mno") long mno){
         // 좋아요 취소 메서드
         int isOk = reviewService.cancel(rno, mno);
 
-        return isOk>0? "1" : "0";
+        return isOk>=0? isOk : -1;
     }
 
     @ResponseBody
@@ -91,6 +91,14 @@ public class ReviewController {
         reviewService.createAndSendNotification(mno, message);
 
         return "1";
+    }
+
+    @ResponseBody
+    @GetMapping("/delete/{rno}")
+    public String delete(@PathVariable("rno") long rno){
+        int isOk = reviewService.delete(rno);
+
+        return isOk>0? "1" : "0";
     }
 
 

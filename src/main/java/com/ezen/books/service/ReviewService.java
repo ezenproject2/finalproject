@@ -19,4 +19,6 @@ public interface ReviewService {
     int cancel(long rno, long mno);
 
     void createAndSendNotification(long mno, String message);
+
+    int delete(long rno);
 }

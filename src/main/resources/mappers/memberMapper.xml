@@ -128,4 +128,8 @@
         (#{mno}, #{recName}, #{recPhone}, #{addrCode}, #{addr}, #{addrDetail}, #{addrName}, #{isDefault})
     </insert>
 
+    <select id="getNickName" resultType="String">
+        select nick_name from member where mno = #{mno}
+    </select>
+
 </mapper>

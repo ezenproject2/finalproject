@@ -29,4 +29,10 @@ public interface ReviewMapper {
     BookInfo getReviewCnt(long prno);
 
     int getTotalCountByPrno(long prno);
+
+    int getLikeCntByRno(long rno);
+
+    int delete(long rno);
+
+    long getPrnoByRno(@Param("rno") long rno);
 }
