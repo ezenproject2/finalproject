@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<head>
+  <title> 이젠문고 </title>
+  <meta charset="UTF-8"/>
+  <link rel="stylesheet" href="/css/mypageMain.css"/>
+  <link rel="stylesheet" href="/css/mypageAddressList.css"/>
+</head>
+
+<main layout:fragment="main">
+  <div class="myPage_inner inner">
+    <div class="myPage_left" style="margin-top: 0;">
+      <a href="" class="myPage_profile">
+        <div class="member_profile_photo_area">
+          <div class="member_profile_photo"></div>
+          <i class="ic ic_member_profile_pencil">
+            <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M30.1896 9.74448L24.2556 3.80909C24.0582 3.61172 23.8239 3.45515 23.5661 3.34833C23.3082 3.2415 23.0319 3.18652 22.7528 3.18652C22.4737 3.18652 22.1973 3.2415 21.9395 3.34833C21.6816 3.45515 21.4473 3.61172 21.25 3.80909L4.8729 20.1875C4.67472 20.3841 4.51759 20.6182 4.41066 20.8761C4.30373 21.1339 4.24912 21.4105 4.25001 21.6896V27.625C4.25001 28.1886 4.47389 28.7291 4.87241 29.1276C5.27092 29.5261 5.81143 29.75 6.37501 29.75H12.3104C12.5896 29.7509 12.8661 29.6963 13.124 29.5894C13.3819 29.4824 13.6159 29.3253 13.8125 29.1271L30.1896 12.75C30.387 12.5527 30.5436 12.3184 30.6504 12.0606C30.7572 11.8027 30.8122 11.5264 30.8122 11.2473C30.8122 10.9682 30.7572 10.6918 30.6504 10.4339C30.5436 10.1761 30.387 9.94181 30.1896 9.74448ZM6.81462 21.25L18.0625 10.0021L20.2792 12.2188L9.03126 23.4653L6.81462 21.25ZM6.37501 23.8146L10.1854 27.625H6.37501V23.8146ZM12.75 27.1854L10.5334 24.9688L21.7813 13.7209L23.9979 15.9375L12.75 27.1854ZM25.5 14.4354L19.5646 8.50003L22.7521 5.31253L28.6875 11.2466L25.5 14.4354Z" fill="white"/>
+            </svg>
+          </i>
+        </div>
+        <div class="member_name">
+          <span><span id="memberName">[[${memberInfo.nickName}]]</span>님</span> <span id="memberGrade">[[${memberGrade.level}]]</span>
+        </div>
+        <div class="member_email"> <span>[[${memberInfo.email}]]</span></div>
+      </a>
+
+      <div class="myPage_menu">
+        <div class="myPage_menu_item">
+          <p class="menu_item_title"><a href="">쇼핑 내역<i class="ic ic_arrow_right"></i></a></p>
+          <p class="menu_item_content"><a th:href="@{/mypage/order-list(mno=${#authentication.getPrincipal().memberVO.getMno()})}">주문/배송목록</a></p>
+          <p class="menu_item_content"><a href="">선물함</a></p>
+          <p class="menu_item_content"><a href="">매장 구매 내역</a></p>
+          <p class="menu_item_content"><a href="">영수증</a></p>
+        </div>
+        <div class="myPage_menu_item">
+          <p class="menu_item_title"><a href="">나의 통장<i class="ic ic_arrow_right"></i></a></p>
+          <p class="menu_item_content"><a href="">통합 포인트</a></p>
+          <p class="menu_item_content"><a href="">쿠폰</a></p>
+          <p class="menu_item_content"><a href="">기프트카드</a></p>
+        </div>
+        <div class="myPage_menu_item">
+          <p class="menu_item_title"><a href="">회원정보<i class="ic ic_arrow_right"></i></a></p>
+          <p class="menu_item_content"><a th:href="@{/mypage/address-list(mno=${#authentication.getPrincipal().memberVO.getMno()})}">배송주소록</a></p>
+          <p class="menu_item_content"><a href="">회원정보관리</a></p>
+          <p class="menu_item_content"><a href="">나의 회원등급</a></p>
+        </div>
+        <div class="myPage_menu_item">
+          <p class="menu_item_title"><a href="">고객센터<i class="ic ic_arrow_right"></i></a></p>
+          <p class="menu_item_content"><a href="">1:1 문의 내역</a></p>
+          <p class="menu_item_content"><a href="">업체배송 문의내역</a></p>
+        </div>
+        <div class="myPage_menu_item item_last">
+          <p class="menu_item_title"><a href="">도움이 필요하세요?</a></p>
+          <p class="menu_item_content"><a href="">FAQ</a></p>
+          <p class="menu_item_content"><a href="">1:1 고객 상담</a></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="myPage_right">
+      <div class="address_book_container">
+        <h1 class="address_book_title">배송주소록</h1>
+        <div class="address_book_box">
+          <!--
+          등록된 주소가 없으면 : address_book_wrap : display:none, address_book_none : display:none
+          등록된 주소가 있으면 : address_book_wrap -> display:block, address_book_none -> display:none
+          -->
+          <div class="address_book_box_none" th:if="${isAddrEmpty == 'true'}">
+            <i class="ic ic_exclamation_c6"></i>
+            <strong> 등록된 배송지가 없습니다. </strong>
+            <button type="button" class="registration_of_address_btn register-addr-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#000B17" class="bi bi-plus" viewBox="0 0 16 16">
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+              </svg>
+              새 배송지 등록
+            </button>
+          </div>
+
+
+          <div class="address_list_box" th:unless="${isAddrEmpty == 'true'}">
+            <button type="button" class="registration_of_address_btn register-addr-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#000B17" class="bi bi-plus" viewBox="0 0 16 16">
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+              </svg>
+              새 배송지 등록
+            </button>
+
+            <div class="address-container" th:data-mno="${mno}">
+              <div class="address-wrapper" th:each="addrInfo, addrStat: ${addrList}" th:data-list-size="${addrList.size}">
+                <input type="hidden" class="addr-adno-input" th:value="${addrInfo.adno}" th:data-addr-index="${addrStat.index}">
+                <div>
+                  <div>
+                    <div th:if="${addrInfo.isDefault == 'Y'}" class="is-default-mark" th:data-addr-index="${addrStat.index}">기본 배송지</div>
+                    <div th:unless="${addrInfo.isDefault == 'Y'}" class="is-default-mark" th:data-addr-index="${addrStat.index}">일반 배송지</div>
+                    <div th:if="${addrInfo.addrName != null}">[[${#strings.isEmpty(addrInfo.addrName) ? '배송지' : addrInfo.addrName}]]</div>
+                  </div>
+                  <div>
+                    <p>수령인 이름<span>[[${addrInfo.recName}]]</span></p>
+                    <p>수령인 전화<span>[[${addrInfo.recPhone}]]</span></p>
+                    <p><span>[[${addrInfo.addrCode}]]</span><span>[[${addrInfo.addr}]]</span><span>[[${addrInfo.addrDetail}]]</span></p>
+                  </div>
+                </div>
+                <div>
+                  <button type="button" class="registration_of_address_btn modify-btn" th:data-addr-index="${addrStat.index}">수정</button>
+                  <button type="button" class="delete-addr-btn" th:if="${addrInfo.isDefault != 'Y'}" th:data-addr-index="${addrStat.index}">삭제</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal_overlay" data-is-register-or-modify="0" data-index-for-modify="0">
+    <div class="modal_registration_of_address">
+      <h2 class="modal_title">배송지 추가
+        <svg id="closeModal" xmlns="http://www.w3.org/2000/svg" width="23" height="23" class="bi bi-x-lg" viewBox="0 0 16 16">
+          <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" fill="none" stroke="currentColor" stroke-width="1"/>
+        </svg>
+      </h2>
+      <div class="modal_contents">
+        <form action="/mypage/address-list/register" method="post">
+          <input type="hidden" th:value="${mno}" name="mnoVal">
+          <div class="modal_content">
+            <p class="modal_content_title">배송지명</p>
+            <div class="input_box">
+              <input type="text" placeholder="최대 7글자까지 자유롭게 수정 가능" maxlength="7" name="addrName" value="" class="addr-name-input address-input">
+            </div>
+          </div>
+
+          <div class="modal_content">
+            <p class="modal_content_title">받는 분</p>
+            <div class="input_box">
+              <input type="text" placeholder="이름을 입력해 주세요." maxlength="7" name="recName" class="address-input addr-rec-name-input">
+            </div>
+            <div class="input_box number">
+              <input type="text" placeholder="휴대폰 번호를 - 없이 입력해 주세요." maxlength="11" name="recPhone" class="address-input addr-rec-phone-input">
+            </div>
+          </div>
+
+          <div class="modal_content">
+            <p class="modal_content_title">주소</p>
+            <div class="address">
+              <div class="form_addr1">
+                <div class="input_box addressform" style="width: 70%;">
+                  <input type="text" class="postcode address address-input addr-postcode-input" id="postcode" readonly name="addrCode">
+                </div>
+                <button type="button" onclick="execDaumPostcode()" class="addrBtn" id="non_member_addrBtn">주소 찾기</button>
+              </div>
+              <div class="form_addr2">
+                <div class="input_box addr1">
+                  <input type="text" class="homeAddress addressform address-input addr-input" id="homeAddress" readonly name="addr">
+                </div>
+                <div class="input_box addr2">
+                  <input type="text" class="detailAddress addressform address-input addr-detail-input" id="detailAddress" placeholder="상세 주소를 입력해 주세요." name="addrDetail">
+                </div>
+              </div>
+            </div>
+
+            <p class="defalut_address_check">
+              <i class="ic ic_checkbox_off"></i>
+              <input type="hidden" class="" name="isDefault" value="N"> <!--/* 기본 배송지를 선택하지 않았을 시 null 방지용 hidden input */-->
+              <input type="checkbox" class="check_box set-default-input" name="isDefault" value="Y">
+              <span>기본 배송지 등록</span>
+            </p>
+          </div>
+
+          <div class="modal_content">
+            <button type="submit" class="btn registration_btn addr-form-btn">확인</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script defer th:src="@{/js/addressListBusiness.js}"></script>
+  <script defer th:src="@{/js/addressListDisplay.js}"></script>
+  <script defer th:src="@{/js/addressListStyle.js}"></script>
+  <script src="/js/mypageMain.js"></script>
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <!--/* <script src="/js/private_address.js"></script> */-->
+  <script defer th:src="@{/js/payoutKakaoAddress.js}"></script>
+</main>

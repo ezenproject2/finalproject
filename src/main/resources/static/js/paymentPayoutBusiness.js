@@ -60,12 +60,15 @@ spanUnderPayBtn.forEach(span => {
 })
 
 // 주문 버튼 클릭 시 pg를 골랐는지 + 기본 배송지가 null인지 판별, 조건 통과 시 결제 진행
+// 픽업을 가리는 조건도 추가됨.
 document.getElementById('orderBtn').addEventListener('click', () => {
     const isDefaultAddrNull = document.getElementById('dataContainer').dataset.isDefaultAddrNull;
+    const isPickup = document.getElementById('dataContainer').dataset.isPickup;
+
 
     if(pgData.pg == "") {
         alert('결제 수단을 선택해주세요.');
-    } else if (isDefaultAddrNull == "true") {
+    } else if (isPickup == "N" && isDefaultAddrNull == "true") {
         alert("기본 배송지를 입력해주세요.");
     } else {
         const pgObj = getPayDataFromServer(pgData.pg);
@@ -168,7 +171,7 @@ async function registerDefaultAddrFlag() {
     await registerDefaultAddrToServer(mnoVal);
     // /payment/payout으로 이동하기 전에 cartList를 준비하도록 요청하는 비동기 함수
     // await prepareCartListToServer(mnoVal);
-    window.location.href = "/payment/payout";
+    window.location.href = "/payment/payout/0";
     
 }
 
@@ -270,9 +273,16 @@ async function checkFlags(paymentDataAmount, impResPaidAmount, impResponse) {
         await preserveOrderDetailToServer(impResponse);
         await preservePaymentToServer(impResponse);
         await removeCartToServer();
-        await preserveDeliveryToServer(impResponse);
+
+        // 픽업이면 pickupVO를 저장, 아니면 delivery에 저장.
+        const isPickup = document.getElementById('dataContainer').dataset.isPickup;
+        if(isPickup == "Y") {
+            await preservePickupToServer();
+        } else {
+            await preserveDeliveryToServer(impResponse);   
+        }
         alert("결제가 완료되었습니다.");
-        // window.location.href = "/payment/go-to-index";
+        window.location.href = "/payment/go-to-index";
     }
 
     return result;
@@ -562,4 +572,32 @@ function getDeliveryMemo() {
     }
 
     return deliveryMemoVal;
+}
+
+async function preservePickupToServer() {
+    const osnoVal = document.querySelector('.pickup_table').dataset.pickupOsno;
+    const statusVal = document.querySelector('.pickup_table').dataset.pickupStatus;
+    const ornoVal = document.querySelector('.pickup_table').dataset.pickupOrno;
+
+    const url = "/payment/payout/preserve-pickup";
+
+    const config = {
+        method: "POST",
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        body: JSON.stringify({
+            osno: osnoVal,
+            status: statusVal,
+            orno: ornoVal
+        })
+    };
+    
+    const response = await fetch(url, config);
+    const result = await response.text();
+    if(result == "1") {
+        console.log("Preserve pickup: Succeeded.");
+    } else if (result == "0") {
+        console.log("Preserve pickup: Failed.");
+    } else {
+        console.log("Preserve pickup: Unknown.");
+    }
 }

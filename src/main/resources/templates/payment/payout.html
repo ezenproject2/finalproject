@@ -5,7 +5,7 @@
       layout:decorate="~{layout/layout}">
 <head>
   <meta charset="UTF-8">
-  <title>Payout</title>
+  <title> 이젠문고 </title>
   <link rel="stylesheet" href="/css/payout.css"/>
   <link rel="stylesheet" href="/css/cart.css"/>
   <!--/* 결제 api와 연결하기 위한 js파일. */-->
@@ -22,7 +22,7 @@
       </div>
 
       <div class="order_table_wrap1">
-        <table class="order_table address_table" th:if="${defaultAddress != 'empty'}">
+        <table class="order_table address_table" th:if="${defaultAddress != 'empty'} and ${isPickup != 'Y'}">
           <tr>
             <th> 배송지 정보</th>
             <td>
@@ -67,7 +67,7 @@
         </table>
 
         <!--/* defaultAddress가 null인 경우에 기본 배송지를 받을 table */-->
-        <table class="order_table address_table" th:unless="${defaultAddress != 'empty'}">
+        <table class="order_table address_table" th:if="${defaultAddress == 'empty'} and ${isPickup != 'Y'}">
           <!--/* 스타일 js 충돌 방지용 div. 기본 배송지를 받는 레이아웃에 클래스 shipping_request, select_box 등이 없어서 에러 뜸. 그리고 스타일링 js가 작동하지 않음. */-->
           <div style="display: none;" class="request_select"></div>
           <div style="display: none;" class="shipping_request_select">
@@ -76,7 +76,7 @@
           <div style="display: none;" class="request_text" maxlength="1"></div>
           <div style="display: none;" class="request_select"></div>
           <tr>
-            <th> 배송지 정보</th>
+            <th>배송지 정보</th>
             <td class="form_data address">
               <div>
                 <input type="text" class="postcode address-input" id="postcode" readonly name="addrCode"> <!--/* 원본 name값. name="address" */-->
@@ -93,11 +93,32 @@
               </div>
               <button type="button" id="registerAddrBtn">기본 배송지 등록</button>
             </td>
-          </tr>
-          <!--/* "배송 요청사항" 부분은 받을 필요가 없어서 제외함. */-->
+          </tr> <!--/* "배송 요청사항" 부분은 받을 필요가 없어서 제외함. */-->
         </table>
 
-
+        <table class="order_table pickup_table" th:if="${isPickup == 'Y'}" th:data-pickup-osno="${pickUpVO.osno}" th:data-pickup-status="${pickUpVO.status}" th:data-pickup-orno="${pickUpVO.orno}">
+          <!--/* 스타일 js 충돌 방지용 div. 기본 배송지를 받는 레이아웃에 클래스 shipping_request, select_box 등이 없어서 에러 뜸. 그리고 스타일링 js가 작동하지 않음. */-->
+          <div style="display: none;" class="request_select"></div>
+          <div style="display: none;" class="shipping_request_select">
+            <div style="display: none;" class="ic_arrow_down"></div>
+          </div>
+          <div style="display: none;" class="request_text" maxlength="1"></div>
+          <div style="display: none;" class="request_select"></div>
+          <tr>
+            <th>픽업 정보</th>
+            <td class="pickup-info">
+              <div>
+                <div>방문할 매장</div><div>[[${offlineStoreVO.name}]]</div>
+              </div>
+              <div>
+                <div>매장 주소</div><div>[[${offlineStoreVO.address}]]</div>
+              </div>
+              <div>
+                <div>매장 전화번호</div><div>[[${offlineStoreVO.phone}]]</div>
+              </div>
+            </td>
+          </tr>
+        </table>
       </div>
 
       <div class="order_table_wrap">
@@ -260,4 +281,3 @@
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <script th:src="@{/js/payoutKakaoAddress.js}"></script>
 </main>
-</html>

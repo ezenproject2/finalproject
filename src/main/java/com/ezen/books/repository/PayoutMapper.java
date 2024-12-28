@@ -20,4 +20,6 @@ public interface PayoutMapper {
     int registerDefaultAddress(AddressVO addressData);
 
     int saveDeliveryToServer(DeliveryVO deliveryData);
+
+    int savePickupToServer(PickUpVO pickupData);
 }
