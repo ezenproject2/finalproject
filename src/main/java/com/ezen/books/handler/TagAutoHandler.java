@@ -19,7 +19,7 @@ public class TagAutoHandler {
 
     // 베스트(판매량), 신상품, 인기상품을 매주 스케줄러로 구현
 
-    @Scheduled(cron = "0 0 12 * * ?")
+    @Scheduled(cron = "0 15 18 * * ?")
     public void tagInsert(){
         log.info(">>>> FileSweeper Running Start > {}", LocalDateTime.now());
 
