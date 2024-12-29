@@ -43,4 +43,4 @@ application-secrets.properties
 apikey.js
 
 # 플로라 에디터
-/resources/static/froala-editor/**
+/resources/static/editor/
