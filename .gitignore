@@ -41,3 +41,6 @@ application-secrets.properties
 
 # 자바스크립트 시크릿 키
 apikey.js
+
+# 플로라 에디터
+/resources/static/froala-editor/
