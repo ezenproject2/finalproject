@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout/layout}">
+
+<head>
+  <!-- Froala CSS 파일 -->
+  <link th:href="@{/editor/css/froala_editor.pkgd.min.css}" rel="stylesheet" type="text/css" />
+  <!-- jQuery를 Froala Editor보다 먼저 로드 -->
+  <script th:src="@{https://code.jquery.com/jquery-3.6.0.min.js}"></script>
+  <!-- Froala Editor JS 파일 -->
+  <script type="text/javascript" th:src="@{/editor/js/froala_editor.pkgd.min.js}"></script>
+  <!-- 한국어 언어 파일 -->
+  <script th:src="@{/editor/js/languages/ko.js}"></script>
+</head>
+
+<main layout:fragment="main">
+  <h3>글쓰기!</h3>
+  <div class="mid">
+    <table>
+      <tr>
+        <td>제목</td>
+        <td><input type="text" name="title" id="title"></td>
+      </tr>
+      <tr>
+        <td>작성자</td>
+        <td>
+          <input type="text" id="writer" value="관리자" readonly>
+          <input type="hidden" id="mno" value="1">
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <div id="noticeBox" style="border-radius: 0"></div>
+        </td>
+      </tr>
+    </table>
+    <div class="btnbox">
+      <button id="regBtn" class="btn">저장</button>
+    </div>
+  </div>
+
+  <script th:src="@{/js/noticeRegister.js}"></script>
+</main>
