@@ -2,12 +2,16 @@ package com.ezen.books.controller;
 
 import com.ezen.books.domain.NoticeTempFileVO;
 import com.ezen.books.domain.NoticeVO;
+import com.ezen.books.domain.PagingVO;
+import com.ezen.books.domain.ProductVO;
 import com.ezen.books.handler.FileHandler;
+import com.ezen.books.handler.PagingHandler;
 import com.ezen.books.service.NoticeService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,7 +31,8 @@ public class NoticeController {
     private final FileHandler fileHandler;
 
     @GetMapping("/register")
-    public String register(){
+    public String register(Model model, @RequestParam("category") String category){
+        model.addAttribute("category", category);
         return "/notice/register";
     }
 
@@ -35,11 +40,10 @@ public class NoticeController {
     @PostMapping("/register")
     public String register(@RequestBody NoticeVO noticeVO){
         // 게시글 입력
-
+        log.info(">>>> noticeVO > {}", noticeVO);
         // content 속 img 태그의 주소 경로 찾기
         List<String> fileAddrList = fileHandler.extractUuids(noticeVO.getContent());
         log.info(">>>> fileAddrList > {}", fileAddrList.get(0));
-        noticeVO.setCategory("notice");
         int isOk = noticeService.register(noticeVO, fileAddrList);
 
         return isOk>0? "1" : "0";
@@ -78,8 +82,19 @@ public class NoticeController {
         return isOk>0? "1" : "0";
     }
 
-    @GetMapping("/list")
-    public String list(){
+    @GetMapping(value = "/list")
+    public String list(Model model, PagingVO pagingVO){
+        log.info(">>>> pagingVO > {}", pagingVO);
+
+        int totalCount = noticeService.getTotalCount(pagingVO);
+        PagingHandler ph = new PagingHandler(pagingVO, totalCount);
+        List<NoticeVO> list = noticeService.getList(pagingVO);
+
+        model.addAttribute("ph", ph);
+        model.addAttribute("list", list);
+        log.info(">>>> ph > {}", ph);
+        log.info(">>>> list > {}", list);
+
         return "/notice/list";
     }
 

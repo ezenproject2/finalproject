@@ -46,11 +46,13 @@ var noticeBox = new FroalaEditor('#noticeBox', {
 document.getElementById("regBtn").addEventListener('click', () => {
   const title = document.getElementById('title')
   const mno = document.getElementById('mno')
+  const category = document.getElementById('category')
 
   let formData = {
     content: noticeBox.el.innerHTML,
     title: title.value,
-    mno: parseInt(mno.value)
+    mno: parseInt(mno.value),
+    category : category.value
   }
 
   saveNotice(formData).then(result => {

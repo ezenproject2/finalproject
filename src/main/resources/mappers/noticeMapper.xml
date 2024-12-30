@@ -45,4 +45,13 @@
         select * from notice_temp_file where file_addr like CONCAT('%', #{uuid}, '%')
     </select>
 
+    <select id="getTotalCount" resultType="int">
+        select count(ntno) from notice where is_del = 'N' and category = #{category}
+    </select>
+
+    <select id="getList" resultType="com.ezen.books.domain.NoticeVO">
+        select * from notice where is_del = 'N' and category = #{category}
+        order by ntno desc limit #{startIndex}, #{qty};
+    </select>
+
 </mapper>

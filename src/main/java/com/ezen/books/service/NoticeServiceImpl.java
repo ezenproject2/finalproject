@@ -3,6 +3,7 @@ package com.ezen.books.service;
 import com.ezen.books.domain.NoticeFileVO;
 import com.ezen.books.domain.NoticeTempFileVO;
 import com.ezen.books.domain.NoticeVO;
+import com.ezen.books.domain.PagingVO;
 import com.ezen.books.repository.NoticeMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -66,5 +67,15 @@ public class NoticeServiceImpl implements NoticeService{
         }
 
         return isOk;
+    }
+
+    @Override
+    public int getTotalCount(PagingVO pagingVO) {
+        return noticeMapper.getTotalCount(pagingVO);
+    }
+
+    @Override
+    public List<NoticeVO> getList(PagingVO pagingVO) {
+        return noticeMapper.getList(pagingVO);
     }
 }
