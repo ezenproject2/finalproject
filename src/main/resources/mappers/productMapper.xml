@@ -172,4 +172,8 @@
         update product set sale_qty = sale_qty + #{qty} where prno = #{prno}
     </update>
 
+    <select id="getIsbnByRno" resultType="String">
+        select p.isbn from review r join product p on r.prno = p.prno where r.rno = #{rno};
+    </select>
+
 </mapper>

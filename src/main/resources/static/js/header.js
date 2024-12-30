@@ -103,16 +103,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 스크롤 이벤트 추가
     window.addEventListener("scroll", function () {
-    lastScrollY = window.scrollY; // 현재 스크롤 위치 저장
+        lastScrollY = window.scrollY; // 현재 스크롤 위치 저장
 
-    // requestAnimationFrame이 진행 중이 아닐 때만 실행
-    if (!ticking) {
-        window.requestAnimationFrame(function () {
-        handleScroll(lastScrollY); // 스크롤 위치에 따른 처리
-        ticking = false; // requestAnimationFrame 완료 후 플래그 해제
-        });
-        ticking = true; // requestAnimationFrame이 진행 중임을 표시
-    }
+        // requestAnimationFrame이 진행 중이 아닐 때만 실행
+        if (!ticking) {
+            window.requestAnimationFrame(function () {
+                handleScroll(lastScrollY); // 스크롤 위치에 따른 처리
+                ticking = false; // requestAnimationFrame 완료 후 플래그 해제
+            });
+            ticking = true; // requestAnimationFrame이 진행 중임을 표시
+        }
     });
 
     // 스크롤 위치에 따른 클래스 처리 함수
@@ -129,6 +129,134 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    //----[알림]-------------------------------------------------------------------------------------------------------------
+    const eventSource = new EventSource('/notification/subscribe/' + mno);
+
+    let unreadCount = 0; // 읽지 않은 알림 개수를 저장할 변수
+    let dataList = []; // 알림 목록을 저장할 배열
+
+    // (차민주) SSE로 알림 수신
+    eventSource.onmessage = function (event) {
+        if(mno != -1){
+
+            const notification = JSON.parse(event.data);
+            
+            // 기존 알림 목록에 이미 해당 nfno가 있는지 확인
+            if (!dataList.some(item => item.nfno === notification.nfno)) {
+                dataList.push(notification); // 중복되지 않으면 알림 추가
+                dataList.sort((a, b) => b.nfno - a.nfno); // 추가 후 nfno 순으로 정렬 (최신알림이 위로 올라가도록)
+            }
+
+            unreadCount = dataList.filter(notification => notification.status === 'unread').length;
+            
+            // 알림박스에 데이터 추가하는 메서드 제작
+            updateNotificationBox();
+            document.getElementById("count_bell").innerText = unreadCount;
+        }
+    };
+
+    // (차민주) 알림창 내용 추가하는 메서드
+    function updateNotificationBox() {
+        const notificationBox = document.getElementById('notification_contents');
+        notificationBox.innerHTML = '';
+    
+        dataList.forEach(notificationVO => {
+            // 읽음/안읽음 처리
+            let read = notificationVO.status;
+    
+            // 날짜 형식 전환
+            let date = new Date(notificationVO.regAt);
+            let month = date.getMonth() + 1;
+            let day = date.getDate();
+            let dateStr = `${month}월 ${day}일`;
+    
+            // 알림 타입 클래스명 지정
+            let typeClassName = "";
+            let customHref = "";
+            if (notificationVO.type == "주문") {
+                typeClassName = "ic_noti_delivery";
+                customHref = "/mypage/main";
+            } else if (notificationVO.type == "픽업") {
+                typeClassName = "ic_noti_pickup";
+                customHref = "/mypage/main";
+            } else if (notificationVO.type == "쿠폰") {
+                typeClassName = "ic_noti_coupon";
+                customHref = "/mypage/main";
+            } else if (notificationVO.type == "회원") {
+                typeClassName = "ic_noti_grade";
+                customHref = "/mypage/main";
+            } else if (notificationVO.type == "리뷰") {
+                typeClassName = "ic_noti_review";
+                customHref = "/product/detail?isbn=" + notificationVO.isbn;
+            }
+    
+            // a 태그 생성
+            const link = document.createElement('a');
+            link.href = customHref;  // 링크 주소
+            link.classList.add('notification_content');
+            link.classList.add(read);  // '읽음' 상태 클래스 추가
+            link.dataset.nfno = notificationVO.nfno; // nfno를 dataset에 추가
+    
+            // 헤더 부분 생성
+            const headerDiv = document.createElement('div');
+            headerDiv.classList.add('notification_content_header');
+    
+            const titleWrapSpan = document.createElement('span');
+            titleWrapSpan.classList.add('noti_title_wrap');
+            
+            const icon = document.createElement('i');
+            icon.classList.add('ic', typeClassName);  // 아이콘 클래스 추가
+            titleWrapSpan.appendChild(icon);
+            
+            const titleSpan = document.createElement('span');
+            titleSpan.classList.add('noti_title');
+            titleSpan.textContent = notificationVO.type; // 알림 타입
+    
+            titleWrapSpan.appendChild(titleSpan);
+    
+            const dateSpan = document.createElement('span');
+            dateSpan.classList.add('noti_date');
+            dateSpan.textContent = dateStr; // 날짜
+    
+            headerDiv.appendChild(titleWrapSpan);
+            headerDiv.appendChild(dateSpan);
+    
+            // 본문 부분 생성
+            const contentDiv = document.createElement('div');
+            contentDiv.classList.add('notification_content_content');
+    
+            const messageSpan = document.createElement('span');
+            messageSpan.textContent = notificationVO.message; // 알림 메시지
+    
+            contentDiv.appendChild(messageSpan);
+    
+            // 각 div들을 a 태그에 append
+            link.appendChild(headerDiv);
+            link.appendChild(contentDiv);
+    
+            // 생성된 a 태그를 notificationBox에 추가
+            notificationBox.appendChild(link);
+    
+            // 이벤트 리스너 추가
+            link.addEventListener('click', function(event) {
+                event.preventDefault(); // 기본 동작인 페이지 이동을 막음
+    
+                // '읽음' 처리
+                if(link.classList.contains('unread')){
+                    markAsReadToServer(link.dataset.nfno).then(result =>{
+                        if(result == "1"){
+                            link.classList.remove('unread');
+                            link.classList.add('read');
+                        }
+                    });
+                }
+    
+                // 페이지 이동
+                window.location.href = link.href; // 이 링크의 href로 페이지 이동
+            });
+        });
+    }
+    
     // 알림창 관련
     const bell = document.querySelector('.user_menu_item.bell');
     const notificationList = document.querySelector('.notification_list');
@@ -146,6 +274,7 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     bell.addEventListener('click', () => {
+        if(mno == -1){return;}
         toggleNotificationList();
     });
 
@@ -166,7 +295,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // 바깥 클릭 이벤트
     document.addEventListener('click', closeNotificationList);
 
-    
     // 알림창 관련
     const notificationItems = document.querySelectorAll('.notification_menu');
 
@@ -199,7 +327,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 장바구니 아이콘 관련하여 준희가 넣은 코드.
     const cartIcon = document.querySelector('.ic_cart');
-    if(cartIcon.dataset.authorize != "anonymousUser") {
+    if (cartIcon.dataset.authorize != "anonymousUser") {
         let mno = document.querySelector('.ic_cart').dataset.mno;
         console.log("mno", mno);
 
@@ -232,3 +360,15 @@ async function getCartAmountFromServer(mnoVal) {
     const result = await response.text();
     return result;
 }
+
+async function markAsReadToServer(nfno) {
+    try{
+        const url = "/notification/update/" + nfno;
+        const resp = await fetch(url);
+        const result = await resp.text();
+        return result;
+    } catch (error) {
+        console.log(error);
+    }
+}
+

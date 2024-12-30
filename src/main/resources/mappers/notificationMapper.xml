@@ -12,7 +12,7 @@
 
     <!-- 알림 상태 변경 (읽음 처리) -->
     <update id="updateNotificationStatus">
-        update notification set status = 'READ', mod_at = now() where nfno = #{nfno}
+        update notification set status = 'read', mod_at = now() where nfno = #{nfno}
     </update>
 
     <insert id="insertNotification">

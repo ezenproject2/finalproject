@@ -40,4 +40,6 @@ public interface ProductMapper {
     void setHotTag();
 
     void setSaleQty(@Param("prno") long prno, @Param("qty") int bookQty);
+
+    String getIsbnByRno(long rno);
 }

@@ -9,80 +9,12 @@
     <meta charset="UTF-8">
     <title>EzenBooks</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/chatbot.css}" />
-    <style>
-        #notification-container {
-            position: relative;
-        }
-
-        #notification-icon {
-            cursor: pointer;
-            position: relative;
-        }
-
-        #unread-count {
-            position: absolute;
-            top: 0;
-            right: 0;
-            background-color: red;
-            color: white;
-            border-radius: 50%;
-            padding: 3px 8px;
-            font-size: 12px;
-        }
-
-        #notification-dropdown {
-            display: none;
-            position: absolute;
-            top: 30px;
-            right: 0;
-            border: 1px solid #ccc;
-            background-color: white;
-            width: 200px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        #notification-dropdown.show {
-            display: block;
-        }
-
-        .notification-item {
-            padding: 10px;
-            cursor: pointer;
-        }
-
-        .notification-item.unread {
-            background-color: #f8f8f8;
-            font-weight: bold;
-        }
-
-        .notification-item:hover {
-            background-color: #f1f1f1;
-        }
-    </style>
 </head>
 
 <main layout:fragment="main">
     <h3>Main Area!!</h3>
-    <a th:href="@{/product/register}">상품 등록하기</a>
-    <a th:href="@{/product/list}">상품 목록보기</a>
-    <a th:href="@{/store}">오프라인 매장 보기</a> <br>
-
 
     <!--/* 챗봇영역 (시작) */-->
-    <!-- 플로팅 버튼 -->
-<!--    <button id="chatBtn" class="chat-btn">채팅방 열기</button>-->
-<!--    &lt;!&ndash; 채팅방 &ndash;&gt;-->
-<!--    <div id="chatBox" class="chat-box">-->
-<!--        <div class="chat-header">-->
-<!--            <span>이젠문고 챗봇</span>-->
-<!--            <button id="closeChat" class="close-chat">닫기</button>-->
-<!--        </div>-->
-<!--        <div class="chat-content">-->
-<!--            &lt;!&ndash; 채팅 내용이 여기에 표시됩니다 &ndash;&gt;-->
-<!--        </div>-->
-<!--        <input type="text" id="userMessage" placeholder="메시지를 입력하세요...">-->
-<!--        <button id="sendButton" data-classify="a-type">전송</button>-->
-<!--    </div>-->
     <div class="chat-bot">
         <div id="chatBox" class="chat-box">
             <div class="chat-header">
@@ -161,20 +93,16 @@
 
     <!--/* 알림 SSE 영역 (시작) */-->
     <!--/* 옮길때 mno 찾는 로직 추가해야함*/-->
-    <div id="notification-container">
-        <div id="notification-icon">
-            <span id="unread-count"></span> <!-- 알림 개수 표시 -->
-            <i class="fas fa-bell"></i> <!-- 알림 아이콘 -->
-        </div>
-        <div id="notification-dropdown" class="dropdown-content">
-            <div id="notification-dropdown-content"></div> <!-- 알림 목록 -->
-        </div>
-    </div>
-
-    <input type="text" id="abc"/>
-    <button id="def">테스트데이터저장</button>
-
-    <script th:src="@{/js/notification.js}"></script>
+<!--    <div id="notification-container">-->
+<!--        <div id="notification-icon">-->
+<!--            <span id="unread-count"></span> &lt;!&ndash; 알림 개수 표시 &ndash;&gt;-->
+<!--            <i class="fas fa-bell"></i> &lt;!&ndash; 알림 아이콘 &ndash;&gt;-->
+<!--        </div>-->
+<!--        <div id="notification-dropdown" class="dropdown-content">-->
+<!--            <div id="notification-dropdown-content"></div> &lt;!&ndash; 알림 목록 &ndash;&gt;-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <script th:src="@{/js/notification.js}"></script>-->
     <!--/* 알림 SSE 영역 (끝) */-->
 
     <script>

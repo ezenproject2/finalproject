@@ -587,7 +587,9 @@ header .ic_arrow_right {
     height: 60px;
     padding: 20px;
     background-color: #fff;
-    border-bottom: 1px solid #c6c6c6;
+    border-bottom: 1px solid #C6C6C6;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
 }
 .notification_list_header > ul {
     position: relative;

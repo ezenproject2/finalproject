@@ -66,6 +66,7 @@
                         </a>
                         <div class="user_menu_item bell">
                             <i class="ic ic_bell"></i>
+                            <span class="cart_item_count" id="count_bell" sec:authorize="isAuthenticated()" style="display: inline;">0</span>
                             <div class="notification_list">
                                 <div class="notification_list_header">
                                     <ul>
@@ -83,79 +84,11 @@
                                 </div>
 
                                 <div class="notification_list_content">
-                                    <div class="news_content notification_contents">
-                                        <a href="" class="notification_content read"> <!-- 알림 1개 요소, 읽었으면 'read'클래스 추가 -->
-                                            <div class="notification_content_header">
-                                                    <span class="noti_title_wrap">
-                                                        <i class="ic ic_noti_delivery"></i>
-                                                        <span class="noti_title">배송</span>
-                                                    </span>
-                                                <span class="noti_date">12월 29일</span>
-                                            </div>
-
-                                            <div class="notification_content_content">
-                                                <span>[소년이 온다]가 배송 완료되었습니다. 지금 확인하러 가 보실까요?</span>
-                                            </div>
-                                        </a>
-
-                                        <a href="" class="notification_content"> <!-- 알림 1개 요소 -->
-                                            <div class="notification_content_header">
-                                                    <span class="noti_title_wrap">
-                                                        <i class="ic ic_noti_pickup"></i>
-                                                        <span class="noti_title">픽업</span>
-                                                    </span>
-                                                <span class="noti_date">12월 29일</span>
-                                            </div>
-
-                                            <div class="notification_content_content">
-                                                <span>[소년이 온다]가 매장에 도착했습니다. 받으러 가 보세요!</span>
-                                            </div>
-                                        </a>
-
-                                        <a href="" class="notification_content"> <!-- 알림 1개 요소 -->
-                                            <div class="notification_content_header">
-                                                    <span class="noti_title_wrap">
-                                                        <i class="ic ic_noti_coupon"></i>
-                                                        <span class="noti_title">쿠폰</span>
-                                                    </span>
-                                                <span class="noti_date">12월 29일</span>
-                                            </div>
-
-                                            <div class="notification_content_content">
-                                                <span>[실버] 12월 실버등급 쿠폰 이 발행되었습니다. 확인해 보세요!</span>
-                                            </div>
-                                        </a>
-
-                                        <a href="" class="notification_content"> <!-- 알림 1개 요소 -->
-                                            <div class="notification_content_header">
-                                                    <span class="noti_title_wrap">
-                                                        <i class="ic ic_noti_grade"></i>
-                                                        <span class="noti_title">회원 등급</span>
-                                                    </span>
-                                                <span class="noti_date">12월 29일</span>
-                                            </div>
-
-                                            <div class="notification_content_content">
-                                                <span>회원 등급이 올랐어요. 지금 확인해 보세요!</span>
-                                            </div>
-                                        </a>
-
-                                        <a href="" class="notification_content"> <!-- 알림 1개 요소 -->
-                                            <div class="notification_content_header">
-                                                    <span class="noti_title_wrap">
-                                                        <i class="ic ic_noti_review"></i>
-                                                        <span class="noti_title">리뷰</span>
-                                                    </span>
-                                                <span class="noti_date">12월 29일</span>
-                                            </div>
-
-                                            <div class="notification_content_content">
-                                                <span>작성하신 [소년이 온다] 리뷰에 '좋아요'가 달렸어요. 확인해 보세요!</span>
-                                            </div>
-                                        </a>
-                                    </div>
+                                    <!--/* 알림영역 */-->
+                                    <div class="news_content notification_contents" id="notification_contents"></div>
+                                    <!--/* 혜택영역 */-->
                                     <div class="benefit_content notification_contents">
-                                        <a href="" class="notification_content"> <!-- 알림 1개 요소, 읽었으면 'read'클래스 추가 -->
+                                        <a href="" class="notification_content">
                                             <div class="noti_benefit_img">
                                                 <img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791141601591.jpg" alt="">
                                             </div>
@@ -514,5 +447,10 @@
             </div>
         </div>
 
+    <input type="hidden" id="mnoVal" th:value="${#authentication.name != 'anonymousUser' ? #authentication.getPrincipal().memberVO.getMno() : '-1'}">
+    <script th:inline="javascript">
+        let mno = document.getElementById("mnoVal").value;
+        console.log(mno);
+    </script>
     <script th:src="@{/js/header.js}"></script>
 </header>

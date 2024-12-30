@@ -32,4 +32,7 @@ public class NotificationVO {
     private String type;
     private long rno;
 
+    // 테이블 외 변수
+    private String isbn;
+
 }
