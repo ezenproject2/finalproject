@@ -248,6 +248,7 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch(error => {
                 console.error("Error:", error);
+                console.error("Stack trace:", error.stack);
                 alert("에러가 발생했습니다. 다시 시도해주세요.(Point)");
             });
         });

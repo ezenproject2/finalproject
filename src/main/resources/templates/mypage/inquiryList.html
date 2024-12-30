@@ -12,102 +12,105 @@
 
 <main layout:fragment="main">
   <div class="myPage_inner inner">
-    <div class="myPage_left" style="margin-top: 0;">
-      <a href="" class="myPage_profile">
-        <div class="member_profile_photo_area">
-          <div class="member_profile_photo"></div>
-          <i class="ic ic_member_profile_pencil">
-            <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M30.1896 9.74448L24.2556 3.80909C24.0582 3.61172 23.8239 3.45515 23.5661 3.34833C23.3082 3.2415 23.0319 3.18652 22.7528 3.18652C22.4737 3.18652 22.1973 3.2415 21.9395 3.34833C21.6816 3.45515 21.4473 3.61172 21.25 3.80909L4.8729 20.1875C4.67472 20.3841 4.51759 20.6182 4.41066 20.8761C4.30373 21.1339 4.24912 21.4105 4.25001 21.6896V27.625C4.25001 28.1886 4.47389 28.7291 4.87241 29.1276C5.27092 29.5261 5.81143 29.75 6.37501 29.75H12.3104C12.5896 29.7509 12.8661 29.6963 13.124 29.5894C13.3819 29.4824 13.6159 29.3253 13.8125 29.1271L30.1896 12.75C30.387 12.5527 30.5436 12.3184 30.6504 12.0606C30.7572 11.8027 30.8122 11.5264 30.8122 11.2473C30.8122 10.9682 30.7572 10.6918 30.6504 10.4339C30.5436 10.1761 30.387 9.94181 30.1896 9.74448ZM6.81462 21.25L18.0625 10.0021L20.2792 12.2188L9.03126 23.4653L6.81462 21.25ZM6.37501 23.8146L10.1854 27.625H6.37501V23.8146ZM12.75 27.1854L10.5334 24.9688L21.7813 13.7209L23.9979 15.9375L12.75 27.1854ZM25.5 14.4354L19.5646 8.50003L22.7521 5.31253L28.6875 11.2466L25.5 14.4354Z" fill="white"/>
-            </svg>
-          </i>
-        </div>
-        <div class="member_name">
-          <span><span id="memberName">홍길동</span>님</span> <span id="memberGrade">새싹</span>
-        </div>
-        <div class="member_email"> <span>(example@example.com)</span></div>
-      </a>
+<!--    <div class="myPage_left" style="margin-top: 0;">-->
+<!--      <a href="" class="myPage_profile">-->
+<!--        <div class="member_profile_photo_area">-->
+<!--          <div class="member_profile_photo"></div>-->
+<!--          <i class="ic ic_member_profile_pencil">-->
+<!--            <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">-->
+<!--              <path d="M30.1896 9.74448L24.2556 3.80909C24.0582 3.61172 23.8239 3.45515 23.5661 3.34833C23.3082 3.2415 23.0319 3.18652 22.7528 3.18652C22.4737 3.18652 22.1973 3.2415 21.9395 3.34833C21.6816 3.45515 21.4473 3.61172 21.25 3.80909L4.8729 20.1875C4.67472 20.3841 4.51759 20.6182 4.41066 20.8761C4.30373 21.1339 4.24912 21.4105 4.25001 21.6896V27.625C4.25001 28.1886 4.47389 28.7291 4.87241 29.1276C5.27092 29.5261 5.81143 29.75 6.37501 29.75H12.3104C12.5896 29.7509 12.8661 29.6963 13.124 29.5894C13.3819 29.4824 13.6159 29.3253 13.8125 29.1271L30.1896 12.75C30.387 12.5527 30.5436 12.3184 30.6504 12.0606C30.7572 11.8027 30.8122 11.5264 30.8122 11.2473C30.8122 10.9682 30.7572 10.6918 30.6504 10.4339C30.5436 10.1761 30.387 9.94181 30.1896 9.74448ZM6.81462 21.25L18.0625 10.0021L20.2792 12.2188L9.03126 23.4653L6.81462 21.25ZM6.37501 23.8146L10.1854 27.625H6.37501V23.8146ZM12.75 27.1854L10.5334 24.9688L21.7813 13.7209L23.9979 15.9375L12.75 27.1854ZM25.5 14.4354L19.5646 8.50003L22.7521 5.31253L28.6875 11.2466L25.5 14.4354Z" fill="white"/>-->
+<!--            </svg>-->
+<!--          </i>-->
+<!--        </div>-->
+<!--        <div class="member_name">-->
+<!--          <span><span id="memberName">홍길동</span>님</span> <span id="memberGrade">새싹</span>-->
+<!--        </div>-->
+<!--        <div class="member_email"> <span>(example@example.com)</span></div>-->
+<!--      </a>-->
 
-      <div class="myPage_menu">
-        <div class="myPage_menu_item">
-          <p class="menu_item_title"><a href="">쇼핑 내역<i class="ic ic_arrow_right"></i></a></p>
-          <p class="menu_item_content"><a href="">주문/배송목록</a></p>
-          <p class="menu_item_content"><a href="">선물함</a></p>
-          <p class="menu_item_content"><a href="">매장 구매 내역</a></p>
-          <p class="menu_item_content"><a href="">영수증</a></p>
-        </div>
-        <div class="myPage_menu_item">
-          <p class="menu_item_title"><a href="">나의 통장<i class="ic ic_arrow_right"></i></a></p>
-          <p class="menu_item_content"><a href="">통합 포인트</a></p>
-          <p class="menu_item_content"><a href="">쿠폰</a></p>
-          <p class="menu_item_content"><a href="">기프트카드</a></p>
-        </div>
-        <div class="myPage_menu_item">
-          <p class="menu_item_title"><a href="">회원정보<i class="ic ic_arrow_right"></i></a></p>
-          <p class="menu_item_content"><a href="">배송주소록</a></p>
-          <p class="menu_item_content"><a href="">회원정보관리</a></p>
-          <p class="menu_item_content"><a href="">나의 회원등급</a></p>
-        </div>
-        <div class="myPage_menu_item">
-          <p class="menu_item_title"><a href="">고객센터<i class="ic ic_arrow_right"></i></a></p>
-          <p class="menu_item_content"><a href="">1:1 문의 내역</a></p>
-          <p class="menu_item_content"><a href="">업체배송 문의내역</a></p>
-        </div>
-        <div class="myPage_menu_item item_last">
-          <p class="menu_item_title"><a href="">도움이 필요하세요?</a></p>
-          <p class="menu_item_content"><a href="">FAQ</a></p>
-          <p class="menu_item_content"><a href="">1:1 고객 상담</a></p>
-        </div>
-      </div>
-    </div>
-
+<!--      <div class="myPage_menu">-->
+<!--        <div class="myPage_menu_item">-->
+<!--          <p class="menu_item_title"><a href="">쇼핑 내역<i class="ic ic_arrow_right"></i></a></p>-->
+<!--          <p class="menu_item_content"><a href="">주문/배송목록</a></p>-->
+<!--          <p class="menu_item_content"><a href="">선물함</a></p>-->
+<!--          <p class="menu_item_content"><a href="">매장 구매 내역</a></p>-->
+<!--          <p class="menu_item_content"><a href="">영수증</a></p>-->
+<!--        </div>-->
+<!--        <div class="myPage_menu_item">-->
+<!--          <p class="menu_item_title"><a href="">나의 통장<i class="ic ic_arrow_right"></i></a></p>-->
+<!--          <p class="menu_item_content"><a href="">통합 포인트</a></p>-->
+<!--          <p class="menu_item_content"><a href="">쿠폰</a></p>-->
+<!--          <p class="menu_item_content"><a href="">기프트카드</a></p>-->
+<!--        </div>-->
+<!--        <div class="myPage_menu_item">-->
+<!--          <p class="menu_item_title"><a href="">회원정보<i class="ic ic_arrow_right"></i></a></p>-->
+<!--          <p class="menu_item_content"><a href="">배송주소록</a></p>-->
+<!--          <p class="menu_item_content"><a href="">회원정보관리</a></p>-->
+<!--          <p class="menu_item_content"><a href="">나의 회원등급</a></p>-->
+<!--        </div>-->
+<!--        <div class="myPage_menu_item">-->
+<!--          <p class="menu_item_title"><a href="">고객센터<i class="ic ic_arrow_right"></i></a></p>-->
+<!--          <p class="menu_item_content"><a href="">1:1 문의 내역</a></p>-->
+<!--          <p class="menu_item_content"><a href="">업체배송 문의내역</a></p>-->
+<!--        </div>-->
+<!--        <div class="myPage_menu_item item_last">-->
+<!--          <p class="menu_item_title"><a href="">도움이 필요하세요?</a></p>-->
+<!--          <p class="menu_item_content"><a href="">FAQ</a></p>-->
+<!--          <p class="menu_item_content"><a href="">1:1 고객 상담</a></p>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
     <div class="myPage_right">
       <div class="list_menu">
-        <div class="list_menu_item tap"><a href="">전체</a></div>
-        <div class="list_menu_item"><a href="">답변 대기</a></div>
-        <div class="list_menu_item"><a href="">답변 완료</a></div>
-        <a href=""><span>1:1 문의하기</span></a>
+        <div class="list_menu_item tap">
+        <a href="/mypage/inquiryList">전체</a>
+      </div>
+      <div class="list_menu_item">
+        <a href="/mypage/inquiryList?status=답변 대기">답변 대기</a>
+      </div>
+      <div class="list_menu_item">
+        <a href="/mypage/inquiryList?status=답변 완료">답변 완료</a>
+      </div>
+        <a href="/mypage/inquiry"><span>1:1 문의하기</span></a>
       </div>
 
       <div class="inquiry_list">
         <ul>
-          <li class="inquriy_item"> <!-- 조건문 (li)반복 -->
+          <!-- 반복문: 문의 목록 출력 -->
+          <li class="inquriy_item" th:each="inquiry : ${inquiryList}">
             <div class="inquriy_item_wrap">
               <div class="inquriy_item_header">
-                <span class="inquriy_state completion">답변 완료</span> <!-- 데이터 넣을 때 이거 지우고 밑에 예시처럼 넣어주세요 -->
-                <!--
                 <span class="inquriy_state"
-                    th:classappend="${status == '답변 대기'} ? 'stay' : 'completion'">
-                    [[${status}]] 예시 구문
+                      th:classappend="${inquiry.status == '답변 대기'} ? 'stay' : 'completion'">
+                        [[${inquiry.status}]]
                 </span>
-                ** span의 기본 클래스명 : inquriy_state
-                   답변 대기 중이면 'stay', 답변 완료면 'completion' 클래스명 추가하기 **
-                -->
-                <span class="inquiry_type">배송/수령예정일 안내</span>
+                <span class="inquiry_type" th:text="${inquiry.type}">문의 유형</span>
               </div>
 
               <div class="inquriy_item_title_wrap">
-                <span class="inquiry_title">배송 언제 되나요? 빨리 오세욧!!!</span>
+                <span class="inquiry_title" th:text="${inquiry.title}">문의 제목</span>
                 <span>
-                                              <span class="inquiry_date">2024/12/23</span>
-                                              <i class="ic ic_arrow_down"></i>
-                                          </span>
+                  <span class="inquiry_date" th:text="${#dates.format(inquiry.regAt, 'yyyy/MM/dd')}"></span>
+                  <i class="ic ic_arrow_down"></i>
+                </span>
               </div>
 
               <div class="inquriy_item_content_wrap">
-                <p class="inquriy">
-                  <img src="https://i.pinimg.com/736x/55/a5/d0/55a5d027addb0c84cb2df4b6a77311b6.jpg" alt=""> <!-- if : 사진이 있다면 display : block;, 없다면 display : none; -->
-                  <strong>질문 > </strong> 제가 책을 어제 시켰는데 왜 아직도 안 오나요 핵로켓배송이라고 해서 시켰는데 핵느림보 배송이네요 이젠문고 실망입니다 완전 실망실망대실망 흥흥흥흥
-                </p>
-                <p class="inquiry_answer"> <!-- if : 답변이 있다면 display : block;, 없다면 display : none; -->
-                  <strong>답변 > </strong> 홍길동 고객님, 저희 이젠 문고에서 많은 불편함을 느끼게 해서 죄송합니다. 저희 매장은 구제불능인 거 같습니다. 조만간 폐업하도록 하겠습니다. 감사합니다.
-                </p>
+                <div class="inquriy">
+                  <img th:src="@{${inquiry.fileAddr}}" alt="사진"
+                       th:style="${inquiry.fileAddr != null} ? 'display:block' : 'display:none'" />
+                  <strong>질문 > </strong>
+                  <span th:text="${inquiry.content}">문의 내용</span>
+                </div>
+                <div class="inquiry_answer" th:if="${inquiry.response != null}">
+                  <strong>답변 > </strong>
+                  <span th:text="${inquiry.response}">답변 내용</span>
+                </div>
               </div>
             </div>
           </li>
         </ul>
       </div>
-
     </div>
   </div>
   <script src="/js/mypageInquiryList.js"></script>

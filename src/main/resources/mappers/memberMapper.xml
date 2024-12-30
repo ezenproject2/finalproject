@@ -145,4 +145,9 @@
         and name = #{name}
     </select>
 
+    <select id="getList" resultType="com.ezen.books.domain.MemberVO">
+        select * from member
+        where auth = 'ROLE_USER'
+    </select>
+
 </mapper>

@@ -236,99 +236,12 @@ document.addEventListener("DOMContentLoaded", () => {
             });
     });
 
-    let isEmailValid = false;
-    // 이메일 중복 체크 / 이메일 인증
-        document.getElementById('emailAuthButton').addEventListener('click', function() {
-            const email = document.getElementById('email').value;
-
-            // 이메일이 비어있는 경우
-            if (!email) {
-                document.querySelector('.error_message').textContent = '이메일을 입력해주세요.';
-                 alert("이메일을 입력해주세요.");
-                return;
-            }
-
-
-
-            // 이메일 중복 체크
-            fetch('/member/check-email', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: email })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // 이메일이 사용 가능할 경우 인증 코드 전송
-                    document.getElementById('emailErrorMessage').textContent = ''; // 에러 메시지 제거
-                    document.getElementById('hiddenEmail').value = email;  // 이메일을 모달에 전달
-
-                    // 이메일 인증 모달을 보여줌
-                    document.getElementById('emailAuthModal').style.display = 'block';
-
-                    // 인증 코드 전송 API 호출
-                    fetch('/member/sendEmailAuth', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ email: email })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert(data.message);  // 이메일 인증 코드가 전송되었음을 알림
-                        } else {
-                            alert(data.message);  // 이메일 전송 실패 시 오류 메시지
-                        }
-                    });
-                } else {
-                    // 이메일 중복 오류
-                    document.getElementById('emailErrorMessage').textContent = data.message;
-                }
-            });
-        });
-
-        // 인증 코드 확인
-        document.getElementById('verifyAuthCode').addEventListener('click', function() {
-            const email = document.getElementById('hiddenEmail').value;
-            const enteredCode = document.getElementById('authCode').value;
-
-            if (!enteredCode) {
-                document.getElementById('authErrorMessage').textContent = '인증번호를 입력해주세요.';
-                return;
-            }
-
-            // 인증 코드 확인 API 호출
-            fetch('/member/verifyEmailAuth', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: email, code: enteredCode })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('인증이 완료되었습니다.');
-                    document.getElementById('emailAuthModal').style.display = 'none';  // 모달 숨기기
-                    isEmailVerified = true;
-                } else {
-                    document.getElementById('authErrorMessage').textContent = data.message;
-                }
-            });
-        });
-
-        // 모달 닫기
-        document.getElementById('closeModal').addEventListener('click', function() {
-            document.getElementById('emailAuthModal').style.display = 'none';
-        });
 });
 
 // 회원가입 폼 제출 시, 아이디 중복 확인 상태 체크
 document.querySelector('form').addEventListener('submit', function(event) {
     if (!isIdChecked) {
         alert("아이디 중복 확인을 해주세요.");
-        event.preventDefault();  // 폼 제출을 막음
-    }
-    if (!isEmailVerified) {
-        alert("이메일 인증을 완료해주세요.");
         event.preventDefault();  // 폼 제출을 막음
     }
 });

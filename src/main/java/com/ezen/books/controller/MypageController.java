@@ -57,6 +57,25 @@ public class MypageController {
         return "/mypage/main";
     }
 
+    @GetMapping("/inquiryList")
+    public String inquiryList(Model model, Authentication authentication,
+                              @RequestParam(value = "status", required = false) String status){
+        String loginId = authentication.getName();
+
+        MemberVO memberVO = memberService.getMemberByInfo(loginId);
+        long mno = memberVO.getMno();
+
+        List<InquiryVO> inquiryVOList = inquiryService.getInquiriesByMno(mno);
+        List<InquiryVO> inquiryVOAllList = inquiryService.getAllInquiries(status);
+
+        model.addAttribute("inquiryList", inquiryVOList);
+
+        model.addAttribute("inquiryList", inquiryVOAllList);
+        model.addAttribute("stautus", status);
+
+        return "/mypage/inquiryList";
+    }
+
     @GetMapping("/inquiry")
     public void inquiry(){}
 
@@ -73,9 +92,6 @@ public class MypageController {
 
         log.info("|| inquiryVO {}", inquiryVO);
         log.info("|| file > {}", file);
-
-        GradeVO gradeVO = gradeService.getGradeByGno(memberVO.getGno());  // grade 정보 조회
-        model.addAttribute("gradeVO", gradeVO);
 
         inquiryVO.setMno(mno);
 
@@ -102,6 +118,18 @@ public class MypageController {
         model.addAttribute("coupons", couponList);
 
         return "/mypage/coupon";
+    }
+
+    @GetMapping("/point")
+    public String pointsHistory(Model model, Authentication authentication){
+        String loginId = authentication.getName();
+        MemberVO memberVO = memberService.getMemberByInfo(loginId);
+        long mno = memberVO.getMno();
+
+        List<PointsVO> pointsHistory = pointService.getPointsHistory(mno);
+        model.addAttribute("points", pointsHistory);
+
+        return "/mypage/point";
     }
 
 

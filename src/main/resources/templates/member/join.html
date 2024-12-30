@@ -126,25 +126,12 @@
                                         <td class="form_data id">
                                             <div class="form_id_wrap">
                                                 <div class="form_item email">
-                                                    <input type="text" id="email" required="" class="input_email" maxlength="50" name="email">
+                                                    <!-- 인증된 이메일 표시 -->
+                                                    <input type="email" id="email" name="email" th:value="${email}" required maxlength="50" readonly>
                                                 </div>
-                                                <span class="error_message" id="emailErrorMessage"></span>
+                                                <span class="error_message"></span>
                                             </div>
-                                            <button type="button" class="email_check" id="emailAuthButton">이메일 확인</button>
                                         </td>
-                                        <!-- 이메일 인증 모달 -->
-                                        <div id="emailAuthModal" class="modal" style="display:none;">
-                                            <div class="modal-content">
-                                                <span id="closeModal" class="close">&times;</span>
-                                                <input type="hidden" id="hiddenEmail" name="hiddenEmail">
-                                                <div class="textbox">
-                                                    <input type="text" id="authCode" name="authCode" placeholder="인증번호를 입력하세요"><label>인증번호 </label>
-                                                    <div class="error"> </div>
-                                                </div><br><br>
-                                                <span class="error_message" id="authErrorMessage"></span>
-                                                <input type="button" id="verifyAuthCode" value="확인">
-                                            </div>
-                                        </div>
                                     </tr>
                                     <tr>
                                         <td class="form_table_label">이름 <em>*</em></td>

@@ -18,8 +18,6 @@ import java.util.List;
 public class MemberServiceImpl implements MemberService{
 
     private final MemberMapper memberMapper;
-    private final GradeMapper gradeMapper;
-    private final CouponMapper couponMapper;
 
     @Override
     public boolean checkLoginIdDuplicate(String loginId) {
@@ -187,6 +185,11 @@ public class MemberServiceImpl implements MemberService{
         return memberMapper.pwUpdate(memberVO);
     }
     /* --------------*/
+
+    @Override
+    public List<MemberVO> getList() {
+        return memberMapper.getList();
+    }
 
 
 }

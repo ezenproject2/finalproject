@@ -45,19 +45,19 @@ public class MemberController {
 
 
     @GetMapping("/join")
-    public void join(){}
+    public String join(Model model, HttpSession session){
+        String email = (String) session.getAttribute("authenticatedEmail");
+        if (email == null || email.isEmpty()) {
+            return "redirect:/member/email_auth";
+        }
+        model.addAttribute("email", email);
+
+        return "/member/join";
+    }
 
     @PostMapping("/join")
     public String join(MemberVO memberVO, @ModelAttribute AddressVO addressVO, Model model,
-                       HttpServletRequest request){
-
-        String enteredCode = request.getParameter("authCode");
-        String sessionCode = (String) request.getSession().getAttribute("verificationCode");
-
-        // 인증 코드 검증
-        if (sessionCode == null || !sessionCode.equals(enteredCode)) {
-            return "redirect:/member/join?error=invalid_verification_code";
-        }
+                       HttpSession session){
 
         String pwd = passwordEncoder.encode(memberVO.getPassword());
         String pwdCheck = passwordEncoder.encode(memberVO.getPasswordCheck());
@@ -308,132 +308,37 @@ public class MemberController {
         }
     }
 
-    // 회원가입 시 이메일 중복 확인
-    @RequestMapping(value = "/check-email", method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> checkEmail(@RequestBody Map<String, String> requestData) {
-        String email = requestData.get("email");  // JSON에서 "email" 값을 추출
-
-        Map<String, Object> response = new HashMap<>();
-
-        MemberVO memberVO = memberService.selectMemberByEmail(email);
-
-        if (memberVO == null) {
-            response.put("success", true);
-            response.put("message", "사용 가능한 이메일입니다.");
-        } else {
-            response.put("success", false);
-            response.put("message", "이미 존재하는 이메일입니다.");
-        }
-
-        return response;
-    }
-
-//    // 이메일 인증 및 인증 번호 전송
-//    @RequestMapping(value = "/sendEmailAuth", method = RequestMethod.POST)
-//    @ResponseBody
-//    public Map<String, Object> sendEmailAuth(@RequestBody Map<String, String> requestData, HttpSession session) {
-//        Map<String, Object> response = new HashMap<>();
-//        String email = requestData.get("email");
-//
-//        // 이메일 형식 검증
-//        if (email == null || !email.matches("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$")) {
-//            response.put("success", false);
-//            response.put("message", "이메일 형식이 잘못되었습니다.");
-//            return response;
-//        }
-//
-//        // 인증 코드 생성
-//        Random random = new Random();
-//        String verificationCode = String.format("%06d", random.nextInt(1000000));  // 6자리 인증 코드
-//
-//        // 인증 코드를 세션에 저장
-//        session.setAttribute("verificationCode", verificationCode);
-//        session.setAttribute("email", email);
-//        log.info("Stored verification code: {}", session.getAttribute("verificationCode"));
-//        log.info("User entered verification code: {}", verificationCode);
-//
-//        // 이메일로 인증 코드 전송
-//        // 이메일 전송 설정
-//        String setfrom = "okchipojyh@gmail.com";
-//        String tomail = email;
-//        String title = "[이젠문고] 회원가입 이메일 인증";
-//        String content = "안녕하세요 회원님, 인증번호는 " + verificationCode + " 입니다.";
-//
-//        try {
-//            MimeMessage message = mailSender.createMimeMessage();
-//            MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "utf-8");
-//            messageHelper.setFrom(setfrom);
-//            messageHelper.setTo(tomail);
-//            messageHelper.setSubject(title);
-//            messageHelper.setText(content);
-//
-//            mailSender.send(message);
-//            log.info("Verification email sent to {}", email);
-//            response.put("success", true);
-//            response.put("message", "이메일이 전송되었습니다. 인증 코드를 확인하세요.");
-//        } catch (Exception e) {
-//            response.put("success", false);
-//            response.put("message", "이메일 전송 실패. 다시 시도해주세요.");
-//        }
-//
-//        return response;
-//    }
-//
-//    @RequestMapping(value = "/verifyEmailAuth", method = RequestMethod.POST)
-//    @ResponseBody
-//    public Map<String, Object> verifyEmailAuth(@RequestBody Map<String, String> requestData, HttpSession session) {
-//        Map<String, Object> response = new HashMap<>();
-//
-//        String email = requestData.get("email");
-//        String enteredCode = (String) response.get("code");
-//
-//        // 세션에서 저장된 인증 코드 가져오기
-//        String storedCode = (String) session.getAttribute("verificationCode");
-//        String storedEmail = (String) session.getAttribute("email");
-//
-//        if (storedEmail == null || !storedEmail.equals(email)) {
-//            response.put("success", false);
-//            response.put("message", "잘못된 이메일입니다.");
-//            return response;
-//        }
-//
-//        if (storedCode == null || !storedCode.equals(enteredCode)) {
-//            response.put("success", false);
-//            response.put("message", "인증번호가 일치하지 않습니다.");
-//            return response;
-//        }
-//
-//        // 인증 성공
-//        response.put("success", true);
-//        response.put("message", "인증이 완료되었습니다.");
-//        return response;
-//    }
-
     @GetMapping("/email_auth")
-    public void email_auth(){}
+    public void email_auth() {}
 
-    // 이메일 인증 및 인증 번호 전송
-    @RequestMapping(value = "/email_auth", method = RequestMethod.POST)
-    public ModelAndView email_auth(HttpSession session, HttpServletRequest request) throws IOException {
-        String email = request.getParameter("email");
-        String name = request.getParameter("name");
+    @RequestMapping(value = "/sendEmailAuth", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> sendEmailAuth(@RequestBody Map<String, String> requestData, HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
+        String email = requestData.get("email");
 
-        // 이메일과 이름 검증
-        if (email == null || email.isEmpty() || !email.matches("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$")) {
-            return new ModelAndView("redirect:/member/email_auth?error=invalid_email");
+        // 이메일 형식 검증
+        if (email == null || !email.matches("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$")) {
+            response.put("success", false);
+            response.put("message", "이메일 형식이 잘못되었습니다.");
+            return response;
         }
-        if (name == null || name.isEmpty()) {
-            return new ModelAndView("redirect:/member/email_auth?error=invalid_name");
+
+        // 이메일 중복 체크
+        MemberVO memberVO = memberService.selectMemberByEmail(email);
+        if (memberVO != null) {
+            response.put("success", false);
+            response.put("message", "이미 등록된 이메일입니다.");
+            return response;
         }
 
         // 인증 코드 생성
         Random random = new Random();
-        String verificationCode = String.format("%06d", random.nextInt(1000000));
+        String verificationCode = String.format("%06d", random.nextInt(1000000));  // 6자리 인증 코드
 
         // 인증 코드를 세션에 저장
         session.setAttribute("verificationCode", verificationCode);
-        session.setAttribute("email", email);
+        session.setAttribute("authenticatedEmail", email);  // 변경된 부분
         log.info("Stored verification code: {}", session.getAttribute("verificationCode"));
         log.info("User entered verification code: {}", verificationCode);
 
@@ -442,8 +347,6 @@ public class MemberController {
         String tomail = email;
         String title = "[이젠문고] 회원가입 이메일 인증";
         String content = "안녕하세요 회원님, 인증번호는 " + verificationCode + " 입니다.";
-
-        ModelAndView mv = new ModelAndView();
 
         try {
             MimeMessage message = mailSender.createMimeMessage();
@@ -455,58 +358,49 @@ public class MemberController {
 
             mailSender.send(message);
             log.info("Verification email sent to {}", email);
-
-            // 이메일 전송 성공 시 인증 페이지로 이동
-            mv.setViewName("/member/email_auth");
-            mv.addObject("verificationCode", verificationCode);  // 인증 코드 전달
-            mv.addObject("showModal", true);  // 이메일 전송 성공 시 모달 표시 플래그 전달
-            return mv;
+            response.put("success", true);
+            response.put("message", "이메일이 전송되었습니다. 인증 코드를 확인하세요.");
         } catch (Exception e) {
-            log.error("Email sending failed: {}", e.getMessage());
-
-            // 이메일 전송 실패 시 오류 페이지로 리다이렉트
-            mv.setViewName("redirect:/member/email_auth?error=email_send_failed");
-            return mv;
+            response.put("success", false);
+            response.put("message", "이메일 전송 실패. 다시 시도해주세요.");
         }
+
+        return response;
     }
 
-    // 이메일 인증 코드 확인
-    @PostMapping("/verify_email")
-    public ModelAndView verifyEmail(HttpSession session, String verificationCode) {
-        ModelAndView mv = new ModelAndView();
+    @RequestMapping(value = "/verifyEmailAuth", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> verifyEmailAuth(@RequestBody Map<String, String> requestData, HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
 
-        // 세션에서 저장된 인증 코드와 비교
-        String sessionVerificationCode = (String) session.getAttribute("verificationCode");
+        String email = requestData.get("email");
+        String enteredCode = requestData.get("code");
 
-        if (sessionVerificationCode == null || !sessionVerificationCode.equals(verificationCode)) {
-            mv.setViewName("redirect:/member/email_auth?error=invalid_verification_code");
-            return mv;
+        // 세션에서 저장된 인증 코드 가져오기
+        String storedCode = (String) session.getAttribute("verificationCode");
+        String storedEmail = (String) session.getAttribute("authenticatedEmail");  // 수정된 부분
+
+        if (storedEmail == null || !storedEmail.equals(email)) {
+            response.put("success", false);
+            response.put("message", "잘못된 이메일입니다.");
+            return response;
         }
 
-        // 인증 성공
-        mv.setViewName("redirect:/member/email_auth?success=true");
-        return mv;
+        if (storedCode == null || !storedCode.equals(enteredCode)) {
+            response.put("success", false);
+            response.put("message", "인증번호가 일치하지 않습니다.");
+            return response;
+        }
+
+        // 인증 성공 후 이메일을 세션에 저장
+        session.setAttribute("authenticatedEmail", email);
+        log.info("authenticatedEmail: {}", email);
+
+        // 인증 성공 후, 회원가입 페이지로 리다이렉트
+        response.put("success", true);
+        response.put("message", "인증이 완료되었습니다.");
+        return response;
     }
 
-/*    // 이메일 인증 코드 확인
-    @PostMapping("/verify_email")
-    public ModelAndView verifyEmail(HttpSession session, String verificationCode) {
-        ModelAndView mv = new ModelAndView();
-
-        // 세션에서 저장된 인증 코드와 비교
-        String sessionVerificationCode = (String) session.getAttribute("verificationCode");
-
-        if (sessionVerificationCode == null || !sessionVerificationCode.equals(verificationCode)) {
-            mv.setViewName("redirect:/member/email_auth?error=invalid_verification_code");
-            return mv;
-        }
-
-        // 인증 성공 후 세션에서 인증 코드 삭제
-        session.removeAttribute("verificationCode");
-
-        // 인증 성공 후 리다이렉트
-        mv.setViewName("redirect:/member/email_auth?success=true");
-        return mv;
-    }*/
 
 }

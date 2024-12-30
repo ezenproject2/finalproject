@@ -57,4 +57,6 @@ public interface MemberMapper {
     MemberVO selectMemberByEmail(String email);
 
     int pwUpdate(MemberVO memberVO);
+
+    List<MemberVO> getList();
 }

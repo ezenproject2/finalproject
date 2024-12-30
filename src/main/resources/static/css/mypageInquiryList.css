@@ -170,3 +170,9 @@
     border-top: 1px solid #c6c6c6;
     padding-top: 24px;
 }
+
+.inquriy_item_content_wrap {
+    display: flex;
+    flex-direction: column;
+    align-content: flex-start;
+}

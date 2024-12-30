@@ -27,4 +27,9 @@ public class PointServiceImpl implements PointService{
         pointMapper.savePoints(pointsVO);
     }
 
+    @Override
+    public List<PointsVO> getPointsHistory(long mno) {
+        return pointMapper.getPointsHistory(mno);
+    }
+
 }

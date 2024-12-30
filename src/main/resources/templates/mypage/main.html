@@ -51,7 +51,7 @@
                 </div>
                 <div class="myPage_menu_item">
                     <p class="menu_item_title"><a href="">고객센터<i class="ic ic_arrow_right"></i></a></p>
-                    <p class="menu_item_content"><a href="/mypage/inquiry">1:1 문의 내역</a></p>
+                    <p class="menu_item_content"><a href="/mypage/inquiryList">1:1 문의 내역</a></p>
                     <p class="menu_item_content"><a href="">업체배송 문의내역</a></p>
                 </div>
                 <div class="myPage_menu_item item_last">
@@ -187,7 +187,7 @@
                 </div>
                 <div class="direct_banner_item">
                     <p class="direct_banner_item_header">
-                        <i class="ic ic_point"></i>
+                        <a th:href="@{/mypage/point}"><i class="ic ic_point"></i></a>
                         <span class="direct_banner_text">포인트</span>
                     </p>
                     <p class="direct_banner_item_content"><strong>[[${pointsBalance}]]</strong> 원</p>
