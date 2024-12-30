@@ -4,6 +4,8 @@ import com.ezen.books.domain.AddressVO;
 import com.ezen.books.domain.MemberVO;
 import jakarta.validation.constraints.NotBlank;
 
+import java.util.List;
+
 public interface MemberService {
     
     boolean checkLoginIdDuplicate(@NotBlank(message = "ID를 입력하세요.") String loginId);
@@ -43,4 +45,6 @@ public interface MemberService {
     MemberVO selectMemberByEmail(String email);
 
     int pwUpdate(MemberVO memberVO);
+
+    List<MemberVO> getList();
 }

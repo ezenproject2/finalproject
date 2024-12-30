@@ -27,4 +27,15 @@ public class PointServiceImpl implements PointService{
         pointMapper.savePoints(pointsVO);
     }
 
+    @Override
+    public List<PointsVO> getPointsHistory(long mno) {
+        return pointMapper.getPointsHistory(mno);
+    }
+
+    @Override
+    public int getExpiringPoints() {
+        Integer points = pointMapper.getExpiringPoints();
+        return points != null ? points : 0;  // null이면 0으로 처리
+    }
+
 }

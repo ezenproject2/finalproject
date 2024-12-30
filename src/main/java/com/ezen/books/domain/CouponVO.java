@@ -24,6 +24,7 @@ public class CouponVO {
     private int minPrice; // 최소 구매 금액
     private int disAmount; // 할인 금액
     private int expDay; // 만료 일자
+    private String title;
 
 
 }

@@ -8,6 +8,11 @@ import com.ezen.books.repository.MemberMapper;
 import com.ezen.books.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -15,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -49,10 +55,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         MemberVO memberVO = memberMapper.findById(oAuth2UserInfo.getId());
 
-        // 사용자에게 기본 역할 추가 (예: "ROLE_USER")
-        List<String> roles = List.of("ROLE_USER");  // 기본적인 역할 할당 (추가적인 역할은 상황에 맞게 설정 가능)
+        List<String> roles = List.of("ROLE_USER");
 
-        return new OAuth2UserPrincipal(oAuth2UserInfo, memberVO,  roles);
+        return new OAuth2UserPrincipal(oAuth2UserInfo, memberVO, roles);
     }
 
 

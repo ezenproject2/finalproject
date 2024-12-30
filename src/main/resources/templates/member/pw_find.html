@@ -9,15 +9,23 @@
   <link rel="stylesheet" href="/css/memberPwFind.css"/>
 </head>
 <main layout:fragment="main">
-  <form class="content" action="pw_auth.me" method="post">
-    <div class="textbox">
-      <input id="text" name="name" required="" type="text" />
-      <div class="error">이름을 입력하세요</div>
-    </div>
-    <div class="textbox">
-      <input id="email" name="email" required="" type="email" />
-      <div class="error">유효하지 않은 이메일주소 입니다</div>
-    </div>
-    <input type="submit" id="check" value="비밀번호찾기">
-  </form>
+  <div class="inner">
+      <div class="find_wrap">
+        <form class="content" action="pw_auth.me" method="post">
+          <div class="textbox">
+            <input id="text" name="loginId" required="" type="text" placeholder="아이디"/>
+            <div th:if="${error != null}">
+              <p style="color: #f27370;" th:text="${error}"></p>
+            </div>
+          </div>
+          <div class="textbox">
+            <input id="email" name="email" required="" type="email" placeholder="이메일"/>
+            <div th:if="${error != null}">
+              <p style="color: #f27370;" th:text="${error}"></p>
+            </div>
+          </div>
+          <input type="submit" id="check" value="비밀번호찾기">
+        </form>
+      </div>
+  </div>
 </main>

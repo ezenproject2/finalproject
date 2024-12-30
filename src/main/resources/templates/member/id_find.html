@@ -9,30 +9,27 @@
   <link rel="stylesheet" href="/css/memberPwFind.css"/>
 </head>
 <main layout:fragment="main">
-  <form action="/member/id_find" method="POST" class="content">
-    <div class="textbox">
-      <input id="email" name="email" type="email" placeholder="이메일" required>
-      <label>이메일</label>
+  <div class="inner">
+    <div class="find_wrap">
+      <form action="/member/id_find" method="POST" class="content">
+        <div class="textbox">
+          <input id="email" name="email" type="email" placeholder="이메일" required>
+        </div>
+        <div class="textbox">
+          <input id="name" name="name" type="text" placeholder="이름" required>
+        </div>
+        <input type="submit" value="아이디 찾기">
+      </form>
+      <br>
+      <div th:if="${foundId != null}">
+        <h2>찾은 아이디</h2><br>
+        <p>회원님의 아이디는 <strong th:text="${foundId}"></strong> 입니다.</p>
+        <br>
+        <div th:if="${error != null}">
+          <p style="color: #f27370;" th:text="${error}"></p>
+        </div>
+        <a th:href="@{/member/login}"><input type="submit" id="check" value="OK"></a>
+      </div>
     </div>
-
-    <div class="textbox">
-      <input id="name" name="name" type="text" placeholder="이름" required>
-      <label>이름</label>
-    </div>
-
-    <input type="submit" value="아이디 찾기">
-  </form>
-  <br>
-  <!-- 결과 영역 (아이디 찾기 결과) -->
-  <div th:if="${foundId != null}">
-    <h3>찾은 아이디</h3>
-    <p>회원님의 아이디는 <strong th:text="${foundId}"></strong> 입니다.</p>
   </div>
-
-  <!-- 에러 메시지 -->
-  <div th:if="${error != null}">
-    <p style="color: red;">아이디를 찾을 수 없습니다. 이메일 또는 이름이 일치하는 회원을 찾을 수 없습니다.</p>
-  </div>
-
-  <a th:href="@{/member/login}"><input type="submit" id="check" value="OK"></a>
 </main>

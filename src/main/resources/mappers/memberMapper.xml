@@ -30,7 +30,7 @@
         where login_id = #{memberLoginId}
     </select>
 
-    <insert id="saveTokens" parameterType="com.ezen.books.domain.MemberVO">
+    <insert id="saveTokens" useGeneratedKeys="true" keyProperty="mno">
         insert into member (login_id, password, email, name, phone_number, nick_name, auth, gno, provider, provider_id)
         values (#{loginId}, #{password}, #{email}, #{name}, #{phoneNumber}, #{nickName}, 'ROLE_USER' , '1' ,#{provider}, #{providerId})
     </insert>
@@ -81,8 +81,8 @@
     </select>
     <!-- coupon_log에 쿠폰 기록 -->
     <insert id="insertCouponLog">
-        insert into coupon_log (mno, cno, status, used_at, exp_at)
-        values (#{mno}, #{cno}, '사용 가능', NULL, #{expAt})
+        insert into coupon_log (mno, cno, status, used_at, exp_at, title)
+        values (#{mno}, #{cno}, '사용 가능', NULL, #{expAt}, #{title})
     </insert>
     <!-- 기존 쿠폰 상태를 '만료'로 변경 -->
     <update id="updateCouponStatusToExpired">
@@ -143,6 +143,11 @@
         select * from member
         where email = #{email}
         and name = #{name}
+    </select>
+
+    <select id="getList" resultType="com.ezen.books.domain.MemberVO">
+        select * from member
+        where auth = 'ROLE_USER'
     </select>
 
 </mapper>

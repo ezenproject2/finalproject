@@ -20,6 +20,7 @@ public class CouponLogVO {
     used_at DATE,
     exp_at DATE,
     PRIMARY KEY (clno)
+    ALTER TABLE coupon_log ADD COLUMN title VARCHAR(255);
     );*/
 
     private long clno; // 쿠폰 기록 번호
@@ -29,9 +30,10 @@ public class CouponLogVO {
     private String status; // 상태 (사용 가능, 사용 완료, 만료)
     private Date usedAt; // 사용 일자
     private Date expAt; // 만료 일자
+    private String title;
 
     // Coupon 테이블의 추가 필드
-    private String couponName;
+
     private long disAmount;
     private long minPrice;
 

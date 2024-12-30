@@ -21,8 +21,10 @@
                     <a th:href="@{/member/email_auth}" class="link" sec:authorize="isAnonymous()"> 회원가입 </a>
                     <a href="" class="link" sec:authorize="isAuthenticated()"> 주문배송 </a>
                     <a th:href="@{/member/modify}" class="link" sec:authorize="isAuthenticated()">
-                        ([[${#authentication.name}]])UserModify
+                        ([[${#authentication.name}]])회원수정
                     </a>
+                    <a th:href="@{/admin/userList}" class="link" sec:authorize="hasAnyAuthority('ROLE_ADMIN')"> 회원리스트 </a>
+                    <a th:href="@{/admin/inquiryList}" class="link" sec:authorize="hasAnyAuthority('ROLE_ADMIN')"> 문의하기 답변 </a>
                     <a th:href="@{/member/logout}" class="link" sec:authorize="isAuthenticated()"> 로그아웃 </a>
                 </div>
             </div>

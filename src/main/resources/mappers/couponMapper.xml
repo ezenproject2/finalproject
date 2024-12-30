@@ -23,12 +23,15 @@
         join coupon c ON cl.cno = c.cno
         where cl.mno = #{mno} and cl.status = '사용 가능'
     </select>
-
-    <!-- 쿠폰 적용을 위한 insert 쿼리 -->
-<!--    <insert id="applyCoupon">-->
-<!--        INSERT INTO coupon_log (mno, cno, status, apply_date)-->
-<!--        VALUES (#{mno}, #{couponId}, '사용 완료', NOW())-->
-<!--    </insert>-->
+    <select id="getExpiringCouponsThisMonth" resultType="com.ezen.books.domain.CouponLogVO">
+        <![CDATA[
+        SELECT *
+        FROM coupon_log
+        WHERE status = '사용 가능'
+        AND mno = #{mno}
+         AND exp_at BETWEEN #{firstDay} AND #{lastDay}
+        ]]>
+    </select>
 
     <select id="getCouponByCno" resultType="com.ezen.books.domain.CouponVO">
         select * from coupon
@@ -50,8 +53,9 @@
     </insert>
 
     <select id="findMemberAllCoupons" resultType="com.ezen.books.domain.CouponLogVO">
-        select * from coupon_log
-        where mno = #{mno}
+        select * from coupon_log cl
+        join coupon c ON cl.cno = c.cno
+        where cl.mno = #{mno}
     </select>
 
 </mapper>

@@ -1,30 +1,3 @@
-/* General reset and styling */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f7f7f7;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-/* Form container */
-main {
-    width: 100%;
-    max-width: 400px;
-    background-color: #fff;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Form Title */
 main h1 {
     font-size: 24px;
     margin-bottom: 20px;
@@ -34,7 +7,7 @@ main h1 {
 /* Textbox container */
 .textbox {
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 /* Input field */
@@ -82,7 +55,7 @@ main h1 {
 input[type="submit"] {
     width: 100%;
     padding: 12px;
-    background-color: #007bff;
+    background-color: #497248;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -92,7 +65,7 @@ input[type="submit"] {
 }
 
 input[type="submit"]:hover {
-    background-color: #0056b3;
+    background-color: #39553F;
 }
 
 /* Input focus */
@@ -113,4 +86,91 @@ input[type="submit"]:hover {
     .textbox label {
         font-size: 14px;
     }
+}
+
+.find_wrap{
+    width: 500px;
+    margin: 50px auto;
+    border: 1px solid #C6C6C6;
+    border-radius: 12px;
+    height: 400px;
+    padding: 24px;
+    padding-top: 40px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 260px auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+    height: 230px;
+    border-radius: 12px;
+}
+.modal-content h2{
+    font-weight: bold;
+    font-size: 1.15rem;
+    color: #39553F;
+    margin-top: 7px;
+}
+.modal-content .textbox input{
+    width: 90%;
+    margin-left: 4%;
+    margin-top: 20px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.error_message {
+    color: #f27370;
+    font-size: 14px;
+}
+
+
+#emailAuthButton,
+#verifyAuthCode {
+    width: 100%;
+    padding: 12px;
+    background-color: #497248;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+#verifyAuthCode{
+    width: 56px;
+    margin-left: 85%;
+    margin-top: -7px;
+}
+
+#emailAuthButton:hover,
+#verifyAuthCode:hove{
+    background-color: #39553F;
 }

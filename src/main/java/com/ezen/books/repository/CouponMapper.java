@@ -23,4 +23,6 @@ public interface CouponMapper {
     void updateCouponLog(CouponLogVO newCouponLog);
 
     List<CouponLogVO> findMemberAllCoupons(Long mno);
+
+    List<CouponLogVO> getExpiringCouponsThisMonth(@Param("mno") long mno, @Param("firstDay") String firstDay, @Param("lastDay") String lastDay);
 }

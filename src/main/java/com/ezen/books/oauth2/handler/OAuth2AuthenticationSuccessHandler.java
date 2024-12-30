@@ -101,12 +101,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             String loginId = provider + "_" + providerId;
 
 
-//            // 이미 존재하는 사용자인지 확인
-//            MemberVO memberVO = memberMapper.findByLoginId(loginId);
+            // 이미 존재하는 사용자인지 확인
             log.info("Searching for loginId: {}", loginId);
             MemberVO memberVO = memberMapper.findByLoginId(loginId);
-//            log.info("Found memberVO: {}", memberVO);
-//            log.info("Found memberVO.mno: {}", memberVO.getMno());
 
             if (memberVO != null) {
                 // 이미 존재하는 사용자인 경우, DB에 저장하지 않고 바로 리디렉션
@@ -137,6 +134,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 log.info(">> Saving new member: {}", memberVO);
                 // DB에 저장
                 memberMapper.saveTokens(memberVO);
+                log.info("After save, memberVO.mno: {}", memberVO.getMno());
+
 
 //                // 리디렉션 URL에 토큰 포함
 //                return UriComponentsBuilder.fromUriString(targetUrl)

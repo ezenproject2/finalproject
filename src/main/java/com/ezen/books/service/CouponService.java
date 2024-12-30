@@ -7,8 +7,6 @@ import com.ezen.books.domain.GradeVO;
 import java.util.List;
 
 public interface CouponService {
-    // 회원 쿠폰 조회
-    List<CouponVO> getMemberCoupons(long mno);
 
     List<CouponLogVO> findMemberCoupons(long mno);
 
@@ -20,4 +18,6 @@ public interface CouponService {
 
     // 회원의 모든 쿠폰 사용 내역 조회
     List<CouponLogVO> findMemberAllCoupons(Long mno);
+
+    List<CouponLogVO> getExpiringCouponsThisMonth(long mno);
 }

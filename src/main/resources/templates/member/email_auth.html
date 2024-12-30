@@ -7,125 +7,113 @@
   <title> 이젠문고 </title>
   <meta charset="UTF-8"/>
   <link rel="stylesheet" href="/css/memberPwFind.css"/>
-
 </head>
 <main layout:fragment="main">
-  <form class="content" action="/member/email_auth" method="post">
-    <div class="textbox">
-      <input id="text" name="name" required="" type="text" />
-      <div class="error">이름을 입력하세요</div>
-    </div>
-    <div class="textbox">
-      <input id="email" name="email" required="" type="email" />
-      <div class="error">유효하지 않은 이메일주소 입니다</div>
-    </div>
-    <input type="submit" id="check" class="emailAuthButton" value="이메일 인증">
-
-    <!-- 이메일 인증 모달 -->
-    <div id="emailAuthModal" class="modal" style="display:none;">
-      <div class="modal-content">
-        <span id="closeModal" class="close">&times;</span>
-        <input type="hidden" id="hiddenEmail" name="hiddenEmail">
+  <div class="inner">
+    <div class="find_wrap">
+      <form class="content" id="emailForm" action="/member/sendEmailAuth" method="post">
         <div class="textbox">
-          <input type="text" id="authCode" name="authCode" placeholder="인증번호를 입력하세요"><label>인증번호 </label>
-          <div class="error"> </div>
-        </div><br><br>
-        <span class="error_message" id="authErrorMessage"></span>
-        <input type="button" id="verifyAuthCode" value="확인">
+          <input type="email" id="email" name="email" required maxlength="50" placeholder="이메일">
+          <span class="error_message" id="emailErrorMessage"></span>
+        </div>
+        <button type="button" id="emailAuthButton">이메일 확인</button>
+      </form>
+      <div id="emailAuthModal" class="modal">
+        <div class="modal-content">
+          <span id="closeModal" class="close">&times;</span>
+          <h2>이메일 인증</h2>
+          <div class="textbox">
+            <input type="text" id="authCode" placeholder="인증번호">
+            <span class="error_message" id="authErrorMessage"></span>
+          </div>
+          <br><br>
+          <button type="button" id="verifyAuthCode">확인</button>
+          <br>
+        </div>
       </div>
+    <input type="hidden" id="hiddenEmail" name="hiddenEmail" />
     </div>
-    <div class="content">
-      <div class="message">
-        <th:if test="${param.error == 'invalid_verification_code'}">
-          <p style="color:red;">잘못된 인증 코드입니다. 다시 입력해 주세요.</p>
-        </th:if>
-        <th:if test="${param.success == 'true'}">
-          <p style="color:green;">인증이 완료되었습니다!</p>
-        </th:if>
-      </div>
-    </div>
-  </form>
+  </div>
   <script>
-    document.querySelector('.emailAuthButton').addEventListener('click', function() {
-            const email = document.getElementById('email').value;
+    // 이메일 인증을 위한 처리
+    document.getElementById('emailAuthButton').addEventListener('click', function() {
+      const email = document.getElementById('email').value;
 
-            // 이메일이 비어있는 경우
-            if (!email) {
-                document.querySelector('.error_message').textContent = '이메일을 입력해주세요.';
-                 alert("이메일을 입력해주세요.");
-                return;
-            }
+      // 이메일이 비어있는 경우
+      if (!email) {
+        document.getElementById('emailErrorMessage').textContent = '이메일을 입력해주세요.';
+        alert("이메일을 입력해주세요.");
+        return;
+      }
 
+      // 이메일 인증 요청을 보내는 fetch 호출
+      fetch('/member/sendEmailAuth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // 인증 코드 전송 성공 시 처리
+          document.getElementById('emailErrorMessage').textContent = ''; // 에러 메시지 제거
+          document.getElementById('hiddenEmail').value = email;  // 이메일을 모달에 전달
+          document.getElementById('emailAuthModal').style.display = 'block';  // 모달 보여주기
+          alert(data.message);  // 이메일 인증 코드가 전송되었음을 알림
+        } else {
+          // 인증 코드 전송 실패 시 에러 메시지 출력
+          document.getElementById('emailErrorMessage').textContent = data.message;
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('이메일 인증 처리 중 문제가 발생했습니다.');
+      });
+    });
 
+    // 인증 코드 확인
+    document.getElementById('verifyAuthCode').addEventListener('click', function() {
+      const email = document.getElementById('hiddenEmail').value;  // 모달에 저장된 이메일
+      const enteredCode = document.getElementById('authCode').value;
 
-            // 이메일 중복 체크
-            fetch('/member/check-email', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: email })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // 이메일이 사용 가능할 경우 인증 코드 전송
-                    document.getElementById('emailErrorMessage').textContent = ''; // 에러 메시지 제거
-                    document.getElementById('hiddenEmail').value = email;  // 이메일을 모달에 전달
+      // 인증 코드가 비어있으면 에러 메시지 출력
+      if (!enteredCode) {
+        document.getElementById('authErrorMessage').textContent = '인증번호를 입력해주세요.';
+        return;
+      }
 
-                    // 이메일 인증 모달을 보여줌
-                    document.getElementById('emailAuthModal').style.display = 'block';
+      // 인증 코드 확인 API 호출
+      fetch('/member/verifyEmailAuth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, code: enteredCode })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // 인증 성공 후 회원가입 페이지로 리다이렉트
+          alert('인증이 완료되었습니다.');
+          document.getElementById('emailAuthModal').style.display = 'none';  // 모달 숨기기
+          window.location.href = '/member/join'; // 회원가입 페이지로 리다이렉트
+        } else {
+          // 인증 실패시 에러 메시지
+          document.getElementById('authErrorMessage').textContent = data.message;
+        }
+      });
+    });
 
-                    // 인증 코드 전송 API 호출
-                    fetch('/member/sendEmailAuth', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ email: email })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert(data.message);  // 이메일 인증 코드가 전송되었음을 알림
-                        } else {
-                            alert(data.message);  // 이메일 전송 실패 시 오류 메시지
-                        }
-                    });
-                } else {
-                    // 이메일 중복 오류
-                    document.getElementById('emailErrorMessage').textContent = data.message;
-                }
-            });
-        });
+    // 모달 닫기
+    document.getElementById('closeModal').addEventListener('click', function() {
+      document.getElementById('emailAuthModal').style.display = 'none';
+    });
 
-        // 인증 코드 확인
-        document.getElementById('verifyAuthCode').addEventListener('click', function() {
-            const email = document.getElementById('hiddenEmail').value;
-            const enteredCode = document.getElementById('authCode').value;
-
-            if (!enteredCode) {
-                document.getElementById('authErrorMessage').textContent = '인증번호를 입력해주세요.';
-                return;
-            }
-
-            // 인증 코드 확인 API 호출
-            fetch('/member/verifyEmailAuth', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: email, code: enteredCode })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('인증이 완료되었습니다.');
-                    document.getElementById('emailAuthModal').style.display = 'none';  // 모달 숨기기
-                    isEmailVerified = true;
-                } else {
-                    document.getElementById('authErrorMessage').textContent = data.message;
-                }
-            });
-        });
-
-        // 모달 닫기
-        document.getElementById('closeModal').addEventListener('click', function() {
-            document.getElementById('emailAuthModal').style.display = 'none';
-        });
+<!--    // 모달 외부 클릭 시 모달 닫기-->
+<!--    window.addEventListener('click', function (event) {-->
+<!--      if (event.target === document.getElementById('emailAuthModal')) {-->
+<!--        document.getElementById('emailAuthModal').style.display = 'none';-->
+<!--      }-->
+<!--    });-->
   </script>
+
+
 </main>
