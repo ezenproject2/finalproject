@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper
-public interface OrderListMapper {
+public interface MypageOrderListMapper {
     List<OrdersVO> getAllOrderList(long mno);
 
     List<OrderDetailVO> getOrderDetailList(String orno);

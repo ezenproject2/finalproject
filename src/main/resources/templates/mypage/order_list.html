@@ -102,7 +102,7 @@
                   <span class="order-type-mark" th:if="${orderList[outerStat.index].isPickup == 'N'}">온라인 주문</span>
                   <span class="order-type-mark" th:unless="${orderList[outerStat.index].isPickup == 'N'}">픽업 주문</span>
                 </div>
-                  <a th:href="@{/mypage/order-detail}" class="underline">상세보기<i class="ic ic_arrow_right"></i></a>
+                  <a th:href="@{/mypage/order-detail(orderNum=${orderList[outerStat.index].orno})}" class="underline">상세보기<i class="ic ic_arrow_right"></i></a>
               </div>
 
               <div class="orders_table_content inner-data-container" th:each="orderDetailProduct, innerStat:${orderDetailProductList}" th:data-inner-size="${orderDetailProductList.size}" th:data-outer-index="${outerStat.index}"> <!-- 책 1권의 정보 -->

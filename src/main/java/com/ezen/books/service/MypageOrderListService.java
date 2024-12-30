@@ -16,7 +16,7 @@ import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface OrderListService {
+public interface MypageOrderListService {
 
     Logger log = LoggerFactory.getLogger(PayoutService.class);
 

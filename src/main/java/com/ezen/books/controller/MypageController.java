@@ -13,8 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +31,8 @@ public class MypageController {
     private final InquiryService inquiryService;
 
     // 준희 담당 마이페이지를 위해 추가한 코드.
-    private final AddressListService addressListService;
-    private final OrderListService orderListService;
+    private final MypageAddressListService mypageAddressListService;
+    private final MypageOrderListService mypageOrderListService;
     private final PayoutService payoutService;
 
     /*-- 마이페이지 --*/
@@ -120,17 +118,13 @@ public class MypageController {
     public String showOrderList(PagingVO pagingVO, Model model) {
         log.info(" >>> MypageController: showOrderList start.");
 
-        // mno를 얻기 위해 myPageMain의 있던 코드를 가져옴
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String loginId = authentication.getName();
+        // 로그인 한 사용자의 mno 얻기
+        long mno = fetchUserMno();
 
-        MemberVO memberVO = memberService.getMemberByInfo(loginId);
-        long mno = memberVO.getMno();
-
-        boolean isOrderEmpty = orderListService.isOrderEmpty(mno);
+        boolean isOrderEmpty = mypageOrderListService.isOrderEmpty(mno);
 
         // 화면에 띄울 order_detail과 product의 정보를 가져옴.
-        List<List<OrderDetailProductDTO>> orderDetailProductGroup = orderListService.getOrderDetailProductList(mno);
+        List<List<OrderDetailProductDTO>> orderDetailProductGroup = mypageOrderListService.getOrderDetailProductList(mno);
         // log.info("The orderDetailProductGroup: {}", orderDetailProductGroup);
         log.info("orderDetailProductGroup is empty or not :{}", orderDetailProductGroup.isEmpty());
 
@@ -138,13 +132,13 @@ public class MypageController {
         List<OrdersVO> orderList = new ArrayList<>();
         for(List<OrderDetailProductDTO> groupOfOneOrder : orderDetailProductGroup) {
             String orno = groupOfOneOrder.get(0).getOrderDetailVO().getOrno();
-            OrdersVO order = orderListService.getOrder(orno);
+            OrdersVO order = mypageOrderListService.getOrder(orno);
             orderList.add(order);
         }
 
         // 화면에 띄울 사용자 정보와 등급 정보를 가져옴.
-        MemberVO memberInfo = orderListService.getMember(mno);
-        GradeVO memberGrade = orderListService.getMemberGrade(memberInfo.getGno());
+        MemberVO memberInfo = mypageOrderListService.getMember(mno);
+        GradeVO memberGrade = mypageOrderListService.getMemberGrade(memberInfo.getGno());
 
         // 페이지네이션
         int totalCount = payoutService.getTotalCount(pagingVO, mno);
@@ -165,23 +159,18 @@ public class MypageController {
     public String showAddressList(Model model) {
         log.info(" >>> MypageController: showAddressList start.");
 
-        // mno를 얻기 위해 myPageMain의 있던 코드를 가져옴
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String loginId = authentication.getName();
-
-        MemberVO memberVO = memberService.getMemberByInfo(loginId);
-        long mno = memberVO.getMno();
-        log.info("mno: {}", mno);
+        // 로그인 한 사용자의 mno 얻기
+        long mno = fetchUserMno();
 
         // 화면에 띄울 List<AddressVO>를 가져옴.
-        List<AddressVO> addrList =  addressListService.getAllAddr(mno);
+        List<AddressVO> addrList =  mypageAddressListService.getAllAddr(mno);
         log.info("addrList: {}", addrList);
 
         boolean isAddrEmpty = addrList.isEmpty();
 
         // 화면에 띄울 사용자 정보와 등급 정보를 가져옴.
-        MemberVO memberInfo = addressListService.getMember(mno);
-        GradeVO memberGrade = addressListService.getMemberGrade(memberInfo.getGno());
+        MemberVO memberInfo = mypageAddressListService.getMember(mno);
+        GradeVO memberGrade = mypageAddressListService.getMemberGrade(memberInfo.getGno());
         log.info("memberInfo: {}", memberInfo);
         log.info("memberGrade: {}", memberGrade);
 
@@ -191,6 +180,28 @@ public class MypageController {
         model.addAttribute("memberInfo", memberInfo);
         model.addAttribute("memberGrade", memberGrade);
         return "/mypage/address_list";
+    }
+
+    @GetMapping("order-detail")
+    public String showOrderDetail() {
+        log.info(" >>> MypageController: showOrderDetail start.");
+
+        long mno = fetchUserMno();
+
+        // 주문 정보를 가져옴
+
+
+        return "mypage/order_detail";
+    }
+
+    private long fetchUserMno() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loginId = authentication.getName();
+
+        MemberVO memberVO = memberService.getMemberByInfo(loginId);
+        long mno = memberVO.getMno();
+        log.info("mno: {}", mno);
+        return mno;
     }
 
 }

@@ -1,27 +1,19 @@
 package com.ezen.books.controller;
 
 import com.ezen.books.domain.AddressVO;
-import com.ezen.books.domain.GradeVO;
-import com.ezen.books.domain.MemberVO;
-import com.ezen.books.domain.OrderDetailProductDTO;
-import com.ezen.books.service.AddressListService;
+import com.ezen.books.service.MypageAddressListService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/mypage/address-list")
 @Controller
-public class AddressListController {
+public class MypageAddressListController {
 
-    private final AddressListService addressListService;
+    private final MypageAddressListService mypageAddressListService;
 
     @PostMapping("/register")
     public String registerAddr(AddressVO addressData,
@@ -36,7 +28,7 @@ public class AddressListController {
 
         log.info("The isDefault is: {}", addressData.getIsDefault());
 
-        String isDone = addressListService.registerAddr(addressData);
+        String isDone = mypageAddressListService.registerAddr(addressData);
         log.info("Is Done: {}", isDone);
 
         if(isDone == "succeeded") {
@@ -54,7 +46,7 @@ public class AddressListController {
         log.info(" >>> AddressListController: deleteAddr start.");
         log.info("The adnoData from the client: {}", adnoData);
 
-        int isDone = addressListService.deleteAddr(adnoData);
+        int isDone = mypageAddressListService.deleteAddr(adnoData);
         if(isDone == 1) {
             log.info("delete addr successfully.");
         } else {
@@ -70,7 +62,7 @@ public class AddressListController {
         log.info(" >>> AddressListController: modifyAddr start.");
         log.info("The addressData from the client: {}", addressData);
 
-        int isDone = addressListService.modifyAddr(addressData);
+        int isDone = mypageAddressListService.modifyAddr(addressData);
         if(isDone == 1) {
             log.info("modify addr successfully.");
         } else {
