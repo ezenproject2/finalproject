@@ -30,7 +30,7 @@ document.addEventListener('change', (e)=>{
 });
 
 document.getElementById("regBtn").addEventListener("click", ()=>{
-    const contentEl = document.getElementById("contentEl");
+    const contentEl = document.getElementById("review");
     const ratingEl = document.getElementById("ratingEl");
     const prnoEl = document.getElementById("prnoEl");
     const mnoEl = document.getElementById("mnoEl");

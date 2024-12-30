@@ -1,5 +1,6 @@
 package com.ezen.books.service;
 
+import com.ezen.books.domain.BookInfo;
 import com.ezen.books.domain.PagingVO;
 import com.ezen.books.domain.ProductVO;
 
@@ -18,4 +19,16 @@ public interface ProductService {
     int getTotalCount(PagingVO pagingVO);
 
     ProductVO getDetail(String isbn);
+
+    List<ProductVO> getSpecialList(String type);
+
+    void setBestTag();
+
+    void setNewTag();
+
+    void setHotTag();
+
+    BookInfo getReviewInfo(long prno);
+
+    ProductVO getData(long prno);
 }

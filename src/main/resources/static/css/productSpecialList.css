@@ -1,0 +1,369 @@
+.breadcrumb_wrap, .breadcrumb_list, .breadcrumb_item {
+    position: relative;
+    z-index: 10;
+    display: inline-block;
+    vertical-align: top;
+}
+.breadcrumb_wrap {
+    width: 100%;
+    position: relative;
+    padding-top: 20px;
+}
+.breadcrumb_wrap a {
+    color: #555;
+    position: relative;
+    padding-bottom: 8px;
+    line-height: 20px;
+}
+
+.ic_home {
+    width: 20px;
+    height: 20px;
+}
+
+.breadcrumb_wrap .ic_carousel_up_white, .breadcrumb_wrap .ic_carousel_down_white  {
+    width: 15px;
+    height: 15px;
+    padding: auto;
+}
+.breadcrumb_item:nth-child(n+2):before {
+    content: "/";
+    color: #c6c6c6;
+    margin: 0 10px;
+}
+
+
+.sub_depth {
+    display: none; /* 기본적으로 안 보이게 설정 */
+    position: absolute;
+    top: calc(100% + 5px); /* breadcrumb_item 바로 아래에 위치 */
+    left: 0;
+    width: 175px;
+    padding: 15px 12px;
+    background-color: #fff;
+    border: 1px solid #d5d5d5;
+    border-radius: 10px;
+    box-sizing: border-box;
+    z-index: 10;
+    opacity: 0; /* 애니메이션 준비 */
+    transform: translateY(-10px); /* 위에서 아래로 내려오는 효과 */
+    transition: opacity 0.3s ease, transform 0.3s ease; /* 애니메이션 */
+}
+
+.breadcrumb_item:hover .sub_depth {
+    display: block; /* 호버 시 보이게 설정 */
+    opacity: 1; /* 투명도 조정 */
+    transform: translateY(0); /* 아래로 내려오는 애니메이션 효과 */
+    max-height: 120px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: #d2d8d9 transparent;
+}
+
+.sub_depth li {
+    margin-bottom: 5px;
+}
+.sub_depth li:last-child {
+    margin-bottom: 0;
+}
+.breadcrumb_item:last-child .ic {
+    padding-right: 20px; /* 마지막 i 태그에만 적용 */
+}
+.sub_depth a {
+    font-size: 0.85rem;
+}
+
+.contents {
+    display: flex;
+    padding-top: 60px;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.aside_menu {
+    width: 170px;
+    padding-right: 40px;
+}
+.aside_header {
+    height: 2.8rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    justify-content: space-between;
+}
+.aside_title {
+    font-size: 21.8px;
+    font-weight: 700;
+    line-height: 30px;
+    letter-spacing: -1px;
+    white-space: pre-wrap;
+}
+.aside_header::after {
+    content: "";
+    display: inline-block;
+    background-image: url("../image/svg/arrow-right-24.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 30px;
+    height: 30px;
+}
+.aside_list li:not(:first-child) {
+    margin-top: 8px;
+}
+.aside_list a {
+    display: block;
+    position: relative;
+    font-size: 13px;
+    line-height: 22px;
+    letter-spacing: -1px;
+    color: #555;
+}
+.aside_list a:hover {
+    text-decoration: underline;
+    color: #1D1D1D;
+}
+
+.content {
+    width: 100%;
+    position: relative;
+}
+.list_menu {
+    position: relative;
+    height: 2.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    border-bottom : 1px solid #c6c6c6;
+}
+.list_menu_item {
+    width: 150px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border : 1px solid #E4E4E4;
+    border-bottom: none;
+    border-top-left-radius: .375rem;
+    border-top-right-radius: .375rem;
+    z-index: 1;
+    background-color: #f9f9f9;
+}
+.list_menu_item a{
+    padding-left: .875rem;
+    padding-right: .875rem;
+    color: #8E8E8E;
+}
+.list_menu_item.tap {
+    z-index: 2;
+    background-color: white;
+    border: 1.5px solid #c6c6c6;
+    border-bottom: 1px solid white;
+    box-sizing: content-box;
+}
+.list_menu_item.tap a {
+    color: #1D1D1D;
+}
+.book_list {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    padding: 50px 0;
+    flex-wrap: wrap;
+    -webkit-font-smoothing: antialiased;
+}
+
+.book_item {
+    flex : 1 1 calc(20%);
+    max-width: calc(20% - 16px);
+    height: 390px;
+    max-height: 390px;
+    margin : 0 20px 45px 0;
+    padding: 10px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    transition: box-shadow 0.3s ease-in-out;
+}
+.book_item:nth-child(5n) {
+    margin-right: 0; /* 한 줄의 마지막 요소는 간격 제거 */
+}
+.book_item:hover {
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+}
+.book_img_wrap {
+    width: 100%;
+    height: 360px;
+    box-shadow: 0px 1px 8px 0 rgba(0, 0, 0, 0.08);
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    overflow: hidden; /* 자식 요소가 부모를 벗어나지 못하게 함 */
+}
+
+.book_list_thum_img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.book_content {
+    width: 100%;
+    padding : 10px 5px 0 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 3px;
+}
+.book_content .flex {
+    display: inline-flex;
+}
+.book_title_wrap {
+    width: 100%;
+    height: 30px;
+    align-items: center;
+}
+.book_title {
+    width: 100%; /* 부모 요소 너비에 맞춤 */
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 19px; /* 줄 간격을 조금 더 넓게 설정 */
+    color: #1D1D1D; /*트렌드 코리아 2025 - 2025 대한민국 소비트렌드 전망*/
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* 최대 2줄로 제한 */
+    -webkit-box-orient: vertical; /* 세로 방향 정렬 */
+    overflow: hidden; /* 넘치는 텍스트 숨김 */
+    text-overflow: ellipsis; /* 말줄임표 표시 */
+    white-space: normal; /* 여러 줄 표시 허용 */
+}
+.book_write {
+    padding-top: 7px;
+}
+.book_write span, .won, .discount, .book_reivew_wrap span{
+    display: inline-block;
+    color: #555;
+    font-size: 13px;
+}
+.book_write span:nth-child(n+2)::before {
+    content: "·";
+    margin: 0 3px;
+}
+.book_info {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}
+.book_price, .book_rating {
+    font-size: 14px;
+    font-weight: 700;
+}
+.discount::before {
+    content: "";
+    display: inline-block;
+    background-image: url("../image/svg/sale.svg");
+    background-size: contain;
+    width: 18px;
+    height: 18px;
+}
+.book_rating_wrap, .book_reivew_wrap, .discount {
+    display: inline-flex;
+    align-items: center;
+}
+.ic_star {
+    width: 75px;
+    height: 15px;
+}
+.star-0 {
+    background-image: url("../image/list/star-0.png");
+}
+.star-0_5 {
+    background-image: url("../image/list/star-0_5.png");
+}
+.star-1 {
+    background-image: url("../image/list/star-1.png");
+}
+.star-1_5 {
+    background-image: url("../image/list/star-1_5.png");
+}
+.star-2 {
+    background-image: url("../image/list/star-2.png");
+}
+.star-2_5 {
+    background-image: url("../image/list/star-2_5.png");
+}
+.star-3 {
+    background-image: url("../image/list/star-3.png");
+}
+.star-3_5 {
+    background-image: url("../image/list/star-3_5.png");
+}
+.star-4 {
+    background-image: url("../image/list/star-4.png");
+}
+.star-4_5 {
+    background-image: url("../image/list/star-4_5.png");
+}
+.star-5 {
+    background-image: url("../image/list/star-5.png");
+}
+
+.book_score {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.book_rating, .book_reivew_wrap span {
+    line-height: 16px;
+}
+.book_rating {
+    letter-spacing: 5%;
+}
+.book_discount {
+    display: flex;
+}
+
+.pagenation_area, .pagenation, .pagenation_num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.pagenation {
+    justify-content: space-around;
+    gap: 2.2rem;
+}
+.pagenation i {
+    width: 31px;
+    height: 31px;
+}
+.pagenation_num {
+    gap: 2rem;
+    align-items: center;
+}
+.pagenation_num a {
+    font-size: 15px;
+    line-height: 24px;
+    color: #555;
+}
+.pagenation_num .present {
+    padding: 3px 10.7px;
+    background-color: #497248;
+    border-radius: 9999px;
+}
+.pagenation_num .present a {
+    color: white;
+}
+
+.sub_title {
+    font-size : 24px;
+    font-weight : bold;
+    margin-top : 50px;
+    margin-left : 20px;
+}

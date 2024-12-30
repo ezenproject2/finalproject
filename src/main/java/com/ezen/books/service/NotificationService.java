@@ -9,6 +9,6 @@ public interface NotificationService {
 
     List<NotificationVO> getNotificationsByMno(long mno);
 
-    void updateNotificationStatus(long nfno);
+    int updateNotificationStatus(long nfno);
 
 }

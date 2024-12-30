@@ -24,4 +24,6 @@ public interface PayoutMapper {
     int savePickupToServer(PickUpVO pickupData);
 
     int getTotalCount(@Param("pagingVO") PagingVO pagingVO, @Param("mno") long mno);
+
+    long getMnoByOrno(String orno);
 }

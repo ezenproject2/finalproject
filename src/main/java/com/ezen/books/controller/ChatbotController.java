@@ -73,31 +73,13 @@ public class ChatbotController {
     private Map<String, String> getFixedResponse(String userMessage) {
         Map<String, String> answer = new HashMap<>();
 
-        // "내 포인트" 관련 질문 처리
-        if (userMessage.toLowerCase().contains("포인트")
-                || userMessage.toLowerCase().contains("내 포인트")) {
-            // 포인트 정보 DB에서 조회
-            // pointVO 생기면 그때 열것!!!
-            // int points = chatbotService.getUserPoint(userId);
-            int points = 1248;
-
-            if (points != -1) { // DB에서 포인트를 찾은 경우
-                answer.put("answer", "손님의 포인트는 " + points + "p 입니다.");
-                answer.put("classify", "a-type");
-                return answer;
-            } else { // DB에서 포인트를 찾지 못한 경우
-                answer.put("answer", "죄송합니다. 포인트 정보를 가져올 수 없습니다.");
-                answer.put("classify", "a-type");
-                return answer;
-            }
-        }
-
         // "책 검색해줘" 관련 질문 처리
         if (userMessage.matches("(?i).*책 검색.*")
                 || userMessage.matches("(?i).*책 찾기.*")
                 || userMessage.matches("(?i).*책 찾고.*")
-                || userMessage.matches("(?i).*책 찾는.*")) {
-            answer.put("answer", "무슨 책을 찾고 싶어요? *책 제목만 입력해주세요!*");
+                || userMessage.matches("(?i).*책 찾는.*")
+                || userMessage.matches("(?i).*책 찾아.*")) {
+            answer.put("answer", "무슨 책을 찾고 싶어요? 책 제목만 입력해주세요 :)");
             answer.put("classify", "b-type"); // 다음 질문은 b-type으로 분류
             return answer;
         }
@@ -110,27 +92,17 @@ public class ChatbotController {
             return answer;
         }
 
-        // 자연어, 이젠문고 ver 답변
+        // 자연어에 대한 이젠문고 ver 답변
         if (userMessage.matches("(?i).*안녕.*")
                 || userMessage.matches("(?i).*하이.*")
                 || userMessage.matches("(?i).*헬로.*")) {// "안녕하세요"가 포함된 메시지
-            answer.put("answer", "안녕하세요! 무엇을 도와드릴까요? *도움*을 입력해 메뉴를 볼 수 있어요!");
+            answer.put("answer", "안녕하세요!! 무엇을 도와드릴까요?");
             answer.put("classify", "a-type");
             return answer;
         }
 
         if (userMessage.matches("(?i).*누구.*")) { // "날씨"가 포함된 메시지
             answer.put("answer", "저는 이젠문고의 챗봇 알리미입니다! 반가워요 :) ");
-            answer.put("classify", "a-type");
-            return answer;
-        }
-
-        if (userMessage.matches("(?i).*도움.*")
-                || userMessage.matches("(?i).*도와.*")) {
-            answer.put("answer", "1. 책 검색 : 책 제목을 통해 상품 페이지로 연결해드립니다. <br> " +
-                    "2. 포인트 : 당신의 포인트를 검색해 찾아옵니다. <br> " +
-                    "3. 가까운 매장 : 가까운 매장을 찾아 알려줍니다. " +
-                    "4. ");
             answer.put("classify", "a-type");
             return answer;
         }
@@ -145,11 +117,11 @@ public class ChatbotController {
 
         ProductVO productVO = chatbotService.chatGetProductVO(userMessage);
         if(productVO != null){
-            answer.put("answer", "판매중인 상품이 있습니다. 이동하시겠어요? <a href='/product/detail?isbn=" + productVO.getIsbn() + "'>상품 페이지로 이동</a>");
+            answer.put("answer", "현재 판매중인 상품이 있습니다. 이동하시겠어요? <a href='/product/detail?isbn=" + productVO.getIsbn() + "'>상품 페이지로 이동</a>");
             answer.put("classify", "a-type");
             return answer;
         }else{
-            answer.put("answer", "해당 상품이 존재하지 않네요 ㅠㅠ");
+            answer.put("answer", "죄송합니다. 해당 상품은 판매중이지 않아요!");
             answer.put("classify", "a-type");
             return answer;
         }

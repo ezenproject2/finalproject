@@ -40,4 +40,8 @@
         select * from offline_store where osno = #{osno}
     </select>
 
+    <select id="getStoreName" resultType="String">
+        select name from offline_store where osno = #{osno}
+    </select>
+
 </mapper>

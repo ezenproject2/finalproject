@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ezen.books.repository.NoticeMapper">
+
+    <insert id="register">
+        insert into notice (title, content, mno, category) values (#{title}, #{content}, #{mno}, #{category});
+    </insert>
+
+    <select id="getLastNtno" resultType="long">
+        select max(ntno) from notice;
+    </select>
+
+    <select id="findTempByAddr" resultType="com.ezen.books.domain.NoticeTempFileVO">
+        select * from notice_temp_file where file_addr = #{fileAddr};
+    </select>
+
+    <select id="findFileByAddr" resultType="com.ezen.books.domain.NoticeFileVO">
+        select * from notice_file where file_addr = #{fileAddr};
+    </select>
+
+    <insert id="registerFile">
+        insert into notice_file (ntno, file_addr) values (#{ntno}, #{fileAddr});
+    </insert>
+
+    <delete id="deleteTempFile">
+        delete from notice_temp_file where fino = #{fino};
+    </delete>
+
+    <delete id="deleteFile">
+        delete from notice_file where fino = #{fino};
+    </delete>
+
+    <insert id="registerTempFile">
+        insert into notice_temp_file (file_addr) values (#{fileAddr});
+    </insert>
+
+    <select id="findFileByUuid" resultType="com.ezen.books.domain.NoticeFileVO">
+        select * from notice_file where file_addr like CONCAT('%', #{uuid}, '%')
+    </select>
+
+    <select id="findTempByUuid" resultType="com.ezen.books.domain.NoticeTempFileVO">
+        select * from notice_temp_file where file_addr like CONCAT('%', #{uuid}, '%')
+    </select>
+
+    <select id="getTotalCount" resultType="int">
+        select count(ntno) from notice where is_del = 'N' and category = #{category}
+    </select>
+
+    <select id="getList" resultType="com.ezen.books.domain.NoticeVO">
+        select * from notice where is_del = 'N' and category = #{category}
+        order by ntno desc limit #{startIndex}, #{qty};
+    </select>
+
+</mapper>

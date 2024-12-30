@@ -423,16 +423,21 @@
     position: relative;
     min-height: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 100px 0;
     line-height: 1.5em;
     width: 100%;
+    border-bottom: 1px solid #c6c6c6;
+}
+.book_detail_page_title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0 auto 50px 0;
 }
 
-.book {
-    transition: opacity 0.4s 0.2s;
-}
+.book {transition: opacity 0.4s 0.2s;}
 .book p{
     text-align:start;
     font-size: 1rem;
@@ -461,18 +466,12 @@
     padding: 10px 0;
     color: #555555;
 }
-.page .book_detail_title {
-    font-size: 1.7rem;
-}
-.page:nth-child(even) {
-    clear: both;
-}
-.book {
-    perspective: 250vw;
-}
+.page .book_detail_title { font-size: 1.7rem; }
+.page:nth-child(even) { clear: both; }
+.book { perspective: 250vw; }
 .book .pages {
-    width: 60vw;
-    height: 36vw;
+    width: 66vw;
+    height: 40vw;
     position: relative;
     transform-style: preserve-3d;
     backface-visibility: hidden;
@@ -485,7 +484,7 @@
     margin: 0;
     position: absolute;
     top: 0;
-    width: 30vw;
+    width: calc(66vw / 2);
     height: 100%;
     transform-origin: 0 0;
     transition: transform 1.4s;
@@ -516,16 +515,6 @@
     border-radius: 0 4px 4px 0;
     background-image: linear-gradient(to right, rgba(0,0,0,.15) 0%, rgba(0,0,0,0) 10%);
 }
-/*
-.book .page:nth-child(odd):hover {
-  transform: rotateY(-15deg);
-}
-.book .page:nth-child(odd):hover:before {
-  background: rgba(0, 0, 0, 0.03);
-}
-.book .page:nth-child(odd):before {
-  background: rgba(0, 0, 0, 0);
-}*/
 .book .page:nth-child(even) {
     pointer-events: none;
     transform: rotateY(180deg);
@@ -535,19 +524,13 @@
     border-color: black;
     background-image: linear-gradient(to left, rgba(0,0,0,.12) 0%, rgba(0,0,0,0) 10%);
 }
-.book .page:nth-child(even):before {
-    background: rgba(0, 0, 0, 0.2);
-}
-.book .page.grabbing {
-    transition: none;
-}
+.book .page:nth-child(even):before { background: rgba(0, 0, 0, 0.2);}
+.book .page.grabbing {transition: none;}
 .book .page.flipped:nth-child(odd) {
     pointer-events: none;
     transform: rotateY(-180deg);
 }
-.book .page.flipped:nth-child(odd):before {
-    background: rgba(0, 0, 0, 0.2);
-}
+.book .page.flipped:nth-child(odd):before { background: rgba(0, 0, 0, 0.2);}
 .book .page.flipped:nth-child(even) {
     pointer-events: all;
     transform: rotateY(0deg);
@@ -559,12 +542,8 @@
 .book .page.flipped:nth-child(even):hover:before {
   background: rgba(0, 0, 0, 0.03);
 }*/
-.book .page.flipped:nth-child(even):before {
-    background: rgba(0, 0, 0, 0);
-}
-.page:nth-child(odd){
-    background-position: right top;
-}
+.book .page.flipped:nth-child(even):before {background: rgba(0, 0, 0, 0);}
+.page:nth-child(odd){background-position: right top;}
 .stickers {
     width: 100%;
     display: flex;
@@ -580,11 +559,9 @@
 .sticker {
     width: 100%;
     height: 100%;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
-.sticker2, .sticker4 {
-    margin-right: 0;
-}
+.sticker2, .sticker4 {margin-right: 0;}
 .stickers span {
     font-size: 0.9rem;
     color: #555;
@@ -766,4 +743,340 @@
     color: #fff;
     border-radius: 5px;
     letter-spacing: 10%;
+}
+
+.book_detail_review {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 100px 0;
+}
+
+.book_rate_score_box {
+    width: 1250px;
+    display: flex;
+    padding: 40px;
+    font-size: 17px;
+    border: 1px solid #c6c6c6;
+    border-radius: 12px;
+    word-break: keep-all;
+    background-color: #f8f8f8;
+    position: relative;
+    margin: 0 auto 100px;
+}
+.book_rate_score_box::before {
+    content: ""; /* 가상요소를 표시하기 위한 필수 설정 */
+    position: absolute; /* 위치 조정을 위해 absolute 사용 */
+    width: 0.1px; /* 막대의 너비 */
+    height : 60%; /* 막대의 높이 */
+    background-color: #c6c6c6; /* 막대의 색상 */
+    top: 50%; /* 부모 요소의 세로 중심 */
+    left: 43%; /* 부모 요소의 가로 중심 */
+    transform: translate(-43%, -50%); /* 정확한 가운데 위치 조정 */
+}
+.book_rate_score_left, .book_rate_score_right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+}
+.book_rate_score_left {
+    width: 45%;
+    padding: 0 30px;
+}
+.book_rate_score_right {
+    width: 55%;
+    padding: 0 0 0 40px;
+}
+
+.book_rate_score_left > p{
+    font-size: 1.2rem;
+}
+.book_rate_score_left > span {
+    color: #555;
+}
+.book_rate_score_left > span > strong {
+    font-size: 1.5rem;
+    color: #39553F;
+}
+.book_rate_score_left .ic_star {
+    width: 200px;
+    height: 40px;
+    margin-bottom: 10px;
+}
+
+.rate {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 5px 0;
+}
+.rate > div {
+    display: flex;
+    align-items: center;
+}
+.rate_1 {width: 30%;}
+.rate_2 {width: 60%;}
+.rate_3 {
+    width: 10%;
+    justify-content: end;
+}
+.rating-users-count {
+    font-size: 0.8rem;
+    color: #555;
+    margin-left: 5px;
+}
+.book_rate_score_right .ic_star {
+    width: 100px;
+    height: 20px;
+}
+.gauge_bar {
+    width: 330px;
+    height: 20px;
+    position: relative;
+    background-color: #F0F0F0;
+    border-radius: 50px;
+}
+.rate > span {
+    font-size: 1.1rem;
+    line-height: 25px;
+}
+.gauge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+    border-top-right-radius: 80px;
+    border-bottom-right-radius: 80px;
+    background-color: #ABBC86;
+}
+
+.grid {
+    display: grid;
+    grid-gap: 50px;
+    grid-template-columns: repeat(auto-fill, minmax(250px,1fr));
+    grid-auto-rows: 45px;
+    position: relative;
+}
+
+.review_item {
+    background-color: white;
+    position: relative;
+    cursor: pointer;
+    box-shadow: 5px 5px 7px rgba(33, 33, 33, 0.5);
+    transition: all 0.3s ease; /* 부드러운 효과 */
+    z-index: 0; /* 기본 z-index */
+}
+.review_item::before{
+    content: "";
+    position: absolute;
+    width: 100px;
+    height: 40px;
+    top: -15px;
+    left: 30%;
+    background-image: url("/image/tape.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.9;
+}
+
+.review_box > .ic_delete {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.review_box {background-color: transparent;}
+.review_box_header, .review_content, .review_like {
+    width: 100%;
+    padding: 12px 24px;
+    display: flex;
+}
+
+.review_box_header, .review_content {flex-direction: column;}
+.review_box_header {margin-top: 12px;}
+.review_content {margin-bottom: 12px;}
+
+.review_member, .review_info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.member_nike_name {
+    font-size: 1rem;
+    color: #555;
+}
+.review_date {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.member_profile_photo {
+    background-image: url(https://contents.kyobobook.co.kr/resources/fo/images/common/ink/img_no_profile@2x.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    margin-right: 12px;
+}
+
+.review_info {
+    width: 100%;
+    padding: 0 2px;
+    justify-content: space-between;
+}
+.review_content > p {
+    display: -webkit-box; /* Flexbox 기반으로 텍스트 자르기 */
+    -webkit-box-orient: vertical; /* 텍스트가 수직 방향으로 흐르도록 설정 */
+    overflow: hidden; /* 초과 텍스트 숨기기 */
+    text-overflow: ellipsis; /* 말줄임표(...) 추가 */
+    -webkit-line-clamp: 19; /* 최대 19줄로 제한하고 말줄임표 추가 */
+    line-height: 1.5; /* 줄 간격 설정 */
+    max-height: calc(1.5em * 19); /* 19줄 높이로 제한 */
+}
+
+.review_content > img {
+    display: block;
+    max-width: 200px;
+    max-height: 200px;
+    object-fit: contain;
+    margin: 0px auto;
+    margin-bottom: 24px;
+}
+
+.pagenation_area {
+    margin-top: 100px;
+}
+.pagenation_area, .pagenation, .pagenation_num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.pagenation {
+    justify-content: space-around;
+    gap: 2.2rem;
+}
+.pagenation i {
+    width: 31px;
+    height: 31px;
+}
+.pagenation_num {
+    gap: 2rem;
+    align-items: center;
+}
+.pagenation_num a {
+    font-size: 15px;
+    line-height: 24px;
+    color: #555;
+}
+.pagenation_num .present {
+    padding: 3px 10.7px;
+    background-color: #497248;
+    border-radius: 9999px;
+}
+.pagenation_num .present a {
+    color: white;
+}
+
+.panel {
+    z-index: 2;
+    position: relative;
+}
+a.like1 {
+    display: inline-block;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+    -khtml-tap-highlight-color: rgba(255, 255, 255, 0);
+    -moz-tap-highlight-color: rgba(255, 255, 255, 0);
+    -ms-tap-highlight-color: rgba(255, 255, 255, 0);
+    -o-tap-highlight-color: rgba(255, 255, 255, 0);
+    tap-highlight-color: rgba(255, 255, 255, 0);
+    -webkit-transition: all 100ms ease-in-out;
+    -khtml-transition: all 100ms ease-in-out;
+    -moz-transition: all 100ms ease-in-out;
+    -ms-transition: all 100ms ease-in-out;
+    -o-transition: all 100ms ease-in-out;
+    transition: all 100ms ease-in-out;
+}
+a.like1 svg {
+    height: 23px;
+    fill: #666;
+    -webkit-transition: all 100ms ease-in-out;
+    -khtml-transition: all 100ms ease-in-out;
+    -moz-transition: all 100ms ease-in-out;
+    -ms-transition: all 100ms ease-in-out;
+    -o-transition: all 100ms ease-in-out;
+    transition: all 100ms ease-in-out;
+    outline: none;
+}
+
+a.like1 { color: #666; }
+a.like1.active svg { fill: #ff5252; }
+
+a.like1:active {
+    -webkit-transform: scale(0.8) translateY(2px);
+    -khtml-transform: scale(0.8) translateY(2px);
+    -moz-transform: scale(0.8) translateY(2px);
+    -ms-transform: scale(0.8) translateY(2px);
+    -o-transform: scale(0.8) translateY(2px);
+    transform: scale(0.8) translateY(2px);
+}
+
+.review_like {
+    padding-bottom: 0;
+    justify-content: end;
+    align-items: center;
+    gap: 10px;
+}
+
+.review_like > strong {
+    display: inline-block;
+    font-size: 1.1rem;
+    line-height: 26px;
+    padding-bottom: 4px;
+}
+
+.book_detail_review_none {
+    border-top: 2px solid #c6c6c6;
+    border-bottom: 2px solid #c6c6c6;
+    padding: 60px 0;
+    text-align: center;
+}
+.book_detail_review_none > svg {
+    margin-bottom: 15px;
+}
+.book_detail_review_none > .title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+.book_detail_review_none > .sub {
+    color: #555;
+    font-size: 1rem;
+    margin-bottom: 50px;
+}
+.book_detail_review_none > a {
+    border: 1px solid #497248;
+    background-color: #497248;
+    color : #fff;
+    padding: 10px 15px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease-out, border-color 0.2s ease-out;
+}
+.book_detail_review_none > a:hover {
+    border: 1px solid #39553F;
+    background-color: #39553F;
 }

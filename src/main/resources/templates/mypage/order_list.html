@@ -132,7 +132,7 @@
                 </div>
 
                 <div class="order_book_review_btn">
-                  <button type="button" class="review_btn btn" th:data-inner-index="${innerStat.index}">리뷰 작성</button>
+                  <button type="button" class="review_btn btn" th:data-inner-index="${innerStat.index}" th:data-prno="${orderDetailProduct.productVO.prno}">리뷰 작성</button>
                   <button type="button" class="refund_btn btn" th:if="${orderDetailProduct.orderDetailVO.status != 'refunded'}" th:data-inner-index="${innerStat.index}">환불하기</button>
                   <button type="button" class="refunded_btn btn" th:unless="${orderDetailProduct.orderDetailVO.status != 'refunded'}" th:data-inner-index="${innerStat.index}" disabled>환불됨</button>
                 </div>
@@ -182,16 +182,16 @@
       </h2>
 
       <div class="modal_contents">
-        <form action="">
+<!--        <form action="/review/register" method="post">-->
           <div class="modal_content">
             <div class="order_book_info_box flex">
               <div class="order_book_img">
-                <a href=""> <!-- 책 상세 페이지 이동 -->
-                  <img class="modal-img-src" src="https://contents.kyobobook.co.kr/sih/fit-in/200x0/pdt/9788988474914.jpg" alt="book">
+                <a href="" id="productLinkEl1"> <!-- 책 상세 페이지 이동 -->
+                  <img src="https://contents.kyobobook.co.kr/sih/fit-in/200x0/pdt/9788988474914.jpg" alt="book" id="productImgEl">
                 </a>
               </div>
               <div class="order_book_info flex">
-                <a href=""><strong class="modal-book-ctg-title">[국내도서] SQL 자격검정 실전문제 격검정 격검정 격검정 격검정격검정격검정 격검정격검정</strong></a> <!-- 책 상세 페이지 이동 -->
+                <a href="" id="productLinkEl2"><strong id="productTitleEl">[국내도서] 개미는 뚠뚠 오늘도 뚠뚠 열심히 코딩하네</strong></a> <!-- 책 상세 페이지 이동 -->
 
                 <div class="book_review_rate flex">
                   <div class="rate_stars">
@@ -254,17 +254,22 @@
           <div class="modal_content">
             <p class="modal_content_title">리뷰 작성</p>
             <div class="input_box flex">
-              <textarea name="review" id="review" minlength="10" maxlength="500" placeholder="내용을 10자 이상 입력해 주세요. 주제와 무관한 댓글, 악플, 배송문의 등의 글은 임의 삭제될 수 있습니다."></textarea>
+              <textarea name="content" id="review" minlength="10" maxlength="500" placeholder="내용을 10자 이상 입력해 주세요. 주제와 무관한 댓글, 악플, 배송문의 등의 글은 임의 삭제될 수 있습니다."></textarea>
               <div class="text_count"><span>0/500</span></div>
             </div>
-            <input type="file">
+            <input type="file" id="fileEl">
             <p class="file_info">JPG, PNG, GIF 파일만 1장 업로드 가능합니다.</p>
           </div>
 
+          <!--/* 보이지 않는 필요한 정보 */-->
+          <input type="hidden" name="rating" id="ratingEl" value=0>
+          <input type="hidden" name="mno" id="mnoEl" th:value="${#authentication.name != 'anonymousUser' ? #authentication.getPrincipal().memberVO.getMno() : '-1'}">
+          <input type="hidden" name="prno" id="prnoEl">
+
           <div class="modal_content flex">
-            <button type="submit" class="btn review_wirte_btn">작성 완료</button>
+            <button type="button" class="btn review_wirte_btn" id="regBtn">작성 완료</button>
           </div>
-        </form>
+<!--        </form>-->
       </div>
     </div>
   </div>
@@ -273,5 +278,6 @@
   <script src="/js/mypageOrderListBusiness.js"></script>
   <script src="/js/mypageOrderListDisplay.js"></script>
   <script src="/js/mypageOrderListInnerStyle.js"></script>
-  <!--/* <script src="/js/mypageOrderListOuterStyle.js"></script> */-->
+  <script src="/js/mypageOrderListOuterStyle.js"></script>
+  <script th:src="@{/js/reviewRegister.js}"></script>
 </main>

@@ -57,7 +57,7 @@ class BooksApplicationTests {
 		// 한번에 10~15개의 링크만 사용할 것을 권장합니다.
 		// 반복해서 입력하지 말고 하루에 한번만 사용해주세요.
 		List<DataUrlDTO> dataUrlList = new ArrayList<>();
-		int i = 5;
+		int i = 1;
 		dataUrlList.add(new DataUrlDTO("소설", "세계 각국 소설", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50005568&goodsType=PAPER&pageIndex=" + i + "&pageSize=40&sort=REL"));
 		dataUrlList.add(new DataUrlDTO("소설", "고전/문학", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50005569&goodsType=PAPER&pageIndex=" + i + "&pageSize=40&sort=REL"));
 		dataUrlList.add(new DataUrlDTO("소설", "장르소설", "https://search.shopping.naver.com/book/search/category?bookTabType=ALL&catId=50005570&goodsType=PAPER&pageIndex=" + i + "&pageSize=40&sort=REL"));
@@ -157,8 +157,10 @@ class BooksApplicationTests {
 	void insertOfflineStock() {
 		// prno를 제공하면 해당 상품의 '오프라인' 재고를 랜덤(0~5) 생성해주는 메서드
 		// 상품 상세 페이지를 시연을 위해 만들었어요.
-		long prno = 85;
-		int isOk = offlineService.testStockInsert(prno);
+        long prno = 251;
+        for(int i=1; i <= 77; i++){
+            int isOk = offlineService.testStockInsert(i);
+        }
 	}
 
 }

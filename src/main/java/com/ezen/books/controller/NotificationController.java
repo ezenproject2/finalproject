@@ -78,10 +78,10 @@ public class NotificationController {
     }
 
     // 알림 상태 업데이트 (읽음 처리)
-    @PostMapping("/update/{nfno}")
-    public ResponseEntity<String> updateNotificationStatus(@PathVariable("nfno") long nfno) {
-        notificationService.updateNotificationStatus(nfno);
-        return ResponseEntity.ok("Notification marked as read");
+    @GetMapping(value = "/update/{nfno}")
+    public String updateNotificationStatus(@PathVariable("nfno") long nfno) {
+        int isOk = notificationService.updateNotificationStatus(nfno);
+        return isOk>0? "1" : "0";
     }
 
 

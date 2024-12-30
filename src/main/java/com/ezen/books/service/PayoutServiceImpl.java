@@ -1,8 +1,11 @@
 package com.ezen.books.service;
 
+import com.ezen.books.controller.NotificationController;
 import com.ezen.books.domain.*;
+import com.ezen.books.repository.NotificationMapper;
 import com.ezen.books.repository.OfflineMapper;
 import com.ezen.books.repository.PayoutMapper;
+import com.ezen.books.repository.ProductMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -28,17 +31,27 @@ public class PayoutServiceImpl implements PayoutService {
     private OfflineMapper offlineMapper;
     private String iamportApiKey;
     private String iamportApiSecret;
+    private NotificationMapper notificationMapper;
+    private NotificationController notificationController;
+    private ProductMapper productMapper;
 
     @Autowired
     public PayoutServiceImpl(
             PayoutMapper payoutMapper,
             OfflineMapper offlineMapper,
+            NotificationController notificationController,
+            NotificationMapper notificationMapper,
+            ProductMapper productMapper,
             @Value("${iamport_rest_api_key}") String iamportApiKey,
             @Value("${iamport_rest_api_secret}") String iamportApiSecret) {
         this.payoutMapper = payoutMapper;
         this.iamportApiKey = iamportApiKey;
         this.iamportApiSecret = iamportApiSecret;
         this.offlineMapper = offlineMapper;
+        // 알림 데이터 저장을 위한 준비물
+        this.notificationMapper = notificationMapper;
+        this.notificationController = notificationController;
+        this.productMapper = productMapper;
     }
 
     @Override
@@ -50,12 +63,35 @@ public class PayoutServiceImpl implements PayoutService {
 
     @Override
     public int saveOrdersToServer(OrdersVO ordersVO) {
-        return payoutMapper.saveOrdersToServer(ordersVO);
+        int isOk = payoutMapper.saveOrdersToServer(ordersVO);
+
+        // 알림 데이터 전송
+        if(isOk>0 && ordersVO.getIsPickup().equals("N")){
+            NotificationVO notificationVO = NotificationVO.builder()
+                    .mno(ordersVO.getMno())
+                    .message("상품 주문이 완료되었습니다! 감사합니다!")
+                    .type("주문")
+                    .build();
+            // 알림 저장
+            notificationMapper.insertNotification(notificationVO);
+
+            // 생성된 알림을 컨트롤러에 전달하여 실시간 전송
+//            notificationController.sendNotificationToClient(ordersVO.getMno(), notificationVO);
+        }
+
+        return isOk;
     }
 
     @Override
     public int saveOrderDetailToServer(OrderDetailVO orderDetail) {
-        return payoutMapper.saveOrderDetailToServer(orderDetail);
+        int isOk = payoutMapper.saveOrderDetailToServer(orderDetail);
+
+        // 결제 완료 시 상품 판매량 업데이트
+        if(isOk>0){
+            productMapper.setSaleQty(orderDetail.getPrno(), orderDetail.getBookQty());
+        }
+
+        return isOk;
     }
 
     @Override
@@ -121,7 +157,26 @@ public class PayoutServiceImpl implements PayoutService {
 
     @Override
     public int savePickupToServer(PickUpVO pickupData) {
-        return payoutMapper.savePickupToServer(pickupData);
+        int isOk = payoutMapper.savePickupToServer(pickupData);
+
+        // 픽업 주문일 때 알림 데이터 저장
+        if(isOk>0){
+            long mno = payoutMapper.getMnoByOrno(pickupData.getOrno());
+            String storeName = offlineMapper.getStoreName(pickupData.getOsno());
+
+            NotificationVO notificationVO = NotificationVO.builder()
+                    .mno(mno)
+                    .message("픽업 주문이 완료되었습니다! [" + storeName + "]에서 기다리고있어요 :)")
+                    .type("픽업")
+                    .build();
+            // 알림 저장
+            notificationMapper.insertNotification(notificationVO);
+
+            // 생성된 알림을 컨트롤러에 전달하여 실시간 전송
+//            notificationController.sendNotificationToClient(ordersVO.getMno(), notificationVO);
+        }
+
+        return isOk;
     }
 
     @Override

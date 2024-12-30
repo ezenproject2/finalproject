@@ -155,9 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // 0.5단위로 반 내림하여 클래스명과 텍스트 값 계산
         let roundedScore = roundToHalf(score);
         let className = formatClassName(roundedScore);
-        console.log(score);
-        console.log(roundedScore);
-        console.log(className);
+ 
         // 기존 클래스를 보존하고, star- 클래스만 추가
         let iconElement = bookRatingWrap.querySelector('.ic_star');
         iconElement.classList.add('star-' + className);  // 새로운 클래스 추가

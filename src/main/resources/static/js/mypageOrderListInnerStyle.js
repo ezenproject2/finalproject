@@ -7,12 +7,60 @@ document.addEventListener("DOMContentLoaded", () => {
 
     console.log(openModalBtns);
 
+    // 리뷰 작성 완료된 버튼은 비활성화
+    openModalBtns.forEach(btn => {
+        // 버튼에서 mno와 prno를 가져오기
+        const mno = document.getElementById("mnoEl").value;
+        const prno = btn.dataset.prno;
+        
+        // 서버에 요청을 보내서 이미 리뷰를 작성했는지 확인
+        checkIfReviewedToServer(mno, prno).then(result => {
+            // 리뷰를 작성한 경우 disabled 처리
+            if (result == "1") {
+                btn.disabled = true;
+                btn.style.pointerEvents = 'none';
+                btn.innerText = "작성 완료";
+            }
+        }).catch(err => {
+            console.error('리뷰 상태 확인 오류:', err);
+        });
+    });
+
+    async function checkIfReviewedToServer(mno, prno) {
+        try {
+            const url = "/review/checkReviewd/" + mno + "/" + prno;
+            const resp = await fetch(url);
+            const result = await resp.text();
+            return result;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
     // 모든 버튼에 클릭 이벤트 추가
     openModalBtns.forEach((btn, index) => {
         console.log(`Button ${index + 1} 이벤트 리스너 추가됨`); // 각 버튼에 리스너 추가 확인
         btn.addEventListener("click", () => {
             console.log(`Button ${index + 1} 클릭됨`);
-            modalOverlay.style.display = "block"; // 모달 보이게
+
+            getProductVOFromServer(btn.dataset.prno).then(result =>{
+                if(result != null){
+                    const productImgEl = document.getElementById("productImgEl");
+                    const productLinkEl1 = document.getElementById("productLinkEl1");
+                    const productLinkEl2 = document.getElementById("productLinkEl2");
+                    const productTitleEl = document.getElementById("productTitleEl");
+                    
+                    productImgEl.src = result.image;
+                    productLinkEl1.href = "/product/detail?isbn=" + result.isbn;
+                    productLinkEl2.href = "/product/detail?isbn=" + result.isbn;
+                    productTitleEl.innerText = result.title;
+                    document.getElementById("prnoEl").value = result.prno;
+        
+                    modalOverlay.style.display = "block"; // 모달 보이게
+
+                }
+            });
         });
     });
 
@@ -92,10 +140,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 selectedRating = 0;
                 updateStars(-1, false);
                 ratingValue.textContent = '0';
+                document.getElementById("ratingEl").value = 0;
             } else {
                 // 선택된 별점 값 저장
                 selectedRating = clickedRating;
                 ratingValue.textContent = `${selectedRating}`;
+
+                document.getElementById("ratingEl").value = selectedRating;
 
                 // 별점 확정
                 updateStars(index, isHalf);
@@ -160,4 +211,19 @@ document.addEventListener("DOMContentLoaded", () => {
         const maxLength = contentTextarea.getAttribute("maxlength"); // 최대 글자 수
         textCountSpan.textContent = `${currentLength}/${maxLength}`; // 글자 수 업데이트
     });
+
+
+
+
 });
+
+async function getProductVOFromServer(prno) {
+    try {
+        const url = "/product/getData/" + prno;
+        const resp = await fetch(url);
+        const result = await resp.json();
+        return result;
+    } catch (error) {
+        console.log(error);
+    }
+}
