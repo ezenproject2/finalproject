@@ -79,7 +79,7 @@ main {
     /*height: 100%;*/
     position: relative;
     overflow: visible;
-    z-index: 2;
+    z-index: 99;
     min-height: 100vh;
 }
 .inner {

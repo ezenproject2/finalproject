@@ -58,18 +58,122 @@
                 </div>
 
                 <div class="header_user_wrap">
-                    <ul class="user_menu_list">
-                        <li class="user_menu_item">
-                            <a href="" class="user_menu_item_a" sec:authorize="isAuthenticated()" th:href="@{/payment/cart(mno=${#authentication.getPrincipal().memberVO.getMno()})}">
-                                <i class="ic ic_cart" sec:authorize="isAuthenticated()" th:data-authorize="${#authentication.name}" th:data-mno="${#authentication.getPrincipal().memberVO.getMno()}"></i>
-                                <span class="cart_item_count" sec:authorize="isAuthenticated()" style="display: inline;">0</span>
-                            </a>
+                    <div class="user_menu_list">
+                        <a class="user_menu_item" sec:authorize="isAuthenticated()" th:href="@{/payment/cart(mno=${#authentication.getPrincipal().memberVO.getMno()})}">
+                            <i class="ic ic_cart" sec:authorize="isAuthenticated()" th:data-authorize="${#authentication.name}" th:data-mno="${#authentication.getPrincipal().memberVO.getMno()}"></i>
+                            <span class="cart_item_count" sec:authorize="isAuthenticated()" style="display: inline;">0</span>
                             <i class="ic ic_cart" sec:authorize="isAnonymous()" th:data-authorize="${#authentication.name}"></i>
-                        </li>
-                        <li class="user_menu_item"> <i class="ic ic_bell"></i> </li>
+                        </a>
+                        <div class="user_menu_item bell">
+                            <i class="ic ic_bell"></i>
+                            <div class="notification_list">
+                                <div class="notification_list_header">
+                                    <ul>
+                                        <li class="notification_menu news select"> <span>알림</span> </li>
+                                        <li class="notification_menu benefit">
+                                            <span>혜택</span>
+                                            <svg class="benefit_icon" width="19" height="19" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M10.9515 1.54013L11.5229 2.12222C12.011 2.61943 12.7112 2.84693 13.3984 2.7316L14.2028 2.59657C14.9385 2.47309 15.6324 2.97722 15.7423 3.71508L15.8625 4.52189C15.9652 5.21105 16.3979 5.80666 17.0216 6.11726L17.7518 6.48087C18.4196 6.8134 18.6846 7.62911 18.3398 8.29065L17.9628 9.01401C17.6408 9.63189 17.6408 10.3681 17.9628 10.986L18.3398 11.7094C18.6846 12.3709 18.4196 13.1866 17.7518 13.5191L17.0216 13.8827C16.3979 14.1933 15.9652 14.7889 15.8625 15.4781L15.7423 16.2849C15.6324 17.0228 14.9385 17.5269 14.2028 17.4034L13.3984 17.2684C12.7112 17.1531 12.011 17.3806 11.5229 17.8778L10.9515 18.4599C10.4288 18.9922 9.57116 18.9922 9.04854 18.4599L8.47709 17.8778C7.98896 17.3806 7.28878 17.1531 6.60162 17.2684L5.79716 17.4034C5.06146 17.5269 4.36757 17.0228 4.25767 16.2849L4.13749 15.4781C4.03484 14.7889 3.60211 14.1933 2.97839 13.8827L2.24821 13.5191C1.58042 13.1866 1.31538 12.3709 1.66017 11.7094L2.03718 10.986C2.35921 10.3681 2.35922 9.63189 2.03718 9.01401L1.66017 8.29065C1.31538 7.62911 1.58042 6.8134 2.2482 6.48087L2.97839 6.11726C3.60211 5.80666 4.03484 5.21106 4.13749 4.52189L4.25767 3.71508C4.36757 2.97722 5.06146 2.47308 5.79716 2.59657L6.60162 2.7316C7.28878 2.84693 7.98896 2.61943 8.47709 2.12222L9.04854 1.54013C9.57116 1.00779 10.4288 1.00779 10.9515 1.54013Z" stroke="#F0F0F0" stroke-width="0.8"/>
+                                                <path d="M13.8662 6.2666L5.99954 13.7333" stroke="#F0F0F0" stroke-width="0.8" stroke-linecap="round"/>
+                                                <circle cx="8" cy="7.06641" r="1.53333" stroke="#F0F0F0" stroke-width="0.933333"/>
+                                                <circle cx="11.8662" cy="13.0664" r="1.53333" stroke="#F0F0F0" stroke-width="0.933333"/>
+                                            </svg>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="notification_list_content">
+                                    <div class="news_content notification_contents">
+                                        <a href="" class="notification_content read"> <!-- 알림 1개 요소, 읽었으면 'read'클래스 추가 -->
+                                            <div class="notification_content_header">
+                                                    <span class="noti_title_wrap">
+                                                        <i class="ic ic_noti_delivery"></i>
+                                                        <span class="noti_title">배송</span>
+                                                    </span>
+                                                <span class="noti_date">12월 29일</span>
+                                            </div>
+
+                                            <div class="notification_content_content">
+                                                <span>[소년이 온다]가 배송 완료되었습니다. 지금 확인하러 가 보실까요?</span>
+                                            </div>
+                                        </a>
+
+                                        <a href="" class="notification_content"> <!-- 알림 1개 요소 -->
+                                            <div class="notification_content_header">
+                                                    <span class="noti_title_wrap">
+                                                        <i class="ic ic_noti_pickup"></i>
+                                                        <span class="noti_title">픽업</span>
+                                                    </span>
+                                                <span class="noti_date">12월 29일</span>
+                                            </div>
+
+                                            <div class="notification_content_content">
+                                                <span>[소년이 온다]가 매장에 도착했습니다. 받으러 가 보세요!</span>
+                                            </div>
+                                        </a>
+
+                                        <a href="" class="notification_content"> <!-- 알림 1개 요소 -->
+                                            <div class="notification_content_header">
+                                                    <span class="noti_title_wrap">
+                                                        <i class="ic ic_noti_coupon"></i>
+                                                        <span class="noti_title">쿠폰</span>
+                                                    </span>
+                                                <span class="noti_date">12월 29일</span>
+                                            </div>
+
+                                            <div class="notification_content_content">
+                                                <span>[실버] 12월 실버등급 쿠폰 이 발행되었습니다. 확인해 보세요!</span>
+                                            </div>
+                                        </a>
+
+                                        <a href="" class="notification_content"> <!-- 알림 1개 요소 -->
+                                            <div class="notification_content_header">
+                                                    <span class="noti_title_wrap">
+                                                        <i class="ic ic_noti_grade"></i>
+                                                        <span class="noti_title">회원 등급</span>
+                                                    </span>
+                                                <span class="noti_date">12월 29일</span>
+                                            </div>
+
+                                            <div class="notification_content_content">
+                                                <span>회원 등급이 올랐어요. 지금 확인해 보세요!</span>
+                                            </div>
+                                        </a>
+
+                                        <a href="" class="notification_content"> <!-- 알림 1개 요소 -->
+                                            <div class="notification_content_header">
+                                                    <span class="noti_title_wrap">
+                                                        <i class="ic ic_noti_review"></i>
+                                                        <span class="noti_title">리뷰</span>
+                                                    </span>
+                                                <span class="noti_date">12월 29일</span>
+                                            </div>
+
+                                            <div class="notification_content_content">
+                                                <span>작성하신 [소년이 온다] 리뷰에 '좋아요'가 달렸어요. 확인해 보세요!</span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="benefit_content notification_contents">
+                                        <a href="" class="notification_content"> <!-- 알림 1개 요소, 읽었으면 'read'클래스 추가 -->
+                                            <div class="noti_benefit_img">
+                                                <img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791141601591.jpg" alt="">
+                                            </div>
+
+                                            <div class="notification_content_content">
+                                                <strong class="noti_benefit_title">[특가] 한강 스페셜 에디션 할인!</strong>
+                                                <span class="noti_benefit_content">지금 바로 확인해 보세요!</span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 <!--                        <li class="user_menu_item"> <a th:href="${#authentication.name != 'anonymousUser' ? '/mypage/main/' + #authentication.principal.memberVO.mno : '/member/login'}"><i class="ic ic_myPage"></i></a> </li>-->
-                        <li class="user_menu_item"> <a th:href="@{/mypage/main}"><i class="ic ic_myPage"></i></a> </li>
-                    </ul>
+                        <a class="user_menu_item" th:href="@{/mypage/main}">
+                            <i class="ic ic_myPage"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -387,63 +491,8 @@
                                     </div>
 
                                     <div class="banner-box">
-                                        <a>
-                                            <img src="/image/main_menu_ad.png" alt="ad">
-                                        </a>
+                                        <a> <img src="/image/main_menu_ad.png" alt="ad"> </a>
                                     </div>
-                                </div>
-
-                                <div class="main_category3">
-                                    <ul class="category3_list">
-                                        <li class="category3_list_item">
-                                            <a href="">
-                                                <i class="ic category3-img pick"></i>
-                                                <span> 바로픽업 </span>
-                                            </a>
-                                        </li>
-                                        <li class="category3_list_item">
-                                            <a href="">
-                                                <i class="ic category3-img attendance"></i>
-                                                <span> 출석체크 </span>
-                                            </a>
-                                        </li>
-                                        <li class="category3_list_item">
-                                            <a href="">
-                                                <i class="ic category3-img event"></i>
-                                                <span> 이벤트 </span>
-                                            </a>
-                                        </li>
-                                        <li class="category3_list_item">
-                                            <a href="">
-                                                <i class="ic category3-img review"></i>
-                                                <span> 베스트리뷰 </span>
-                                            </a>
-                                        </li>
-                                        <li class="category3_list_item">
-                                            <a href="">
-                                                <i class="ic category3-img magazine"></i>
-                                                <span> 매거진 </span>
-                                            </a>
-                                        </li>
-                                        <li class="category3_list_item">
-                                            <a href="">
-                                                <i class="ic category3-img sale"></i>
-                                                <span> 특가상품 </span>
-                                            </a>
-                                        </li>
-                                        <li class="category3_list_item">
-                                            <a th:href="@{/store}">
-                                                <i class="ic category3-img store"></i>
-                                                <span> 매장위치 </span>
-                                            </a>
-                                        </li>
-                                        <li class="category3_list_item">
-                                            <a href="">
-                                                <i class="ic category3-img custom"></i>
-                                                <span> 고객센터 </span>
-                                            </a>
-                                        </li>
-                                    </ul>
                                 </div>
                             </div>
                         </div>
