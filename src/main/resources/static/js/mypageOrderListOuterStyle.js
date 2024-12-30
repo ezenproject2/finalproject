@@ -1,5 +1,5 @@
 // NOTE: myPageMain.js를 가져온 뒤 공통 스타일링을 제외한 부분을 주석처리함.
-console.log("myPageOrderListStyle.js recognized.");
+console.log("myPageOrderListOuterStyle.js recognized.");
 
 document.addEventListener("DOMContentLoaded", () => {
     // > switchBtn을 인식할 수 없어 주석처리함.

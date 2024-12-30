@@ -1,4 +1,4 @@
-console.log("addressListStyle.js recognized.");
+console.log("mypageAddressListStyle.js recognized.");
 
 document.addEventListener("DOMContentLoaded", () => {
     const openModalBtns = document.querySelectorAll('.registration_of_address_btn'); // 버튼들 모두 선택

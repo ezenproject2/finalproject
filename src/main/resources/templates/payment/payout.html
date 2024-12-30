@@ -146,8 +146,8 @@
               </div>
 
               <div class="goods_price">
-                <p><strong class="book-sale-price" th:data-sale-price="${cartProduct.productVO.realPrice ?: '도서 판매가'}" th:data-payout="${iterStat.index}">[[${#numbers.formatInteger(cartProduct.productVO.realPrice, 3, 'COMMA')}]]</strong>원</p>
-                <p class="book_original_price book-price" th:data-book-original-price="${cartProduct.productVO.discount ?: '도서 원가'}" th:data-payout="${iterStat.index}">[[${#numbers.formatInteger(cartProduct.productVO.discount, 3, 'COMMA')}]]원</p> <!--/* <p> 태그 안에 있던 "원"을 밖으로 뺌. */-->
+                <p><strong class="book-sale-price book-price" th:data-sale-price="${cartProduct.productVO.realPrice ?: '도서 판매가'}" th:data-payout="${iterStat.index}">[[${#numbers.formatInteger(cartProduct.productVO.realPrice, 3, 'COMMA')}]]</strong>원</p>
+                <p class="book_original_price" th:data-book-original-price="${cartProduct.productVO.discount ?: '도서 원가'}" th:data-payout="${iterStat.index}">[[${#numbers.formatInteger(cartProduct.productVO.discount, 3, 'COMMA')}]]원</p> <!--/* <p> 태그 안에 있던 "원"을 밖으로 뺌. */-->
               </div>
             </li>
 

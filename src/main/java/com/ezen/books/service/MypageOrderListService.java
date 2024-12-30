@@ -15,7 +15,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 
-public interface OrderListService {
+public interface MypageOrderListService {
 
     Logger log = LoggerFactory.getLogger(PayoutService.class);
 

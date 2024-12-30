@@ -1,4 +1,4 @@
-console.log("orderListDisplay.js recognized.");
+console.log("mypageOrderListDisplay.js recognized.");
 
 document.addEventListener('DOMContentLoaded', () => {
     const isOrderEmpty = document.getElementById('isOrderEmptyInput').value;

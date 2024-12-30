@@ -3,7 +3,7 @@ package com.ezen.books.service;
 import com.ezen.books.domain.AddressVO;
 import com.ezen.books.domain.GradeVO;
 import com.ezen.books.domain.MemberVO;
-import com.ezen.books.repository.AddressListMapper;
+import com.ezen.books.repository.MypageAddressListMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,23 +14,23 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class AddressListServiceImpl implements AddressListService {
+public class MypageAddressListServiceImpl implements MypageAddressListService {
 
-    private final AddressListMapper addressListMapper;
+    private final MypageAddressListMapper mypageAddressListMapper;
 
     @Override
     public List<AddressVO> getAllAddr(long mno) {
-        return addressListMapper.getAllAddr(mno);
+        return mypageAddressListMapper.getAllAddr(mno);
     }
 
     @Override
     public MemberVO getMember(long mno) {
-        return addressListMapper.getMember(mno);
+        return mypageAddressListMapper.getMember(mno);
     }
 
     @Override
     public GradeVO getMemberGrade(Long gno) {
-        return addressListMapper.getMemberGrade(gno);
+        return mypageAddressListMapper.getMemberGrade(gno);
     }
 
     @Override
@@ -43,11 +43,11 @@ public class AddressListServiceImpl implements AddressListService {
         try {
             if(addressData.getIsDefault().equals("Y")) {
                 log.info("The addr is default.");
-                addressListMapper.setAllAddrNotDefault();
+                mypageAddressListMapper.setAllAddrNotDefault();
             }
 
             log.info("registering the addr.");
-            addressListMapper.registerAddr(addressData);
+            mypageAddressListMapper.registerAddr(addressData);
             return "succeeded";
         } catch (Exception e) {
             log.info("Error during registering the addr. Content: {}", e);
@@ -58,7 +58,7 @@ public class AddressListServiceImpl implements AddressListService {
     @Override
     public int deleteAddr(long adnoData) {
         try {
-            addressListMapper.deleteAddr(adnoData);
+            mypageAddressListMapper.deleteAddr(adnoData);
             return 1;
         } catch (Exception e) {
             log.info("Error during deleting the addr. Content: {}", e);
@@ -73,11 +73,11 @@ public class AddressListServiceImpl implements AddressListService {
         try {
             // 수정된 배송지가 신규 기본 배송지가 되었다면 기존의 기본 배송지의 isDefault = "N"로 함.
             if(addressData.getIsDefault().equals("Y")) {
-                addressListMapper.setAllAddrNotDefault();
+                mypageAddressListMapper.setAllAddrNotDefault();
             }
             // 수정되기 전의 배송지의 adno를 찾아 삭제한 다음 수정된 배송지(addressData)를 삽입함
-            addressListMapper.deleteAddr(addressData.getAdno());
-            addressListMapper.registerAddr(addressData);
+            mypageAddressListMapper.deleteAddr(addressData.getAdno());
+            mypageAddressListMapper.registerAddr(addressData);
             return 1;
         } catch (Exception e) {
             log.info("Error modifying the addr. Content: {}", e);

@@ -1,4 +1,4 @@
-console.log("orderListBusiness.js recognized.");
+console.log("mypageOrderListBusiness.js recognized.");
 
 // NOTE: 한꺼번에 환불하는 게 가능한 경우를 염두하고 짠 코드.
 // 맨 위에 nav bar를 만들어서 거기에 환불하기 버튼을 뒀었음.

@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 @Mapper
-public interface OrderListMapper {
+public interface MypageOrderListMapper {
     List<OrdersVO> getAllOrderList(long mno);
 
     List<OrderDetailVO> getOrderDetailList(String orno);

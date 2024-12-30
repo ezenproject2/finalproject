@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.ezen.books.repository.AddressListMapper">
+<mapper namespace="com.ezen.books.repository.MypageAddressListMapper">
 
     <insert id="registerAddr">
         insert into address(mno, rec_name, rec_phone, addr_code, addr, addr_detail, addr_name, is_default)

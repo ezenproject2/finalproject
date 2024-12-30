@@ -64,19 +64,13 @@
 
         <div class="myPage_right">
             <div class="my_orders_container">
+                <input type="hidden" id="isPickUpNoneInput" th:value="${isPickUpNone}">
                 <h1 class="my_orders_title">주문/배송 조회 상세</h1>
-                mno: [[${mno}]] <br>
-                order: [[${order}]] <br>
-                detailProductList: [[${detailProductList}]] <br>
-                delivery: [[${delivery}]] <br>
-                pickUp: [[${pickUp}]] <br>
-                offlineStore: [[${offlineStore}]] <br>
-                payment: [[${payment}]] <br>
 
                 <div class="my_orders_nav">
-                    <ul class="my_orders_nav_list">
-                        <li class="my_orders_nav_item"> <strong>2024.12.27</strong></li> <!-- 주문 날짜 -->
-                        <li class="my_orders_nav_item detail_nav_item"> 주문번호 <span class="order-number">O24103953903</span> </li> <!-- 주문 번호 -->
+                    <ul class="my_orders_nav_list"> <!--/* order.orderAt */-->
+                        <li class="my_orders_nav_item"> <strong>[[${#strings.substringBefore(order.orderAt, 'T')}]]</strong></li> <!-- 주문 날짜 -->
+                        <li class="my_orders_nav_item detail_nav_item"> 주문번호 <span class="order-number">[[${order.orno}]]</span> </li> <!-- 주문 번호 -->
                     </ul>
                 </div>
 
@@ -88,42 +82,23 @@
                                 <strong>주문 상품</strong>
                             </div>
 
-                            <div class="orders_table_content"> <!-- 책 1권의 정보 -->
+                            <div class="orders_table_content order-data-container" th:each="detailProduct, orderStat: ${detailProductList}" th:data-order-size="${detailProductList.size}"> <!-- 책 1권의 정보 -->
+                                <input type="hidden" id="productDiscountInput" th:value="${detailProduct.productVO.discount}" th:data-order-index="${orderStat.index}"> <!--/* discount: 책의 원가 */-->
+                                <input type="hidden" id="orderDetailPriceInput" th:value="${detailProduct.orderDetailVO.price}" th:data-order-index="${orderStat.index}">
                                 <div class="order_book_info_box flex">
                                     <div class="order_book_img">
-                                        <a href=""> <!-- 책 상세 페이지 이동 -->
-                                            <img src="https://contents.kyobobook.co.kr/sih/fit-in/200x0/pdt/9788988474914.jpg" alt="book">
+                                        <a th:href="@{/product/detail(isbn=${detailProduct.productVO.isbn})}"> <!-- 책 상세 페이지 이동 -->
+                                            <img th:src="${detailProduct.productVO.image}" alt="book">
                                         </a>
                                     </div>
                                     <div class="order_book_info flex">
-                                        <a href=""><strong class="underline">[국내도서] SQL 자격검정 실전문제 격검정 격검정 격검정 격검정격검정격검정 격검정격검정</strong></a> <!-- 책 상세 페이지 이동 -->
-                                        <span>수량 : 1</span>
+                                        <a href=""><strong class="underline" th:text="'[' + ${detailProduct.productVO.primaryCtg} + '] ' + ${detailProduct.productVO.title}"></strong></a> <!-- 책 상세 페이지 이동 -->
+                                        <span>수량 : [[${detailProduct.orderDetailVO.bookQty}]]</span>
                                     </div>
                                 </div>
 
                                 <div class="order_book_price order_detail_price">
-                                    <span><strong>18,000</strong>원</span>
-                                </div>
-
-                                <div class="order_book_status order_detail_status">
-                                    <strong>배송완료</strong>
-                                </div>
-                            </div>
-                            <div class="orders_table_content"> <!-- 책 1권의 정보 -->
-                                <div class="order_book_info_box flex">
-                                    <div class="order_book_img">
-                                        <a href=""> <!-- 책 상세 페이지 이동 -->
-                                            <img src="https://contents.kyobobook.co.kr/sih/fit-in/200x0/pdt/9788988474914.jpg" alt="book">
-                                        </a>
-                                    </div>
-                                    <div class="order_book_info flex">
-                                        <a href=""><strong class="underline">[국내도서] SQL 자격검정 실전문제 격검정 격검정 격검정 격검정격검정격검정 격검정격검정</strong></a> <!-- 책 상세 페이지 이동 -->
-                                        <span>수량 : 1</span>
-                                    </div>
-                                </div>
-
-                                <div class="order_book_price order_detail_price">
-                                    <span><strong>18,000</strong>원</span>
+                                    <span><strong>[[${#numbers.formatInteger(detailProduct.orderDetailVO.price, 3, 'COMMA')}]]</strong>원</span>
                                 </div>
 
                                 <div class="order_book_status order_detail_status">
@@ -132,7 +107,7 @@
                             </div>
                         </div>
 
-                        <div class="my_orders_table orders_detail_table">
+                        <div class="my_orders_table orders_detail_table delivery-table" th:if="${isPickUpNone == 'true'}">
                             <div class="orders_table_header"> <strong>배송 정보</strong> </div>
 
                             <div class="orders_table_content">
@@ -142,13 +117,35 @@
 
                                 <div class="order_detail_address_info">
                                     <p class="orderer-info">
-                                        <span class="orderer-name">홍길동</span>
-                                        <span class="orderer-number">010-1111-1111</span>
+                                        <span class="orderer-name">[[${delivery.recName}]]</span>
+                                        <span class="orderer-number">[[${delivery.recPhone}]]</span>
                                     </p>
                                     <p class="orderer-address">
-                                        인천광역시 남동구 인주대로 593
+                                        [[${delivery.addr}]]
                                     </p>
-                                    <p class="order-requested"> <span>배송 요청사항 : </span> <span> 문 앞에 두고 가세요</span> </p>
+                                    <p class="order-requested"> <span>배송 요청사항 : </span> <span>[[${delivery.addrMemo}]]</span> </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--/* 픽업 테이블이 위의 배송 테이블의 양식을 그대로 씀. */-->
+                        <div class="my_orders_table orders_detail_table pickup-table" th:if="${isPickUpNone == 'false'}">
+                            <div class="orders_table_header"> <strong>픽업 정보</strong> </div>
+
+                            <div class="orders_table_content">
+                                <div class="orders_table_title">
+                                    <span class="detail_table_title">기본 정보</span>
+                                </div>
+
+                                <div class="order_detail_address_info">
+                                    <p class="orderer-info">
+                                        <span class="orderer-name">[[${offlineStore.name}]]</span>
+                                        <span class="orderer-number">[[${offlineStore.phone}]]</span>
+                                    </p>
+                                    <p class="orderer-address">
+                                        [[${offlineStore.address}]]
+                                    </p>
+                                    <p class="order-requested"> <span>픽업 일자 : </span> <span>[[${pickUp.regAt}]]</span> </p>
                                 </div>
                             </div>
                         </div>
@@ -160,16 +157,16 @@
                                 <div class="order_product_price width-30">
                                     <p class="flex space-between">
                                         <span class="detail_table_title">주문 금액</span>
-                                        <span class="detail_table_title"><strong>24,000</strong>원</span>
+                                        <span class="detail_table_title"><strong class="sum-sale-price"></strong>원</span>
                                     </p>
                                     <p class="flex space-between">
                                         <span class="small-text">상품 금액</span>
-                                        <span class="small-text"><strong class="small-text">26,000</strong>원</span>
+                                        <span class="small-text"><strong class="small-text sum-original-price"></strong>원</span>
                                     </p>
                                     </p>
                                     <p class="flex space-between">
                                         <span class="small-text">할인 금액</span>
-                                        <span class="small-text"><strong class="small-text">-2,000</strong>원</span>
+                                        <span class="small-text"><strong class="small-text sum-sale-amount"></strong>원</span>
                                     </p>
                                 </div>
 
@@ -192,47 +189,12 @@
                                 <div class="order_total_price width-30">
                                     <p class="flex space-between">
                                         <span class="detail_table_title">결제 금액</span>
-                                        <span class="detail_table_title"><strong>20,440</strong>원</span>
+                                        <span class="detail_table_title"><strong>[[${#numbers.formatInteger(payment.price, 3, 'COMMA')}]]</strong>원</span>
                                     </p>
                                     <p class="flex space-between">
-                                        <span class="small-text">네이버페이</span> <!-- 결제 수단 -->
-                                        <span class="small-text"><strong class="small-text">20,440</strong>원</span>
-                                    </p>
-                                    <p class="flex receipt">
-                                        <button type="button" class="btn receipt_btn">영수증</button>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="my_orders_table orders_detail_table"> <!-- 환불 정보 테이블, 환불한 상품 없으면 display:none -->
-                            <div class="orders_table_header"> <strong>환불 정보</strong> </div>
-
-                            <div class="orders_table_content">
-                                <div class="order_product_price width-20">
-                                    <p class="flex space-between">
-                                        <span class="detail_table_title">최초 주문/결제 금액</span>
-                                        <span class="detail_table_title"><strong>37,440</strong>원</span>
-                                    </p>
-                                    <p class="flex space-between">
-                                        <span class="small-text">상품 금액</span>
-                                        <span class="small-text"><strong class="small-text">26,000</strong>원</span>
-                                    </p>
-                                    </p>
-                                    <p class="flex space-between">
-                                        <span class="small-text">할인 금액</span>
-                                        <span class="small-text"><strong class="small-text">-26,000</strong>원</span>
-                                    </p>
-                                    </p>
-                                    <p class="flex space-between">
-                                        <span class="small-text">쿠폰</span>
-                                        <span class="small-text"><strong class="small-text">-26,000</strong>원</span>
-                                    </p>
-                                    </p>
-                                    <p class="flex space-between">
-                                        <span class="small-text">포인트</span>
-                                        <span class="small-text"><strong class="small-text">-26,000</strong>p</span>
-                                    </p>
+                                        <input type="hidden" id="paymentPgInput" th:value="${payment.measure}">
+                                        <span class="small-text">결제 수단</span> <!-- 결제 수단 -->
+                                        <span class="small-text"><strong class="small-text payment-measure">[[${payment.measure}]]</strong></span>
                                     </p>
                                 </div>
                             </div>
@@ -243,5 +205,6 @@
         </div>
     </div>
 
-    <script src="/js/mypageOrderListInnerStyle.js"></script>
+    <script defer src="/js/mypageOrderListInnerStyle.js"></script>
+    <script defer src="/js/mypageOrderDetailDisplay.js"></script>
 </main>
