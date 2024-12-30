@@ -64,4 +64,7 @@
         select mno from review where rno = #{rno}
     </select>
 
+    <select id="checkReviewd" resultType="int">
+        select count(rno) from review where mno = #{mno} and prno = #{prno}
+    </select>
 </mapper>

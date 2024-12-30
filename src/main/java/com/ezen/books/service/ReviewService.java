@@ -21,4 +21,6 @@ public interface ReviewService {
     void createAndSendNotification(long mno, String message);
 
     int delete(long rno);
+
+    int checkReviewd(long mno, long prno);
 }

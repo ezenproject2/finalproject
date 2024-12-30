@@ -127,4 +127,9 @@ public class ReviewServiceImpl implements ReviewService{
         }
         return isOk;
     }
+
+    @Override
+    public int checkReviewd(long mno, long prno) {
+        return reviewMapper.checkReviewd(mno, prno);
+    }
 }

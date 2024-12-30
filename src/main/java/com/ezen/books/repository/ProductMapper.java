@@ -42,4 +42,6 @@ public interface ProductMapper {
     void setSaleQty(@Param("prno") long prno, @Param("qty") int bookQty);
 
     String getIsbnByRno(long rno);
+
+    ProductVO getData(long prno);
 }

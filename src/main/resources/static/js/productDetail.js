@@ -182,6 +182,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 카테고리 업데이트
     const secondaryList = document.querySelector(".secondary_list");
     function updateList(listElement, items, category) {
+        console.log(primaryCtgData);
         listElement.innerHTML = items
             .map(item => {
                 // item (2차 카테고리)과 category (1차 카테고리) 함께 링크 생성

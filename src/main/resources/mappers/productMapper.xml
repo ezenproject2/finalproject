@@ -176,4 +176,8 @@
         select p.isbn from review r join product p on r.prno = p.prno where r.rno = #{rno};
     </select>
 
+    <select id="getData" resultType="com.ezen.books.domain.ProductVO">
+        select * from product where prno = #{prno}
+    </select>
+
 </mapper>

@@ -505,8 +505,8 @@
 
     <input type="hidden" id="mnoVal" th:value="${#authentication.name != 'anonymousUser' ? #authentication.getPrincipal().memberVO.getMno() : '-1'}">
     <script th:inline="javascript">
-        let mno = document.getElementById("mnoVal").value;
-        console.log(mno);
+        let mnoData = document.getElementById("mnoVal").value;
+        console.log(mnoData);
     </script>
     <script th:src="@{/js/header.js}"></script>
 </header>

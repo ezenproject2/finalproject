@@ -488,18 +488,6 @@
     </div>
   </div>
 
-
-  <!--/* (시작) */-->
-  리뷰 내용 >> <input type="text" name="content" id="contentEl"> <br>
-  별점 >> <input type="text" name="rating" id="ratingEl"> <br>
-  파일 첨부 >> <input type="file" name="file" id="fileEl"> <br>
-  <!--/* 나중에 주문확인 페이지에서 리뷰 입력 모달 창을 열 때 같이 넘어가야할 정보 : prno, mno */-->
-  <input type="hidden" name="prno" id="prnoEl" th:value="${productVO.prno}">
-  <input type="hidden" name="mno" id="mnoEl" value=1><br>
-  <button type="button" id="regBtn">리뷰 등록하기</button>
-  <!--/* (끝) */-->
-
-
   <!--/* 장바구니 추가를 위한 버튼 요소 */-->
   <div class="prod_purchase_wrap">
     <div class="inner">
@@ -527,6 +515,7 @@
 
         <!--/* 장바구니 저장 용도로 만든 <input> 엘리먼트. */-->
         <input type="hidden" id="cartMno" th:value="${#authentication.name != 'anonymousUser' ? #authentication.getPrincipal().memberVO.getMno() : '-1'}">
+        <input type="hidden" name="prno" id="prnoEl" th:value="${productVO.prno}">
         <button type="button" class="btn shopping_basket_btn">장바구니</button>
         <button type="button" class="btn purchase_btn">바로구매</button>
         <button type="button" class="btn pick_up_btn">바로픽업</button>
@@ -537,16 +526,16 @@
   <!--/* 변수 전달을 위함*/-->
   <script th:inline="javascript">
     let realPrice = [[${productVO.realPrice}]];
-    let primaryCtgData = [[${ productVO.primaryCtg }]];
+    let primaryCtgData = [[${productVO.primaryCtg}]];
     let prno = [[${productVO.prno}]];
-    let mno = document.getElementById('cartMno').value;;
+    console.log(primaryCtgData);
+    let mno = document.getElementById('cartMno').value;
   </script>
 
   <!--/* 상세페이지 JS */-->
   <script th:src="@{/js/productDetail.js}"></script>
 
   <!--/* 리뷰 등록 관련 스크립트 */-->
-  <script th:src="@{/js/reviewRegister.js}"></script>
   <script th:src="@{/js/reviewDetail.js}"></script>
   <script th:inline="javascript"> printReviewBox([[${productVO.prno}]], 1, mno); </script>
 

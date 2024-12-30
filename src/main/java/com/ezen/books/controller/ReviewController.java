@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import retrofit2.http.Path;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,12 +95,19 @@ public class ReviewController {
     }
 
     @ResponseBody
-    @GetMapping("/delete/{rno}")
+    @GetMapping(value = "/delete/{rno}")
     public String delete(@PathVariable("rno") long rno){
         int isOk = reviewService.delete(rno);
 
         return isOk>0? "1" : "0";
     }
 
+    @ResponseBody
+    @GetMapping(value = "/checkReviewd/{mno}/{prno}")
+    public String checkReviewd(@PathVariable("mno") long mno, @PathVariable("prno") long prno){
+        int isOk = reviewService.checkReviewd(mno, prno);
+        log.info(">>>> 리뷰 개수 > {}", isOk);
+        return isOk>0? "1" : "0";
+    }
 
 }

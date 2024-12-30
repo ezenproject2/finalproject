@@ -103,4 +103,9 @@ public class ProductServiceImpl implements ProductService{
         }
         return bookInfo;
     }
+
+    @Override
+    public ProductVO getData(long prno) {
+        return productMapper.getData(prno);
+    }
 }

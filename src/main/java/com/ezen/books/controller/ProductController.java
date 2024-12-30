@@ -126,4 +126,11 @@ public class ProductController {
         model.addAttribute("productVO", productVO);
     }
 
+    @ResponseBody
+    @GetMapping(value = "/getData/{prno}")
+    public ProductVO getData(@PathVariable("prno") long prno){
+        ProductVO productVO = productService.getData(prno);
+        return productVO;
+    }
+
 }

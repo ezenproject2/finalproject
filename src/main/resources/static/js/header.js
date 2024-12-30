@@ -130,14 +130,14 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     //----[알림]-------------------------------------------------------------------------------------------------------------
-    const eventSource = new EventSource('/notification/subscribe/' + mno);
+    const eventSource = new EventSource('/notification/subscribe/' + mnoData);
 
     let unreadCount = 0; // 읽지 않은 알림 개수를 저장할 변수
     let dataList = []; // 알림 목록을 저장할 배열
 
     // (차민주) SSE로 알림 수신
     eventSource.onmessage = function (event) {
-        if(mno != -1){
+        if(mnoData != -1){
 
             const notification = JSON.parse(event.data);
             
@@ -279,7 +279,7 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     bell.addEventListener('click', () => {
-        if(mno == -1){return;}
+        if(mnoData == -1){return;}
         toggleNotificationList();
     });
 

@@ -29,4 +29,6 @@ public interface ProductService {
     void setHotTag();
 
     BookInfo getReviewInfo(long prno);
+
+    ProductVO getData(long prno);
 }

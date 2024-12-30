@@ -37,4 +37,6 @@ public interface ReviewMapper {
     long getPrnoByRno(@Param("rno") long rno);
 
     long getMnoByRno(long rno);
+
+    int checkReviewd(@Param("mno") long mno, @Param("prno") long prno);
 }
