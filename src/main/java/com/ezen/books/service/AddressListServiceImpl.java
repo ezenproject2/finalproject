@@ -35,19 +35,22 @@ public class AddressListServiceImpl implements AddressListService {
 
     @Override
     public String registerAddr(AddressVO addressData) {
+//        log.info("registerAddr start.");
+//        log.info("The addrData from registerAddr: {}", addressData);
+//        log.info("The isDefault of addrData: {}", addressData.getIsDefault());
 
         // 기본 배송지가 아니면 그냥 넣고, 기본 배송지면 기존의 기본 배송지를 isDefault = N으로 바꾼 후 넣음.
-        if(addressData.getIsDefault().equals("N")) {
-            log.info("The addr is not default.");
+        try {
+            if(addressData.getIsDefault().equals("Y")) {
+                log.info("The addr is default.");
+                addressListMapper.setAllAddrNotDefault();
+            }
+
+            log.info("registering the addr.");
             addressListMapper.registerAddr(addressData);
             return "succeeded";
-        } else if (addressData.getIsDefault().equals("Y")) {
-            log.info("The addr is default.");
-            addressListMapper.setAllAddrNotDefault();
-            log.info("Successfully changed previous default addr.");
-            addressListMapper.registerAddr(addressData);
-            return "succeeded";
-        } else {
+        } catch (Exception e) {
+            log.info("Error during registering the addr. Content: {}", e);
             return "failed";
         }
     }
@@ -66,7 +69,13 @@ public class AddressListServiceImpl implements AddressListService {
     @Transactional
     @Override
     public int modifyAddr(AddressVO addressData) {
+
         try {
+            // 수정된 배송지가 신규 기본 배송지가 되었다면 기존의 기본 배송지의 isDefault = "N"로 함.
+            if(addressData.getIsDefault().equals("Y")) {
+                addressListMapper.setAllAddrNotDefault();
+            }
+            // 수정되기 전의 배송지의 adno를 찾아 삭제한 다음 수정된 배송지(addressData)를 삽입함
             addressListMapper.deleteAddr(addressData.getAdno());
             addressListMapper.registerAddr(addressData);
             return 1;

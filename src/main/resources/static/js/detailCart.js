@@ -6,7 +6,9 @@ document.addEventListener('click', (e) => {
 
     const mnoVal = document.getElementById('cartMno').value;
 
-    if(mnoVal == "-1") {
+    if(
+        (['shopping_basket_btn', 'purchase_btn', 'pick_up_btn'].some(className => targetClassList.contains(className)))
+        && mnoVal == "-1") {
         alert("로그인 먼저 해주세요.");
         return;
     }
@@ -44,12 +46,6 @@ document.querySelector('.shopping_basket_btn').addEventListener('click', () => {
 
     const bookQty = document.getElementById('number').innerText;
     console.log("bookQty: " + bookQty);
-
-    if(mno == "-1") {
-        alert("로그인 먼저 해주세요.");
-    } else {
-        storeCartVoToServer(mno, prno, bookQty);
-    }
 });
 
 // "바로구매" 버튼에 이벤트를 부여하여 /payment/payout으로 이동.

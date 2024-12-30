@@ -206,13 +206,95 @@
     gap: 5px;
     transition: background-color 0.2s ease-out;
 }
-
+/* 배송지 등록 유의사항 */
+.address_recautions {
+    width: 80%;
+    background-color: #F0F0F0;
+    border-radius: 10px;
+    padding : 22px;
+    margin: 40px 0 10px 0;
+}
+.address_recautions p {
+    padding-bottom: 24px;
+    font-size: 1rem;
+    line-height: 22px;
+    letter-spacing: -0.01em;
+    font-weight: 700;
+}
+.address_recautions li {
+    position: relative;
+    color: #555;
+    font-size: 13px;
+    line-height: 19px;
+    padding-left : 20px;
+    margin-bottom: 10px;
+}
+.address_recautions li:before {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 6px;
+    width: 4px;
+    height: 4px;
+    border-radius: 100%;
+    background-color: #555;
+}
+/* 배송지 목록 */
+.address_table, .address_table tr {
+    width: 80%;
+}
+.address_table {
+    text-align: left;
+}
 .address_table tr{
     display: grid;
-    grid-template-rows: 1fr 2fr 1fr;
+    grid-template-rows: 1fr 2fr 0.5fr;
 }
-.address_table tr td {
+.address_table th {
+    width: 30%;
+    font-size: 1.15rem;
+    font-weight: 700;
+    padding-left: 10px;
+}
+.address_table td {
+    /* width: 70%; */
+    padding-right: 10px;
+    padding-bottom: 20px;
+    /* 내가 추가함. */
+    padding-left: 20px;
     display: flex;
-    justify-content: center;
+    justify-content: left;
     align-items: center;
+}
+.address_table td > div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.address_table td > div > p {
+    display: flex;
+    align-items: center;
+    gap : 7px;
+}
+.location_name {
+    color: #497248;
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+.default_location {
+    font-size: 0.7rem;
+    color: white;
+    background-color: #ABBC86;
+    padding: 5px;
+    border-radius: 6px;
+}
+.modify-btn, .delete-btn {
+    font-size: 0.9rem;
+    padding: 5px;
+    border: 1px solid #c6c6c6;
+    border-radius: 6px;
+}
+.custom_name::after {
+    content: " /";
 }

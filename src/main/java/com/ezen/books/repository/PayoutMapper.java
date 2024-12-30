@@ -22,4 +22,6 @@ public interface PayoutMapper {
     int saveDeliveryToServer(DeliveryVO deliveryData);
 
     int savePickupToServer(PickUpVO pickupData);
+
+    int getTotalCount(@Param("pagingVO") PagingVO pagingVO, @Param("mno") long mno);
 }

@@ -17,9 +17,6 @@ public class AddressVO {
     private String addrDetail;
     private String addrName;
     private String isDefault;
-
-    // DB 컬럼과 대응하지 않는 필드.
-    private String defaultOrNot;
 }
 /*
 CREATE TABLE address (
