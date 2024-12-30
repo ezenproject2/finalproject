@@ -387,7 +387,7 @@ async function preserveOrderDetailToServer(impResponse) {
         
         orderDetail.status = selectStatus(impResponse.status);
 
-        // bookPriceVal이 숫자+원 임. "원"을 제거하고 숫자만 추출한 후에  문자열을 int로 전환.
+        // bookPriceVal이 숫자+원 임. "원"을 제거하고 숫자만 추출한 후에 문자열을 int로 전환.
         let onlyPriceVal = bookPriceVal.match(/\d+/);
         orderDetail.price = parseInt(onlyPriceVal);
         

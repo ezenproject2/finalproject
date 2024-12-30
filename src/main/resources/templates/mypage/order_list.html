@@ -7,13 +7,13 @@
 <head>
   <title> 이젠문고 </title>
   <meta charset="UTF-8"/>
-  <link rel="stylesheet" href="/css/mypageOrderList.css"/>
+  <link rel="stylesheet" href="/css/mypageOrderListOuter.css"/>
+  <link rel="stylesheet" href="/css/mypageOrderListInner.css"/>
 </head>
 
 <main layout:fragment="main">
-  <div class="myPage_header"></div>
   <div class="myPage_inner inner">
-    <div class="myPage_left">
+    <div class="myPage_left" style="margin-top: 0;">
       <a href="" class="myPage_profile">
         <div class="member_profile_photo_area">
           <div class="member_profile_photo"></div>
@@ -23,16 +23,16 @@
             </svg>
           </i>
         </div>
-        <div class="member_name"> <!--/* 사용자 닉네임에 있던 값: [[${memberVO.nickName}]] id="memberGrade"에 있던 값: [[${gradeVO.level}]] */-->
-          <span><span id="memberName">[[${memberInfo.nickName}]]</span>님</span> <span id="memberGrade">[[${memberGrade.level}]]</span>
+        <div class="member_name">
+          <span><span id="memberName">홍길동</span>님</span> <span id="memberGrade">새싹</span>
         </div>
-        <div class="member_email"> <span>[[${memberInfo.email}]]</span></div> <!--/* span 안에 있던 값: [[${memberVO.email}]] */-->
+        <div class="member_email"> <span>(example@example.com)</span></div>
       </a>
 
       <div class="myPage_menu">
         <div class="myPage_menu_item">
           <p class="menu_item_title"><a href="">쇼핑 내역<i class="ic ic_arrow_right"></i></a></p>
-          <p class="menu_item_content"><a th:href="@{/mypage/order-list(mno=${#authentication.getPrincipal().memberVO.getMno()})}">주문/배송목록</a></p> <!--/* 주문 목록을 띄우기 위해 준희가 경로를 추가함. */-->
+          <p class="menu_item_content"><a href="">주문/배송목록</a></p>
           <p class="menu_item_content"><a href="">선물함</a></p>
           <p class="menu_item_content"><a href="">매장 구매 내역</a></p>
           <p class="menu_item_content"><a href="">영수증</a></p>
@@ -45,13 +45,13 @@
         </div>
         <div class="myPage_menu_item">
           <p class="menu_item_title"><a href="">회원정보<i class="ic ic_arrow_right"></i></a></p>
-          <p class="menu_item_content"><a th:href="@{/mypage/address-list(mno=${#authentication.getPrincipal().memberVO.getMno()})}">배송주소록</a></p>
+          <p class="menu_item_content"><a href="">배송주소록</a></p>
           <p class="menu_item_content"><a href="">회원정보관리</a></p>
           <p class="menu_item_content"><a href="">나의 회원등급</a></p>
         </div>
         <div class="myPage_menu_item">
           <p class="menu_item_title"><a href="">고객센터<i class="ic ic_arrow_right"></i></a></p>
-          <p class="menu_item_content"><a href="/mypage/inquiry">1:1 문의 내역</a></p>
+          <p class="menu_item_content"><a href="">1:1 문의 내역</a></p>
           <p class="menu_item_content"><a href="">업체배송 문의내역</a></p>
         </div>
         <div class="myPage_menu_item item_last">
@@ -61,232 +61,194 @@
         </div>
       </div>
     </div>
+
     <div class="myPage_right">
-      <div class="myPage_banner">
-        <div class="myPage_banner_header">
-          <div class="switch-btn">
-            <div class="circle"></div>
-            <div class="label left">추천</div>
-            <div class="label right">알림</div>
-          </div>
+      <div class="my_orders_container">
+        <h1 class="my_orders_title">주문/배송 목록</h1>
 
-          <div class="carousel_icon">
-            <i class="ic ic_left">
-              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="0.5" y="0.5" width="47" height="47" rx="23.5" fill="rgba(255, 255, 255, 0.3)"/>
-                <rect x="0.5" y="0.5" width="47" height="47" rx="23.5" stroke="rgba(255, 255, 255, 0.3)"/>
-                <path d="M27.8125 15.25L18.1875 24L27.8125 32.75" stroke="#555" stroke-width="1.8" stroke-linecap="round"/>
-                <path d="M27.8125 15.25L18.1875 24L27.8125 32.75" stroke="#555" stroke-opacity="1" stroke-width="1.8" stroke-linecap="round"/>
-                <path d="M27.8125 15.25L18.1875 24L27.8125 32.75" stroke="#555" stroke-opacity="1" stroke-width="1.8" stroke-linecap="round"/>
-              </svg>
-            </i>
-            <i class="ic ic_right">
-              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="0.5" y="0.5" width="47" height="47" rx="23.5" fill="rgba(255, 255, 255, 0.3)"/>
-                <rect x="0.5" y="0.5" width="47" height="47" rx="23.5" stroke="rgba(255, 255, 255, 0.3)"/>
-                <path d="M20.1875 32.75L29.8125 24L20.1875 15.25" stroke="#555" stroke-width="1.8" stroke-linecap="round"/>
-                <path d="M20.1875 32.75L29.8125 24L20.1875 15.25" stroke="#555" stroke-opacity="1" stroke-width="1.8" stroke-linecap="round"/>
-                <path d="M20.1875 32.75L29.8125 24L20.1875 15.25" stroke="#555" stroke-opacity="1" stroke-width="1.8" stroke-linecap="round"/>
-              </svg>
-            </i>
-          </div>
+        <div class="my_orders_nav">
+          <ul class="my_orders_nav_list">
+            <li class="my_orders_nav_item"> <strong>주문내역</strong></li>
+            <li class="my_orders_nav_item"> <strong>0</strong> <span>준비중</span> </li>
+            <li class="my_orders_nav_item"> <strong>0</strong> <span>배송중</span> </li>
+            <li class="my_orders_nav_item"> <strong>0</strong> <span>배송완료</span> </li>
+            <li class="my_orders_nav_item"> <strong>0</strong> <span>취소</span> </li>
+            <li class="my_orders_nav_item"> <strong>0</strong> <span>교환/반품/환불</span> </li>
+          </ul>
         </div>
 
+        <div class="my_orders_box">
+          <!--
+              주문 내역이 없으면 -> my_orders_box_wrap : display:none, my_orders_box_none : display:none
+              주문 내역이 있으면 -> my_orders_box_wrap : display:block, my_orders_box_none : display:none
+          -->
+          <div class="my_orders_box_none" style="display: none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 16 16">
+              <circle cx="8" cy="8" r="8" fill="#c6c6c6"></circle>
+              <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" fill="white"></path>
+            </svg>
+            <strong> 주문 내역이 없습니다. </strong>
+            <a href="/">계속 쇼핑하기</a>
+          </div>
 
-
-
-
-
-        9:49
-
-        <div class="myPage_banner_main">
-          <div class="banner_slide">
-            <div class="banner_item item1">
-              <div class="item_bage">
-                <span class="newBook">신간추천</span>
+          <div class="my_orders_box_wrap"> <!-- 주문내역 전체 내역 -->
+            <div class="my_orders_table outer-data-container" th:each="orderDetailProductList, outerStat: ${orderDetailProductGroup}" th:data-outer-size="${orderDetailProductGroup.size}" th:data-mno="${mno}" th:data-is-order-empty="${isOrderEmpty}"> <!-- 주문내역 반복 아이템 -->
+              <div class="orders_table_header">
+                <strong>[[${orderDateList[outerStat.index]}]]</strong> <!--/* 2024.12.27(O24103953903)가 있던 위치. */-->
+                <a href="" class="underline">상세보기<i class="ic ic_arrow_right"></i></a>
               </div>
-              <div class="banner_book">
-                <div class="banner_book_img item1-img"></div>
-                <div class="banner_book_intro">
-                  <p class="intro1">1건의 신간이 출간되었어요.</p>
-                  <p class="intro2">[쉬다이닝] Human Acts</p>
+
+              <div class="orders_table_content inner-data-container" th:each="orderDetailProduct, innerStat:${orderDetailProductList}"> <!-- 책 1권의 정보 -->
+                <!--/* <td class="product_info" th:data-odno="${orderDetailProduct.orderDetailVO.odno}" th:data-orno="${orderDetailProduct.orderDetailVO.orno}" th:data-order-detail="${innerStat.index}"> */-->
+                <input type="hidden" id="odnoInput" th:value="${orderDetailProduct.orderDetailVO.odno}" th:data-inner-index="${innerStat.index}">
+                <input type="hidden" id="ornoInput" th:value="${orderDetailProduct.orderDetailVO.orno}" th:data-inner-index="${innerStat.index}">
+                <div class="order_book_info_box flex">
+                  <div class="order_book_img">
+                    <a href=""> <!-- 책 상세 페이지 이동 -->
+                      <img th:src="${orderDetailProduct.productVO.image}" alt="book">
+                    </a>
+                  </div>
+                  <div class="order_book_info flex"> <!--/* TODO: [국내도서]처럼 띄워야 함. */-->
+                    <a href=""><strong class="underline">[[${orderDetailProduct.productVO.primaryCtg} ?: '메인 카테고리']]: [[${orderDetailProduct.productVO.title} ?: '도서 제목']]</strong></a> <!-- 책 상세 페이지 이동 -->
+                    <span>수량 : [[${orderDetailProduct.orderDetailVO.bookQty}]]</span>
+                  </div>
+                </div>
+
+                <div class="order_book_price">
+                  <span><strong>[[${#numbers.formatInteger(orderDetailProduct.orderDetailVO.price, 3, 'COMMA')}]]</strong>원</span>
+                </div>
+
+                <div class="order_book_status">
+                  <strong class="order-detail-status" th:data-inner-index="${innerStat.index}">[[${orderDetailProduct.orderDetailVO.status}]]</strong>
+                </div>
+
+                <div class="order_book_review_btn">
+                  <button type="button" class="review_btn btn">리뷰 작성</button>
+                  <!--/* 환불 버튼을 추가할 예정. */-->
                 </div>
               </div>
             </div>
-            <div class="banner_item item2">
-              <div class="item_bage">
-                <span class="recommendMd">MD추천</span>
-              </div>
-              <div class="banner_book">
-                <div class="banner_book_img item2-img"></div>
-                <div class="banner_book_intro">
-                  <p class="intro1">1건의 신간이 출간되었어요.</p>
-                  <p class="intro2">일인칭 단수</p>
-                </div>
-              </div>
-            </div>
-            <div class="banner_item item3">
-              <div class="item_bage">
-                <span class="recommendMd">MD추천</span>
-              </div>
-              <div class="banner_book">
-                <div class="banner_book_img item3-img"></div>
-                <div class="banner_book_intro">
-                  <p class="intro1">1건의 신간이 출간되었어요.</p>
-                  <p class="intro2">유시민의 항소이유서</p>
-                </div>
-              </div>
-            </div>
-            <div class="banner_item item4">
-              <div class="item_bage">
-                <span class="recommendMd">MD추천</span>
-              </div>
-              <div class="banner_book">
-                <div class="banner_book_img item4-img"></div>
-                <div class="banner_book_intro">
-                  <p class="intro1">1건의 신간이 출간되었어요.</p>
-                  <p class="intro2">이기적 유전자</p>
-                </div>
-              </div>
-            </div>
-            <div class="banner_item item5">
-              <div class="item_bage">
-                <span class="recommendMd">MD추천</span>
-              </div>
-              <div class="banner_book">
-                <div class="banner_book_img item5-img"></div>
-                <div class="banner_book_intro">
-                  <p class="intro1">1건의 신간이 출간되었어요.</p>
-                  <p class="intro2">코스모스</p>
-                </div>
-              </div>
-            </div>
-            <div class="banner_item item6">
-              <div class="item_bage">
-                <span class="recommendMd">MD추천</span>
-              </div>
-              <div class="banner_book">
-                <div class="banner_book_img item6-img"></div>
-                <div class="banner_book_intro">
-                  <p class="intro1">1건의 신간이 출간되었어요.</p>
-                  <p class="intro2">진격의 거인</p>
-                </div>
+
+            <div class="pagenation_area">
+              <div class="pagenation">
+                <a href=""><i class="ic ic_carousel_left_white"></i></a>
+                <!-- <th:block th:each="i:${#numbers.sequence(ph.startPage, ph.endPage)}"> -->
+                <ul class="pagenation_num">
+                  <!-- 현재 페이지에 class="present" 추가-->
+                  <li class="present"><a href="">1</a></li>
+                  <li><a href="">2</a></li>
+                  <li><a href="">3</a></li>
+                  <li><a href="">4</a></li>
+                  <li><a href="">5</a></li>
+                  <li><a href="">6</a></li>
+                  <li><a href="">7</a></li>
+                  <li><a href="">8</a></li>
+                  <li><a href="">9</a></li>
+                  <li><a href="">10</a></li>
+                </ul>
+                <!-- </th:block> -->
+                <a href=""><i class="ic ic_carousel_right_white"></i></a>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
+  </div>
 
-      <div class="direct_banner">
-        <div class="direct_banner_item">
-          <p class="direct_banner_item_header">
-            <i class="ic ic_box"></i>
-            <span class="direct_banner_text">진행중인 주문</span>
-          </p>
-          <p class="direct_banner_item_content"><strong>0</strong> 건</p>
-        </div>
-        <div class="direct_banner_item">
-          <p class="direct_banner_item_header">
-            <i class="ic ic_coupon"></i>
-            <span class="direct_banner_text">쿠폰</span>
-          </p>
-          <p class="direct_banner_item_content"><strong>쿠폰-사이즈</strong> 장</p> <!--/* strong 안에 있던 값: [[${coupons.size()}]] */-->
-        </div>
-        <div class="direct_banner_item">
-          <p class="direct_banner_item_header">
-            <i class="ic ic_point"></i>
-            <span class="direct_banner_text">포인트</span>
-          </p>
-          <p class="direct_banner_item_content"><strong></strong> 원</p> <!--/* strong 안에 있던 값: [[${pointsBalance}]] */-->
-        </div>
-        <div class="direct_banner_item">
-          <p class="direct_banner_item_header">
-            <i class="ic ic_gift_card"></i>
-            <span class="direct_banner_text">기프트카드</span>
-          </p>
-          <p class="direct_banner_item_content"><strong>0</strong> 장</p>
-        </div>
-      </div>
+  <div class="modal_overlay">
+    <div class="modal_wirte_review">
+      <h2 class="modal_title"> 리뷰 작성
+        <svg id="closeModal" xmlns="http://www.w3.org/2000/svg" width="23" height="23" class="bi bi-x-lg" viewBox="0 0 16 16">
+          <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" fill="none" stroke="currentColor" stroke-width="1"/>
+        </svg>
+      </h2>
 
+      <div class="modal_contents">
+        <form action="">
+          <div class="modal_content">
+            <div class="order_book_info_box flex">
+              <div class="order_book_img">
+                <a href=""> <!-- 책 상세 페이지 이동 -->
+                  <img src="https://contents.kyobobook.co.kr/sih/fit-in/200x0/pdt/9788988474914.jpg" alt="book">
+                </a>
+              </div>
+              <div class="order_book_info flex">
+                <a href=""><strong>[국내도서] SQL 자격검정 실전문제 격검정 격검정 격검정 격검정격검정격검정 격검정격검정</strong></a> <!-- 책 상세 페이지 이동 -->
 
-      <div class="order-list-container"> <!--/* 주문 목록을 보여주는 div */-->
-        <!--/* cart_list가 반복될거라서 내역이 없을 때 나올 cart_list_none을 밖으로 뺐음. */-->
-        <div class="cart_list_none">
-          <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 16 16">
-            <circle cx="8" cy="8" r="8" fill="#c6c6c6"></circle>
-            <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" fill="white"></path>
-          </svg>
-          <p class="title">주문 내역이 없습니다.</p>
-          <p class="sub">도서를 주문하고 내역을 확인하세요!</p>
-          <a href="">계속 쇼핑하기</a>
-        </div>
+                <div class="book_review_rate flex">
+                  <div class="rate_stars">
+                    <svg class="star" data-value="1" width="40" height="37.9" viewBox="0 0 58 55" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <linearGradient id="starGradient1" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stop-color="#E7B343" />
+                          <stop offset="100%" stop-color="#E4E4E4" />
+                        </linearGradient>
+                      </defs>
+                      <path d="M33.9544 3.72284C32.0027 -0.916729 25.3544 -0.916729 23.4027 3.72284L18.3979 15.6128L5.40933 16.6429C0.344613 17.0424 -1.70981 23.2941 2.15079 26.564L12.0463 34.9444L9.0217 47.4763C7.84326 52.3642 13.2218 56.2276 17.559 53.6082L28.6785 46.8943L39.7981 53.6111C44.1352 56.2305 49.5138 52.367 48.3354 47.4763L45.3108 34.9501L55.2063 26.5669C59.0669 23.2969 57.0124 17.0481 51.9477 16.6457L38.9592 15.6185L33.9544 3.72284Z" fill="url(#starGradient1)" />
+                    </svg>
+                    <svg class="star" data-value="2" width="40" height="37.9" viewBox="0 0 58 55" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <linearGradient id="starGradient2" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stop-color="#E7B343" />
+                          <stop offset="100%" stop-color="#E4E4E4" />
+                        </linearGradient>
+                      </defs>
+                      <path d="M33.9544 3.72284C32.0027 -0.916729 25.3544 -0.916729 23.4027 3.72284L18.3979 15.6128L5.40933 16.6429C0.344613 17.0424 -1.70981 23.2941 2.15079 26.564L12.0463 34.9444L9.0217 47.4763C7.84326 52.3642 13.2218 56.2276 17.559 53.6082L28.6785 46.8943L39.7981 53.6111C44.1352 56.2305 49.5138 52.367 48.3354 47.4763L45.3108 34.9501L55.2063 26.5669C59.0669 23.2969 57.0124 17.0481 51.9477 16.6457L38.9592 15.6185L33.9544 3.72284Z" fill="url(#starGradient2)" />
+                    </svg>
+                    <svg class="star" data-value="3" width="40" height="37.9" viewBox="0 0 58 55" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <linearGradient id="starGradient3" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stop-color="#E7B343" />
+                          <stop offset="100%" stop-color="#E4E4E4" />
+                        </linearGradient>
+                      </defs>
+                      <path d="M33.9544 3.72284C32.0027 -0.916729 25.3544 -0.916729 23.4027 3.72284L18.3979 15.6128L5.40933 16.6429C0.344613 17.0424 -1.70981 23.2941 2.15079 26.564L12.0463 34.9444L9.0217 47.4763C7.84326 52.3642 13.2218 56.2276 17.559 53.6082L28.6785 46.8943L39.7981 53.6111C44.1352 56.2305 49.5138 52.367 48.3354 47.4763L45.3108 34.9501L55.2063 26.5669C59.0669 23.2969 57.0124 17.0481 51.9477 16.6457L38.9592 15.6185L33.9544 3.72284Z" fill="url(#starGradient3)" />
+                    </svg>
+                    <svg class="star" data-value="4" width="40" height="37.9" viewBox="0 0 58 55" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <linearGradient id="starGradient4" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stop-color="#E7B343" />
+                          <stop offset="100%" stop-color="#E4E4E4" />
+                        </linearGradient>
+                      </defs>
+                      <path d="M33.9544 3.72284C32.0027 -0.916729 25.3544 -0.916729 23.4027 3.72284L18.3979 15.6128L5.40933 16.6429C0.344613 17.0424 -1.70981 23.2941 2.15079 26.564L12.0463 34.9444L9.0217 47.4763C7.84326 52.3642 13.2218 56.2276 17.559 53.6082L28.6785 46.8943L39.7981 53.6111C44.1352 56.2305 49.5138 52.367 48.3354 47.4763L45.3108 34.9501L55.2063 26.5669C59.0669 23.2969 57.0124 17.0481 51.9477 16.6457L38.9592 15.6185L33.9544 3.72284Z" fill="url(#starGradient4)" />
+                    </svg>
+                    <svg class="star" data-value="5" width="40" height="37.9" viewBox="0 0 58 55" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <linearGradient id="starGradient5" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stop-color="#E7B343" />
+                          <stop offset="100%" stop-color="#E4E4E4" />
+                        </linearGradient>
+                      </defs>
+                      <path d="M33.9544 3.72284C32.0027 -0.916729 25.3544 -0.916729 23.4027 3.72284L18.3979 15.6128L5.40933 16.6429C0.344613 17.0424 -1.70981 23.2941 2.15079 26.564L12.0463 34.9444L9.0217 47.4763C7.84326 52.3642 13.2218 56.2276 17.559 53.6082L28.6785 46.8943L39.7981 53.6111C44.1352 56.2305 49.5138 52.367 48.3354 47.4763L45.3108 34.9501L55.2063 26.5669C59.0669 23.2969 57.0124 17.0481 51.9477 16.6457L38.9592 15.6185L33.9544 3.72284Z" fill="url(#starGradient5)" />
+                    </svg>
+                  </div>
 
-        <!--/* id=dataContainer를 사용할 수 없어서 뺐음. 클래스로 대체함. */-->
-        <!--/* orderDetailProductList의 값: List<OrderDetailProductList> */-->
-        <div class="cart_inner inner outer-data-container" th:each="orderDetailProductList, outerStat: ${orderDetailProductGroup}" th:data-outer-list-size="${orderDetailProductGroup.size}" th:data-mno="${mno}" th:data-is-order-empty="${isOrderEmpty}">
-          <div class="cart_list" th:data-order-list="${outerStat.index}">
-            <div class="cart_title_area">
-              <p class="cart_title">주문 내역</p>
+                  <span class="rating-score">
+                                                <strong class="rating-value" id="rating-value">0.0</strong>
+                                                / 5점
+                                            </span>
+                </div>
+              </div>
             </div>
-
-            <div class="cart_list_table"> <!--/* style="display: none;"을 잠시 뺐음. */-->
-              <table>
-                <tr>
-                  <th>상품 정보</th>
-                  <th>수량</th>
-                  <th>금액</th>
-                  <th>서비스</th> <!--/* 환불 버튼을 넣기 위해 넣은 th. */-->
-                </tr>
-
-                <tr class="inner-data-container" th:each="orderDetailProduct, innerStat:${orderDetailProductList}" th:data-inner-list-size="${orderDetailProductList.size}"> <!--/* orderDetailProduct의 값: OrderDetailProductDTO */-->
-
-                  <td class="product_info" th:data-odno="${orderDetailProduct.orderDetailVO.odno}" th:data-orno="${orderDetailProduct.orderDetailVO.orno}" th:data-order-detail="${innerStat.index}">
-                    <div class="td_wrap product_info_wrap">
-                      <label class="cart_check_box">
-                        <!--/* 체크박스 input에 내 HTML 데이터를 합침 */-->
-                        <input type="checkbox" class="cart_check single-item-btn" name="itemBtn" th:data-order-detail="${innerStat.index}">
-                      </label> <!--/* Extract duplicate id="allItemBtn" */-->
-                      <div class="book_image_wrap">
-                        <a href=""><img th:src="${orderDetailProduct.productVO.image}" alt="" width="200" height="300"></a> <!--/* 이미지 크기를 임의로 넣었음. 추후에 스타일을 적용할 것. */-->
-                      </div>
-                      <div class="book_info_wrap">
-                        <p class="book_title"><a href="">[[${orderDetailProduct.productVO.title} ?: '도서 제목']]</a></p>
-                        <p class="book_write">
-                          <span class="book_author">[[${orderDetailProduct.productVO.author} ?: '작가']]</span>
-                          <span class="book_publisher">[[${orderDetailProduct.productVO.publisher} ?: '출판사']]</span>
-                        </p>
-                        <p class="book_price_wrap">
-                          <span class="discount"><strong>[[${orderDetailProduct.productVO.discountRate} ?: '할인 없음']]%</strong></span> <!--/* 원본 파일에서는 "소년이 온다"가 있었음 */-->
-                          <span class="book_discount_price sale-price" th:data-order-detail="${innerStat.index}"><strong>[[${orderDetailProduct.productVO.realPrice}]]</strong>원</span>
-                          <span class="book_original_price original-price" th:data-order-detail="${innerStat.index}">[[${orderDetailProduct.productVO.discount} ?: '도서 원가']]원</span>
-                        </p>
-                      </div>
-                    </div>
-                  </td>
-
-                  <td class="product_quantity">
-                    <div class="td_wrap product_quantity_wrap">
-                      <div class="prod_count_btn_wrap"> <!-- +, - 버튼이 있던 곳-->
-                        <span th:class="book-qty" th:data-order-detail="${innerStat.index}">[[${orderDetailProduct.orderDetailVO.bookQty}]]</span>
-                      </div>
-                    </div>
-                  </td>
-
-                  <!--/* <p class="qty-price" th:data-cart="${iterStat.index}"></p>의 정보를 아래 <strong>에 넣어봄. */-->
-                  <td class="product_total_price"><strong style="font-size: 1.1rem;" class="qty-price" th:data-order-detail="${innerStat.index}">[[${orderDetailProduct.orderDetailVO.price}]]</strong>원 <i class="ic ic_delete"></i></td>
-                  <!--/* 환불 버튼 넣으려고 내가 넣은 td. */-->
-                  <td>
-                    <button type="button" class="refund-btn" th:if="${orderDetailProduct.orderDetailVO.status != 'refunded'}" th:data-order-detail="${innerStat.index}">환불하기</button>
-                    <button type="button" class="refund-btn" th:unless="${orderDetailProduct.orderDetailVO.status != 'refunded'}" th:data-order-detail="${innerStat.index}" disabled>환불됨</button>
-                  </td>
-                </tr>
-
-              </table>
-            </div> <!--/* th:each 용로도 사용하는 div */-->
           </div>
-        </div>
-      </div>
 
+          <div class="modal_content">
+            <p class="modal_content_title">리뷰 작성</p>
+            <div class="input_box flex">
+              <textarea name="review" id="review" minlength="10" maxlength="500" placeholder="내용을 10자 이상 입력해 주세요. 주제와 무관한 댓글, 악플, 배송문의 등의 글은 임의 삭제될 수 있습니다."></textarea>
+              <div class="text_count"><span>0/500</span></div>
+            </div>
+            <input type="file">
+            <p class="file_info">JPG, PNG, GIF 파일만 1장 업로드 가능합니다.</p>
+          </div>
+
+          <div class="modal_content flex">
+            <button type="submit" class="btn review_wirte_btn">작성 완료</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 

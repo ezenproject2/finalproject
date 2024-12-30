@@ -34,6 +34,11 @@
         where gno = #{gno}
     </select>
 
+    <select id="getOrderDate" resultType="java.time.LocalDateTime">
+        select order_at from orders
+        where orno = #{orno}
+    </select>
+
     <!--  아래부터 환불을 위해 추가된 쿼리들.  -->
     <select id="getImpUid" resultType="String">
         select imp_uid from payment
