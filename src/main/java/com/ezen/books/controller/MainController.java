@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class MainController {
 
-    @Value("${KAKAO_JAVASCRIPT_APPKEY}")
+    @Value("${KAKAO_JAVASCRIPT_APPKEY}") // test
     private String appkey;
 
     @GetMapping("/store")

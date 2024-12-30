@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const btnNav = document.querySelector('.btn_nav');
     const iconMenu = btnNav.querySelector('.ic_menu');
     const iconClose = btnNav.querySelector('.ic_menu_close');
+    const header = document.querySelector('header'); // 헤더 요소 선택
 
     const modal = document.querySelector('.modal_main_menu');
     const body = document.querySelector('header');
@@ -18,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
         setTimeout(() => {
             modal.style.opacity = '1';
             overlay.style.opacity = '1';
+            header.style.zIndex = '100';
         }, 10);
     };
 
@@ -30,6 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
         setTimeout(() => {
             modal.style.display = 'none';
             overlay.style.display = 'none';
+            header.style.zIndex = '99';
         }, 300);
     };
 
@@ -94,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function () {
             menuList.style.transition = 'transform 1s ease-in-out'; // 부드러운 애니메이션
         }
     });
-          
+
     let lastScrollY = 0; // 마지막 스크롤 위치
     let ticking = false; // 애니메이션 프레임 동작 여부 플래그
 
@@ -114,17 +117,84 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 스크롤 위치에 따른 클래스 처리 함수
     function handleScroll(scrollY) {
-    const header = document.querySelector("header"); // 헤더 요소 선택
-    if (!header) return; // 헤더 요소가 없을 경우 종료
+        const header = document.querySelector("header"); // 헤더 요소 선택
+        if (!header) return; // 헤더 요소가 없을 경우 종료
 
-    if (scrollY > 100) {
-        header.classList.remove("default-header");
-        header.classList.add("sticky-header");
-    } else {
-        header.classList.remove("sticky-header");
-        header.classList.add("default-header");
+        if (scrollY > 100) {
+            header.classList.remove("default-header");
+            header.classList.add("sticky-header");
+        } else {
+            header.classList.remove("sticky-header");
+            header.classList.add("default-header");
+        }
     }
-    }
+
+    // 알림창 관련
+    const bell = document.querySelector('.user_menu_item.bell');
+    const notificationList = document.querySelector('.notification_list');
+
+    // 알림 리스트 토글 함수
+    const toggleNotificationList = () => {
+        const isVisible = notificationList.style.display === 'block';
+        if (isVisible) {
+            notificationList.style.display = 'none'; // 숨기기
+            header.style.zIndex = ''; // z-index 클래스 제거
+        } else {
+            notificationList.style.display = 'block'; // 보이기
+            header.style.zIndex = '100'; // z-index 클래스 추가
+        }
+    };
+
+    bell.addEventListener('click', () => {
+        toggleNotificationList();
+    });
+
+    // 바깥 클릭 시 알림 리스트 닫기
+    const closeNotificationList = (event) => {
+        // notification_list나 bell 내부에서 클릭된 경우 닫지 않음
+        if (!notificationList.contains(event.target) && !bell.contains(event.target)) {
+            notificationList.style.display = 'none';
+            header.style.zIndex = '';
+        }
+    };
+
+    // notification_list 내부에서 클릭 시 닫지 않도록 설정
+    notificationList.addEventListener('click', (event) => {
+        event.stopPropagation(); // 이벤트 전파 차단
+    });
+
+    // 바깥 클릭 이벤트
+    document.addEventListener('click', closeNotificationList);
+
+    
+    // 알림창 관련
+    const notificationItems = document.querySelectorAll('.notification_menu');
+
+    // notification_list_content 안의 콘텐츠 가져오기
+    const notificationContent = document.querySelector('.news_content');
+    const benefitContent = document.querySelector('.benefit_content');
+
+    // 각 아이템에 클릭 이벤트 추가
+    notificationItems.forEach(item => {
+        item.addEventListener('click', () => {
+            // 모든 아이템에서 select 클래스 제거
+            notificationItems.forEach(i => {
+                i.classList.remove('select');
+            });
+
+            // 클릭된 아이템에 select 클래스 추가
+            item.classList.add('select');
+
+            // 클릭된 아이템에 따라 콘텐츠 보이기/숨기기
+            if (item.classList.contains('news')) {
+                notificationContent.style.display = 'block'; // 알림 보이기
+                benefitContent.style.display = 'none';       // 혜택 숨기기
+            } else if (item.classList.contains('benefit')) {
+                notificationContent.style.display = 'none';  // 알림 숨기기
+                benefitContent.style.display = 'block';      // 혜택 보이기
+            }
+        });
+    });
 
 
     // 장바구니 아이콘 관련하여 준희가 넣은 코드.
