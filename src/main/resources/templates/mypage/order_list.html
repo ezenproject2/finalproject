@@ -111,8 +111,8 @@
                       <img th:src="${orderDetailProduct.productVO.image}" alt="book">
                     </a>
                   </div>
-                  <div class="order_book_info flex"> <!--/* TODO: [국내도서]처럼 띄워야 함. */-->
-                    <a href=""><strong class="underline">[[${orderDetailProduct.productVO.primaryCtg} ?: '메인 카테고리']]: [[${orderDetailProduct.productVO.title} ?: '도서 제목']]</strong></a> <!-- 책 상세 페이지 이동 -->
+                  <div class="order_book_info flex"> <!--/* [[${orderDetailProduct.productVO.primaryCtg}]]: [[${orderDetailProduct.productVO.title}]] */-->
+                    <a href=""><strong class="underline" th:text="'[' + ${orderDetailProduct.productVO.primaryCtg} + '] ' + ${orderDetailProduct.productVO.title}"></strong></a> <!-- 책 상세 페이지 이동 -->
                     <span>수량 : [[${orderDetailProduct.orderDetailVO.bookQty}]]</span>
                   </div>
                 </div>
@@ -132,27 +132,34 @@
               </div>
             </div>
 
+            <!--/* 페이지네이션 추가 */-->
             <div class="pagenation_area">
               <div class="pagenation">
-                <a href=""><i class="ic ic_carousel_left_white"></i></a>
-                <!-- <th:block th:each="i:${#numbers.sequence(ph.startPage, ph.endPage)}"> -->
+                <a
+                        th:href="@{/mypage/order-list(pageNo=${ph.startPage-1})}"
+                        th:classappend="${!ph.prev} ? ' disabled' : ''">
+                  <i class="ic ic_carousel_left_white"></i>
+                </a>
                 <ul class="pagenation_num">
-                  <!-- 현재 페이지에 class="present" 추가-->
-                  <li class="present"><a href="">1</a></li>
-                  <li><a href="">2</a></li>
-                  <li><a href="">3</a></li>
-                  <li><a href="">4</a></li>
-                  <li><a href="">5</a></li>
-                  <li><a href="">6</a></li>
-                  <li><a href="">7</a></li>
-                  <li><a href="">8</a></li>
-                  <li><a href="">9</a></li>
-                  <li><a href="">10</a></li>
+                  <th:block th:if="${ph.endPage eq 0}">
+                    <!-- endPage가 0일 경우, disabled 클래스를 가진 0 페이지 항목만 출력 -->
+                    <li class="disabled"><a href="javascript:void(0);">0</a></li>
+                  </th:block>
+
+                  <th:block th:if="${ph.endPage ne 0}" th:each="i:${#numbers.sequence(ph.startPage, ph.endPage)}">
+                    <li th:classappend="${ph.pgvo.pageNo == i} ? ' present' : ''">
+                      <a th:href="@{/mypage/order-list(pageNo=${i})}">[[${i}]]</a>
+                    </li>
+                  </th:block>
                 </ul>
-                <!-- </th:block> -->
-                <a href=""><i class="ic ic_carousel_right_white"></i></a>
+                <a
+                        th:href="@{/mypage/order-list(pageNo=${ph.endPage+1})}"
+                        th:classappend="${!ph.next} ? ' disabled' : ''">
+                  <i class="ic ic_carousel_right_white"></i>
+                </a>
               </div>
             </div>
+
           </div>
         </div>
       </div>

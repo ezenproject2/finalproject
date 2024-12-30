@@ -110,7 +110,7 @@
       <div class="pagenation_area">
         <div class="pagenation">
           <a
-                  th:href="@{/payment/cart(mno=${mno}, pageNo=${ph.startPage-1})}"
+                  th:href="@{/payment/cart(pageNo=${ph.startPage-1})}"
                   th:classappend="${!ph.prev} ? ' disabled' : ''">
             <i class="ic ic_carousel_left_white"></i>
           </a>
@@ -122,12 +122,12 @@
 
             <th:block th:if="${ph.endPage ne 0}" th:each="i:${#numbers.sequence(ph.startPage, ph.endPage)}">
               <li th:classappend="${ph.pgvo.pageNo == i} ? ' present' : ''">
-                <a th:href="@{/payment/cart(mno=${mno}, pageNo=${i})}">[[${i}]]</a>
+                <a th:href="@{/payment/cart(pageNo=${i})}">[[${i}]]</a>
               </li>
             </th:block>
           </ul>
           <a
-                  th:href="@{/payment/cart(mno=${mno}, pageNo=${ph.endPage+1})}"
+                  th:href="@{/payment/cart(pageNo=${ph.endPage+1})}"
                   th:classappend="${!ph.next} ? ' disabled' : ''">
             <i class="ic ic_carousel_right_white"></i>
           </a>

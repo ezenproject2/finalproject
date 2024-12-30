@@ -2,6 +2,7 @@ package com.ezen.books.controller;
 
 import com.ezen.books.domain.*;
 import com.ezen.books.handler.FileHandler;
+import com.ezen.books.handler.PagingHandler;
 import com.ezen.books.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,7 @@ public class MypageController {
     // 준희 담당 마이페이지를 위해 추가한 코드.
     private final AddressListService addressListService;
     private final OrderListService orderListService;
+    private final PayoutService payoutService;
 
     /*-- 마이페이지 --*/
     @GetMapping("/main")
@@ -115,7 +117,7 @@ public class MypageController {
 
     // 준희 담당 마이페이지를 위해 추가한 코드.
     @GetMapping("/order-list")
-    public String showOrderList(Model model) {
+    public String showOrderList(PagingVO pagingVO, Model model) {
         log.info(" >>> MypageController: showOrderList start.");
 
         // mno를 얻기 위해 myPageMain의 있던 코드를 가져옴
@@ -129,7 +131,7 @@ public class MypageController {
 
         // 화면에 띄울 order_detail과 product의 정보를 가져옴.
         List<List<OrderDetailProductDTO>> orderDetailProductGroup = orderListService.getOrderDetailProductList(mno);
-//        log.info("The orderDetailProductGroup: {}", orderDetailProductGroup);
+        // log.info("The orderDetailProductGroup: {}", orderDetailProductGroup);
         log.info("orderDetailProductGroup is empty or not :{}", orderDetailProductGroup.isEmpty());
 
         // 화면에 띄울 orders의 주문 날짜들을 가져옴.
@@ -145,12 +147,18 @@ public class MypageController {
         MemberVO memberInfo = orderListService.getMember(mno);
         GradeVO memberGrade = orderListService.getMemberGrade(memberInfo.getGno());
 
+        // 페이지네이션
+        int totalCount = payoutService.getTotalCount(pagingVO, mno);
+        PagingHandler ph = new PagingHandler(pagingVO, totalCount);
+        log.info("The ph: {}", ph);
+
         model.addAttribute("mno", mno);
         model.addAttribute("isOrderEmpty", isOrderEmpty);
         model.addAttribute("orderDetailProductGroup", orderDetailProductGroup);
         model.addAttribute("orderDateList", orderDateList);
         model.addAttribute("memberInfo", memberInfo);
         model.addAttribute("memberGrade", memberGrade);
+        model.addAttribute("ph", ph);
         return "/mypage/order_list";
     }
 
