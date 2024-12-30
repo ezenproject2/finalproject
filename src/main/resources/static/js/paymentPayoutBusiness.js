@@ -383,7 +383,7 @@ async function preserveOrderDetailToServer(impResponse) {
         // orderDetail.price = document.querySelector(`[data-list-book-price="${i}"]`).innerText;
         orderDetail.prno = document.querySelector(`[data-payout="${i}"].list-data-storage`).dataset.listBookPrno;
         orderDetail.bookQty = document.querySelector(`[data-payout="${i}"].book-qty`).innerText;
-        let bookPriceVal = document.querySelector(`[data-payout="${i}"].book-price`).dataset.bookOriginalPrice;
+        let bookPriceVal = document.querySelector(`[data-payout="${i}"].book-price`).dataset.salePrice;
         
         orderDetail.status = selectStatus(impResponse.status);
 

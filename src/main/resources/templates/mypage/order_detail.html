@@ -92,7 +92,7 @@
                                         </a>
                                     </div>
                                     <div class="order_book_info flex">
-                                        <a href=""><strong class="underline" th:text="'[' + ${detailProduct.productVO.primaryCtg} + '] ' + ${detailProduct.productVO.title}"></strong></a> <!-- 책 상세 페이지 이동 -->
+                                        <a th:href="@{/product/detail(isbn=${detailProduct.productVO.isbn})}"><strong class="underline" th:text="'[' + ${detailProduct.productVO.primaryCtg} + '] ' + ${detailProduct.productVO.title}"></strong></a> <!-- 책 상세 페이지 이동 -->
                                         <span>수량 : [[${detailProduct.orderDetailVO.bookQty}]]</span>
                                     </div>
                                 </div>

@@ -26,5 +26,7 @@ function displayPaymentInfo() {
     // .toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
     document.querySelector('.sum-sale-price').innerText = sumSalePrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     document.querySelector('.sum-original-price').innerText = sumOriginalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    document.querySelector('.sum-sale-amount').innerText = "- " + sumSaleAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+    let saleAmoutText = "- " + sumSaleAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    document.querySelector('.sum-sale-amount').innerText = saleAmoutText;
 }
