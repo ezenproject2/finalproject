@@ -4,6 +4,7 @@ import com.ezen.books.domain.AddressVO;
 import com.ezen.books.domain.CartVO;
 import com.ezen.books.domain.CartProductDTO;
 import com.ezen.books.domain.ProductVO;
+import com.ezen.books.handler.PagingHandler;
 import com.ezen.books.service.*;
 import com.ezen.books.domain.*;
 import com.ezen.books.service.CartService;
@@ -92,11 +93,24 @@ public class PaymentController {
     }
 
     @GetMapping("/cart")
-    public String showCartItems(@RequestParam("mno") long mno, Model model) {
+    public String showCartItems(PagingVO pagingVO, Model model) {
         log.info(" >>> PaymentController: showCartItems start.");
+
+        // 로그인 된 사용자의 mno를 가져옴
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loginId = authentication.getName();
+
+        MemberVO memberVO = memberService.getMemberByInfo(loginId);
+        long mno = memberVO.getMno();
         log.info("The mno of showCartItems: {}", mno);
+
         List<CartVO> cartList = cartService.getAllCartItems(mno);
         log.info(" >>> cartList: {}", cartList);
+
+        // 페이지네이션 영역
+        int totalCount = payoutService.getTotalCount(pagingVO, mno);
+        PagingHandler ph = new PagingHandler(pagingVO, totalCount);
+        log.info("The ph: {}", ph);
 
         List<CartProductDTO> cartProductList = buildCartProductList(cartList);
         log.info(" >>> showCartItems: cartProductList: {}", cartProductList);
@@ -112,6 +126,7 @@ public class PaymentController {
         model.addAttribute("mno", mno);
         model.addAttribute("cartProductList", cartProductList);
         model.addAttribute("isCartEmpty", isCartEmpty);
+        model.addAttribute("ph", ph);
         return "/payment/cart";
     }
 

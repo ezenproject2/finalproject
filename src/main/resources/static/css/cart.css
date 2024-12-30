@@ -357,3 +357,53 @@
 }
 .ic_delete {
 cursor:pointer;}
+
+/* 페이지네이션을 위해 추가한 스타일. */
+.pagenation_area { /* 이 부분만 직접 짜고 나머지 아래 부분은 product/list의 스타일을 적용함. */
+    padding: 20px 0;
+}
+
+.pagenation_area,
+.pagenation,
+.pagenation_num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pagenation {
+    justify-content: space-around;
+    gap: 2.2rem;
+}
+
+.pagenation i {
+    width: 31px;
+    height: 31px;
+}
+
+.pagenation_num {
+    gap: 2rem;
+    align-items: center;
+}
+
+.pagenation_num a {
+    font-size: 15px;
+    line-height: 24px;
+    color: #555;
+}
+
+.pagenation_num .present {
+    padding: 3px 10.7px;
+    background-color: #497248;
+    border-radius: 9999px;
+}
+
+.pagenation_num .present a {
+    color: white;
+}
+
+.pagenation_area .disabled{
+    cursor: not-allowed;         /* 마우스를 올렸을 때 클릭할 수 없음을 나타냄 */
+    opacity: 0.5;                /* 버튼을 흐리게 표시 */
+    pointer-events: none;        /* 클릭 이벤트를 비활성화 */
+}

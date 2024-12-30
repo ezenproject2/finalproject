@@ -1,193 +1,161 @@
-// paymentPayoutStyle.js를 그대로 베낀 뒤 수정한 파일.
-console.log("orderListStyle.js recognized.");
-document.addEventListener('DOMContentLoaded', function () {
-    // 배송 메세지 셀렉트 박스
-    // > .request_select가 없어서 주석처리함. "selectElement"도 같이 주석처리함.
-    // > .shipping_request_select가 없어서 주석처리함. parentElement도 같이 주석처리함.
-    // const selectElement = document.querySelector('.request_select');
-    // const parentElement = document.querySelector('.shipping_request_select');
-    const arrowIcon = document.querySelector('.shipping_request_select .ic_arrow_down');
+document.addEventListener("DOMContentLoaded", () => {
+    const openModalBtns = document.querySelectorAll('.review_btn'); // 버튼들 모두 선택
+    const closeModalBtn = document.getElementById("closeModal");
+    const modalOverlay = document.querySelector('.modal_overlay');
 
-    let isOpen = false; // 셀렉트 박스가 열렸는지 상태를 저장
+    console.log(openModalBtns);
 
-    function toggleSelectBox() { // 셀렉트 박스 열림/닫힘 상태 확인
-        isOpen = !isOpen;
-
-        if (isOpen) {
-            // 셀렉트 박스 열림
-            // parentElement.style.border = '1.5px solid #717171';
-            arrowIcon.classList.remove('ic_arrow_down');
-            arrowIcon.classList.add('ic_arrow_up');
-        } else {
-            // 셀렉트 박스 닫힘
-            // parentElement.style.border = '1.5px solid #c6c6c6';
-            arrowIcon.classList.remove('ic_arrow_up');
-            arrowIcon.classList.add('ic_arrow_down');
-        }
-    }
-
-    // 셀렉트 박스 클릭 이벤트
-    // selectElement.addEventListener('click', toggleSelectBox);
-
-    // 다른 곳 클릭 시 자동으로 닫히게 처리
-    document.addEventListener('click', (event) => {
-        // if (!parentElement.contains(event.target)) {
-        //     isOpen = false;
-        //     parentElement.style.border = '1.5px solid #c6c6c6';
-        //     arrowIcon.classList.remove('ic_arrow_up');
-        //     arrowIcon.classList.add('ic_arrow_down');
-        // }
-    });
-
-    // 배송 메세지 글자 수 세기
-    // > request_text가 없는 것을 확인하고 주석처리함. "textarea"도 주석처리함.
-    // const textarea = document.querySelector('.request_text');
-    const textContainer = document.querySelector('.shipping_request_text');
-    const textCount = document.querySelector('.text_count span');
-    // const maxLength = textarea.getAttribute('maxlength'); // 최대 글자 수 가져오기
-
-    // select 값 변경 이벤트
-    // selectElement.addEventListener('change', function () {
-    //     if (this.value === '직접 입력') {
-    //         textContainer.style.display = 'block'; // 보이게 하기
-    //     } else {
-    //         textContainer.style.display = 'none'; // 숨기기
-    //     }
-    // });
-
-    // 글자 수 업데이트 및 보더라인 처리
-    // > 위에서 "textarea"가 주석처리 되어 아래도 함께 주석처리함.
-// textarea.addEventListener('input', () => {
-//     const currentLength = textarea.value.length; // 현재 입력된 글자 수
-
-//     // 글자 수 업데이트
-//     textCount.innerHTML = `<span style="color: #497248; font-weight: 700;">${currentLength}</span>/${maxLength}`;
-
-//     // 입력 중 보더라인 변경
-//     textContainer.style.border = '1.5px solid #497248';
-// });
-
-    // textarea 포커스 이벤트
-    // > 위에서 "textarea"가 주석처리 되어 아래도 함께 주석처리함.
-    // textarea.addEventListener('focus', () => {
-    //     textContainer.style.border = '1.5px solid #717171'; // 포커스 시 보더라인 변경
-    // });
-
-    // textarea 포커스 아웃 이벤트
-    // > 위에서 "textarea"가 주석처리 되어 아래도 함께 주석처리함.
-    // textarea.addEventListener('blur', () => {
-    //     const currentLength = textarea.value.length; // 현재 글자 수 확인
-
-    //     if (currentLength > 0) {
-    //         textContainer.style.border = '1.5px solid #717171'; // 글자가 있을 때
-    //     } else {
-    //         textContainer.style.border = '1.5px solid #c6c6c6'; // 글자가 없을 때
-    //     }
-    // });
-
-    // select 값 변경 이벤트
-    // selectElement.addEventListener('change', function () {
-    //     if (this.value === '직접 입력') {
-    //         textContainer.style.display = 'block'; // 보이게 하기
-    //     } else {
-    //         textContainer.style.display = 'none'; // 숨기기
-    //     }
-    // });
-
-    // 아이콘 클릭 시 리스트 숨기기
-    const arrowIcons = document.querySelectorAll('.order_title_wrap .ic');
-
-    arrowIcons.forEach(icon => {
-        icon.addEventListener('click', function () {
-            const parentWrap = this.closest('.order_table_wrap'); // 최상위 공통 부모 찾기
-            const orderItem = parentWrap.querySelector('.order_item'); // 해당 부모 내 order_item 찾기
-
-            if (orderItem.classList.contains('active')) {
-                // 숨길 때
-                orderItem.style.height = `${orderItem.scrollHeight}px`; // 현재 높이 설정
-                setTimeout(() => {
-                    orderItem.style.height = '0'; // 높이를 0으로 축소
-                }, 10); // transition 시작
-                orderItem.style.overflow = 'hidden'; // 내용 숨기기
-                orderItem.classList.remove('active');
-                this.classList.remove('ic_arrow_up');
-                this.classList.add('ic_arrow_down');
-            } else {
-                // 보일 때
-                orderItem.classList.add('active');
-                orderItem.style.display = 'block'; // display를 먼저 block으로 설정
-                orderItem.style.height = '0'; // 초기 높이 설정
-                setTimeout(() => {
-                    orderItem.style.height = `${orderItem.scrollHeight}px`; // 내용물 높이로 확장
-                }, 10);
-                this.classList.remove('ic_arrow_down');
-                this.classList.add('ic_arrow_up');
-
-                // 애니메이션 종료 후 height 초기화 (내용물에 따라 유연하게 대응)
-                orderItem.addEventListener(
-                    'transitionend',
-                    () => {
-                        orderItem.style.height = 'auto';
-                    },
-                    { once: true }
-                );
-            }
+    // 모든 버튼에 클릭 이벤트 추가
+    openModalBtns.forEach((btn, index) => {
+        console.log(`Button ${index + 1} 이벤트 리스너 추가됨`); // 각 버튼에 리스너 추가 확인
+        btn.addEventListener("click", () => {
+            console.log(`Button ${index + 1} 클릭됨`);
+            modalOverlay.style.display = "block"; // 모달 보이게
         });
     });
 
-    // > 결제 기능이 없는 것을 확인한 뒤 주석처리함.
-    // const payButtons = document.querySelectorAll('.pay-btn');
-    // const selectCreditCard = document.querySelector('.select_credit_card');
-    // const selectBox = document.querySelector('.select_credit_card_box');
-    // const selectElement1 = document.querySelector('.select');
-    // const arrowIcon1 = document.querySelector('.cardIcon');
+    // 추후 각 리뷰 버튼에 책 정보 data 추가해서 getAttribute로 갖고 와야 함
 
-    // 1. credit-card-btn 버튼을 눌렀을 때 select_credit_card 보이기
-    // > 결제 기능이 없는 것을 확인한 뒤 주석처리함.
-    // payButtons.forEach((button) => {
-    //     button.addEventListener('click', function () {
-    //         // 다른 버튼의 선택 스타일 초기화
-    //         payButtons.forEach((btn) => btn.classList.remove('pushed'));
+    // 모달 닫기
+    if (closeModalBtn) { // 닫기 버튼이 존재하는 경우만 추가
+        closeModalBtn.addEventListener("click", () => {
+            modalOverlay.style.display = "none"; // 모달 숨기기
+        });
+    }
 
-    //         if (this.classList.contains('credit-card-btn')) {
-    //             selectCreditCard.style.display = 'block'; // select_credit_card 보이기
-    //         } else {
-    //             selectCreditCard.style.display = 'none'; // 숨기기
-    //         }
+    // 배경 클릭 시 모달 닫기
+    modalOverlay.addEventListener("click", (e) => {
+        if (e.target === modalOverlay) {
+            modalOverlay.style.display = "none"; // 모달 숨기기
+        }
+    });
 
-    //         // 현재 버튼 스타일 활성화
-    //         this.classList.add('pushed');
-    //     });
-    // });
+    // 별점
+    const stars = document.querySelectorAll('.star');
+    const ratingValue = document.querySelector('.rating-value');
+    const rateStars = document.querySelector('.rate_stars'); // 별점 영역
 
-    // 3. 셀렉트 외 영역 클릭 시 select_credit_card 숨기기
-    // > 결제 기능이 없는 것을 확인한 뒤 주석처리함.
-    // document.addEventListener('click', (e) => {
-    //     const isInsidePayBtnContainer = e.target.closest('.pay_btn_container');
-    //     const isInsideSelectCard = e.target.closest('.select_credit_card');
+    let currentHoverIndex = -1; // 현재 호버 중인 별의 인덱스
+    let isHalfHover = false; // 현재 반쪽 여부
+    let selectedRating = 0; // ** 선택된 별점 값 **
 
-    //     if (!isInsidePayBtnContainer && !isInsideSelectCard) {
-    //         selectCreditCard.style.display = 'none'; // select_credit_card 숨기기
-    //         payButtons.forEach((btn) => btn.classList.remove('pushed')); // 모든 버튼 스타일 초기화
-    //     }
-    // });
-});
+    stars.forEach((star, index) => {
+        // 별점 호버 이벤트
+        star.addEventListener('mousemove', (e) => {
+            const rect = star.getBoundingClientRect();
+            const offsetX = e.clientX - rect.left;
+            const isHalf = offsetX < rect.width / 2; // 반쪽 여부 확인
 
-document.addEventListener('scroll', () => {
-    const cartSidebar = document.querySelector('.cart_sidebar');
-    const asideContainer = document.querySelector('.aside_container'); // > aside_container가 없는 것을 확인하고 주석처리함.
+            // 중복 호출 방지
+            if (currentHoverIndex === index && isHalfHover === isHalf) return;
 
-    // > getBoundingClientRect가 없다고 에러가 발생해서 주석처리함.
-    // const sidebarRect = cartSidebar.getBoundingClientRect();
-    // const asideRect = asideContainer.getBoundingClientRect();
+            currentHoverIndex = index; // 현재 호버 중인 별 업데이트
+            isHalfHover = isHalf; // 현재 반쪽 여부 업데이트
 
-    // 부모 높이보다 아래로 내려가는 것을 제한
-    // > 조건문에 해당하는 요소 모두가 없는 것을 확인 후 주석처리함.
-    // if (asideRect.bottom > sidebarRect.bottom) {
-    //     asideContainer.style.position = 'absolute';
-    //     asideContainer.style.bottom = '0';
-    // } else {
-    //     asideContainer.style.position = 'sticky';
-    //     asideContainer.style.top = '50px';
-    // }
+            // 모든 별 초기화
+            stars.forEach((s, i) => {
+                const gradientId = `starGradient${i + 1}`; // 각 별의 고유 ID
+                const gradient = document.querySelector(`#${gradientId} stop:nth-child(2)`); // 회색 부분
+                const firstStop = document.querySelector(`#${gradientId} stop:nth-child(1)`); // 노란 부분
+
+                if (i < index) {
+                    firstStop.setAttribute('offset', '100%'); // 이전 별은 전체 노란색
+                    gradient.setAttribute('offset', '100%');
+                } else if (i === index && isHalf) {
+                    firstStop.setAttribute('offset', '50%'); // 현재 별은 반쪽 노란색
+                    gradient.setAttribute('offset', '50%');
+                } else if (i === index && !isHalf) {
+                    firstStop.setAttribute('offset', '100%'); // 현재 별은 전체 노란색
+                    gradient.setAttribute('offset', '100%');
+                } else {
+                    firstStop.setAttribute('offset', '0%'); // 나머지는 회색
+                    gradient.setAttribute('offset', '0%');
+                }
+            });
+
+            // 현재 별점 표시
+            const hoverRating = isHalf ? index + 0.5 : index + 1;
+            ratingValue.textContent = `${hoverRating}`;
+        });
+
+        // 별점 클릭 이벤트
+        star.addEventListener('click', (e) => {
+            const rect = star.getBoundingClientRect();
+            const offsetX = e.clientX - rect.left;
+            const isHalf = offsetX < rect.width / 2;
+            const clickedRating = isHalf ? index + 0.5 : index + 1;
+
+            // 같은 점수를 클릭하면 0점으로 초기화
+            if (selectedRating === clickedRating) {
+                selectedRating = 0;
+                updateStars(-1, false);
+                ratingValue.textContent = '0';
+            } else {
+                // 선택된 별점 값 저장
+                selectedRating = clickedRating;
+                ratingValue.textContent = `${selectedRating}`;
+
+                // 별점 확정
+                updateStars(index, isHalf);
+            }
+        });
+
+        // 별점에서 마우스를 뺐을 때 초기화
+        star.addEventListener('mouseleave', () => {
+            if (selectedRating === 0) {
+                // 별점 선택이 없을 때만 초기화
+                stars.forEach((s, i) => {
+                    const gradientId = `starGradient${i + 1}`;
+                    const gradient = document.querySelector(`#${gradientId} stop:nth-child(2)`);
+                    const firstStop = document.querySelector(`#${gradientId} stop:nth-child(1)`);
+
+                    // 모든 별을 회색으로
+                    firstStop.setAttribute('offset', '0%');
+                    gradient.setAttribute('offset', '0%');
+                });
+
+                ratingValue.textContent = '0'; // 점수 초기화
+            }
+
+            currentHoverIndex = -1; // 호버 상태 초기화
+            isHalfHover = false; // 반쪽 여부 초기화
+        });
+    });
+
+    // `rate_stars` 영역 밖으로 나갔을 때 초기화
+    document.addEventListener('mousemove', (e) => {
+        const rect = rateStars.getBoundingClientRect(); // 별점 영역
+        const isOutside =
+            e.clientX < rect.left ||
+            e.clientX > rect.right ||
+            e.clientY < rect.top ||
+            e.clientY > rect.bottom;
+
+        if (isOutside && selectedRating === 0 && !rateStars.contains(e.target)) {
+            stars.forEach((s, i) => {
+                const gradientId = `starGradient${i + 1}`;
+                const gradient = document.querySelector(`#${gradientId} stop:nth-child(2)`);
+                const firstStop = document.querySelector(`#${gradientId} stop:nth-child(1)`);
+
+                // 모든 별을 회색으로
+                firstStop.setAttribute('offset', '0%');
+                gradient.setAttribute('offset', '0%');
+            });
+
+            ratingValue.textContent = '0'; // 점수 초기화
+            currentHoverIndex = -1; // 상태 초기화
+            isHalfHover = false;
+        }
+    });
+
+    // 리뷰 글자 수 세기
+    const contentTextarea = document.querySelector("#review");
+    const textCountSpan = document.querySelector(".text_count span");
+
+    // 글자 수 업데이트 함수
+    contentTextarea.addEventListener("input", () => {
+        const currentLength = contentTextarea.value.length; // 현재 글자 수
+        const maxLength = contentTextarea.getAttribute("maxlength"); // 최대 글자 수
+        textCountSpan.textContent = `${currentLength}/${maxLength}`; // 글자 수 업데이트
+    });
 });

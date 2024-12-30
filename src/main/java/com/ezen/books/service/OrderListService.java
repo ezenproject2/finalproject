@@ -13,6 +13,7 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface OrderListService {
@@ -70,4 +71,6 @@ public interface OrderListService {
     MemberVO getMember(long mno);
 
     GradeVO getMemberGrade(Long gno);
+
+    LocalDateTime getOrderDate(String orno);
 }

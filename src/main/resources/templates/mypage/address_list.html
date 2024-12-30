@@ -81,7 +81,6 @@
             </button>
           </div>
 
-
           <div class="address_list_box" th:unless="${isAddrEmpty == 'true'}">
             <button type="button" class="registration_of_address_btn register-addr-btn">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#000B17" class="bi bi-plus" viewBox="0 0 16 16">
@@ -90,32 +89,51 @@
               새 배송지 등록
             </button>
 
-            <div class="address-container" th:data-mno="${mno}">
-              <div class="address-wrapper" th:each="addrInfo, addrStat: ${addrList}" th:data-list-size="${addrList.size}">
-                <input type="hidden" class="addr-adno-input" th:value="${addrInfo.adno}" th:data-addr-index="${addrStat.index}">
-                <div>
-                  <div>
-                    <div th:if="${addrInfo.isDefault == 'Y'}" class="is-default-mark" th:data-addr-index="${addrStat.index}">기본 배송지</div>
-                    <div th:unless="${addrInfo.isDefault == 'Y'}" class="is-default-mark" th:data-addr-index="${addrStat.index}">일반 배송지</div>
-                    <div th:if="${addrInfo.addrName != null}">[[${#strings.isEmpty(addrInfo.addrName) ? '배송지' : addrInfo.addrName}]]</div>
-                  </div>
-                  <div>
-                    <p>수령인 이름<span>[[${addrInfo.recName}]]</span></p>
-                    <p>수령인 전화<span>[[${addrInfo.recPhone}]]</span></p>
-                    <p><span>[[${addrInfo.addrCode}]]</span><span>[[${addrInfo.addr}]]</span><span>[[${addrInfo.addrDetail}]]</span></p>
-                  </div>
-                </div>
-                <div>
-                  <button type="button" class="registration_of_address_btn modify-btn" th:data-addr-index="${addrStat.index}">수정</button>
-                  <button type="button" class="delete-addr-btn" th:if="${addrInfo.isDefault != 'Y'}" th:data-addr-index="${addrStat.index}">삭제</button>
-                </div>
-              </div>
+            <div class="address_recautions">
+              <p>배송지 등록 유의사항</p>
+              <ul>
+                <li>기본 배송지는 삭제 및 수정 불가합니다. 먼저 다른 배송지를 기본 배송지로 설정해주세요.</li>
+                <li>배송지 이름을 제외한 모든 배송지 항목은 필수입니다. 빠짐 없이 정확하게 기입해주시기 바랍니다.</li>
+                <li>배송지는 최대 10개 까지 저장할 수 있습니다.</li>
+              </ul>
             </div>
-          </div>
 
+            <table class="address_table" th:each="addrInfo, addrStat: ${addrList}" th:data-list-size="${addrList.size}">
+              <input type="hidden" class="addr-adno-input" th:value="${addrInfo.adno}" th:data-addr-index="${addrStat.index}">
+              <tr>
+                <th>[[${addrStat.index +1}]] 배송지 정보</th>
+                <td>
+                  <div class="address_info_wrap">
+                    <p>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#497248" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                        <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
+                      </svg>
+                      <span class="location_name addr-name addr-info" th:data-addr-index="${addrStat.index}">[[${#strings.isEmpty(addrInfo.addrName) ? '배송지' : addrInfo.addrName}]]</span>
+                      <span class="default_location is-default-mark" th:if="${addrInfo.isDefault == 'Y'}" th:data-addr-index="${addrStat.index}">기본 배송지</span>
+                      <span class="default_location is-default-mark" th:unless="${addrInfo.isDefault == 'Y'}" th:data-addr-index="${addrStat.index}">일반 배송지</span>
+                      <button type="button" class="registration_of_address_btn modify-btn" th:if="${addrInfo.isDefault == 'N'}" th:data-addr-index="${addrStat.index}">수정</button>
+                      <!--/* <button type="button" class="modify-btn" th:if="${addrInfo.isDefault == 'Y'}" th:data-addr-index="${addrStat.index}" disabled>수정</button> */-->
+                      <button type="button" class="delete-btn" th:if="${addrInfo.isDefault != 'Y'}" th:data-addr-index="${addrStat.index}">삭제</button>
+                    </p>
+                    <p class="custom_info">
+                      <span class="custom_name rec-name addr-info" th:data-addr-index="${addrStat.index}">[[${addrInfo.recName}]]</span>
+                      <span class="phone_number rec-phone addr-info" th:data-addr-index="${addrStat.index}">[[${addrInfo.recPhone}]]</span>
+                    </p>
+                    <p>
+                      <span class="addr-code addr-info" th:data-addr-index="${addrStat.index}">[[${addrInfo.addrCode}]]</span>
+                      <span class="addr-addr addr-info" th:data-addr-index="${addrStat.index}">[[${addrInfo.addr}]]</span>
+                      <span class="addr-detail addr-info" th:data-addr-index="${addrStat.index}">[[${addrInfo.addrDetail}]]</span>
+                    </p>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
         </div>
+
       </div>
     </div>
+  </div>
   </div>
 
   <div class="modal_overlay" data-is-register-or-modify="0" data-index-for-modify="0">
@@ -127,11 +145,11 @@
       </h2>
       <div class="modal_contents">
         <form action="/mypage/address-list/register" method="post">
-          <input type="hidden" th:value="${mno}" name="mnoVal">
+          <input type="hidden" th:value="${mno}" name="mnoVal" class="addr-mno-input">
           <div class="modal_content">
             <p class="modal_content_title">배송지명</p>
             <div class="input_box">
-              <input type="text" placeholder="최대 7글자까지 자유롭게 수정 가능" maxlength="7" name="addrName" value="" class="addr-name-input address-input">
+              <input type="text" placeholder="최대 7글자까지 자유롭게 수정 가능" maxlength="7" name="addrName" class="addr-name-input address-input">
             </div>
           </div>
 
@@ -156,7 +174,7 @@
               </div>
               <div class="form_addr2">
                 <div class="input_box addr1">
-                  <input type="text" class="homeAddress addressform address-input addr-input" id="homeAddress" readonly name="addr">
+                  <input type="text" class="homeAddress addressform address-input addr-addr-input" id="homeAddress" readonly name="addr">
                 </div>
                 <div class="input_box addr2">
                   <input type="text" class="detailAddress addressform address-input addr-detail-input" id="detailAddress" placeholder="상세 주소를 입력해 주세요." name="addrDetail">
@@ -166,7 +184,7 @@
 
             <p class="defalut_address_check">
               <i class="ic ic_checkbox_off"></i>
-              <input type="hidden" class="" name="isDefault" value="N"> <!--/* 기본 배송지를 선택하지 않았을 시 null 방지용 hidden input */-->
+              <input type="hidden" class="hidden-set-default-input" name="isDefault" value="N">
               <input type="checkbox" class="check_box set-default-input" name="isDefault" value="Y">
               <span>기본 배송지 등록</span>
             </p>

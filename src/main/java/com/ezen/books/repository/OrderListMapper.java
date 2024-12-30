@@ -4,6 +4,7 @@ import com.ezen.books.domain.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper
@@ -25,4 +26,6 @@ public interface OrderListMapper {
     MemberVO getMember(long mno);
 
     GradeVO getMemberGrade(Long gno);
+
+    LocalDateTime getOrderDate(String orno);
 }

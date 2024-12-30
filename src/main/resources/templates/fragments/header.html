@@ -59,9 +59,12 @@
 
                 <div class="header_user_wrap">
                     <div class="user_menu_list">
-                        <a class="user_menu_item" sec:authorize="isAuthenticated()" th:href="@{/payment/cart(mno=${#authentication.getPrincipal().memberVO.getMno()})}">
+                        <a class="user_menu_item" sec:authorize="isAuthenticated()" th:href="@{/payment/cart}">
                             <i class="ic ic_cart" sec:authorize="isAuthenticated()" th:data-authorize="${#authentication.name}" th:data-mno="${#authentication.getPrincipal().memberVO.getMno()}"></i>
                             <span class="cart_item_count" sec:authorize="isAuthenticated()" style="display: inline;">0</span>
+                            <i class="ic ic_cart" sec:authorize="isAnonymous()" th:data-authorize="${#authentication.name}"></i>
+                        </a>
+                        <a class="user_menu_item_a" sec:authorize="isAnonymous()" th:href="@{/payment/cart}">
                             <i class="ic ic_cart" sec:authorize="isAnonymous()" th:data-authorize="${#authentication.name}"></i>
                         </a>
                         <div class="user_menu_item bell">
@@ -426,6 +429,59 @@
                                     <div class="banner-box">
                                         <a> <img src="/image/main_menu_ad.png" alt="ad"> </a>
                                     </div>
+                                </div>
+
+                                <div class="main_category3">
+                                    <ul class="category3_list">
+                                        <li class="category3_list_item">
+                                            <a href="">
+                                                <i class="ic category3-img pick"></i>
+                                                <span> 바로픽업 </span>
+                                            </a>
+                                        </li>
+                                        <li class="category3_list_item">
+                                            <a href="">
+                                                <i class="ic category3-img attendance"></i>
+                                                <span> 출석체크 </span>
+                                            </a>
+                                        </li>
+                                        <li class="category3_list_item">
+                                            <a href="">
+                                                <i class="ic category3-img event"></i>
+                                                <span> 이벤트 </span>
+                                            </a>
+                                        </li>
+                                        <li class="category3_list_item">
+                                            <a href="">
+                                                <i class="ic category3-img review"></i>
+                                                <span> 베스트리뷰 </span>
+                                            </a>
+                                        </li>
+                                        <li class="category3_list_item">
+                                            <a href="">
+                                                <i class="ic category3-img magazine"></i>
+                                                <span> 매거진 </span>
+                                            </a>
+                                        </li>
+                                        <li class="category3_list_item">
+                                            <a href="">
+                                                <i class="ic category3-img sale"></i>
+                                                <span> 특가상품 </span>
+                                            </a>
+                                        </li>
+                                        <li class="category3_list_item">
+                                            <a th:href="@{/store}">
+                                                <i class="ic category3-img store"></i>
+                                                <span> 매장위치 </span>
+                                            </a>
+                                        </li>
+                                        <li class="category3_list_item">
+                                            <a href="">
+                                                <i class="ic category3-img custom"></i>
+                                                <span> 고객센터 </span>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>

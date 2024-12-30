@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -54,10 +55,24 @@ public class OrderListServiceImpl implements OrderListService {
 
     @Override
     public boolean isOrderEmpty(long mno) {
-
         // 사용자의 주문 orno를 모두 가져옴
         List<String> ornoList = orderListMapper.getOrnoList(mno);
         return ornoList.isEmpty();
+    }
+
+    @Override
+    public MemberVO getMember(long mno) {
+        return orderListMapper.getMember(mno);
+    }
+
+    @Override
+    public GradeVO getMemberGrade(Long gno) {
+        return orderListMapper.getMemberGrade(gno);
+    }
+
+    @Override
+    public LocalDateTime getOrderDate(String orno) {
+        return orderListMapper.getOrderDate(orno);
     }
 
     private List<List<OrderDetailProductDTO>> generateOrderDetailProductList(long mno) {
@@ -145,16 +160,6 @@ public class OrderListServiceImpl implements OrderListService {
         int isDone = orderListMapper.applyRefundToOrderDetail(odno, orno);
 
         return isDone;
-    }
-
-    @Override
-    public MemberVO getMember(long mno) {
-        return orderListMapper.getMember(mno);
-    }
-
-    @Override
-    public GradeVO getMemberGrade(Long gno) {
-        return orderListMapper.getMemberGrade(gno);
     }
 
 }

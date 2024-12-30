@@ -1,0 +1,442 @@
+.flex {display: flex;}
+.space-between {justify-content: space-between;}
+.small-text {
+    color: #555;
+    font-size: 0.85rem;
+}
+.width-30 {
+    width: calc(100% / 3);
+    padding: 24px;
+    border-right: 0.5px dotted #c6c6c6;
+}
+.width-20 {
+    width: calc(100% / 2);
+    padding: 24px;
+    border-right: 0.5px dotted #c6c6c6;
+}
+.width-30 > p, .width-20 > p {
+    margin-bottom: 14px;
+}
+.width-30 > p:last-child, .width-20 > p:last-child {margin-bottom: 0;}
+
+.my_orders_container, .my_orders_nav, .my_orders_box, .my_orders_nav_list {
+    width: 100%;
+}
+.receipt_btn {
+    margin: auto 0 0 auto;
+    padding: 5px 10px;
+    border: 1px solid #c6c6c6;
+    border-radius: 8px;
+    font-size: 0.85rem;
+}
+.detail_table_title {
+    margin-bottom: 12px;
+}
+
+.my_orders_title {
+    font-size: 1.7rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+.my_orders_nav {
+    display: flex;
+    padding: 24px;
+    border: 1px solid #E4E4E4;
+    border-radius: 6px;
+}
+.my_orders_nav_list, .my_orders_nav_item {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: center;
+}
+
+.my_orders_nav_item {
+    position: relative;
+    flex-direction: column;
+    width: calc(100% / 6);
+    height: 100%;
+    gap: 12px;
+}
+.my_orders_nav_item > strong {
+    font-size: 1.2rem;
+    margin: auto;
+}
+.my_orders_nav_item > span {
+    font-size: 0.9rem;
+    color: #555;
+}
+.my_orders_nav_item::after {
+    content: "";
+    width: 0.5px;
+    height: 50%;
+    background-color: #D8D8D8;
+    position: absolute;
+    top: 25%;
+    right: 0;
+}
+.my_orders_nav_list li:first-child {
+    font-size: 1.3rem;
+    letter-spacing: 1px;
+}
+.my_orders_nav_list li:last-child::after { content: none; }
+.orders_table_content > .width-30:last-child, .orders_table_content > .width-20:last-child {
+    border: none;
+}
+
+.my_orders_box {height: auto;}
+.my_orders_box_none, .my_orders_box_wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.my_orders_box_none {
+    min-height: 500px;
+    gap: 30px;
+    justify-content: center;
+    border-top: 2.5px solid #D8D8D8;
+    border-bottom: 2.5px solid #D8D8D8;
+}
+.my_orders_box_none > strong {
+    font-size: 1.3rem;
+}
+.my_orders_box_none > a {
+    border: 1px solid #497248;
+    background-color: #497248;
+    color : #fff;
+    padding: 10px 15px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease-out, border-color 0.2s ease-out;
+}
+.my_orders_box_none > a:hover {
+    border: 1px solid #39553F;
+    background-color: #39553F;
+}
+.star {cursor: pointer;}
+.my_orders_box_wrap {
+    gap: 0;
+    justify-content: flex-start;
+}
+.my_orders_table, .orders_table_header, .orders_table_content {
+    width: 100%;
+    display: flex;
+}
+.my_orders_table {
+    margin-top: 72px;
+    flex-direction: column;
+    border-top: 2.5px solid #D8D8D8;
+    border-bottom: 2.5px solid #D8D8D8;
+}
+.my_orders_table > div {
+    padding: 24px;
+    border-bottom: 1px solid #D8D8D8;
+}
+.my_orders_table div:last-child {
+    border: none; /* 마지막 div의 보더 제거 */
+}
+
+.orders_table_header {
+    justify-content: space-between;
+    align-items: center;
+}
+.underline {
+    display: inline-block;
+    position: relative;
+    padding-bottom: 0.5px;
+    color: inherit; /* 텍스트 색상 유지 */
+    text-decoration: none; /* 기본 밑줄 제거 */
+}
+.underline:hover {
+    text-decoration: underline;
+    text-decoration-color: #555;
+}
+.orders_table_header > strong {font-size: 1.15rem;}
+.orders_table_header > a {
+    display: inline-flex;
+    align-items: center;
+    line-height: 25px;
+}
+
+.order_book_info_box, .order_book_price, .order_book_status, .order_book_review_btn{
+    padding: 0 12px;
+}
+.order_book_info_box { padding-left: 0;}
+.order_book_img {
+    width: 120px;
+    height: 150px;
+    overflow: hidden;
+    position: relative;
+}
+.order_book_img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* 이미지 비율 유지하며 컨테이너에 맞춤 */
+    object-position: center;
+}
+.order_book_info_box {
+    width: 60%;
+}
+.order_book_info {
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 12px 0 24px;
+    gap: 12px;
+}
+.order_book_info strong {
+    font-size: 1rem;
+    line-height: 24px;
+}
+.order_book_info > span {
+    font-size: 0.9rem;
+    color: #555;
+}
+.order_book_price, .order_book_status, .order_book_review_btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: calc(40% / 3);
+    text-align: center;
+}
+.order_book_status > strong { color: #39553F;}
+
+.order_book_review_btn { padding-right: 0;}
+
+.order_book_review_btn > .btn {
+    color: #555;
+    border: 1px solid #ABBC86;
+    padding: 8px 3px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+.order_book_review_btn > .btn:hover {
+    background-color: #ABBC86;
+    color: #fff;
+}
+
+.pagenation_area {
+    margin-top: 100px;
+}
+.pagenation_area, .pagenation, .pagenation_num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.pagenation {
+    justify-content: space-around;
+    gap: 2.2rem;
+}
+.pagenation i {
+    width: 31px;
+    height: 31px;
+}
+.pagenation_num {
+    gap: 2rem;
+    align-items: center;
+}
+.pagenation_num a {
+    font-size: 15px;
+    line-height: 24px;
+    color: #555;
+}
+.pagenation_num .present {
+    padding: 3px 10.7px;
+    background-color: #497248;
+    border-radius: 9999px;
+}
+.pagenation_num .present a {
+    color: white;
+}
+
+/* 모달 */
+.modal_overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3); /* 반투명한 검은색 */
+    z-index: 999;
+}
+.modal_wirte_review {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    width: 600px;
+    max-height: 85vh;
+    overflow: hidden;
+    padding: 25px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    z-index: 1000;
+}
+#closeModal {
+    cursor: pointer;
+}
+.modal_title {
+    font-size: 20px;
+    line-height: 23px;
+    letter-spacing: 0.5px;
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgb(198, 198, 198);;
+}
+.modal_contents {
+    margin: 20px 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    height: 500px;
+    padding-right: 15px;
+
+}
+.modal_contents > form{
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.modal_contents > * { position: relative; /* 부모 컨테이너 안에 위치하도록 설정 */}
+.modal_content_title {
+    font-size: 1.1em;
+    font-weight: 600;
+    line-height: 23px;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+.modal_content {
+    padding-bottom: 12px;
+}
+
+.modal_content > .order_book_info_box {
+    width: 100%;
+    padding: 0;
+    justify-content: space-between;
+}
+.modal_content .order_book_img {
+    width: 80px;
+}
+.modal_content .order_book_img > img {
+    max-height: calc((80px - 2px)* 1.618 - 10px);
+}
+.order_book_info {
+    padding: 0 12px;
+}
+.modal_content .order_book_info strong {
+    font-size: 0.85rem;
+    line-height: 1.1rem;
+}
+.book_review_rate {
+    justify-content: space-between;
+    align-content: center;
+    z-index: 10;
+}
+.rating-score {
+    display: inline-flex;
+    align-items: center;
+    font-size: 1.1rem;
+}
+#rating-value {
+    font-size: 1.25rem;
+    color: #39553F;
+    line-height: 1.3rem;
+    margin-right: 5px;
+}
+.input_box {
+    width: 99.5%;
+    margin: 0 auto 12px;
+    padding: 7px 12px;
+    border: 1.5px solid #c6c6c6;
+    border-radius: 6px;
+    transition: border-color 0.2s ease-out, outline 0.2s ease-out;
+    flex-direction: column;
+}
+.input_box:focus-within {
+    border: 1.5px solid #717171;
+    outline: 0.5px solid #717171;
+}
+.file_info {
+    padding-left: 20px;
+    position: relative;
+    font-size: 0.8rem;
+    display: inline-block;
+    text-align: end;
+    color: #555;
+    margin-top: 12px;
+}
+.file_info::before {
+    content: "";
+    background-image: url(/image/svg/exclamation.svg);
+    width: 15px;
+    height: 15px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: absolute;
+    left: 0px;
+}
+
+.input_box > textarea {
+    width: 100%;
+    height: 120px;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    resize: none;
+}
+.text_count { text-align: end;}
+
+.modal_contents .modal_content:last-child {
+    padding-bottom: 0;
+    justify-content: center;
+    margin: auto auto 0 auto;
+}
+.review_wirte_btn {
+    width: 140px;
+    height: 44px;
+    background-color: #ABBC86;
+    color: #fff;
+    border-radius: 8px;
+}
+.order-number {
+    display: inline-block;
+    font-weight: 600;
+}
+.detail_nav_item {
+    width: auto;
+    padding: 2px 16px;
+    flex-direction: row;
+}
+.orders_detail_table {
+    border-top: none;
+}
+
+.order_detail_price, .order_detail_status, .orders_table_title {
+    width: 20%;
+}
+.order_detail_address_info {
+    width: 80%;
+}
+.orderer-info {
+    display: flex;
+    gap: 20px;
+}
+.orderer-name {position: relative;}
+.orderer-name::after {
+    content: "/";
+    position: absolute;
+    right: -11px;
+}
+.order_detail_address_info > p {margin-bottom: 24px;}
+.order_detail_address_info > p:last-child { margin-bottom: 0;}
+.order-requested > span {
+    font-size: 0.9rem;
+    color: #555;
+}
+.orderer-info > span, .orderer-address{
+    font-size: 1rem;
+}
+.detail_table_title {font-weight: 600;}
