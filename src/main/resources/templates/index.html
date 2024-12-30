@@ -5,31 +5,122 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layout/layout}">
 
+<head>
+    <meta charset="UTF-8">
+    <title>EzenBooks</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/chatbot.css}" />
+    <style>
+        #notification-container {
+            position: relative;
+        }
+
+        #notification-icon {
+            cursor: pointer;
+            position: relative;
+        }
+
+        #unread-count {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 3px 8px;
+            font-size: 12px;
+        }
+
+        #notification-dropdown {
+            display: none;
+            position: absolute;
+            top: 30px;
+            right: 0;
+            border: 1px solid #ccc;
+            background-color: white;
+            width: 200px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #notification-dropdown.show {
+            display: block;
+        }
+
+        .notification-item {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .notification-item.unread {
+            background-color: #f8f8f8;
+            font-weight: bold;
+        }
+
+        .notification-item:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+
 <main layout:fragment="main">
     <h3>Main Area!!</h3>
     <a th:href="@{/product/register}">상품 등록하기</a>
     <a th:href="@{/product/list}">상품 목록보기</a>
     <a th:href="@{/store}">오프라인 매장 보기</a> <br>
-    <p>! 로그인을 해야 장바구니 버튼이 나타납니다.</p> <br>
-    <a sec:authorize="isAuthenticated()" th:href="@{/payment/cart(mno=${#authentication.getPrincipal().memberVO.getMno()})}"><button type="button">로그인 기반 장바구니</button></a>
 
-    <script>
-        let modify_msg = `[[${mod_msg}]]`;
-        console.log(modify_msg);
-        if(modify_msg === 'ok'){
-            alert("회원정보가 수정되었습니다. 다시 로그인해주세요.");
-        }
-        if (modify_msg === 'fail') {
-            alert("회원정보수정이 실패되었습니다. 다시 시도해주세요.");
-        }
 
-        let remove_msg = `[[${del_msg}]]`;
-        console.log(remove_msg);
-        if(remove_msg === 'ok'){
-            alert("회원 탈퇴가 완료되었습니다. 안녕히가세요.");
-        }
-        if (remove_msg === 'fail'){
-            alert("회원 탈퇴가 실패되었습니다. 다시 시도해주세요.");
-        }
-    </script>
+    <!--/* 챗봇영역 (시작) */-->
+    <!-- 플로팅 버튼 -->
+    <button id="chatBtn" class="chat-btn">채팅방 열기</button>
+    <!-- 채팅방 -->
+    <div id="chatBox" class="chat-box">
+        <div class="chat-header">
+            <span>이젠문고 챗봇</span>
+            <button id="closeChat" class="close-chat">닫기</button>
+        </div>
+        <div class="chat-content">
+            <!-- 채팅 내용이 여기에 표시됩니다 -->
+        </div>
+        <input type="text" id="userMessage" placeholder="메시지를 입력하세요...">
+        <button id="sendButton" data-classify="a-type">전송</button>
+    </div>
+    <script th:src="@{/js/chatbot.js}"></script>
+    <!--/* 챗봇영역 (끝) */-->
+
+    <!--/* 알림 SSE 영역 (시작) */-->
+    <div id="notification-container">
+        <div id="notification-icon">
+            <span id="unread-count"></span> <!-- 알림 개수 표시 -->
+            <i class="fas fa-bell"></i> <!-- 알림 아이콘 -->
+        </div>
+        <div id="notification-dropdown" class="dropdown-content">
+            <div id="notification-dropdown-content"></div> <!-- 알림 목록 -->
+        </div>
+    </div>
+
+    <input type="text" id="abc">
+    <button id="def">테스트데이터저장</button>
+
+    <script th:src="@{/js/notification.js}"></script>
+    <!--/* 알림 SSE 영역 (끝) */-->
+
+
+<!--    <script>-->
+<!--        let modify_msg = `<c:out value="${mod_msg}" />`;-->
+<!--        console.log(mod_msg);-->
+<!--        if(mod_msg == 'ok'){-->
+<!--            alert("회원정보가 수정되었습니다. 다시 로그인해주세요.");-->
+<!--        }-->
+<!--        if (mod_msg == 'fail') {-->
+<!--            alert("회원정보수정이 실패되었습니다. 다시 시도해주세요.");-->
+<!--        }-->
+
+<!--        let remove_msg = `<c:out value="${del_msg}" />`;-->
+<!--        console.log(del_msg);-->
+<!--        if(del_msg == 'ok'){-->
+<!--            alert("회원 탈퇴가 완료되었습니다. 안녕히가세요.");-->
+<!--        }-->
+<!--        if (del_msg == 'fail'){-->
+<!--            alert("회원 탈퇴가 실패되었습니다. 다시 시도해주세요.");-->
+<!--        }-->
+<!--    </script>-->
 </main>

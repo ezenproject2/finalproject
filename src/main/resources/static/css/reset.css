@@ -168,6 +168,8 @@ button, input, select, textarea {
 .ic_question {
     background-image: url("/image/svg/question.svg");
 }
+.ic_call { background-image: url("/image/svg/call.svg");}
+.ic_location {background-image: url("/image/svg/location.svg");}
 strong {
     font-weight: 700;
 }

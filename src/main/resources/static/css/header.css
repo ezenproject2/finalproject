@@ -521,3 +521,21 @@ header .ic_arrow_right {
 .sticky-header .nav-left, .sticky-header .nav-right, .sticky-header .btn_nav span {
     display: none;
 }
+
+/* 장바구니 관련 css */
+.user_menu_list > li:first-child {
+    position: relative;
+}
+.cart_item_count {
+    position: absolute;
+    font-size: 0.8rem;
+    color: #fff;
+    background-color: #E7B343;
+    padding: 2px 6px 4px;
+    border-radius: 100%;
+    bottom: 0;
+    right: -4px;
+}
+.user_menu_item_a {
+    position:relative;
+}

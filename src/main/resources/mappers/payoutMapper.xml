@@ -4,6 +4,12 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ezen.books.repository.PayoutMapper">
 
+    <insert id="registerDefaultAddress">
+        insert into address(mno, rec_name, rec_phone, addr_code, addr, addr_detail, addr_name, is_default)
+        values
+        (#{mno}, #{recName}, #{recPhone}, #{addrCode}, #{addr}, #{addrDetail}, #{addrName}, #{isDefault})
+    </insert>
+
     <insert id="saveOrdersToServer">
         insert into orders(orno, mno, status, total_price, order_at, is_pickup)
         values
@@ -11,15 +17,21 @@
     </insert>
 
     <insert id="saveOrderDetailToServer">
-        insert into order_detail(orno, prno, book_qty, price)
+        insert into order_detail(orno, prno, book_qty, price, status)
         values
-        (#{orno}, #{prno}, #{bookQty}, #{price})
+        (#{orno}, #{prno}, #{bookQty}, #{price}, #{status})
     </insert>
 
     <insert id="savePaymentToServer">
         insert into payment(orno, measure, price, status, reg_at, card_name, imp_uid)
         values
         (#{orno}, #{measure}, #{price}, #{status}, now(), #{cardName}, #{impUid})
+    </insert>
+
+    <insert id="saveDeliveryToServer">
+        insert into delivery(orno, rec_name, rec_phone, addr_code, addr, addr_detail, addr_memo)
+        values
+        (#{orno}, #{recName}, #{recPhone}, #{addrCode}, #{addr}, #{addrDetail}, #{addrMemo})
     </insert>
 
     <select id="getDefaultAddress" resultType="com.ezen.books.domain.AddressVO">

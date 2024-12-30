@@ -21,4 +21,10 @@ public interface OfflineMapper {
     int testStockInsert(@Param("osno") long i, @Param("prno") long prno);
 
     OfflineBookVO getOfflineBookVO(@Param("osno") long i, @Param("prno") long prno);
+
+    OfflineStoreVO chatGetOfflineStoreVO(String userMessage);
+
+    List<Long> getPickupStoreOsno(@Param("prno") long prno, @Param("bookQty") int bookQty);
+
+    OfflineStoreVO getStoreVOByOsno(Long osno);
 }

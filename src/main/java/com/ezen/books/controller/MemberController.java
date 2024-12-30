@@ -1,5 +1,6 @@
 package com.ezen.books.controller;
 
+import com.ezen.books.domain.AddressVO;
 import com.ezen.books.domain.MemberVO;
 import com.ezen.books.domain.OrdersVO;
 import com.ezen.books.service.MemberService;
@@ -8,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,17 +38,43 @@ public class MemberController {
     public void join(){}
 
     @PostMapping("/join")
-    public String join(MemberVO memberVO, Model model){
+    public String join(MemberVO memberVO, @ModelAttribute AddressVO addressVO, Model model){
+//        // 아이디 중복 체크
+//        if(memberService.checkLoginIdDuplicate(memberVO.getLoginId())){
+//            model.addAttribute("errorMessage", "이미 존재하는 ID입니다.");
+//            return "/member/join";
+//        }
+//
+//        // 비밀번호 체크
+//        if(!memberVO.getPassword().equals(memberVO.getPasswordCheck())){
+//            model.addAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
+//            return "/member/join";
+//        }
+
         String pwd = passwordEncoder.encode(memberVO.getPassword());
         String pwdCheck = passwordEncoder.encode(memberVO.getPasswordCheck());
         memberVO.setPassword(pwd);
         memberVO.setPasswordCheck(pwdCheck);
 
         model.addAttribute("memberVO", memberVO);
-
         memberService.insert(memberVO);
-        log.info(">>>>> Join USER Info  {}", memberVO);
 
+        // ---- 배송지를 저장하기 위해 pjh가 삽입한 로직 ----
+        log.info("The memberVO from the client: {}", memberVO);
+        log.info("The addressVO from the client: {}", addressVO);
+
+        String memberLoginId = memberVO.getLoginId();
+        long memberMno = memberService.getMno(memberLoginId);
+
+        addressVO.setMno(memberMno);
+        addressVO.setRecName(memberVO.getName());
+        addressVO.setRecPhone(memberVO.getPhoneNumber());
+        addressVO.setAddrName("기본 배송지");
+        addressVO.setIsDefault("Y");
+        memberService.saveAddressToServer(addressVO);
+        // ---- 배송지 입력 로직 끝 ----
+
+        log.info(">>>>> Join USER Info  {}", memberVO);
         return "/index";
     }
 
@@ -84,6 +112,13 @@ public class MemberController {
     @PostMapping("/modify")
     public String modify(MemberVO memberVO, HttpServletRequest request, HttpServletResponse response,
                          RedirectAttributes re){
+        if(memberVO.getPassword() != null && !memberVO.getPassword().isEmpty()){
+            String pwd = passwordEncoder.encode(memberVO.getPassword());
+            memberVO.setPassword(pwd);
+        } else {
+            memberVO.setPassword(null);
+        }
+
 
         if(memberVO.getPassword() != null && !memberVO.getPassword().isEmpty()){
             String pwd = passwordEncoder.encode(memberVO.getPassword());

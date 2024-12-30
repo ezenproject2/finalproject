@@ -28,9 +28,19 @@
         where prno = #{prno} and is_del = "N"
     </select>
 
+    <select id="getCartAmount" resultType="int">
+        select count(*) from cart
+        where mno = #{mno}
+    </select>
+
     <update id="increaseBookQty">
         update cart
         set book_qty = book_qty + #{bookQty}
         where mno = #{mno} and prno = #{prno}
     </update>
+
+    <delete id="deleteCartToServer">
+        delete from cart
+        where mno = #{mno} and prno = #{prno}
+    </delete>
 </mapper>

@@ -52,6 +52,16 @@ public class PayoutRestController {
         this.iamportClient = new IamportClient(iamportApiKey, iamportApiSecret);
     }
 
+    @PostMapping("/payment/payout/register-address")
+    public String registerDefaultAddress(@RequestBody AddressVO addressData) {
+        log.info(" >>> PaymentRestController: registerDefaultAddress start.");
+        log.info("The address data from the client: {}", addressData);
+
+        int isDone = payoutService.registerDefaultAddress(addressData);
+
+        return (0 < isDone) ? "1" : "0";
+    }
+
     @PostMapping("/prepare")
     public ResponseEntity<Map<String, String>> sendDataToClient(@RequestBody String pgData) {
         // The received pgVal: {"pg":"kakaopay"}
@@ -67,11 +77,11 @@ public class PayoutRestController {
         }
 
         Map<String, String> pgMap = getChannelKeyAndMethod(pgVal);
-        pgMap.put("merchantUid", (UUID.randomUUID()).toString());
+//        pgMap.put("merchantUid", (UUID.randomUUID()).toString());
 
         log.info("The channel key: {}", pgMap.get("channelKey"));
         log.info("The pay method: {}", pgMap.get("payMethod"));
-        log.info("The merchant uid: {}", pgMap.get("merchantUid"));
+//        log.info("The merchant uid: {}", pgMap.get("merchantUid"));
 
         return ResponseEntity.ok(pgMap);
     }
@@ -84,7 +94,7 @@ public class PayoutRestController {
         String requestBody = StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8);
         log.info("The result body: {}", requestBody);
 
-        // 일단 단건 조회만 해볼 거라서 imp_uid를 제외한 모든 결제 데이터를 받지 않았다.
+        // 단건 조회만 해볼 거라서 imp_uid를 제외한 모든 결제 데이터를 받지 않았다.
         String impUid = "";
         String amount = "";
 
@@ -122,8 +132,8 @@ public class PayoutRestController {
         // The orderDetailArr from JavaScript: [{"orno":"nobody_1734504395832","prno":"1","bookQty":"5","price":"10000"},{"orno":"nobody_1734504395832","prno":"3","bookQty":"2","price":"30000"}]
         log.info("The orderDetailArr from JavaScript: {}", orderDetailArr);
 
+        // 가져온 orderDetailArr 문자열을 List<OrderDetailVO>로 파싱
         List<OrderDetailVO> orderDetailList = null;
-
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             orderDetailList = objectMapper.readValue(orderDetailArr, new TypeReference<>() {});
@@ -131,6 +141,7 @@ public class PayoutRestController {
             log.info("Error during parsing orderDetailArr. Content: {}", e);
         }
 
+        // orderDetailList의 각 OrderDetailVO들을 하나씩 DB에 저장
         List<Integer> resultList = new ArrayList<>();
         for(OrderDetailVO orderDetail : orderDetailList) {
             int isDone = payoutService.saveOrderDetailToServer(orderDetail);
@@ -179,7 +190,7 @@ public class PayoutRestController {
     @PostMapping("/remove-cart")
     public ResponseEntity<String> removeCartToServer(@RequestBody String cartListData) {
         log.info(" >>> PaymentRestController: removeCartToServer start.");
-        // The cartListData from the client: [{"mno":"4","prno":"84","bookQty":1},{"mno":"4","prno":"82","bookQty":1},{"mno":"4","prno":"84","bookQty":1},{"mno":"4","prno":"84","bookQty":1},{"mno":"4","prno":"80","bookQty":1}]
+        // The cartListData from the client: [{"mno":"15","prno":"83"},{"mno":"15","prno":"82"},{"mno":"15","prno":"65"}]
         log.info("The cartListData from the client: {}", cartListData);
 
         List<CartVO> cartList =  parseCartVoArray(cartListData);
@@ -193,6 +204,18 @@ public class PayoutRestController {
         }
 
         return (resultList.stream().allMatch(n -> n == 1)) ?
+                new ResponseEntity<>("1", HttpStatus.OK) :
+                new ResponseEntity<>("0", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @PostMapping("/preserve-delivery")
+    public ResponseEntity<String> saveDeliveryToServer(@RequestBody DeliveryVO deliveryData) {
+        log.info(" >>> PaymentRestController: saveDeliveryToServer start.");
+        log.info("The deliveryData from the client: {}", deliveryData);
+
+        int isDone = payoutService.saveDeliveryToServer(deliveryData);
+
+        return (isDone > 0) ?
                 new ResponseEntity<>("1", HttpStatus.OK) :
                 new ResponseEntity<>("0", HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -233,8 +256,7 @@ public class PayoutRestController {
         return pgMap;
     }
 
-    // NOTE: 똑같은 메서드가 PaymentController에도 있음. 한 메서드를 같이 쓸 수 없나?
-    // 메서드 하나인데 굳이 싶기도 하고.
+    // NOTE: 똑같은 메서드가 PaymentController에도 있음.
     private List<CartVO> parseCartVoArray(String cartListData) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();

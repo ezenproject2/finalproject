@@ -7,7 +7,6 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class CartProductDTO {
     private CartVO cartVO;
     private ProductVO productVO;

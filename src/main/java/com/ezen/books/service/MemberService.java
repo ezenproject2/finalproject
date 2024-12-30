@@ -1,5 +1,6 @@
 package com.ezen.books.service;
 
+import com.ezen.books.domain.AddressVO;
 import com.ezen.books.domain.MemberVO;
 import jakarta.validation.constraints.NotBlank;
 
@@ -28,4 +29,10 @@ public interface MemberService {
     MemberVO getMemberById(long mno);
 
     int updateLastLogin(String authLoginId);
+
+    // 배송지 입력을 위해 pjh가 삽입한 코드.
+
+    long getMno(String memberLoginId);
+
+    int saveAddressToServer(AddressVO addressVO);
 }

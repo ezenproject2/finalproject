@@ -15,6 +15,7 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
 
 @Slf4j
 @PropertySource("classpath:application-secrets.properties")
@@ -22,7 +23,6 @@ public interface PayoutService {
 
     Logger log = LoggerFactory.getLogger(PayoutService.class);
 
-    // TODO: 어디서 사용되는 메서드인지 알아내고 body 채울 것.
     // PaymentRestController에 있던 토큰 발급 메서드를 그대로 옮겨옴.
     default IamportAccessToken issueIamportToken(
             @Value("${iamport_rest_api_key}") String iamportApiKey,
@@ -55,7 +55,7 @@ public interface PayoutService {
 
         IamportAccessToken iamportToken = new IamportAccessToken();
         iamportToken.setToken(token);
-        // 둘 다 null이라고 뜸. 필요한 게 토큰이니까 다른 것들은 주석처리함.
+        // 둘 다 null. 필요한 게 토큰이니까 다른 것들은 주석처리함.
 //        iamportToken.setNow(jsonNode.get("now").asInt());
 //        iamportToken.setExpiredAt(jsonNode.get("expired_at").asInt());
         return iamportToken;
@@ -72,4 +72,12 @@ public interface PayoutService {
     int savePaymentToServer(PaymentVO paymentData);
 
     int removeCartToServer(long mno, long prno);
+
+    int registerDefaultAddress(AddressVO addressData);
+
+    int saveDeliveryToServer(DeliveryVO deliveryData);
+
+    List<OfflineStoreVO> getPickupStores(List<CartVO> cartList);
+
+    OfflineStoreVO getStoreInfo(long osno);
 }

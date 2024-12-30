@@ -126,5 +126,39 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     }
 
+
+    // 장바구니 아이콘 관련하여 준희가 넣은 코드.
+    const cartIcon = document.querySelector('.ic_cart');
+    if(cartIcon.dataset.authorize != "anonymousUser") {
+        let mno = document.querySelector('.ic_cart').dataset.mno;
+        console.log("mno", mno);
+
+        displayCartAmount(mno);
+    }
 });
 
+// 장바구니 아이콘 관련하여 준희가 넣은 비동기 코드.
+async function displayCartAmount(mno) {
+    try {
+        await getCartAmountFromServer(mno).then(result => {
+            document.querySelector('.cart_item_count').innerText = result;
+        })
+    } catch (error) {
+        console.log("Error during displayCartAmount.", error);
+    }
+}
+
+// 장바구니 아이콘 관련하여 준희가 넣은 비동기 코드.
+async function getCartAmountFromServer(mnoVal) {
+    const url = "/payment/header-cart";
+
+    const config = {
+        method: "POST",
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        body: JSON.stringify(mnoVal)
+    }
+
+    const response = await fetch(url, config);
+    const result = await response.text();
+    return result;
+}

@@ -17,4 +17,6 @@ public interface ReviewService {
     int doLike(long rno, long mno);
 
     int cancel(long rno, long mno);
+
+    void createAndSendNotification(long mno, String message);
 }

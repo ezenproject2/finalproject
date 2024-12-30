@@ -144,4 +144,8 @@
         update product set review_cnt = review_cnt + #{num} where prno = #{prno};
     </update>
 
+    <select id="chatGetProductVO" resultType="com.ezen.books.domain.ProductVO">
+        select * from product where title like concat('%', #{userMessage}, '%') limit 1;
+    </select>
+
 </mapper>

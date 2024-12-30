@@ -13,12 +13,31 @@ let pgData = {
     m_redirect_url: "http://localhost:8087"
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-    // 화면 로딩 시 최종 결제 금액을 화면에 띄움.
-    console.log("the HTML file loaded.");
-    jehoInitializeTotalOriginalPrice();
-    jehoInitializeTotalDiscountAmount();
-    jehoInitializeTotalPrice();
+// 배송지 등록 버튼에 클릭 이벤트 부여.
+document.addEventListener('click', (e) => {
+
+    if(e.target.id == "registerAddrBtn") {
+        // 배송지 정보를 모두 채웠는지 확인
+        const addrInputs = document.querySelectorAll('.address-input');
+        let isAllFilled = true;
+        // console.log(addrInputs);
+
+        addrInputs.forEach(input => {
+            // console.log("The input: ");
+            // console.log(input);
+            if(!input.classList.contains('address-name') && input.value.trim() === '') {
+                isAllFilled = false;
+            } 
+        })
+
+        console.log("isAllFilled: ", isAllFilled);
+
+        if (isAllFilled) {
+            registerDefaultAddrFlag();
+        } else {
+            alert("배송지 이름을 제외한 모든 배송지 정보를 채워주세요.");
+        }
+    }
 })
 
 // 모든 pay-btn 클래스가 있는 버튼들에 이벤트 부여. pgData의 pg를 설정함.
@@ -40,15 +59,21 @@ spanUnderPayBtn.forEach(span => {
     })
 })
 
-// 주문 버튼 클릭 시 pg를 골랐는지 판별, 골랐다면 결제 진행
+// 주문 버튼 클릭 시 pg를 골랐는지 + 기본 배송지가 null인지 판별, 조건 통과 시 결제 진행
 document.getElementById('orderBtn').addEventListener('click', () => {
+    const isDefaultAddrNull = document.getElementById('dataContainer').dataset.isDefaultAddrNull;
+
     if(pgData.pg == "") {
         alert('결제 수단을 선택해주세요.');
+    } else if (isDefaultAddrNull == "true") {
+        alert("기본 배송지를 입력해주세요.");
     } else {
         const pgObj = getPayDataFromServer(pgData.pg);
         pgData.channelKey = pgObj.channelKey;
         pgData.pay_method = pgObj.payMethod;
-        pgData.merchant_uid = pgObj.merchantUid;
+        // pgData.merchant_uid = pgObj.merchantUid;
+        pgData.merchant_uid = document.querySelector('.list-data-storage').dataset.merchantUid;
+        console.log("The merchant uid: ", document.querySelector('.list-data-storage').dataset.merchantUid);
 
         pgData.amount = getTotalPrice();
         console.log("The total amount is: " + pgData.amount);
@@ -66,75 +91,6 @@ document.getElementById('orderBtn').addEventListener('click', () => {
     }
 })
 
-// 총 결제 금액 첫 설정
-function jehoInitializeTotalPrice() {
-    const index = document.querySelector(`[data-list-total="listTotal"]`).innerText;
-    let indexNum = parseInt(index);
-    console.log("The index: " + indexNum);
-
-    let totalPrice = 0;
-    for (let i = 0; i < indexNum; i++) {
-        let salePrice = document.querySelector(`[data-payout="${i}"].book-sale-price`).innerText;
-        let bookQty = document.querySelector(`[data-payout="${i}"].book-qty`).innerText;
-
-        console.log("the salePrice: " + salePrice);
-        console.log("the book qty: " + bookQty);
-
-        totalPrice += parseInt(salePrice) * parseInt(bookQty);
-        console.log("The total price: " + totalPrice);
-    }
-    console.log("totalPrice" + totalPrice);
-
-    document.querySelector(`[data-total-price="totalPrice"].total-price`).innerText = totalPrice;
-}
-
-// 총 할인받은 금액 설정
-function jehoInitializeTotalDiscountAmount() {
-    const index = document.querySelector(`[data-list-total="listTotal"]`).innerText;
-    let indexNum = parseInt(index);
-    console.log("The index: " + indexNum);
-
-    let totalAmount = 0;
-    for (let i = 0; i < indexNum; i++) {
-        let salePrice = document.querySelector(`[data-payout="${i}"].book-sale-price`).innerText;
-        let originalPrice = document.querySelector(`[data-payout="${i}"].book_original_price`).innerText;
-        let bookQty = document.querySelector(`[data-payout="${i}"].book-qty`).innerText;
-
-        console.log("the salePrice: " + salePrice);
-        console.log("the originalPrice: " + originalPrice);
-        console.log("the book qty: " + bookQty);
-
-        let discountAmount = (parseInt(originalPrice) - parseInt(salePrice)) * parseInt(bookQty);
-
-        totalAmount += discountAmount;
-        console.log("The total price: " + totalAmount);
-    }
-    console.log("totalAmount" + totalAmount);
-
-    document.querySelector(`.discount-amount`).innerText = '- ' + totalAmount;
-}
-
-// 도서들의 전체 원가 합계 첫 설정
-function jehoInitializeTotalOriginalPrice() {
-    const index = document.querySelector(`[data-list-total="listTotal"]`).innerText;
-    let indexNum = parseInt(index);
-    console.log("The index: " + indexNum);
-
-    let totalPrice = 0;
-    for (let i = 0; i < indexNum; i++) {
-        let originalPrice = document.querySelector(`[data-payout="${i}"].book_original_price`).innerText;
-        let bookQty = document.querySelector(`[data-payout="${i}"].book-qty`).innerText;
-
-        console.log("the originalPrice: " + originalPrice);
-        console.log("the book qty: " + bookQty);
-
-        totalPrice += parseInt(originalPrice) * parseInt(bookQty);
-        console.log("The total price: " + totalPrice);
-    }
-    console.log("totalPrice" + totalPrice);
-    
-    document.querySelector(`.total-original-price`).innerText = totalPrice;
-}
 
 // pay-btn을 누르면 그에 따라 pdData의 pg를 설정함
 function selectPg(targetClassList) {
@@ -161,10 +117,82 @@ function selectPg(targetClassList) {
 
 // 화면에 표시된 총 액수를 가져옴
 function getTotalPrice() {
-    const totalPrice = document.querySelector('[data-total-price="totalPrice"]').textContent;
+    const totalPrice = document.querySelector('.total-price').dataset.totalPrice;
 
     return parseInt(totalPrice);
 }
+
+// 사용자의 기본 배송지를 서버에 등록함
+async function registerDefaultAddrToServer(mnoVal) {
+    const postcodeVal = document.getElementById('postcode').value;
+    const addrVal = document.getElementById('homeAddress').value;
+    const detailAddrVal = document.getElementById('detailAddress').value;
+    const addrNameVal = document.getElementById('addressName').value;
+    const recNameVal = document.getElementById('recName').value;
+    const recPhoneVal = document.getElementById('recPhone').value;
+
+    const url = "/payment/payout/register-address";
+
+    const addrData = {
+        mno: mnoVal,
+        addrCode: postcodeVal,
+        addr: addrVal,
+        addrDetail: detailAddrVal,
+        addrName: addrNameVal,
+        recName: recNameVal,
+        recPhone: recPhoneVal
+    };
+
+    const config = {
+        method: "POST",
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        body: JSON.stringify(addrData)
+    };
+
+    const response = await fetch(url, config);
+    const result = await response.text();
+    if(result == "1") {
+        console.log("Remove cart: Succeeded.");
+    } else if (result == "0") {
+        console.log("Remove cart: Failed.");
+    } else {
+        console.log("Remove cart: Unknown.");
+    }
+}
+
+// 서버에 기본 배송지를 등록한 후에 페이지 변경이 이뤄지도록 하는 함수.
+async function registerDefaultAddrFlag() {
+    const mnoVal = document.getElementById('dataContainer').dataset.mno;
+
+    // 기본 배송지 서버에 저장하는 비동기 함수
+    await registerDefaultAddrToServer(mnoVal);
+    // /payment/payout으로 이동하기 전에 cartList를 준비하도록 요청하는 비동기 함수
+    // await prepareCartListToServer(mnoVal);
+    window.location.href = "/payment/payout";
+    
+}
+
+// 서버에 mno를 보내 cartList를 생성할 수 있도록 하는 함수.
+// async function prepareCartListToServer(mnoVal) {
+//     const url = "/payment/prepare-cart-list";
+
+//     const config = {
+//         method: "post",
+//         headers: { "Content-Type": "application/json; charset=utf-8" },
+//         body: JSON.stringify(mnoVal)
+//     }
+
+//     const response = await fetch(url, config);
+//     const result = await response.text();
+
+//     if(result == "1") {
+//         console.log("Preserve orders: Succeeded.");
+//     } else if (result == "0") {
+//         console.log("Preserve orders: Failed.");
+//     } else {
+//         console.log("Preserve orders: Unknown.");
+//     }
+// }
 
 // 결제 수단이 있으면 서버로부터 channelKey, payMethod, merchantUid를 가져옴
 async function getPayDataFromServer(selectedPg) {
@@ -195,7 +223,7 @@ async function payWithIamport() {
         pg: pgData.pg, // pg provider
         pay_method: pgData.pay_method,
         merchant_uid: pgData.merchant_uid,
-        name : "주문명: 결제 테스트",
+        name : "이젠문고 주문",
         amount : pgData.amount,
         buyer_email : "qpfm111@naver.com",
         buyer_name : "박준희",
@@ -210,13 +238,12 @@ async function payWithIamport() {
         if(impResponse.success) {
             console.log("The result of the payment: " + JSON.stringify(impResponse));
             console.log("Start payment information verification.");
-            // 결제 데이터를 DB에 저장하기 전에 검증 먼저 실행.
-            // 결제 검증 1. 결제할 액수와 결제 결과로 반환된 결제 액수 동등성 비교.
+
             let verifyOneResult = false;
-            // 결제 검증 2. 포트원의 "결제 단건 조회" API를 통해 imp_uid와 액수 비교.
             let verifyTwoResult = false;
 
-            let verifyResult = checkFlags(paymentData.amount, impResponse.paid_amount, impResponse);
+            // let verifyResult = checkFlags(paymentData.amount, impResponse.paid_amount, impResponse);
+            checkFlags(paymentData.amount, impResponse.paid_amount, impResponse);
 
         (impResponse);
         } else if (impResponse.error_code != null) {
@@ -233,14 +260,20 @@ async function checkFlags(paymentDataAmount, impResPaidAmount, impResponse) {
         verify2: false
     }
 
+    // 결제 데이터를 DB에 저장하기 전에 검증 먼저 실행.
+    // 결제 검증 1. 결제할 액수와 결제 결과로 반환된 결제 액수 동등성 비교.
     result.verify1 = await comparePayment(paymentDataAmount, impResPaidAmount);
+    // 결제 검증 2. 포트원의 "결제 단건 조회" API를 통해 imp_uid와 액수 비교.
     result.verify2 = await sendPaymentResultToServer(impResponse);
     
     if(result.verify1 && result.verify2) {
         await preserveOrdersToServer(impResponse);
-        await preserveOrderDetailToServer(impResponse.merchant_uid);
+        await preserveOrderDetailToServer(impResponse);
         await preservePaymentToServer(impResponse);
         await removeCartToServer();
+        await preserveDeliveryToServer(impResponse);
+        alert("결제가 완료되었습니다.");
+        // window.location.href = "/payment/go-to-index";
     }
 
     return result;
@@ -321,7 +354,7 @@ async function preserveOrdersToServer(impResponse) {
 }
 
 // order_detail 테이블에 주문 상세 데이터 저장
-async function preserveOrderDetailToServer(respMerchantUid) {
+async function preserveOrderDetailToServer(impResponse) {
     const url = `/payment/payout/preserve-order-detail`;
 
     const orderDetailArr = [];
@@ -329,10 +362,11 @@ async function preserveOrderDetailToServer(respMerchantUid) {
     
     for(let i=0; i < parseInt(index); i++) {
         let orderDetail = {
-            orno: respMerchantUid,
+            orno: impResponse.merchant_uid,
             prno: "",
             bookQty: "",
-            price: ""
+            price: "",
+            status: ""
         }
 
         // orderDetail.prno = document.querySelector(`[data-list-book-prno="${i}"]`).value;
@@ -340,8 +374,10 @@ async function preserveOrderDetailToServer(respMerchantUid) {
         // orderDetail.price = document.querySelector(`[data-list-book-price="${i}"]`).innerText;
         orderDetail.prno = document.querySelector(`[data-payout="${i}"].list-data-storage`).dataset.listBookPrno;
         orderDetail.bookQty = document.querySelector(`[data-payout="${i}"].book-qty`).innerText;
-        let bookPriceVal = document.querySelector(`[data-payout="${i}"].book-price`).innerText;
+        let bookPriceVal = document.querySelector(`[data-payout="${i}"].book-price`).dataset.bookOriginalPrice;
         
+        orderDetail.status = selectStatus(impResponse.status);
+
         // bookPriceVal이 숫자+원 임. "원"을 제거하고 숫자만 추출한 후에  문자열을 int로 전환.
         let onlyPriceVal = bookPriceVal.match(/\d+/);
         orderDetail.price = parseInt(onlyPriceVal);
@@ -428,8 +464,7 @@ async function removeCartToServer() {
     for(let i = 0; i < parseInt(index); i++) {
         let cartVoObj = {
             mno: mnoVal,
-            prno:"",
-            bookQty: -1 // TODO: NOT NULL 컬럼이라 혹시 몰라 보냄. 빼도 이상 없으면 뺄 예정.
+            prno:""
         };
 
         cartVoObj.prno = document.querySelector(`[data-payout="${i}"].list-data-storage`).dataset.listBookPrno;
@@ -457,4 +492,75 @@ async function removeCartToServer() {
     } else {
         console.log("Remove cart: Unknown.");
     }
+}
+
+// 결제가 끝나면 delivery 테이블에 배송지 정보를 저장함.
+async function preserveDeliveryToServer(impResponse) {
+
+    const recNameVal = document.querySelector('.default-addr-rec-name').innerText;
+    const recPhoneVal = document.querySelector('.default-addr-rec-phone').innerText;
+    const addrVal = document.querySelector('.address-info span').innerText;
+    const addrCodeVal = document.querySelector('.address-info').dataset.addrPostcode;
+    const addrDetailVal = document.querySelector('.address-info').dataset.addrDetail;
+
+    const url = "/payment/payout/preserve-delivery";
+
+    const deliveryData = {
+        orno: impResponse.merchant_uid,
+        recName: recNameVal,
+        recPhone: recPhoneVal,
+        addrCode: addrVal,
+        addr: addrCodeVal,
+        addrDetail: addrDetailVal,
+        addrMemo: ""
+    }
+
+    deliveryData.addrMemo = getDeliveryMemo();
+
+    const config = {
+        method: "POST",
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        body: JSON.stringify(deliveryData)
+    };
+    
+    const response = await fetch(url, config);
+    const result = await response.text();
+    if(result == "1") {
+        console.log("Preserve delivery: Succeeded.");
+    } else if (result == "0") {
+        console.log("Preserve delivery: Failed.");
+    } else {
+        console.log("Preserve delivery: Unknown.");
+    }
+    
+}
+
+// 화면으로부터 배송 메모를 가져오는 함수.
+function getDeliveryMemo() {
+    const deliverySelect = document.getElementById('Request').value;
+    let deliveryMemoVal = "";
+
+    switch (deliverySelect) {
+        case "문 앞에 놓아주세요.":
+            deliveryMemoVal = "문 앞에 놓아주세요.";
+            break;
+        case "부재 시 경비실에 맡겨 주세요.":
+            deliveryMemoVal = "부재 시 경비실에 맡겨 주세요.";
+            break;
+        case "부재 시 연락 주세요.":
+            deliveryMemoVal = "부재 시 연락 주세요.";
+            break;
+        case "배송 전 연락 주세요.":
+            deliveryMemoVal = "배송 전 연락 주세요.";
+            break;
+        case "직접 입력":
+            const userMemo = document.querySelector('.shipping_request_text #userDeliveryMemo').value;
+            deliveryMemoVal = userMemo;
+            break;
+        default:
+            deliveryMemoVal = "메모 없음";
+            break;
+    }
+
+    return deliveryMemoVal;
 }
