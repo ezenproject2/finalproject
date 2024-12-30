@@ -3,6 +3,7 @@ console.log("공지사항 등록 js in!!");
 var noticeBox = new FroalaEditor('#noticeBox', {
   // 한글 패치
   language: 'ko',
+  zIndex: 2000, // 필요에 따라 조정
 
   toolbarButtons: {
     'moreText': {
@@ -17,7 +18,7 @@ var noticeBox = new FroalaEditor('#noticeBox', {
   },
 
   height: 450,   // 높이 설정 (px 단위)
-  width: 1280, // 너비 설정 (백분율로 설정 가능)
+  width: 1060, // 너비 설정 (백분율로 설정 가능)
 
   // 이미지 업로드 처리
   imageUploadURL: '/notice/upload',
@@ -41,6 +42,21 @@ var noticeBox = new FroalaEditor('#noticeBox', {
     }
   }
 
+});
+
+// 에디터가 완전히 로드된 후 외곽선 제거
+noticeBox.events.on('initialized', function () {
+  // 외곽선 제거
+  var editorContainer = noticeBox.el;
+  editorContainer.style.border = 'none'; // Froala 에디터 외곽선 없애기
+  editorContainer.style.outline = 'none'; // 포커스 시 외곽선 없애기
+
+  // 만약 iframe이 내부에 포함되어 있다면
+  var iframe = editorContainer.querySelector('iframe');
+  if (iframe) {
+    iframe.style.border = 'none';
+    iframe.style.outline = 'none';
+  }
 });
 
 document.getElementById("regBtn").addEventListener('click', () => {

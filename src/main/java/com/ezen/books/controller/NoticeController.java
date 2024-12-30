@@ -43,7 +43,6 @@ public class NoticeController {
         log.info(">>>> noticeVO > {}", noticeVO);
         // content 속 img 태그의 주소 경로 찾기
         List<String> fileAddrList = fileHandler.extractUuids(noticeVO.getContent());
-        log.info(">>>> fileAddrList > {}", fileAddrList.get(0));
         int isOk = noticeService.register(noticeVO, fileAddrList);
 
         return isOk>0? "1" : "0";
@@ -97,5 +96,33 @@ public class NoticeController {
 
         return "/notice/list";
     }
+
+    @GetMapping("/detail")
+    public String detail(Model model, long ntno){
+        NoticeVO noticeVO = noticeService.getDetail(ntno);
+        model.addAttribute("noticeVO", noticeVO);
+
+        return "/notice/detail";
+    }
+
+    @GetMapping("/modify")
+    public String modify(Model model, long ntno){
+        NoticeVO noticeVO = noticeService.getDetail(ntno);
+        model.addAttribute("noticeVO", noticeVO);
+
+        return "/notice/modify";
+    }
+
+    @ResponseBody
+    @PostMapping("/modify")
+    public String modify(@RequestBody NoticeVO noticeVO){
+        log.info(">>>> noticeVO > {}", noticeVO);
+
+        List<String> fileAddrList = fileHandler.extractUuids(noticeVO.getContent());
+        int isOk = noticeService.update(noticeVO, fileAddrList);
+
+        return isOk>0? "1" : "0";
+    }
+
 
 }

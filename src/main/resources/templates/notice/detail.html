@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout/layout}">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/noticeNormal.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/noticeDetail.css}"/>
+</head>
+
+<main layout:fragment="main">
+  <div class="inner">
+
+    <!--/* 카테고리 영역 */-->
+    <section class="breadcrumb_wrap">
+      <ul class="breadcrumb_list">
+        <li class="breadcrumb_item">
+          <a href="/"><i class="ic ic_home"></i></a>
+        </li>
+        <li class="breadcrumb_item">
+          <a th:href="@{/notice/list(pageNo=1, category='notice', qty=10)}" class="primary_ctg">고객센터</a>
+        </li>
+        <li class="breadcrumb_item">
+          <a class="secondary_ctg">상세</a>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 제목은 크게, 작성자와 작성일은 작게 -->
+    <h1 class="title">[[${noticeVO.title}]]</h1>
+
+    <div class="info">
+      <div>
+        <span class="writer">작성자: 관리자</span>
+        <span class="date">작성일: [[${noticeVO.regAt.substring(0, 10).replace('-', '.')}]]</span>
+      </div>
+      <a class="modify-button" th:href="@{/notice/modify(ntno=${noticeVO.ntno})}">(관리자) 수정하기</a>
+    </div>
+
+    <!-- hr 태그로 구분선 추가 -->
+    <hr class="divider">
+
+    <!-- 본문 내용 -->
+    <div class="content" th:utext="${noticeVO.content}"></div>
+
+  </div>
+</main>

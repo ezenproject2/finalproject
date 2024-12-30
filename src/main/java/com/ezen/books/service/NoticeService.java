@@ -17,4 +17,8 @@ public interface NoticeService {
     int getTotalCount(PagingVO pagingVO);
 
     List<NoticeVO> getList(PagingVO pagingVO);
+
+    NoticeVO getDetail(long ntno);
+
+    int update(NoticeVO noticeVO, List<String> fileAddrList);
 }
