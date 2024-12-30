@@ -93,9 +93,17 @@ public class PaymentController {
     }
 
     @GetMapping("/cart")
-    public String showCartItems(@RequestParam("mno") long mno, PagingVO pagingVO, Model model) {
+    public String showCartItems(PagingVO pagingVO, Model model) {
         log.info(" >>> PaymentController: showCartItems start.");
+
+        // 로그인 된 사용자의 mno를 가져옴
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loginId = authentication.getName();
+
+        MemberVO memberVO = memberService.getMemberByInfo(loginId);
+        long mno = memberVO.getMno();
         log.info("The mno of showCartItems: {}", mno);
+
         List<CartVO> cartList = cartService.getAllCartItems(mno);
         log.info(" >>> cartList: {}", cartList);
 

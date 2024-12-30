@@ -4,12 +4,11 @@ document.addEventListener('click', (e) => {
     let targetClassList = e.target.classList;
     let pathString = "";
 
+    // 장바구니, 바로구매, 바로픽업 버튼 클릭 시 로그인이 되어 있지 않으면 로그인 페이지로 보냄
     const mnoVal = document.getElementById('cartMno').value;
-
     if(
         (['shopping_basket_btn', 'purchase_btn', 'pick_up_btn'].some(className => targetClassList.contains(className)))
         && mnoVal == "-1") {
-        // alert("로그인 먼저 해주세요.");
         window.location.href = "/member/login";
         return;
     }
@@ -17,30 +16,32 @@ document.addEventListener('click', (e) => {
     const prnoVal = document.getElementById('prnoEl').value;
     const bookQtyVal = document.getElementById('number').innerText;
 
-    if(targetClassList.contains('purchase_btn')) { // 바로구매 버튼 클릭 시
+    if(targetClassList.contains('shopping_basket_btn')) { // 장바구니 버튼 클릭 시
+        storeCartVoToServer(mnoVal, prnoVal, bookQtyVal);
 
+    } else if (targetClassList.contains('purchase_btn')) { // 바로구매 버튼 클릭 시
         pathString = "buyNow";
         processSinglePurchase(mnoVal, prnoVal, bookQtyVal, pathString);
-    } else if (targetClassList.contains('pick_up_btn')) { // 바로픽업 버튼 클릭 시
 
+    } else if (targetClassList.contains('pick_up_btn')) { // 바로픽업 버튼 클릭 시
         pathString = "pickUpNow";
         processSinglePurchase(mnoVal, prnoVal, bookQtyVal, pathString);
     }
 })
 
 // "장바구니" 버튼에 이벤트를 부여하여 /payment/cart로 이동.
-document.querySelector('.shopping_basket_btn').addEventListener('click', () => {
-    // CartVO: mno, prno, bookQty
+// document.querySelector('.shopping_basket_btn').addEventListener('click', () => {
+//     // CartVO: mno, prno, bookQty
 
-    const mno = document.getElementById('cartMno').value;
-    console.log("mno: " + mno);
+//     const mno = document.getElementById('cartMno').value;
+//     console.log("mno: " + mno);
 
-    const prno = document.getElementById('prnoEl').value;
-    console.log("prno: " + prno);
+//     const prno = document.getElementById('prnoEl').value;
+//     console.log("prno: " + prno);
 
-    const bookQty = document.getElementById('number').innerText;
-    console.log("bookQty: " + bookQty);
-});
+//     const bookQty = document.getElementById('number').innerText;
+//     console.log("bookQty: " + bookQty);
+// });
 
 async function storeCartVoToServer(mnoVal, prnoVal, bookQtyVal) {
     const url = "/payment/cart/insert";

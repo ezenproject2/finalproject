@@ -24,9 +24,9 @@
           </i>
         </div>
         <div class="member_name">
-          <span><span id="memberName">홍길동</span>님</span> <span id="memberGrade">새싹</span>
+          <span><span id="memberName">[[${memberInfo.nickName}]]</span>님</span> <span id="memberGrade">[[${memberGrade.level}]]</span>
         </div>
-        <div class="member_email"> <span>(example@example.com)</span></div>
+        <div class="member_email"> <span>[[${memberInfo.email}]]</span></div>
       </a>
 
       <div class="myPage_menu">
@@ -78,10 +78,10 @@
         </div>
 
         <div class="my_orders_box">
-          <!--
+          <!--/*
               주문 내역이 없으면 -> my_orders_box_wrap : display:none, my_orders_box_none : display:none
               주문 내역이 있으면 -> my_orders_box_wrap : display:block, my_orders_box_none : display:none
-          -->
+          */-->
           <div class="my_orders_box_none" style="display: none;">
             <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 16 16">
               <circle cx="8" cy="8" r="8" fill="#c6c6c6"></circle>
@@ -92,13 +92,16 @@
           </div>
 
           <div class="my_orders_box_wrap"> <!-- 주문내역 전체 내역 -->
-            <div class="my_orders_table outer-data-container" th:each="orderDetailProductList, outerStat: ${orderDetailProductGroup}" th:data-outer-size="${orderDetailProductGroup.size}" th:data-mno="${mno}" th:data-is-order-empty="${isOrderEmpty}"> <!-- 주문내역 반복 아이템 -->
+            <input type="hidden" id="isOrderEmptyInput" th:value="${isOrderEmpty}">
+            <input type="hidden" id="mnoInput" th:value="${mno}">
+            <input type="hidden" id="outerSizeInput" th:value="${orderDetailProductGroup.size}">
+            <div class="my_orders_table outer-data-container" th:each="orderDetailProductList, outerStat: ${orderDetailProductGroup}"> <!-- 주문내역 반복 아이템 -->
               <div class="orders_table_header">
-                <strong>[[${orderDateList[outerStat.index]}]]</strong> <!--/* 2024.12.27(O24103953903)가 있던 위치. */-->
+                <strong class="order-date" th:data-outer-index="${outerStat.index}">[[${orderDateList[outerStat.index]}]]</strong> <!--/* 2024.12.27(O24103953903)가 있던 위치. */-->
                 <a href="" class="underline">상세보기<i class="ic ic_arrow_right"></i></a>
               </div>
 
-              <div class="orders_table_content inner-data-container" th:each="orderDetailProduct, innerStat:${orderDetailProductList}"> <!-- 책 1권의 정보 -->
+              <div class="orders_table_content inner-data-container" th:each="orderDetailProduct, innerStat:${orderDetailProductList}" th:data-inner-size="${orderDetailProductList.size}" th:data-outer-index="${outerStat.index}"> <!-- 책 1권의 정보 -->
                 <!--/* <td class="product_info" th:data-odno="${orderDetailProduct.orderDetailVO.odno}" th:data-orno="${orderDetailProduct.orderDetailVO.orno}" th:data-order-detail="${innerStat.index}"> */-->
                 <input type="hidden" id="odnoInput" th:value="${orderDetailProduct.orderDetailVO.odno}" th:data-inner-index="${innerStat.index}">
                 <input type="hidden" id="ornoInput" th:value="${orderDetailProduct.orderDetailVO.orno}" th:data-inner-index="${innerStat.index}">
