@@ -6,7 +6,7 @@ import com.ezen.books.domain.MemberVO;
 
 import java.util.List;
 
-public interface MypageAddressListService {
+public interface AddressListService {
     List<AddressVO> getAllAddr(long mno);
 
     MemberVO getMember(long mno);

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ezen.books.repository.MypageOrderListMapper">
+<mapper namespace="com.ezen.books.repository.OrderListMapper">
 
     <select id="getAllOrderList" resultType="com.ezen.books.domain.OrdersVO">
         select * from orders
@@ -39,12 +39,6 @@
         where orno = #{orno}
     </select>
 
-    <select id="getOrderDate" resultType="java.time.LocalDateTime">
-        select order_at from orders
-        where orno = #{orno}
-    </select>
-
-    <!--  아래부터 환불을 위해 추가된 쿼리들.  -->
     <select id="getImpUid" resultType="String">
         select imp_uid from payment
         where orno = #{orno}
@@ -55,4 +49,35 @@
         set status = "refunded"
         where odno = #{odno} and orno = #{orno}
     </update>
+
+    <!--  order_detail 관련 쿼리  -->
+    <select id="getOdnoList" resultType="Long">
+        select odno from order_detail
+        where orno = #{orno}
+    </select>
+
+    <select id="findOrderDetail" resultType="com.ezen.books.domain.OrderDetailVO">
+        select * from order_detail
+        where odno = #{odno}
+    </select>
+
+    <select id="getDelivery" resultType="com.ezen.books.domain.DeliveryVO">
+        select * from delivery
+        where orno = #{orno}
+    </select>
+
+    <select id="getPickUp" resultType="com.ezen.books.domain.PickUpVO">
+        select * from pickup
+        where orno = #{orno}
+    </select>
+
+    <select id="getOfflineStore" resultType="com.ezen.books.domain.OfflineStoreVO">
+        select * from offline_store
+        where osno = #{osno}
+    </select>
+
+    <select id="getPayment" resultType="com.ezen.books.domain.PaymentVO">
+        select * from payment
+        where orno = #{orno}
+    </select>
 </mapper>

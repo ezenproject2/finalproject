@@ -13,10 +13,9 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.time.LocalDateTime;
 import java.util.List;
 
-public interface MypageOrderListService {
+public interface OrderListService {
 
     Logger log = LoggerFactory.getLogger(PayoutService.class);
 
@@ -62,7 +61,7 @@ public interface MypageOrderListService {
 
     List<OrderDetailVO> getOrderDetailList(String orno);
 
-    List<List<OrderDetailProductDTO>> getOrderDetailProductList(long mno);
+    List<List<OrderDetailProductDTO>> getOrderDetailProductGroup(long mno);
 
     boolean isOrderEmpty(long mno);
 
@@ -72,7 +71,15 @@ public interface MypageOrderListService {
 
     GradeVO getMemberGrade(Long gno);
 
-    LocalDateTime getOrderDate(String orno);
-
     OrdersVO getOrder(String orno);
+
+    List<OrderDetailProductDTO> getOrderDetailProductList(String orno);
+
+    DeliveryVO getDelivery(String orno);
+
+    PickUpVO getPickUp(String orno);
+
+    OfflineStoreVO getOfflineStore(long osno);
+
+    PaymentVO getPayment(String orno);
 }

@@ -1,6 +1,6 @@
 package com.ezen.books.controller;
 
-import com.ezen.books.service.MypageOrderListService;
+import com.ezen.books.service.OrderListService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -17,9 +17,9 @@ import java.net.URISyntaxException;
 @RequiredArgsConstructor
 @RequestMapping("/mypage/order-list")
 @Controller
-public class MypageOrderListController {
+public class OrderListController {
 
-    private final MypageOrderListService mypageOrderListService;
+    private final OrderListService orderListService;
 
     @PostMapping("/refund")
     @ResponseBody
@@ -43,7 +43,7 @@ public class MypageOrderListController {
             log.info("Error during parsing mnoNode. Content: {}", e);
         }
 
-        int isDone = mypageOrderListService.refundWithIamport(odno, orno, qtyPrice);
+        int isDone = orderListService.refundWithIamport(odno, orno, qtyPrice);
 
         return (0 < isDone) ?
                 new ResponseEntity<>("1", HttpStatus.OK) :
