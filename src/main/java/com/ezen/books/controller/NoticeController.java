@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,11 +26,6 @@ public class NoticeController {
     private final NoticeService noticeService;
     private final FileHandler fileHandler;
 
-    @GetMapping("/list")
-    public String list(){
-        return "/notice/list";
-    }
-
     @GetMapping("/register")
     public String register(){
         return "/notice/register";
@@ -37,8 +34,12 @@ public class NoticeController {
     @ResponseBody
     @PostMapping("/register")
     public String register(@RequestBody NoticeVO noticeVO){
+        // 게시글 입력
 
+        // content 속 img 태그의 주소 경로 찾기
         List<String> fileAddrList = fileHandler.extractUuids(noticeVO.getContent());
+        log.info(">>>> fileAddrList > {}", fileAddrList.get(0));
+        noticeVO.setCategory("notice");
         int isOk = noticeService.register(noticeVO, fileAddrList);
 
         return isOk>0? "1" : "0";
@@ -47,6 +48,7 @@ public class NoticeController {
     @PostMapping("/upload")
     @ResponseBody
     public Map<String, String> imageUpload(HttpServletRequest request, @RequestParam("file") MultipartFile file) {
+        // 게시글 입력 중 임시 파일 업로드
         String tempFileAddr = fileHandler.uploadNotice(file);
         log.info(">>>> tempFileAddr > {}", tempFileAddr);
 
@@ -66,6 +68,19 @@ public class NoticeController {
         }
 
         return null;
+    }
+
+    @ResponseBody
+    @GetMapping("/deleteFile")
+    public String deleteFile(@RequestParam("uuid") String uuid){
+        // 게시글 입력 중 파일 삭제
+        int isOk = noticeService.deleteFile(uuid);
+        return isOk>0? "1" : "0";
+    }
+
+    @GetMapping("/list")
+    public String list(){
+        return "/notice/list";
     }
 
 }

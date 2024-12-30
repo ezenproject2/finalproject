@@ -29,8 +29,10 @@ var noticeBox = new FroalaEditor('#noticeBox', {
     'image.removed': function (image) {
       console.log("이미지 삭제 진행 : " + image[0].currentSrc);
       let url = image[0].currentSrc
-      let uuid = url.match(/\/([^\/_]+)_[^\/]+$/);
-      deleteTempFile(uuid[1]).then(result => {
+      let path = url.split("upload/")[1];
+
+      console.log(path);
+      deleteTempFile(path).then(result => {
         if (result == "1") {
         } else {
           console.log("이미지 삭제 작업을 진행 중 오류가 발생했습니다. ");
@@ -77,9 +79,18 @@ async function saveNotice(formData) {
   return result;
 }
 
-async function deleteTempFile(uuid) {
-  const url = "/notice/deleteFile/" + uuid;
-  const resp = await fetch(url);
-  const result = await resp.text();
-  return result;
+async function deleteTempFile(path) {
+
+  const regex = /([0-9a-fA-F-]{36})/;  
+  const match = path.match(regex);
+
+  if (match) {
+    const uuid = match[0]; 
+
+    const url = "/notice/deleteFile?uuid=" + uuid;
+    const resp = await fetch(url);
+    const result = await resp.text();
+    return result;
+  }
+
 }

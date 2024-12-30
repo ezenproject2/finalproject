@@ -12,11 +12,20 @@ public interface NoticeMapper {
 
     long getLastNtno();
 
-    NoticeTempFileVO findByAddr(String fileAddr);
+    NoticeTempFileVO findTempByAddr(String fileAddr);
 
-    void registerFile(NoticeFileVO noticeFileVO);
+    NoticeFileVO findFileByAddr(String path);
 
-    void deleteTempFile(long fino);
+    int deleteTempFile(long fino);
+
+    int deleteFile(long fino);
 
     int registerTempFile(NoticeTempFileVO noticeTempFileVO);
+
+    int registerFile(NoticeFileVO noticeFileVO);
+
+
+    NoticeFileVO findFileByUuid(String uuid);
+
+    NoticeTempFileVO findTempByUuid(String uuid);
 }

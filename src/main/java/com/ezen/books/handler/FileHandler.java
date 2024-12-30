@@ -155,24 +155,16 @@ public class FileHandler {
         while (matcher.find()) {
             // 이미지 경로 추출
             String imagePath = matcher.group(1);
-
-            // UUID만 추출
-            String uuid = extractUuidFromPath(imagePath);
-
-            if (uuid != null) {
-                uuidList.add(uuid);
+            log.info(">>>> imagePath > {}", imagePath);
+            // 필요한 주소만 추출
+            String addr = imagePath.replaceFirst("^/upload/", "");
+            log.info(">>>> addr > {}", addr);
+            if (addr != null) {
+                uuidList.add(addr);
             }
         }
 
         return uuidList;
-    }
-
-    // 경로에서 UUID만 추출 (파일명에서 첫 번째 "_" 앞의 문자열)
-    private String extractUuidFromPath(String imagePath) {
-        // 마지막 '/' 이후부터 첫 번째 '_'까지의 문자열을 UUID로 추출
-        String fileNamePart = imagePath.substring(imagePath.lastIndexOf("/") + 1);
-        String uuid = fileNamePart.split("_")[0];  // UUID 부분만 추출
-        return uuid;
     }
 
 }

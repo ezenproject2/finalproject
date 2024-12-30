@@ -29,14 +29,14 @@ public class NoticeServiceImpl implements NoticeService{
             long ntno = noticeMapper.getLastNtno();
 
             for(String fileAddr : fileAddrList){
-                NoticeTempFileVO noticeTempFileVO = noticeMapper.findByAddr(fileAddr);
+                NoticeTempFileVO noticeTempFileVO = noticeMapper.findTempByAddr(fileAddr);
                 if(noticeTempFileVO != null){
                     NoticeFileVO noticeFileVO = NoticeFileVO.builder()
                             .ntno(ntno)
                             .fileAddr(fileAddr)
                             .build();
                     // 최종 선택된 파일 경로만 저장
-                    noticeMapper.registerFile(noticeFileVO);
+                    isOk *= noticeMapper.registerFile(noticeFileVO);
                     // 임시 파일은 삭제
                     noticeMapper.deleteTempFile(noticeTempFileVO.getFino());
                 }
@@ -48,6 +48,23 @@ public class NoticeServiceImpl implements NoticeService{
     @Override
     public int tempSave(NoticeTempFileVO noticeTempFileVO) {
         int isOk = noticeMapper.registerTempFile(noticeTempFileVO);
+        return isOk;
+    }
+
+    @Override
+    public int deleteFile(String uuid) {
+        int isOk = 1;
+
+        NoticeFileVO noticeFileVO = noticeMapper.findFileByUuid(uuid);
+        if(noticeFileVO != null){
+            isOk *= noticeMapper.deleteFile(noticeFileVO.getFino());
+        }
+
+        NoticeTempFileVO noticeTempFileVO = noticeMapper.findTempByUuid(uuid);
+        if(noticeTempFileVO != null){
+            isOk *= noticeMapper.deleteTempFile(noticeTempFileVO.getFino());
+        }
+
         return isOk;
     }
 }

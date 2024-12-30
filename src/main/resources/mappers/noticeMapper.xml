@@ -13,8 +13,12 @@
         select max(ntno) from notice;
     </select>
 
-    <select id="findByAddr" resultType="com.ezen.books.domain.NoticeTempFileVO">
+    <select id="findTempByAddr" resultType="com.ezen.books.domain.NoticeTempFileVO">
         select * from notice_temp_file where file_addr = #{fileAddr};
+    </select>
+
+    <select id="findFileByAddr" resultType="com.ezen.books.domain.NoticeFileVO">
+        select * from notice_file where file_addr = #{fileAddr};
     </select>
 
     <insert id="registerFile">
@@ -25,9 +29,20 @@
         delete from notice_temp_file where fino = #{fino};
     </delete>
 
+    <delete id="deleteFile">
+        delete from notice_file where fino = #{fino};
+    </delete>
+
     <insert id="registerTempFile">
         insert into notice_temp_file (file_addr) values (#{fileAddr});
     </insert>
 
+    <select id="findFileByUuid" resultType="com.ezen.books.domain.NoticeFileVO">
+        select * from notice_file where file_addr like CONCAT('%', #{uuid}, '%')
+    </select>
+
+    <select id="findTempByUuid" resultType="com.ezen.books.domain.NoticeTempFileVO">
+        select * from notice_temp_file where file_addr like CONCAT('%', #{uuid}, '%')
+    </select>
 
 </mapper>

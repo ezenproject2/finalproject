@@ -10,4 +10,6 @@ public interface NoticeService {
     int register(NoticeVO noticeVO, List<String> fileAddrList);
 
     int tempSave(NoticeTempFileVO noticeTempFileVO);
+
+    int deleteFile(String uuid);
 }
