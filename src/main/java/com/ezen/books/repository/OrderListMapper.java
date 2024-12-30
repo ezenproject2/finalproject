@@ -28,4 +28,6 @@ public interface OrderListMapper {
     GradeVO getMemberGrade(Long gno);
 
     LocalDateTime getOrderDate(String orno);
+
+    OrdersVO getOrder(String orno);
 }

@@ -140,6 +140,11 @@
     justify-content: space-between;
     align-items: center;
 }
+.orders_table_header > .orders_info { /* 주문 날짜와 주문 유형(배달, 픽업)을 감싸는 div의 스타일 */
+    display: flex;
+    justify-content: baseline;
+    align-items: center;
+}
 .underline {
     display: inline-block;
     position: relative;
@@ -151,7 +156,15 @@
     text-decoration: underline;
     text-decoration-color: #555;
 }
-.orders_table_header > strong {font-size: 1.15rem;}
+.orders_table_header > .orders_info > strong {font-size: 1.15rem;}
+.orders_table_header > .orders_info > span { /* 픽업인지 배달인지 표시하기 위해 추가함. */
+    font-size: 0.8rem;
+    color: white;
+    background-color: #ABBC86;
+    padding: 5px;
+    margin-left: 5px;
+    border-radius: 6px;
+}
 .orders_table_header > a {
     display: inline-flex;
     align-items: center;
@@ -206,11 +219,16 @@
     color: #555;
     border: 1px solid #ABBC86;
     padding: 8px 3px;
+    margin: 5px 0; /* 환불 버튼이 추가되어 추가된 CSS. */
     border-radius: 8px;
     font-size: 0.9rem;
     transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
 }
 .order_book_review_btn > .btn:hover {
+    background-color: #ABBC86;
+    color: #fff;
+}
+.order_book_review_btn > .refunded_btn { /* "환불됨" 버튼은 hover되었을 때의 디자인으로 배치 */
     background-color: #ABBC86;
     color: #fff;
 }

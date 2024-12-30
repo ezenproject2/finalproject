@@ -75,6 +75,11 @@ public class OrderListServiceImpl implements OrderListService {
         return orderListMapper.getOrderDate(orno);
     }
 
+    @Override
+    public OrdersVO getOrder(String orno) {
+        return orderListMapper.getOrder(orno);
+    }
+
     private List<List<OrderDetailProductDTO>> generateOrderDetailProductList(long mno) {
         List<List<OrderDetailProductDTO>> orderDetailList = new ArrayList<>();
 

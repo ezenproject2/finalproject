@@ -34,6 +34,11 @@
         where gno = #{gno}
     </select>
 
+    <select id="getOrder" resultType="com.ezen.books.domain.OrdersVO">
+        select * from orders
+        where orno = #{orno}
+    </select>
+
     <select id="getOrderDate" resultType="java.time.LocalDateTime">
         select order_at from orders
         where orno = #{orno}

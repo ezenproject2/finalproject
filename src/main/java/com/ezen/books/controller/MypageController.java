@@ -134,14 +134,13 @@ public class MypageController {
         // log.info("The orderDetailProductGroup: {}", orderDetailProductGroup);
         log.info("orderDetailProductGroup is empty or not :{}", orderDetailProductGroup.isEmpty());
 
-        // 화면에 띄울 orders의 주문 날짜들을 가져옴.
-        List<LocalDateTime> orderDateList = new ArrayList<>();
+        // 화면에 띄울 orders의 정보를 가져옴.
+        List<OrdersVO> orderList = new ArrayList<>();
         for(List<OrderDetailProductDTO> groupOfOneOrder : orderDetailProductGroup) {
             String orno = groupOfOneOrder.get(0).getOrderDetailVO().getOrno();
-            LocalDateTime orderDate = orderListService.getOrderDate(orno);
-            orderDateList.add(orderDate);
+            OrdersVO order = orderListService.getOrder(orno);
+            orderList.add(order);
         }
-        log.info("The orderDateList: {}", orderDateList);
 
         // 화면에 띄울 사용자 정보와 등급 정보를 가져옴.
         MemberVO memberInfo = orderListService.getMember(mno);
@@ -155,7 +154,7 @@ public class MypageController {
         model.addAttribute("mno", mno);
         model.addAttribute("isOrderEmpty", isOrderEmpty);
         model.addAttribute("orderDetailProductGroup", orderDetailProductGroup);
-        model.addAttribute("orderDateList", orderDateList);
+        model.addAttribute("orderList", orderList);
         model.addAttribute("memberInfo", memberInfo);
         model.addAttribute("memberGrade", memberGrade);
         model.addAttribute("ph", ph);

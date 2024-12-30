@@ -35,7 +35,6 @@ function trimOrderDate(outerSize) {
 }
 
 // order_detail의 영문 status를 화면에 한글 status로 바꿔 띄움.
-// TODO: 왜 화면에 status가 개판으로 나오는지 확인하고 고칠 것!!!
 function showStatusInKorean(outerSize) {
     for(let i=0; i < outerSize; i++) {
         let innerSize = document.querySelector(`.inner-data-container[data-outer-index="${i}"]`).dataset.innerSize;

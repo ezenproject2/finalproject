@@ -56,9 +56,4 @@ public class OrderListController  {
                 new ResponseEntity<>("0", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @GetMapping("/go-to-index")
-    public String goToIndex() {
-        return "redirect:/";
-    }
-
 }

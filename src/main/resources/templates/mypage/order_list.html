@@ -32,7 +32,7 @@
       <div class="myPage_menu">
         <div class="myPage_menu_item">
           <p class="menu_item_title"><a href="">쇼핑 내역<i class="ic ic_arrow_right"></i></a></p>
-          <p class="menu_item_content"><a href="">주문/배송목록</a></p>
+          <p class="menu_item_content"><a th:href="@{/mypage/order-list}">주문/배송목록</a></p>
           <p class="menu_item_content"><a href="">선물함</a></p>
           <p class="menu_item_content"><a href="">매장 구매 내역</a></p>
           <p class="menu_item_content"><a href="">영수증</a></p>
@@ -45,7 +45,7 @@
         </div>
         <div class="myPage_menu_item">
           <p class="menu_item_title"><a href="">회원정보<i class="ic ic_arrow_right"></i></a></p>
-          <p class="menu_item_content"><a href="">배송주소록</a></p>
+          <p class="menu_item_content"><a th:href="@{/mypage/address-list}">배송주소록</a></p>
           <p class="menu_item_content"><a href="">회원정보관리</a></p>
           <p class="menu_item_content"><a href="">나의 회원등급</a></p>
         </div>
@@ -88,7 +88,7 @@
               <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" fill="white"></path>
             </svg>
             <strong> 주문 내역이 없습니다. </strong>
-            <a href="/">계속 쇼핑하기</a>
+            <a href="/product/list">계속 쇼핑하기</a>
           </div>
 
           <div class="my_orders_box_wrap"> <!-- 주문내역 전체 내역 -->
@@ -97,8 +97,12 @@
             <input type="hidden" id="outerSizeInput" th:value="${orderDetailProductGroup.size}">
             <div class="my_orders_table outer-data-container" th:each="orderDetailProductList, outerStat: ${orderDetailProductGroup}"> <!-- 주문내역 반복 아이템 -->
               <div class="orders_table_header">
-                <strong class="order-date" th:data-outer-index="${outerStat.index}">[[${orderDateList[outerStat.index]}]]</strong> <!--/* 2024.12.27(O24103953903)가 있던 위치. */-->
-                <a href="" class="underline">상세보기<i class="ic ic_arrow_right"></i></a>
+                <div class="orders_info">
+                  <strong class="order-date" th:data-outer-index="${outerStat.index}">[[${orderList[outerStat.index].orderAt}]]</strong>
+                  <span class="order-type-mark" th:if="${orderList[outerStat.index].isPickup == 'N'}">온라인 주문</span>
+                  <span class="order-type-mark" th:unless="${orderList[outerStat.index].isPickup == 'N'}">픽업 주문</span>
+                </div>
+                  <a th:href="@{/mypage/order-detail}" class="underline">상세보기<i class="ic ic_arrow_right"></i></a>
               </div>
 
               <div class="orders_table_content inner-data-container" th:each="orderDetailProduct, innerStat:${orderDetailProductList}" th:data-inner-size="${orderDetailProductList.size}" th:data-outer-index="${outerStat.index}"> <!-- 책 1권의 정보 -->
@@ -107,18 +111,20 @@
                 <input type="hidden" id="ornoInput" th:value="${orderDetailProduct.orderDetailVO.orno}" th:data-inner-index="${innerStat.index}">
                 <div class="order_book_info_box flex">
                   <div class="order_book_img">
-                    <a href=""> <!-- 책 상세 페이지 이동 -->
+                    <a th:href="@{/product/detail(isbn=${orderDetailProduct.productVO.isbn})}"> <!-- 책 상세 페이지 이동 -->
                       <img th:src="${orderDetailProduct.productVO.image}" alt="book">
                     </a>
                   </div>
-                  <div class="order_book_info flex"> <!--/* [[${orderDetailProduct.productVO.primaryCtg}]]: [[${orderDetailProduct.productVO.title}]] */-->
-                    <a href=""><strong class="underline" th:text="'[' + ${orderDetailProduct.productVO.primaryCtg} + '] ' + ${orderDetailProduct.productVO.title}"></strong></a> <!-- 책 상세 페이지 이동 -->
+                  <div class="order_book_info flex">
+                    <a th:href="@{/product/detail(isbn=${orderDetailProduct.productVO.isbn})}">
+                      <strong class="underline" th:text="'[' + ${orderDetailProduct.productVO.primaryCtg} + '] ' + ${orderDetailProduct.productVO.title}" th:data-inner-index="${innerStat.index}"></strong>
+                    </a> <!-- 책 상세 페이지 이동 -->
                     <span>수량 : [[${orderDetailProduct.orderDetailVO.bookQty}]]</span>
                   </div>
                 </div>
 
                 <div class="order_book_price">
-                  <span><strong>[[${#numbers.formatInteger(orderDetailProduct.orderDetailVO.price, 3, 'COMMA')}]]</strong>원</span>
+                  <span><strong class="order-detail-price" th:data-inner-index="${innerStat.index}">[[${#numbers.formatInteger(orderDetailProduct.orderDetailVO.price, 3, 'COMMA')}]]</strong>원</span>
                 </div>
 
                 <div class="order_book_status">
@@ -126,8 +132,9 @@
                 </div>
 
                 <div class="order_book_review_btn">
-                  <button type="button" class="review_btn btn">리뷰 작성</button>
-                  <!--/* 환불 버튼을 추가할 예정. */-->
+                  <button type="button" class="review_btn btn" th:data-inner-index="${innerStat.index}">리뷰 작성</button>
+                  <button type="button" class="refund_btn btn" th:if="${orderDetailProduct.orderDetailVO.status != 'refunded'}" th:data-inner-index="${innerStat.index}">환불하기</button>
+                  <button type="button" class="refunded_btn btn" th:unless="${orderDetailProduct.orderDetailVO.status != 'refunded'}" th:data-inner-index="${innerStat.index}" disabled>환불됨</button>
                 </div>
               </div>
             </div>
@@ -180,11 +187,11 @@
             <div class="order_book_info_box flex">
               <div class="order_book_img">
                 <a href=""> <!-- 책 상세 페이지 이동 -->
-                  <img src="https://contents.kyobobook.co.kr/sih/fit-in/200x0/pdt/9788988474914.jpg" alt="book">
+                  <img class="modal-img-src" src="https://contents.kyobobook.co.kr/sih/fit-in/200x0/pdt/9788988474914.jpg" alt="book">
                 </a>
               </div>
               <div class="order_book_info flex">
-                <a href=""><strong>[국내도서] SQL 자격검정 실전문제 격검정 격검정 격검정 격검정격검정격검정 격검정격검정</strong></a> <!-- 책 상세 페이지 이동 -->
+                <a href=""><strong class="modal-book-ctg-title">[국내도서] SQL 자격검정 실전문제 격검정 격검정 격검정 격검정격검정격검정 격검정격검정</strong></a> <!-- 책 상세 페이지 이동 -->
 
                 <div class="book_review_rate flex">
                   <div class="rate_stars">
@@ -236,9 +243,9 @@
                   </div>
 
                   <span class="rating-score">
-                                                <strong class="rating-value" id="rating-value">0.0</strong>
-                                                / 5점
-                                            </span>
+                      <strong class="rating-value" id="rating-value">0.0</strong>
+                      / 5점
+                  </span>
                 </div>
               </div>
             </div>
@@ -266,5 +273,5 @@
   <script src="/js/mypageOrderListBusiness.js"></script>
   <script src="/js/mypageOrderListDisplay.js"></script>
   <script src="/js/mypageOrderListInnerStyle.js"></script>
-  <script src="/js/mypageOrderListOuterStyle.js"></script>
+  <!--/* <script src="/js/mypageOrderListOuterStyle.js"></script> */-->
 </main>

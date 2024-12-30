@@ -73,4 +73,6 @@ public interface OrderListService {
     GradeVO getMemberGrade(Long gno);
 
     LocalDateTime getOrderDate(String orno);
+
+    OrdersVO getOrder(String orno);
 }
