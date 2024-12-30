@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ezen.books.repository.AddressListMapper">
+
+    <insert id="registerAddr">
+        insert into address(mno, rec_name, rec_phone, addr_code, addr, addr_detail, addr_name, is_default)
+        values
+        (#{mno}, #{recName}, #{recPhone}, #{addrCode}, #{addr}, #{addrDetail}, #{addrName}, #{isDefault})
+    </insert>
+
+    <select id="getAllAddr" resultType="com.ezen.books.domain.AddressVO">
+        select * from address
+        where mno = #{mno}
+    </select>
+
+    <select id="getMember" resultType="com.ezen.books.domain.MemberVO">
+        select * from member
+        where mno = #{mno}
+    </select>
+
+    <select id="getMemberGrade" resultType="com.ezen.books.domain.GradeVO">
+        select * from grade
+        where gno = #{gno}
+    </select>
+
+    <update id="setAllAddrNotDefault">
+        update address
+        set is_default = "N"
+        where is_default = "Y"
+    </update>
+
+    <delete id="deleteAddr">
+        delete from address
+        where adno = #{adno}
+    </delete>
+</mapper>

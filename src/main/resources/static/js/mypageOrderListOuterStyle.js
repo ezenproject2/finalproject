@@ -1,32 +1,34 @@
-// NOTE: 이 1줄을 제외하고 myPageMain.js와 동일함. 앞으로도 변경사항 없으면 해당 줄을 삭제하고 myPageMain.js와 연결할 것.
+// NOTE: myPageMain.js를 가져온 뒤 공통 스타일링을 제외한 부분을 주석처리함.
 console.log("myPageOrderListStyle.js recognized.");
 
 document.addEventListener("DOMContentLoaded", () => {
-    const switchBtn = document.querySelector(".switch-btn");
+    // > switchBtn을 인식할 수 없어 주석처리함.
+    // const switchBtn = document.querySelector(".switch-btn");
     const circle = document.querySelector(".circle");
-    const leftLabel = document.querySelector(".label.left");
-    const rightLabel = document.querySelector(".label.right");
+    // > leftLabel을 인식할 수 없어 주석처리함.
+    // const leftLabel = document.querySelector(".label.left");
+    // const rightLabel = document.querySelector(".label.right");
 
     let isRight = false; // 스위치 상태
 
     // 초기 클래스 설정
-    leftLabel.classList.add("active");
+    // leftLabel.classList.add("active");
 
     // 스위치 버튼 클릭 이벤트
-    switchBtn.addEventListener("click", () => {
-        if (isRight) {
-            // 왼쪽으로 이동
-            circle.style.left = "4px";
-            leftLabel.classList.add("active");
-            rightLabel.classList.remove("active");
-        } else {
-            // 오른쪽으로 이동
-            circle.style.left = "52px";
-            rightLabel.classList.add("active");
-            leftLabel.classList.remove("active");
-        }
-        isRight = !isRight; // 상태 변경
-    });
+    // switchBtn.addEventListener("click", () => {
+    //     if (isRight) {
+    //         // 왼쪽으로 이동
+    //         circle.style.left = "4px";
+    //         leftLabel.classList.add("active");
+    //         rightLabel.classList.remove("active");
+    //     } else {
+    //         // 오른쪽으로 이동
+    //         circle.style.left = "52px";
+    //         rightLabel.classList.add("active");
+    //         leftLabel.classList.remove("active");
+    //     }
+    //     isRight = !isRight; // 상태 변경
+    // });
 
     // 배너 슬라이드
     // const slide = document.querySelector(".banner_slide");

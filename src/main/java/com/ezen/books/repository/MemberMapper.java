@@ -48,6 +48,7 @@ public interface MemberMapper {
     void updateCouponStatusToExpired(long mno);
 
     long getLastMno();
+
     long getMno(String memberLoginId);
 
     int saveAddressToServer(AddressVO addressVO);
@@ -61,4 +62,6 @@ public interface MemberMapper {
     List<MemberVO> getList();
 
     long getMemberGrade(long mno);
+
+    String getNickName(long mno);
 }

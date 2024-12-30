@@ -29,6 +29,9 @@ public class PagingVO {
     private long prno;
     private long mno;
 
+    // 공지사항/FAQ 라인 페이징에 필요한 멤버변수
+    private String category;
+
     // 기본생성자는 커스텀이 필요하므로 @NoArgsConstructor는 붙이지 않았음
     public PagingVO(){
         this.pageNo = 1;

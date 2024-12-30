@@ -79,7 +79,7 @@ main {
     /*height: 100%;*/
     position: relative;
     overflow: visible;
-    z-index: 2;
+    z-index: 99;
     min-height: 100vh;
 }
 .inner {
@@ -168,8 +168,6 @@ button, input, select, textarea {
 .ic_question {
     background-image: url("/image/svg/question.svg");
 }
-.ic_call { background-image: url("/image/svg/call.svg");}
-.ic_location {background-image: url("/image/svg/location.svg");}
 strong {
     font-weight: 700;
 }

@@ -150,4 +150,8 @@
         where auth = 'ROLE_USER'
     </select>
 
+    <select id="getNickName" resultType="String">
+        select nick_name from member where mno = #{mno}
+    </select>
+
 </mapper>

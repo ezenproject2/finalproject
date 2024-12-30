@@ -10,7 +10,9 @@ public interface NotificationMapper {
 
     List<NotificationVO> getNotificationsByMno(long mno);
 
-    void updateNotificationStatus(long nfno);
+    int updateNotificationStatus(long nfno);
 
     void insertNotification(NotificationVO notification);
+
+    void insertNotificationRVer(NotificationVO notificationVO);
 }

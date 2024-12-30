@@ -1,5 +1,6 @@
 package com.ezen.books.repository;
 
+import com.ezen.books.domain.BookInfo;
 import com.ezen.books.domain.ProductVO;
 import com.ezen.books.domain.PagingVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -27,4 +28,20 @@ public interface ProductMapper {
     void updateReviewCnt(@Param("prno") long prno, @Param("num") int i);
 
     ProductVO chatGetProductVO(String userMessage);
+
+    List<ProductVO> getSpecialList(String type);
+
+    int deletePrevTag(String type);
+
+    void setBestTag();
+
+    void setNewTag();
+
+    void setHotTag();
+
+    void setSaleQty(@Param("prno") long prno, @Param("qty") int bookQty);
+
+    String getIsbnByRno(long rno);
+
+    ProductVO getData(long prno);
 }

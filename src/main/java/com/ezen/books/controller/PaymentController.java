@@ -4,6 +4,7 @@ import com.ezen.books.domain.AddressVO;
 import com.ezen.books.domain.CartVO;
 import com.ezen.books.domain.CartProductDTO;
 import com.ezen.books.domain.ProductVO;
+import com.ezen.books.handler.PagingHandler;
 import com.ezen.books.service.*;
 import com.ezen.books.domain.*;
 import com.ezen.books.service.CartService;
@@ -56,30 +57,7 @@ public class PaymentController {
         return cartAmount;
     }
 
-    @GetMapping("/cart")
-    public String showCartItems(@RequestParam("mno") long mno, Model model) {
-        log.info(" >>> PaymentController: showCartItems start.");
-        log.info("The mno of showCartItems: {}", mno);
-        List<CartVO> cartList = cartService.getAllCartItems(mno);
-        log.info(" >>> cartList: {}", cartList);
-
-        List<CartProductDTO> cartProductList = buildCartProductList(cartList);
-        log.info(" >>> showCartItems: cartProductList: {}", cartProductList);
-
-        // 사용자의 장바구니가 비었는지 아닌지 판별하기 위한 값
-        boolean isCartEmpty;
-        if(cartProductList.isEmpty()) {
-            isCartEmpty = true;
-        } else {
-            isCartEmpty = false;
-        }
-
-        model.addAttribute("mno", mno);
-        model.addAttribute("cartProductList", cartProductList);
-        model.addAttribute("isCartEmpty", isCartEmpty);
-        return "/payment/cart";
-    }
-
+    // /cart의 "주문하기", "픽업하기"를 눌렀을 시 cart list를 구성하는 메서드
     @PostMapping("/provide-cart-list/{pathString}")
     @ResponseBody
     public String getCartList(Model model,
@@ -102,7 +80,8 @@ public class PaymentController {
         }
     }
 
-    @PostMapping("/buy-now")
+    // /product/detail에서 "바로구매", "바로픽업" 버튼을 눌렀을 시 단일 cart 정보를 cart list에 넣어주는 메서드
+    @PostMapping("/single-purchase")
     @ResponseBody
     public String prepareCartList(@RequestBody CartVO cartData) {
         log.info(" >>> PaymentController: prepareCartList start.");
@@ -111,6 +90,44 @@ public class PaymentController {
         cartList.add(cartData);
         this.cartList = cartList;
         return "1";
+    }
+
+    @GetMapping("/cart")
+    public String showCartItems(PagingVO pagingVO, Model model) {
+        log.info(" >>> PaymentController: showCartItems start.");
+
+        // 로그인 된 사용자의 mno를 가져옴
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loginId = authentication.getName();
+
+        MemberVO memberVO = memberService.getMemberByInfo(loginId);
+        long mno = memberVO.getMno();
+        log.info("The mno of showCartItems: {}", mno);
+
+        List<CartVO> cartList = cartService.getAllCartItems(mno);
+        log.info(" >>> cartList: {}", cartList);
+
+        // 페이지네이션 영역
+        int totalCount = payoutService.getTotalCount(pagingVO, mno);
+        PagingHandler ph = new PagingHandler(pagingVO, totalCount);
+        log.info("The ph: {}", ph);
+
+        List<CartProductDTO> cartProductList = buildCartProductList(cartList);
+        log.info(" >>> showCartItems: cartProductList: {}", cartProductList);
+
+        // 사용자의 장바구니가 비었는지 아닌지 판별하기 위한 값
+        boolean isCartEmpty;
+        if(cartProductList.isEmpty()) {
+            isCartEmpty = true;
+        } else {
+            isCartEmpty = false;
+        }
+
+        model.addAttribute("mno", mno);
+        model.addAttribute("cartProductList", cartProductList);
+        model.addAttribute("isCartEmpty", isCartEmpty);
+        model.addAttribute("ph", ph);
+        return "/payment/cart";
     }
 
     @GetMapping("/pickUp")
@@ -133,6 +150,7 @@ public class PaymentController {
         log.info(">>>> cartList > {}", cartList);
 
         List<CartProductDTO> cartProductList = buildCartProductList(cartList);
+
         // mno는 단독적으로 쓰이는 경우가 많아 편의상 따로 빼서 model로 보냄.
         long mno = cartProductList.get(0).getCartVO().getMno();
         log.info("mno: {}", mno);
@@ -148,26 +166,36 @@ public class PaymentController {
         log.info("The default address: {}", defaultAddress);
 
         // 기본 배송지가 null인지 아닌지 가리는 값
-        boolean isDefaultAddrNull = (defaultAddress == null) ? true : false;
+        boolean isDefaultAddrNull = defaultAddress == null;
 
         // 포인트와 쿠폰이 도입되어 merchant_uid(UUID)를 여기서 보내는 것으로 바뀜.
         String merchantUid = orno;
 
+        PickUpVO pickUpVO = new PickUpVO();
+        OfflineStoreVO offlineStoreVO = new OfflineStoreVO();
         // (차민주-픽업)**
         if(osno != 0){
-            PickUpVO pickUpVO = PickUpVO.builder()
-                    .osno(osno)
-                    .status("주문완료")
-                    .orno(orno)
-                    .build();
+            pickUpVO.setOsno(osno);
+            pickUpVO.setStatus("주문완료");
+            pickUpVO.setOrno(orno);
             log.info(">>>> pickUpVO > {}", pickUpVO);
             // 픽업이라면? 루트 짜서 delevery 대신 pickUp 테이블 데이터 저장하기
             // insert into pickUp (osno, orno, status) values (#{osno}, #{orno}, #{status});
             // 밑에 Y로 바꾸는 것도 osno가 0이 아니라면으로 조건 걸어서 부여할것
+
+            // 픽업이면 화면에 띄울 offlineStore를 가져옴
+            offlineStoreVO = payoutService.getStoreInfo(osno);
         }
 
-        // TODO: pickup 주문이면 isPickup을 Y로 보낼 것.
-        // 기본 배송지가 있냐 없냐에 따라 보낼 값이 달라짐
+        // Path variable로 받은 osno가 0이면 배달로, 0이 아니면 픽업 결제로 설정함.
+        String isPickup = "";
+        if(osno == 0) {
+            isPickup = "N";
+        } else {
+            isPickup = "Y";
+        }
+
+        // 기본 배송지가 있냐 없냐에 따라 보낼 값이 달라짐. defaultAddress가 null이면 /payout에서 에러 뜸.
         Map<String, Object> modelAttrs = new HashMap<>();
         if(defaultAddress == null) {
             modelAttrs = Map.of(
@@ -175,8 +203,10 @@ public class PaymentController {
                     "cartProductList", cartProductList,
                     "defaultAddress", "empty",
                     "isDefaultAddrNull", isDefaultAddrNull,
-                    "isPickup", "N",
-                    "merchantUid", merchantUid
+                    "isPickup", isPickup,
+                    "merchantUid", merchantUid,
+                    "pickUpVO", pickUpVO,
+                    "offlineStoreVO", offlineStoreVO
             );
         } else {
             modelAttrs = Map.of(
@@ -184,8 +214,10 @@ public class PaymentController {
                     "cartProductList", cartProductList,
                     "defaultAddress", defaultAddress,
                     "isDefaultAddrNull", isDefaultAddrNull,
-                    "isPickup", "N",
-                    "merchantUid", merchantUid
+                    "isPickup", isPickup,
+                    "merchantUid", merchantUid,
+                    "pickUpVO", pickUpVO,
+                    "offlineStoreVO", offlineStoreVO
             );
         }
 

@@ -1,102 +1,65 @@
 console.log("orderListDisplay.js recognized.");
 
 document.addEventListener('DOMContentLoaded', () => {
-    const isOrderEmpty = document.querySelector('.outer-data-container').dataset.isOrderEmpty;
+    const isOrderEmpty = document.getElementById('isOrderEmptyInput').value;
     const isOrderEmptyBool = (isOrderEmpty === "true");
     console.log("Is the cart empty: " + isOrderEmptyBool);
 
     if(isOrderEmptyBool) {
         // 주문 내역이 비었을 때 레이아웃 설정
-        document.querySelector('.cart_list').style = "display: none";
-        document.querySelector('.cart_list_none').style = "display: block";
+        document.querySelector('.my_orders_box_none').style = "display: block";
+        document.querySelector('.my_orders_box_wrap').style = "display: none";
     } else {
         // 레이아웃 설정
-        document.querySelector('.cart_list').style = "display: block";
-        document.querySelector('.cart_list_none').style = "display: none";
+        document.querySelector('.my_orders_box_none').style = "display: none";
+        document.querySelector('.my_orders_box_wrap').style = "display: block";
 
-        calculateQtyPrice();
+        // 첫 로딩 시 실행될 함수
+        let outerSize = document.getElementById('outerSizeInput').value;
+        outerSize = parseInt(outerSize);
+        console.log("The outer size: ", outerSize);
+
+        trimOrderDate(outerSize);
+        showStatusInKorean(outerSize);
     }
 })
 
-function calculateQtyPrice() {
-    console.log("calculateQtyPrice start.");
-    // NOTE: outerStat의 크기 만큼 반복하고, 그 안에서 innerStat을 반복해야 함.
-
-    const outerIndex = document.querySelector(`.outer-data-container`).dataset.outerListSize;
-    console.log("outerIndex: " + outerIndex);
-
-    for(let outer=0; outer < parseInt(outerIndex); outer++) {
-        let innerIndex = document.querySelector(`.cart_list[data-order-list="${outer}"] .inner-data-container`).dataset.innerListSize;
-        console.log("innerIndex: " + innerIndex);
-
-        for(let inner=0; inner < parseInt(innerIndex); inner++) {
-            let salePrice = document.querySelector(`.cart_list[data-order-list="${outer}"] .sale-price[data-order-detail="${inner}"]`).innerText;
-            let bookQty = document.querySelector(`.cart_list[data-order-list="${outer}"] .book-qty[data-order-detail="${inner}"]`).innerText;
-
-            let qtyPriceVal = parseInt(salePrice) * parseInt(bookQty);
-
-            let qtyPrice= document.querySelector(`.cart_list[data-order-list="${outer}"] .qty-price[data-order-detail="${inner}"]`);
-            qtyPrice.innerText = qtyPriceVal;
-        }
-
+// LocalDateTime인 orderDate의 T를 공백으로 치환.
+function trimOrderDate(outerSize) {
+    for(let i=0; i < outerSize; i++) {
+        let orderDate = document.querySelector(`.order-date[data-outer-index="${i}"]`);
+        let orderDateVal = orderDate.innerText.replace(/T/, ' ');
+        orderDate.innerText = orderDateVal;
+        // console.log("The trimmed order date: ", orderDate.innerText);
     }
-
 }
 
-// all-item-btn을 누르면 모두 선택됨
-const allItemBtns = document.querySelectorAll('.all-item-btn');
-allItemBtns.forEach(allItemBtn => {
-    allItemBtn.addEventListener('click', (event) => {
-        let outerIndex = allItemBtn.dataset.orderList;
-        let innerIndex = document.querySelector(`.cart_list[data-order-list="${outerIndex}"] .inner-data-container`).dataset.innerListSize;
+// order_detail의 영문 status를 화면에 한글 status로 바꿔 띄움.
+// TODO: 왜 화면에 status가 개판으로 나오는지 확인하고 고칠 것!!!
+function showStatusInKorean(outerSize) {
+    for(let i=0; i < outerSize; i++) {
+        let innerSize = document.querySelector(`.inner-data-container[data-outer-index="${i}"]`).dataset.innerSize;
+        innerSize = parseInt(innerSize);
+        console.log("The inner size: ", innerSize);
 
-        for (let i=0; i<innerIndex; i++) {
-            let singleItemBtn = document.querySelector(`.cart_list[data-order-list="${outerIndex}"] .single-item-btn[data-order-detail="${i}"]`);
-            singleItemBtn.checked = event.target.checked;
+        for(let j=0; j < innerSize; j++) {
+            let status = document.querySelector(`.inner-data-container[data-outer-index="${i}"] .order-detail-status[data-inner-index="${j}"]`);
+            console.log("The raw status: ", status.innerText);
+            let statusVal = "";
+
+            switch (status.innerText) {
+                case "refunded":
+                    statusVal = "환불됨";
+                    break;
+                case "completed":
+                    statusVal = "주문 완료";
+                    break;
+                default:
+                    statusVal = "Unknown";
+                    break;
+            }
+
+            status.innerText = statusVal;
         }
-
-    })
-})
-
-// 재고 + 버튼에 맞춰 가격 변동
-// NOTE: order-list는 주문 내역을 전시만 하는 역할이라 수량을 변동하면 안 됨. 주석처리함.
-// const ascBtns = document.querySelectorAll('.asc-btn');
-// ascBtns.forEach(ascBtn => {
-//     ascBtn.addEventListener('click', () => {
-//         // 클릭된 asc-btn의 innerIndex, outerIndex 찾기
-//         let innerIndex = ascBtn.dataset.orderDetail;
-//         let outerIndex = ascBtn.closest('.cart_list').getAttribute('data-order-list');
-
-//         // index들을 기반으로 도서 개수 +1
-//         let bookQty = document.querySelector(`.cart_list[data-order-list="${outerIndex}"] .book-qty[data-order-detail="${innerIndex}"]`);
-//         let bookQtyVal = parseInt(bookQty.innerText);
-//         bookQty.innerText = bookQtyVal + 1;
-
-//         // 올라간 수량을 반영한 가격 띄우기
-//         calculateQtyPrice();
-//     })
-// });
-
-// 재고 - 버튼에 맞춰 가격 변동
-// NOTE: order-list는 주문 내역을 전시만 하는 역할이라 수량을 변동하면 안 됨. 주석처리함.
-// const descBtns = document.querySelectorAll('.desc-btn');
-// descBtns.forEach(descBtn => {
-//     descBtn.addEventListener('click', () => {
-//         // 클릭된 desc-btn의 innerIndex, outerIndex 찾기
-//         let innerIndex = descBtn.dataset.orderDetail;
-//         let outerIndex = descBtn.closest('.cart_list').getAttribute('data-order-list');
-
-//         // index들을 기반으로 도서 개수 -1
-//         let bookQty = document.querySelector(`.cart_list[data-order-list="${outerIndex}"] .book-qty[data-order-detail="${innerIndex}"]`);
-//         let bookQtyVal = parseInt(bookQty.innerText);
-
-//         if((bookQtyVal - 1) == 0) {
-//             bookQty.innerText == 1;
-//         } else {
-//             bookQty.innerText = bookQtyVal - 1;
-//         }
-
-//         // 내려간 수량을 반영한 가격 띄우기
-//         calculateQtyPrice();
-//     })
-// })
+    }
+}

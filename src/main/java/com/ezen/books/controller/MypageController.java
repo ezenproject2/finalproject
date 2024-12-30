@@ -12,6 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -27,6 +30,10 @@ public class MypageController {
     private final GradeService gradeService;
     private final FileHandler fileHandler;
     private final InquiryService inquiryService;
+
+    // 준희 담당 마이페이지를 위해 추가한 코드.
+    private final AddressListService addressListService;
+    private final OrderListService orderListService;
 
     /*-- 마이페이지 --*/
     @GetMapping("/main")
@@ -158,5 +165,78 @@ public class MypageController {
         model.addAttribute("pointsBalance", pointsBalance);
     }
 
+
+    // 준희 담당 마이페이지를 위해 추가한 코드.
+    @GetMapping("/order-list")
+    public String showOrderList(Model model) {
+        log.info(" >>> MypageController: showOrderList start.");
+
+        // mno를 얻기 위해 myPageMain의 있던 코드를 가져옴
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loginId = authentication.getName();
+
+        MemberVO memberVO = memberService.getMemberByInfo(loginId);
+        long mno = memberVO.getMno();
+
+        boolean isOrderEmpty = orderListService.isOrderEmpty(mno);
+
+        // 화면에 띄울 order_detail과 product의 정보를 가져옴.
+        List<List<OrderDetailProductDTO>> orderDetailProductGroup = orderListService.getOrderDetailProductList(mno);
+//        log.info("The orderDetailProductGroup: {}", orderDetailProductGroup);
+        log.info("orderDetailProductGroup is empty or not :{}", orderDetailProductGroup.isEmpty());
+
+        // 화면에 띄울 orders의 주문 날짜들을 가져옴.
+        List<LocalDateTime> orderDateList = new ArrayList<>();
+        for(List<OrderDetailProductDTO> groupOfOneOrder : orderDetailProductGroup) {
+            String orno = groupOfOneOrder.get(0).getOrderDetailVO().getOrno();
+            LocalDateTime orderDate = orderListService.getOrderDate(orno);
+            orderDateList.add(orderDate);
+        }
+        log.info("The orderDateList: {}", orderDateList);
+
+        // 화면에 띄울 사용자 정보와 등급 정보를 가져옴.
+        MemberVO memberInfo = orderListService.getMember(mno);
+        GradeVO memberGrade = orderListService.getMemberGrade(memberInfo.getGno());
+
+        model.addAttribute("mno", mno);
+        model.addAttribute("isOrderEmpty", isOrderEmpty);
+        model.addAttribute("orderDetailProductGroup", orderDetailProductGroup);
+        model.addAttribute("orderDateList", orderDateList);
+        model.addAttribute("memberInfo", memberInfo);
+        model.addAttribute("memberGrade", memberGrade);
+        return "/mypage/order_list";
+    }
+
+    @GetMapping("/address-list")
+    public String showAddressList(Model model) {
+        log.info(" >>> MypageController: showAddressList start.");
+
+        // mno를 얻기 위해 myPageMain의 있던 코드를 가져옴
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loginId = authentication.getName();
+
+        MemberVO memberVO = memberService.getMemberByInfo(loginId);
+        long mno = memberVO.getMno();
+        log.info("mno: {}", mno);
+
+        // 화면에 띄울 List<AddressVO>를 가져옴.
+        List<AddressVO> addrList =  addressListService.getAllAddr(mno);
+        log.info("addrList: {}", addrList);
+
+        boolean isAddrEmpty = addrList.isEmpty();
+
+        // 화면에 띄울 사용자 정보와 등급 정보를 가져옴.
+        MemberVO memberInfo = addressListService.getMember(mno);
+        GradeVO memberGrade = addressListService.getMemberGrade(memberInfo.getGno());
+        log.info("memberInfo: {}", memberInfo);
+        log.info("memberGrade: {}", memberGrade);
+
+        model.addAttribute("mno", mno);
+        model.addAttribute("addrList", addrList);
+        model.addAttribute("isAddrEmpty", isAddrEmpty);
+        model.addAttribute("memberInfo", memberInfo);
+        model.addAttribute("memberGrade", memberGrade);
+        return "/mypage/address_list";
+    }
 
 }

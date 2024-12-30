@@ -20,4 +20,10 @@ public interface PayoutMapper {
     int registerDefaultAddress(AddressVO addressData);
 
     int saveDeliveryToServer(DeliveryVO deliveryData);
+
+    int savePickupToServer(PickUpVO pickupData);
+
+    int getTotalCount(@Param("pagingVO") PagingVO pagingVO, @Param("mno") long mno);
+
+    long getMnoByOrno(String orno);
 }

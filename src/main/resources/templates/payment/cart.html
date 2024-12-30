@@ -5,10 +5,9 @@
       layout:decorate="~{layout/layout}">
 <head>
   <meta charset="UTF-8">
-  <title>Shopping Cart</title>
+  <title> 이젠문고 </title>
   <link rel="stylesheet" href="/css/cart.css"/>
 </head>
-<body>
 
 
 <main layout:fragment="main">
@@ -107,6 +106,34 @@
           </table>
         </div> <!--/* th:each 용로도 사용하는 div */-->
 
+      <!--/* 페이지네이션 추가 */-->
+      <div class="pagenation_area">
+        <div class="pagenation">
+          <a
+                  th:href="@{/payment/cart(mno=${mno}, pageNo=${ph.startPage-1})}"
+                  th:classappend="${!ph.prev} ? ' disabled' : ''">
+            <i class="ic ic_carousel_left_white"></i>
+          </a>
+          <ul class="pagenation_num">
+            <th:block th:if="${ph.endPage eq 0}">
+              <!-- endPage가 0일 경우, disabled 클래스를 가진 0 페이지 항목만 출력 -->
+              <li class="disabled"><a href="javascript:void(0);">0</a></li>
+            </th:block>
+
+            <th:block th:if="${ph.endPage ne 0}" th:each="i:${#numbers.sequence(ph.startPage, ph.endPage)}">
+              <li th:classappend="${ph.pgvo.pageNo == i} ? ' present' : ''">
+                <a th:href="@{/payment/cart(mno=${mno}, pageNo=${i})}">[[${i}]]</a>
+              </li>
+            </th:block>
+          </ul>
+          <a
+                  th:href="@{/payment/cart(mno=${mno}, pageNo=${ph.endPage+1})}"
+                  th:classappend="${!ph.next} ? ' disabled' : ''">
+            <i class="ic ic_carousel_right_white"></i>
+          </a>
+        </div>
+      </div>
+
         <div class="cart_recautions">
           <p>장바구니 유의사항</p>
           <ul>
@@ -146,5 +173,3 @@
   <script defer th:src="@{/js/paymentCart.js}"></script>
   <script defer th:src="@{/js/paymentPayoutStyle.js}"></script>
 </main>
-</body>
-</html>

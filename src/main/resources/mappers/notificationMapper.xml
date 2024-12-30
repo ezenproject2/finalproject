@@ -12,11 +12,15 @@
 
     <!-- 알림 상태 변경 (읽음 처리) -->
     <update id="updateNotificationStatus">
-        update notification set status = 'READ', mod_at = now() where nfno = #{nfno}
+        update notification set status = 'read', mod_at = now() where nfno = #{nfno}
     </update>
 
     <insert id="insertNotification">
-        insert into notification(mno, message) values (#{mno}, #{message})
+        insert into notification(mno, message, type) values (#{mno}, #{message}, #{type})
+    </insert>
+
+    <insert id="insertNotificationRVer">
+        insert into notification(mno, message, type, rno) values (#{mno}, #{message}, #{type}, #{rno})
     </insert>
 
 </mapper>
