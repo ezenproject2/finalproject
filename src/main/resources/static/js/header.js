@@ -152,6 +152,11 @@ document.addEventListener('DOMContentLoaded', function () {
             // 알림박스에 데이터 추가하는 메서드 제작
             updateNotificationBox();
             document.getElementById("count_bell").innerText = unreadCount;
+            if(unreadCount <= 0){
+                document.getElementById("count_bell").style.display = 'none';
+            }else{
+                document.getElementById("count_bell").style.display = 'inline';
+            }
         }
     };
 

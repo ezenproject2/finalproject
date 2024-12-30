@@ -59,17 +59,17 @@
 
                 <div class="header_user_wrap">
                     <div class="user_menu_list">
-                        <a class="user_menu_item" sec:authorize="isAuthenticated()" th:href="@{/payment/cart}">
-                            <i class="ic ic_cart" sec:authorize="isAuthenticated()" th:data-authorize="${#authentication.name}" th:data-mno="${#authentication.getPrincipal().memberVO.getMno()}"></i>
+                        <a class="user_menu_item" th:href="@{/payment/cart}">
+                            <i class="ic ic_cart" th:data-authorize="${#authentication.name}" th:data-mno="${#authentication.name != 'anonymousUser' ? #authentication.getPrincipal().memberVO.getMno() : -1}"></i>
                             <span class="cart_item_count" sec:authorize="isAuthenticated()" style="display: inline;">0</span>
-                            <i class="ic ic_cart" sec:authorize="isAnonymous()" th:data-authorize="${#authentication.name}"></i>
+<!--                            <i class="ic ic_cart" sec:authorize="isAnonymous()" th:data-authorize="${#authentication.name}"></i>-->
                         </a>
-                        <a class="user_menu_item_a" sec:authorize="isAnonymous()" th:href="@{/payment/cart}">
-                            <i class="ic ic_cart" sec:authorize="isAnonymous()" th:data-authorize="${#authentication.name}"></i>
-                        </a>
+<!--                        <a class="user_menu_item_a" sec:authorize="isAnonymous()" th:href="@{/payment/cart}">-->
+<!--                            <i class="ic ic_cart" sec:authorize="isAnonymous()" th:data-authorize="${#authentication.name}"></i>-->
+<!--                        </a>-->
                         <div class="user_menu_item bell">
                             <i class="ic ic_bell"></i>
-                            <span class="cart_item_count" id="count_bell" sec:authorize="isAuthenticated()" style="display: inline;">0</span>
+                            <span class="cart_item_count" id="count_bell" sec:authorize="isAuthenticated()" style="display: none;">0</span>
                             <div class="notification_list">
                                 <div class="notification_list_header">
                                     <ul>

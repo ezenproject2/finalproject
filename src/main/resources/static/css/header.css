@@ -242,7 +242,7 @@ header .inner {
     width: 1060px;
     max-width: 1280px;
     height: 80vh;
-    max-height: 600px;
+    max-height: 700px;
     z-index: 1000;
     margin-top: 5px;
 
@@ -741,4 +741,53 @@ header .ic_arrow_right {
 }
 .noti_benefit_content {
     font-size: 0.8rem;
+}
+
+.category3_list {
+    justify-content: space-evenly
+}
+
+
+.category3_list_item a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.category3_list_item i{
+    width: 65px;
+    height: 65px;
+}
+
+.category3_list_item span{
+    line-height: 20px;
+    color: #555;
+    font-size: 15px;
+    text-align: center;
+}
+
+.pick {
+    background-image: url("../image/svg/menu_1.svg");
+}
+.attendance {
+    background-image: url("../image/svg/menu_2.svg");
+}
+.event {
+    background-image: url("../image/svg/menu_3.svg");
+}
+.review {
+    background-image: url("../image/svg/menu_4.svg");
+}
+.magazine {
+    background-image: url("../image/svg/menu_5.svg");
+}
+.sale {
+    background-image: url("../image/svg/menu_6.svg");
+}
+.store {
+    background-image: url("../image/svg/menu_7.svg");
+}
+.custom {
+    background-image: url("../image/svg/menu_8.svg");
 }
