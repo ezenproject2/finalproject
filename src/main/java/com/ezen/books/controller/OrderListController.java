@@ -28,28 +28,28 @@ public class OrderListController  {
     private final OrderListService orderListService;
 
     // NOTE: Notion > 코드 보관함의 PaymentController에 있던 코드들.
-    @GetMapping("/intro")
-    public String showOrderList(@RequestParam("mno") long mno, Model model) {
-        log.info(" >>> OrderListController: showOrderList start.");
-
-        // 화면에 띄울 order_detail과 product의 정보를 가져옴.
-        List<List<OrderDetailProductDTO>> orderDetailProductGroup = orderListService.getOrderDetailProductList(mno);
-//        log.info("The orderDetailProductGroup: {}", orderDetailProductGroup);
-        log.info("orderDetailProductGroup is empty or not :{}", orderDetailProductGroup.isEmpty());
-
-        boolean isOrderEmpty = orderListService.isOrderEmpty(mno);
-
-        // 화면에 띄울 사용자 정보와 등급 정보를 가져옴.
-        MemberVO memberInfo = orderListService.getMember(mno);
-        GradeVO memberGrade = orderListService.getMemberGrade(memberInfo.getGno());
-
-        model.addAttribute("mno", mno);
-        model.addAttribute("isOrderEmpty", isOrderEmpty);
-        model.addAttribute("orderDetailProductGroup", orderDetailProductGroup);
-        model.addAttribute("memberInfo", memberInfo);
-        model.addAttribute("memberGrade", memberGrade);
-        return "/mypage/order_list";
-    }
+//    @GetMapping("/intro")
+//    public String showOrderList(@RequestParam("mno") long mno, Model model) {
+//        log.info(" >>> OrderListController: showOrderList start.");
+//
+//        // 화면에 띄울 order_detail과 product의 정보를 가져옴.
+//        List<List<OrderDetailProductDTO>> orderDetailProductGroup = orderListService.getOrderDetailProductList(mno);
+////        log.info("The orderDetailProductGroup: {}", orderDetailProductGroup);
+//        log.info("orderDetailProductGroup is empty or not :{}", orderDetailProductGroup.isEmpty());
+//
+//        boolean isOrderEmpty = orderListService.isOrderEmpty(mno);
+//
+//        // 화면에 띄울 사용자 정보와 등급 정보를 가져옴.
+//        MemberVO memberInfo = orderListService.getMember(mno);
+//        GradeVO memberGrade = orderListService.getMemberGrade(memberInfo.getGno());
+//
+//        model.addAttribute("mno", mno);
+//        model.addAttribute("isOrderEmpty", isOrderEmpty);
+//        model.addAttribute("orderDetailProductGroup", orderDetailProductGroup);
+//        model.addAttribute("memberInfo", memberInfo);
+//        model.addAttribute("memberGrade", memberGrade);
+//        return "/mypage/order_list";
+//    }
 
     @PostMapping("/refund")
     @ResponseBody

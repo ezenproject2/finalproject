@@ -13,4 +13,6 @@ public interface NotificationMapper {
     void updateNotificationStatus(long nfno);
 
     void insertNotification(NotificationVO notification);
+
+    void insertNotificationRVer(NotificationVO notificationVO);
 }

@@ -13,6 +13,10 @@
         select count(rno) from review where is_del = 'N' and prno = #{prno}
     </select>
 
+    <select id="getTotalCountByPrno" resultType="int">
+        select count(rno) from review where is_del = 'N' and prno = #{prno}
+    </select>
+
     <select id="getList" resultType="com.ezen.books.domain.ReviewVO">
         select * from review where is_del = 'N' and prno = #{prno} order by rno desc limit #{startIndex}, #{qty};
     </select>
@@ -32,5 +36,32 @@
     <update id="updateCnt">
         update review set like_cnt = like_cnt + #{num} where rno = #{rno}
     </update>
+
+    <select id="getReviewCnt" resultType="com.ezen.books.domain.BookInfo">
+        select
+        count(case when rating = 5 then 1 end) as cnt5,
+        count(case when rating in (4, 4.5) then 1 end) as cnt4,
+        count(case when rating in (3, 3.5) then 1 end) as cnt3,
+        count(case when rating in (2, 2.5) then 1 end) as cnt2,
+        count(case when rating in (1, 1.5) then 1 end) as cnt1
+        from review
+        where prno = #{prno} and is_del = 'N'
+    </select>
+
+    <select id="getLikeCntByRno" resultType="int">
+        select like_cnt from review where rno = #{rno}
+    </select>
+
+    <delete id="delete">
+        delete from review where rno = #{rno}
+    </delete>
+
+    <select id="getPrnoByRno" resultType="long">
+        select prno from review where rno = #{rno}
+    </select>
+
+    <select id="getMnoByRno" resultType="long">
+        select mno from review where rno = #{rno}
+    </select>
 
 </mapper>

@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,6 +29,7 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/member/*")
+@EnableScheduling
 @Controller
 public class MemberController {
 
@@ -142,7 +145,7 @@ public class MemberController {
     @GetMapping("/remove")
     public String remove(HttpServletRequest request, HttpServletResponse response,
                          Principal principal, RedirectAttributes re){
-
+        log.info(">>> {}", principal.toString());
         String loginId = principal.getName();
         int isOk = memberService.deleteMember(loginId);
         if(isOk > 0){
@@ -160,17 +163,15 @@ public class MemberController {
         new SecurityContextLogoutHandler().logout(request, response, authentication);
     }
 
-
-//    @PutMapping("/udate-grade/{mno}")
-//    public ResponseEntity<Void> udateGrade(@PathVariable long mno){
-//        memberService.updateMemberGrade(mno);
-//        return ResponseEntity.ok().build();
-//    }
-    @PostMapping("/updateGrade")
-    public String updateGrade(@RequestParam("mno") long mno){
-        // 회원의 등급을 갱신
-        memberService.updateMemberGrade(mno);
-        return "redirect:/member/profile?mno=" + mno;
+    // (cron="59 59 23 * * *") : 매일 23시59분59초에 실행
+    @Scheduled(cron="30 57 13 * * *")
+    public void updateAllMemberGrades() {
+        try {
+            memberService.updateAllMemberGrades(); // 모든 회원의 등급 갱신
+            System.out.println("모든 회원 등급 갱신 완료");
+        } catch (Exception e) {
+            System.err.println("회원 등급 갱신 중 오류 발생: " + e.getMessage());
+        }
     }
 
 

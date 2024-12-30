@@ -11,7 +11,7 @@
         <div class="header_above">
             <div class="inner">
                 <div class="header_top_left">
-                    <a href="" class="link"> 고객센터 </a>
+                    <a th:href="@{/notice/list}" class="link"> 고객센터 </a>
                     <a th:href="@{/store}" class="link"> 매장안내 </a>
                     <a href="" class="link"> 회원혜택 </a>
                 </div>
@@ -62,7 +62,7 @@
                         <li class="user_menu_item">
                             <a href="" class="user_menu_item_a" sec:authorize="isAuthenticated()" th:href="@{/payment/cart(mno=${#authentication.getPrincipal().memberVO.getMno()})}">
                                 <i class="ic ic_cart" sec:authorize="isAuthenticated()" th:data-authorize="${#authentication.name}" th:data-mno="${#authentication.getPrincipal().memberVO.getMno()}"></i>
-                                <span class="cart_item_count" sec:authorize="isAuthenticated()" style="display: inline;"></span>
+                                <span class="cart_item_count" sec:authorize="isAuthenticated()" style="display: inline;">0</span>
                             </a>
                             <i class="ic ic_cart" sec:authorize="isAnonymous()" th:data-authorize="${#authentication.name}"></i>
                         </li>
@@ -451,9 +451,9 @@
 
                     <ul class="nav-left">
                         <li> <a th:href="@{/product/list}" class="nav_item"> 국내도서 </a> </li>
-                        <li> <a href="" class="nav_item"> 베스트 </a> </li>
-                        <li> <a href="" class="nav_item"> 신상품 </a> </li>
-                        <li> <a href="" class="nav_item"> 매거진 </a> </li>
+                        <li> <a th:href="@{/product/specialList/best}" class="nav_item"> 베스트 </a> </li>
+                        <li> <a th:href="@{/product/specialList/new}" class="nav_item"> 신상품 </a> </li>
+                        <li> <a th:href="@{/product/specialList/hot}" class="nav_item"> MD추천 </a> </li>
                     </ul>
 
                     <ul class="nav-right">

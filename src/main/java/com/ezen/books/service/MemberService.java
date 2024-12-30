@@ -35,4 +35,6 @@ public interface MemberService {
     long getMno(String memberLoginId);
 
     int saveAddressToServer(AddressVO addressVO);
+
+    void updateAllMemberGrades();
 }

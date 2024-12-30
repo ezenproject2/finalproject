@@ -16,7 +16,11 @@
     </update>
 
     <insert id="insertNotification">
-        insert into notification(mno, message) values (#{mno}, #{message})
+        insert into notification(mno, message, type) values (#{mno}, #{message}, #{type})
+    </insert>
+
+    <insert id="insertNotificationRVer">
+        insert into notification(mno, message, type, rno) values (#{mno}, #{message}, #{type}, #{rno})
     </insert>
 
 </mapper>

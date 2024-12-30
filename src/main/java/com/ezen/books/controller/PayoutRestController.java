@@ -1,13 +1,13 @@
 package com.ezen.books.controller;
 
 import com.ezen.books.domain.*;
-import com.ezen.books.service.PayoutService;
-import com.ezen.books.service.PayoutServiceImpl;
+import com.ezen.books.service.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.siot.IamportRestClient.IamportClient;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
@@ -42,13 +42,22 @@ public class PayoutRestController {
     private final IamportClient iamportClient;
     private PayoutService payoutService;
 
+    private final MemberService memberService;
+    private final GradeService gradeService;
+    private final PointService pointService;
+    private final CouponService couponService;
+
     @Autowired
     public PayoutRestController(
             @Value("${iamport_rest_api_key}") String iamportApiKey,
-            @Value("${iamport_rest_api_secret}") String iamportApiSecret, PayoutService payoutService) {
+            @Value("${iamport_rest_api_secret}") String iamportApiSecret, PayoutService payoutService, MemberService memberService, GradeService gradeService, PointService pointService, CouponService couponService) {
         this.iamportApiKey = iamportApiKey;
         this.iamportApiSecret = iamportApiSecret;
         this.payoutService = payoutService;
+        this.memberService = memberService;
+        this.gradeService = gradeService;
+        this.pointService = pointService;
+        this.couponService = couponService;
         this.iamportClient = new IamportClient(iamportApiKey, iamportApiSecret);
     }
 
@@ -115,15 +124,38 @@ public class PayoutRestController {
     }
 
     @PostMapping("/preserve-orders")
-    public ResponseEntity<String> saveOrdersToServer(@RequestBody OrdersVO ordersVO) {
+    public ResponseEntity<String> saveOrdersToServer(@RequestBody OrdersVO ordersVO,
+                                                     HttpSession session) {
         log.info(" >>> PaymentRestController: saveOrdersToServer start.");
         // ordersVO: OrdersVO(orno=nobody_1734487688880, mno=1, status=completed, totalPrice=60000, orderAt=null, isPickup=N)
         log.info("ordersVO: {}", ordersVO);
+
+        /* yh-------------- */
+        String orno = (String) session.getAttribute("orno");
+        if(orno == null || orno.isEmpty()){
+            orno = UUID.randomUUID().toString();
+            session.setAttribute("orno",orno);
+        }
+        ordersVO.setOrno(orno);
+        /* ---------------- */
+
         int isDone = payoutService.saveOrdersToServer(ordersVO);
 
-        return (0 < isDone) ?
-                new ResponseEntity<>("1", HttpStatus.OK) :
-                new ResponseEntity<>("0", HttpStatus.INTERNAL_SERVER_ERROR);
+        /* yh-------------- */
+        if(isDone > 0){
+            earnPoints(ordersVO);
+
+            int totalPrice = calculateTotalPrice(ordersVO);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("orno", ordersVO.getOrno()); // 주문 번호
+            response.put("totalPrice", totalPrice);  // 계산된 총 금액
+        /* ---------------- */
+            return new ResponseEntity<>("1", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("0", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     @PostMapping("/preserve-order-detail")
@@ -165,28 +197,6 @@ public class PayoutRestController {
                 new ResponseEntity<>("0", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-//    @PostMapping("/remove-cart")
-//    public ResponseEntity<String> removeCartToServer(@RequestBody String mnoData) {
-//        log.info(" >>> PaymentRestController: removeCartToServer start.");
-//        // The mnoData from the client: {"mno":"1"}
-//        log.info("The mnoData from the client: {}", mnoData);
-//
-//        long mno = 0L;
-//        try {
-//            ObjectMapper objectMapper = new ObjectMapper();
-//            JsonNode mnoNode = objectMapper.readTree(mnoData);
-//            mno = mnoNode.get("mno").asLong();
-//        } catch (Exception e) {
-//            log.info("Error during parsing mnoNode. Content: {}", e);
-//        }
-//
-//        int isDone = payoutService.removeCartToServer(mno);
-//
-//        return (isDone == 1) ?
-//                new ResponseEntity<>("1", HttpStatus.OK) :
-//                new ResponseEntity<>("0", HttpStatus.INTERNAL_SERVER_ERROR);
-//    }
-
     @PostMapping("/remove-cart")
     public ResponseEntity<String> removeCartToServer(@RequestBody String cartListData) {
         log.info(" >>> PaymentRestController: removeCartToServer start.");
@@ -200,6 +210,8 @@ public class PayoutRestController {
         for(CartVO cartVO : cartList) {
             long mno = cartVO.getMno();
             long prno = cartVO.getPrno();
+            log.info("mno: ", mno);
+            log.info("prno: ", prno);
             resultList.add(payoutService.removeCartToServer(mno, prno));
         }
 
@@ -220,6 +232,17 @@ public class PayoutRestController {
                 new ResponseEntity<>("0", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @PostMapping("/preserve-pickup")
+    public ResponseEntity<String> savePickupToServer(@RequestBody PickUpVO pickupData) {
+        log.info(" >>> PaymentRestController: savePickupToServer start.");
+        log.info("The pickupData from the client: {}", pickupData);
+
+        int isDone = payoutService.savePickupToServer(pickupData);
+
+        return (isDone > 0) ?
+                new ResponseEntity<>("1", HttpStatus.OK) :
+                new ResponseEntity<>("0", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
     private boolean checkSinglePayment(String impUid, String amount) throws IOException, URISyntaxException, InterruptedException {
         boolean verifyResult = payoutService.checkSinglePayment(impUid, amount);
@@ -277,5 +300,139 @@ public class PayoutRestController {
             return null;
         }
     }
+
+    /* yh-------------- */
+    private void earnPoints(OrdersVO ordersVO){
+        MemberVO memberVO = memberService.getMemberById(ordersVO.getMno());
+
+        GradeVO gradeVO = gradeService.getGradeByGno(memberVO.getGno());
+        double pointRate = gradeVO.getPointRate();
+        log.info(">>>>>> PointRate : {}", pointRate);
+
+        int earnedPoints = (int) (ordersVO.getTotalPrice() * pointRate);
+        int balancePoint = pointService.getBalance(memberVO.getMno());
+
+        // earned와 used가 모두 0이면 저장하지 않음
+        if (earnedPoints == 0 && balancePoint == 0) {
+            log.info(">> Earned points are 0 and balance is 0, skipping point save.");
+            return;
+        }
+
+        PointsVO pointsVO = new PointsVO();
+        pointsVO.setMno(memberVO.getMno());
+        pointsVO.setOrno(ordersVO.getOrno());
+        pointsVO.setEarned(earnedPoints);
+        pointsVO.setBalance(balancePoint + earnedPoints);
+        pointsVO.setRegAt(new Date());
+
+        pointService.savePoint(pointsVO);
+
+        log.info(">> 적립된 포인트 {}", earnedPoints);
+        log.info(">> 현재 포인트 {}", balancePoint);
+    }
+
+    private int calculateTotalPrice(OrdersVO ordersVO){
+        return ordersVO.getTotalPrice();
+    }
+
+
+    @PostMapping("/use-points")
+    public ResponseEntity<Map<String, Object>> usePoints(@RequestBody Map<String, Object> requestData,
+                                                         HttpSession session) {
+        int usedPoints = (Integer) requestData.get("usedPoints");
+        log.info(">>> 사용할 포인트 {}", usedPoints);
+
+        String mnoNo = (String) requestData.get("mno");
+        Long mno = Long.parseLong(mnoNo);
+
+        String orno = (String) session.getAttribute("orno");
+
+        MemberVO memberVO = memberService.getMemberById(mno);
+
+        int balancePoint = pointService.getBalance(memberVO.getMno());
+
+        if (usedPoints > balancePoint) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(Collections.singletonMap("message", "Insufficient points."));
+        }
+
+        // earned와 used가 모두 0일 경우 저장하지 않음
+        if (usedPoints == 0 && balancePoint == 0) {
+            log.info(">> Earned and used points are both 0, skipping point usage save.");
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("newPointsBalance", balancePoint); // 잔액 그대로 반환
+            return ResponseEntity.ok(response);
+        }
+
+        int remainingPoints = balancePoint - usedPoints;
+
+        PointsVO pointsVO = new PointsVO();
+        pointsVO.setMno(memberVO.getMno());
+        pointsVO.setOrno(orno);
+        pointsVO.setUsed(usedPoints);
+        pointsVO.setBalance(remainingPoints);
+        pointsVO.setRegAt(new Date());
+        pointService.savePoint(pointsVO);
+
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", true);
+        response.put("newPointsBalance", remainingPoints);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/use-coupon")
+    public ResponseEntity<Map<String, Object>> useCoupon(@RequestBody Map<String, Object> requestData,
+                                                         HttpSession session) {
+        String mnoNo = (String) requestData.get("mno");
+        Long mno = Long.parseLong(mnoNo); // 회원 번호
+        String orno = (String) session.getAttribute("orno"); // 주문 번호
+
+        Object cnoObj = requestData.get("cno");
+        Long cno = null;
+        if (cnoObj != null) {
+            cno = Long.parseLong(cnoObj.toString()); // 쿠폰 번호
+        }
+
+        if (cno == null || cno == 0) {
+            // 쿠폰을 사용하지 않음 처리
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message", "쿠폰 미적용");
+            return ResponseEntity.ok(response);
+        }
+
+        // 쿠폰 로그 확인
+        CouponLogVO couponLogVO = couponService.getCouponLogByMnoAndCno(mno, cno);
+        if (couponLogVO != null && couponLogVO.getStatus().equals("사용 완료")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Collections.singletonMap("message", "Coupon already used."));
+        }
+
+        // 쿠폰 사용 내역 기록
+        CouponLogVO newCouponLog = new CouponLogVO();
+        newCouponLog.setMno(mno);
+        newCouponLog.setCno(cno);
+        newCouponLog.setOrno(orno);
+        newCouponLog.setStatus("사용 완료");
+        newCouponLog.setUsedAt(new Date());
+        couponService.updateCouponLog(newCouponLog);
+
+        // 쿠폰 할인 금액 반환
+        CouponVO couponVO = couponService.getCouponByCno(cno);
+        int couponDiscount = couponVO.getDisAmount();
+
+        // 응답 데이터
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", true);
+        response.put("discountAmount", couponDiscount);
+
+        return ResponseEntity.ok(response);
+    }
+
+    /* ---------------- */
 
 }

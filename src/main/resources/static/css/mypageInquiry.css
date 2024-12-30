@@ -1,42 +1,228 @@
-.inner {
-    width: 1200px;
-    max-width: 1280px;
-    margin: 0 auto;
+.inquiry_container {
+    margin-top: 50px;
 }
 
-.form-group {
-    margin-bottom: 15px;
+.inquiry_container > h1 {
+    font-size: 1.7rem;
+    font-weight: 700;
+    margin-bottom: 25px;
 }
-.form-group label {
+.info_box {
+    margin: 30px 0 50px;
+    padding: 40px;
+    font-size: 17px;
+    border: 1px solid #c6c6c6;
+    border-radius: 12px;
+    word-break: keep-all;
+    background-color: #f8f8f8;
+}
+.info_box_title > span {
+    color: #1d1d1d;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+.info_box_title > i {
+    width: 32px;
+    height: 32px;
+}
+.info_box li {
+    position: relative;
+    margin-top: 20px;
+    padding-left: 15px;
+    color: #555;
+}
+.info_box li:before {
+    content: "";
     display: block;
-    margin-bottom: 5px;
+    position: absolute;
+    left: 0;
+    top: 7px;
+    width: 4px;
+    height: 4px;
+    border-radius: 100%;
+    background-color: #555;
 }
-.form-group input, .form-group select, .form-group textarea {
+
+.inquiry_box {
     width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
+    margin : 10px 0 40px;
+    border-top: 2.5px solid #D8D8D8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-left: 10px;
 }
-.form-group input[type="file"] {
-    padding: 0;
+
+.inquiry_table > tr {
+    width: 100%;
+    text-align: left;
 }
-.file-info {
-    font-size: 12px;
-    color: #888;
+.inquiry_table  {
+    width: 1150px;
+    text-align: left;
+    margin: 35px 0;
 }
-.btn-group {
-    text-align: center;
+.inquiry_table:nth-of-type(2) {
+    width: 1150px;
+    text-align: left;
+    margin: 35px 0;
+    position: relative;
 }
-.btn-group button {
-    padding: 10px 20px;
-    margin: 5px;
-    border: none;
-    background-color: #4CAF50;
-    color: white;
+
+.inquiry_table:nth-of-type(2)::after {
+    content: "";
+    position: absolute;
+    bottom: -35px;
+    left: 0;
+    width: 100%;
+    height: 2.5px;
+    background-color: #D8D8D8;
+}
+
+.inquiry_table th {
+    width: 25%;
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+.inquiry_table td {
+    width: 75%;
+    padding-bottom: 20px;
+}
+
+.inquiry_table_wrap {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.inquiry_photo_wrap {
+    width: 100%;
+    padding: 15px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.input_wrap {
+    position: relative;
+    width: 100%;
+    border: 1.5px solid #c6c6c6;
+    border-radius: 6px;
+    padding: 15px 25px;
+    transition: border-color 0.2s ease-out, outline 0.2s ease-out;
+}
+.input_wrap > input, .inquiry_btn_area {
+    width: 100%;
+}
+.input_wrap[data-state="open"] {
+    border-color: #717171; /* 그대로 유지 */
+    outline: 0.5px solid #717171; /* 아웃라인 추가 */
+}
+.input_wrap:focus-within {
+    border: 1.5px solid #717171;
+    outline: 0.5px solid #717171;
+}
+
+.ic_arrow_down, .ic_arrow_up {
     cursor: pointer;
-    border-radius: 4px;
+    width: 20px;
+    height: 20px;
 }
-.btn-group button.cancel {
-    background-color: #f44336;
+.inquiry_type {
+    position: relative;
+    width: 100%;
+    background-color: transparent;
+    z-index: 1;
+}
+.inquiry_type_select_box > .ic_arrow_down, .inquiry_type_select_box > .ic_arrow_up {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 25px;
+    z-index: 0;
+}
+.inquiry_type_select_box > .ic_arrow_down {
+    transition: transform 0.2s ease-out;
+}
+
+.content {
+    width: 100%;
+    height: 150px;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    resize: none;
+}
+.text_count{text-align: end;}
+.text_count > span{color: #555;}
+
+.ic_photo {
+    background-image: url("/image/svg/photo.svg");
+    width: 21px;
+    height: 21px;
+}
+.center{
+    display: inline-flex;
+    align-items: center;
+}
+.center > i, .center > svg {
+    margin-right: 10px;
+}
+.photo_name, .file_info { color: #555;}
+
+.file_info {
+    position: relative;
+    font-size: 0.8rem;
+    display: inline-block;
+}
+.file_info::before {
+    content: "";
+    background-image: url("/image/svg/exclamation.svg");
+    width: 15px;
+    height: 15px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: absolute;
+    left: -20px;
+}
+
+.info_box_title, .inquiry_info_p {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.inquiry_info_p {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin: 30px 0;
+    padding-top: 40px;
+    border-top: 1px solid #717171;
+}
+
+.inquiry_btn_area {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 80px;
+}
+
+.inquiry_btn_area > button {
+    width: 250px;
+    height: 70px;
+    border-radius: 8px;
+    transition: border-color 0.2s ease-out, background-color 0.2s ease-out;
+}
+.inquiry_reset_btn {
+    background-color: #f8f8f8;
+    border: 1px solid #555555;
+}
+.inquiry_reset_btn:hover {
+    background-color: #F0F0F0;
+    border: 1px solid #1D1D1D;
+}
+.inquiry_submit_btn {
+    background-color: #b5c78f;
+    color: #fff;
+}
+.inquiry_submit_btn:hover {
+    background-color: #ABBC86;
 }

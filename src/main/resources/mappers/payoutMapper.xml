@@ -34,6 +34,12 @@
         (#{orno}, #{recName}, #{recPhone}, #{addrCode}, #{addr}, #{addrDetail}, #{addrMemo})
     </insert>
 
+    <insert id="savePickupToServer">
+        insert into pickUp(osno, orno, status)
+        values
+        (#{osno}, #{orno}, #{status});
+    </insert>
+
     <select id="getDefaultAddress" resultType="com.ezen.books.domain.AddressVO">
         select * from address
         where mno = #{mno} and is_default = "Y"
@@ -43,4 +49,9 @@
         delete from cart
         where mno = #{mno} and prno = #{prno}
     </delete>
+
+    <select id="getMnoByOrno" resultType="long">
+        select mno from orders where orno = #{orno}
+    </select>
+
 </mapper>

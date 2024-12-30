@@ -87,6 +87,7 @@
     <!--/* 챗봇영역 (끝) */-->
 
     <!--/* 알림 SSE 영역 (시작) */-->
+    <!--/* 옮길때 mno 찾는 로직 추가해야함*/-->
     <div id="notification-container">
         <div id="notification-icon">
             <span id="unread-count"></span> <!-- 알림 개수 표시 -->
@@ -103,24 +104,26 @@
     <script th:src="@{/js/notification.js}"></script>
     <!--/* 알림 SSE 영역 (끝) */-->
 
+    <script>
+        let modify_msg = `[[${mod_msg}]]`;
+        console.log(modify_msg);
+        if(modify_msg === 'ok'){
+            alert("회원정보가 수정되었습니다. 다시 로그인해주세요.");
+        }
+        if (modify_msg === 'fail') {
+            alert("회원정보수정이 실패되었습니다. 다시 시도해주세요.");
+        }
 
-<!--    <script>-->
-<!--        let modify_msg = `<c:out value="${mod_msg}" />`;-->
-<!--        console.log(mod_msg);-->
-<!--        if(mod_msg == 'ok'){-->
-<!--            alert("회원정보가 수정되었습니다. 다시 로그인해주세요.");-->
-<!--        }-->
-<!--        if (mod_msg == 'fail') {-->
-<!--            alert("회원정보수정이 실패되었습니다. 다시 시도해주세요.");-->
-<!--        }-->
+        let remove_msg = `[[${del_msg}]]`;
+        console.log(remove_msg);
+        if(remove_msg === 'ok'){
+            alert("회원 탈퇴가 완료되었습니다. 안녕히가세요.");
+        }
+        if (remove_msg === 'fail'){
+            alert("회원 탈퇴가 실패되었습니다. 다시 시도해주세요.");
+        }
+    </script>
 
-<!--        let remove_msg = `<c:out value="${del_msg}" />`;-->
-<!--        console.log(del_msg);-->
-<!--        if(del_msg == 'ok'){-->
-<!--            alert("회원 탈퇴가 완료되었습니다. 안녕히가세요.");-->
-<!--        }-->
-<!--        if (del_msg == 'fail'){-->
-<!--            alert("회원 탈퇴가 실패되었습니다. 다시 시도해주세요.");-->
-<!--        }-->
-<!--    </script>-->
+
+
 </main>

@@ -1,0 +1,218 @@
+.address_book_container {
+    width: 100%;
+}
+
+.address_book_title {
+    font-size: 1.7rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+.address_book_box {
+    width: 100%;
+    height: auto;
+    margin-top: 30px;
+    padding: 24px 0;
+    border-top: 2.5px solid #D8D8D8;
+    border-bottom: 2.5px solid #D8D8D8;
+}
+.address_book_box_none {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 450px;
+    gap: 25px;
+}
+.ic_exclamation_c6 {
+    width: 50px;
+    height: 50px;
+}
+.address_book_box_none > strong {
+    font-size: 1.3rem;
+}
+.address_book_box_none > button {
+    margin-top: 20px;
+    border: 1px solid #1D1D1D;
+    color: #000B17;
+    width: 250px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    gap: 5px;
+    transition: background-color 0.2s ease-out;
+}
+.modal_overlay button {transition: background-color 0.3s ease-out;}
+.address_book_box_none > button:hover, .modal_overlay button:hover {
+    background-color: #F8F8F8;
+}
+
+
+
+/* 모달 */
+.modal_overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3); /* 반투명한 검은색 */
+    z-index: 999;
+}
+
+/* 모달 스타일 */
+.modal_registration_of_address {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    width: 600px;
+    max-height: 85vh;
+    overflow: hidden;
+    padding: 25px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    z-index: 1000;
+}
+#closeModal {
+    cursor: pointer;
+}
+.modal_title {
+    font-size: 20px;
+    line-height: 23px;
+    letter-spacing: 0.5px;
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgb(198, 198, 198);;
+}
+.modal_contents {
+    margin: 24px 0;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    height: 500px;
+    padding-right: 15px;
+}
+.modal_contents > * {
+    position: relative; /* 부모 컨테이너 안에 위치하도록 설정 */
+}
+.modal_content_title {
+    font-size: 1.1em;
+    line-height: 23px;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+.modal_content {
+    padding: 12px 0;
+}
+
+.input_box, .registration_btn, .address_search_btn, .addrBtn {
+    width: 100%;
+    height: 44px;
+    padding: 7px 15px;
+    border: 1.5px solid #c6c6c6;
+    border-radius: 6px;
+    transition: border-color 0.2s ease-out, outline 0.2s ease-out;
+}
+.input_box:focus-within {
+    border: 1.5px solid #717171;
+    outline: 0.5px solid #717171;
+}
+.input_box > input {
+    width: 100%;
+    height: 100%;
+    font-size: 0.9rem;
+}
+.input_box.number {
+    margin-top: 12px;
+}
+
+.modal_content > button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    line-height: 25px;
+}
+.registration_btn {
+    width: 200px;
+    height: 44px;
+    margin: 24px auto;
+}
+
+.form_addr1 {
+    display: flex;
+    justify-content: space-between;
+}
+
+#non_member_addrBtn {
+    width: 25%;
+}
+
+.addr1, .addr2 {
+    margin-top: 12px;
+}
+
+.defalut_address_check {
+    position: relative;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 12px;
+}
+.defalut_address_check > span {
+    line-height: 20px;
+}
+.ic_checkbox_off, .ic_checkbox_on {
+    width: 20px;
+    height: 20px;
+}
+.defalut_address_check > input {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    left: 3px;
+}
+
+
+/* 배송지가 있을 때를 위해 준희가 추가한 css */
+.address_list_box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 450px;
+    gap: 25px;
+}
+.ic_exclamation_c6 {
+    width: 50px;
+    height: 50px;
+}
+.address_list_box > button {
+    margin-top: 20px;
+    border: 1px solid #1D1D1D;
+    color: #000B17;
+    width: 250px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    gap: 5px;
+    transition: background-color 0.2s ease-out;
+}
+
+.address_table tr{
+    display: grid;
+    grid-template-rows: 1fr 2fr 1fr;
+}
+.address_table tr td {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

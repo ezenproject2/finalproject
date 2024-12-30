@@ -6,26 +6,43 @@ toggle.addEventListener('click', () => {
     console.log(locationHeader.classList);
 })
 
-// 사용자의 위치를 가져오는 함수
-function getLocation() {
+// 지도 초기 세팅
+function mapSetting() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
+            // 현재 위치
             var lat = position.coords.latitude;
             var lon = position.coords.longitude;
 
-            // 현재 위치의 지도 로딩
-            loadMap(lat, lon);
+            // 본점 (인천직영점) 기준으로 우선 세팅
+            loadMap(37.45044363731795, 126.70282182285416);
 
             // 사용자 위치에서 가까운 매장 5개 찾기
             showNearestStores(lat, lon);
         }, function (error) {
-            // 위치 파악 실패시 본점 위치로 자동 세팅
             console.log("위치 정보를 가져올 수 없음! error 0");
-            loadMap(37.50125763153371, 127.02508935309022);
+            loadMap(37.45044363731795, 126.70282182285416);
         });
     } else {
         alert("위치 정보를 가져올 수 없음! error 1");
-        loadMap(37.50125763153371, 127.02508935309022);
+        loadMap(37.45044363731795, 126.70282182285416);
+    }
+}
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            // 현재 위치
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
+            loadMap(lat, lon);
+        }, function (error) {
+            console.log("위치 정보를 가져올 수 없음! error 0");
+            loadMap(37.45044363731795, 126.70282182285416);
+        });
+    } else {
+        alert("위치 정보를 가져올 수 없음! error 1");
+        loadMap(37.45044363731795, 126.70282182285416);
     }
 }
 
@@ -108,12 +125,12 @@ function moveToStore(name, lat, lon) {
             let str = `<h2>${result.name}</h2>
                        <p>
                        <span class="criterion">매장주소</span>`;
-            str += `<span>${result.address}</span>
+            str += `<span> ${result.address}</span>
                         </p>
                         <p><span class="criterion">영업시간</span>`;
-            str += `<span>${result.hours}</span></p>
+            str += `<span> ${result.hours}</span></p>
                         <p><span class="criterion">휴점</span>`;
-            str += `<span>${result.holiday}</span></p>`;
+            str += `<span> ${result.holiday}</span></p>`;
             str += `<a href="tel:${result.phone}" class="tel">
                         <i class="ic ic_call"></i><span>매장문의</span>
                         <span>${result.phone}</span></a>`;
@@ -159,7 +176,7 @@ function loadMap(lat, lon) {
 }
 
 // 페이지 로드 시 위치 가져오기
-window.onload = getLocation;
+window.onload = mapSetting;
 
 // (비동기) 오프라인 매장 정보 가져오기
 async function getStoreInfoFromServer(name) {

@@ -753,7 +753,7 @@
 }
 
 .book_rate_score_box {
-    width: 66vw;
+    width: 1250px;
     display: flex;
     padding: 40px;
     font-size: 17px;
@@ -898,6 +898,7 @@
     padding: 12px 24px;
     display: flex;
 }
+
 .review_box_header, .review_content {flex-direction: column;}
 .review_box_header {margin-top: 12px;}
 .review_content {margin-bottom: 12px;}
