@@ -26,7 +26,7 @@ public class NotificationController {
     // SSE를 통해 실시간 알림 스트리밍
     @GetMapping(value = "/subscribe/{mno}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter subscribe(@PathVariable("mno") long mno) {
-        SseEmitter sseEmitter = new SseEmitter(600000L); // 10분 타임아웃
+        SseEmitter sseEmitter = new SseEmitter(6000000L); // 10분 타임아웃
 
         // 연결 수명 관리
         sseEmitter.onCompletion(() -> {
@@ -51,7 +51,7 @@ public class NotificationController {
                     log.info(">>>> 알림 전송: " + notification);
                     sseEmitter.send(notification); // 클라이언트로 알림 전송
                 }
-                Thread.sleep(600000); // 10분 대기
+                Thread.sleep(6000000); // 10분 대기
 
             } catch (Exception e) {
                 sseEmitter.completeWithError(e);

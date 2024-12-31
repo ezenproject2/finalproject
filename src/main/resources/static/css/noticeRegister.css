@@ -2,7 +2,7 @@
 .editor-title {
   width: 1060px;
   margin-top: 60px;
-  padding-top: 5px;
+  padding: 5px 12px 5px 22px;
   box-sizing: border-box;
   font-size: 24px;
   font-weight: bold;
@@ -19,9 +19,27 @@
   outline: none !important; /* 포커스 시 외곽선 제거 */
 }
 
+#noticeBox .fr-desktop{
+  /* border-top-right-radius: 0%;
+  border-top-left-radius: 0%; */
+  border: none;
+}
+
+#noticeBox .fr-second-toolbar{
+  /* border-bottom-right-radius: 0%;
+  border-bottom-left-radius: 0%; */
+  border: none;
+}
+
+#noticeBox .fr-wrapper {
+  overflow: hidden;
+  border: none;
+}
+
 /* 저장 버튼 스타일 */
 .register_btn {
   margin-top: 5px;
+  margin-right: 10px;
   padding: 12px 20px;
   background-color: #497248;
   color: white;
@@ -33,4 +51,9 @@
 
 .register_btn:hover {
   background-color: #39553f;
+}
+
+.bntBox{
+  display: flex;
+  justify-content: flex-end;
 }

@@ -79,7 +79,7 @@ public class ReviewServiceImpl implements ReviewService{
             notificationMapper.insertNotificationRVer(notificationVO);
 
             // 생성된 알림을 컨트롤러에 전달하여 실시간 전송
-//            notificationController.sendNotificationToClient(mno, notificationVO);
+            notificationController.sendNotificationToClient(mno, notificationVO);
         }
         return isOk;
     }

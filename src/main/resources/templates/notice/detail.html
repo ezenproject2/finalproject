@@ -37,7 +37,7 @@
         <span class="writer">작성자: 관리자</span>
         <span class="date">작성일: [[${noticeVO.regAt.substring(0, 10).replace('-', '.')}]]</span>
       </div>
-      <a class="modify-button" th:href="@{/notice/modify(ntno=${noticeVO.ntno})}">(관리자) 수정하기</a>
+      <a class="modify-button" th:href="@{/notice/modify(ntno=${noticeVO.ntno})}" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">(관리자) 수정하기</a>
     </div>
 
     <!-- hr 태그로 구분선 추가 -->

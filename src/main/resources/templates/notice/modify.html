@@ -14,32 +14,35 @@
   <script type="text/javascript" th:src="@{/editor/js/froala_editor.pkgd.min.js}"></script>
   <!-- 한국어 언어 파일 -->
   <script th:src="@{/editor/js/languages/ko.js}"></script>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/noticeRegister.css}"/>
   <link rel="stylesheet" type="text/css" th:href="@{/css/noticeNormal.css}"/>
 </head>
 
 <main layout:fragment="main">
+  <div class="inner">
+    <!-- 카테고리 영역 -->
+    <section class="breadcrumb_wrap">
+      <ul class="breadcrumb_list">
+        <li class="breadcrumb_item"><a href="/"><i class="ic ic_home"></i></a></li>
+        <li class="breadcrumb_item"><a th:href="@{/notice/list(pageNo=1, category='notice', qty=10)}" class="primary_ctg">고객센터</a></li>
+        <li class="breadcrumb_item"><a class="secondary_ctg">수정</a></li>
+      </ul>
+    </section>
 
-  <h3>공지사항 등록</h3>
-
-  <table>
-    <tr>
-      <td>제목</td>
-      <td><input type="text" name="title" id="title" th:value="${noticeVO.title}"></td>
-    </tr>
-    <tr>
-      <td>작성자</td>
-      <td>
-        <input type="text" id="writer" value="관리자" readonly>
-        <input type="hidden" id="ntno" th:value="${noticeVO.ntno}">
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2">
-        <div id="noticeBox" style="border-radius: 0" th:utext="${noticeVO.content}"></div>
-      </td>
-    </tr>
-  </table>
-  <button id="regBtn" class="btn">저장</button>
+    <!-- 글 작성 필드 -->
+    <table class="register_table">
+      <tr>
+        <td><input type="text" name="title" id="title" class="editor-title" th:value=" ${noticeVO.title}"></td>
+      </tr>
+      <tr>
+        <td colspan="2"><div id="noticeBox" class="editor-container" th:utext="${noticeVO.content}"></div></td>
+      </tr>
+    </table>
+    <input type="hidden" id="ntno" th:value="${noticeVO.ntno}">
+    <div class="bntBox">
+      <button id="regBtn" class="register_btn">저장</button>
+    </div>
 
   <script th:src="@{/js/noticeModify.js}"></script>
+  </div>
 </main>

@@ -98,7 +98,7 @@ public class NoticeController {
     }
 
     @GetMapping("/detail")
-    public String detail(Model model, long ntno){
+    public String detail(Model model, @RequestParam("ntno") long ntno){
         NoticeVO noticeVO = noticeService.getDetail(ntno);
         model.addAttribute("noticeVO", noticeVO);
 
@@ -106,7 +106,7 @@ public class NoticeController {
     }
 
     @GetMapping("/modify")
-    public String modify(Model model, long ntno){
+    public String modify(Model model, @RequestParam("ntno") long ntno){
         NoticeVO noticeVO = noticeService.getDetail(ntno);
         model.addAttribute("noticeVO", noticeVO);
 

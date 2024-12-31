@@ -32,7 +32,7 @@
         <!--/* 소제목 */-->
         <div class="page_title">
             <h3>공지사항 목록</h3>
-            <a th:href="@{/notice/register?category=notice}" class="link">(관리자) 공지사항 작성하기</a>
+            <a th:href="@{/notice/register?category=notice}" class="link" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">(관리자) 공지사항 작성하기</a>
         </div>
 
         <!--/* 본문 */-->

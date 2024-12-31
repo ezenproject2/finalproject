@@ -44,21 +44,6 @@ var noticeBox = new FroalaEditor('#noticeBox', {
 
 });
 
-// 에디터가 완전히 로드된 후 외곽선 제거
-noticeBox.events.on('initialized', function () {
-  // 외곽선 제거
-  var editorContainer = noticeBox.el;
-  editorContainer.style.border = 'none'; // Froala 에디터 외곽선 없애기
-  editorContainer.style.outline = 'none'; // 포커스 시 외곽선 없애기
-
-  // 만약 iframe이 내부에 포함되어 있다면
-  var iframe = editorContainer.querySelector('iframe');
-  if (iframe) {
-    iframe.style.border = 'none';
-    iframe.style.outline = 'none';
-  }
-});
-
 document.getElementById("regBtn").addEventListener('click', () => {
   const title = document.getElementById('title')
   const mno = document.getElementById('mno')
