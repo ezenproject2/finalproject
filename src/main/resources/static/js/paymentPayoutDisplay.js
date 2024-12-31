@@ -113,14 +113,14 @@ function applyPointCoupon(totalPrice) {
         pointVal = 0;
     } else {
         pointVal = parseInt(pointVal);
-        console.log("The result of parseInt: ", pointVal);
+//        console.log("The result of parseInt: ", pointVal);
     }
 
     couponVal = parseInt(couponVal);
     // deliveryFeeVal = parseInt(deliveryFeeVal);
 
     totalPrice = (totalPrice - pointVal - couponVal);
-    console.log("total price: ", totalPrice);
+//    console.log("total price: ", totalPrice);
 
     return totalPrice;
 }
