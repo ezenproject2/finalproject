@@ -83,8 +83,9 @@
                             </div>
 
                             <div class="orders_table_content order-data-container" th:each="detailProduct, orderStat: ${detailProductList}" th:data-order-size="${detailProductList.size}"> <!-- 책 1권의 정보 -->
-                                <input type="hidden" id="productDiscountInput" th:value="${detailProduct.productVO.discount}" th:data-order-index="${orderStat.index}"> <!--/* discount: 책의 원가 */-->
-                                <input type="hidden" id="orderDetailPriceInput" th:value="${detailProduct.orderDetailVO.price}" th:data-order-index="${orderStat.index}">
+                                <input type="hidden" class="product-discount-input" th:value="${detailProduct.productVO.discount}" th:data-order-index="${orderStat.index}"> <!--/* discount: 책의 원가 */-->
+                                <input type="hidden" class="order-detail-price-input" th:value="${detailProduct.orderDetailVO.price}" th:data-order-index="${orderStat.index}">
+                                <input type="hidden" class="book-qty-input" th:value="${detailProduct.orderDetailVO.bookQty}" th:data-order-index="${orderStat.index}">
                                 <div class="order_book_info_box flex">
                                     <div class="order_book_img">
                                         <a th:href="@{/product/detail(isbn=${detailProduct.productVO.isbn})}"> <!-- 책 상세 페이지 이동 -->

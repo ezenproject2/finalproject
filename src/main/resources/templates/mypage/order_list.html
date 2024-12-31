@@ -78,11 +78,12 @@
         </div>
 
         <div class="my_orders_box">
+          <input type="hidden" id="isOrderEmptyInput" th:value="${isOrderEmpty}">
           <!--/*
               주문 내역이 없으면 -> my_orders_box_wrap : display:none, my_orders_box_none : display:none
               주문 내역이 있으면 -> my_orders_box_wrap : display:block, my_orders_box_none : display:none
           */-->
-          <div class="my_orders_box_none" style="display: none;">
+          <div class="my_orders_box_none">
             <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 16 16">
               <circle cx="8" cy="8" r="8" fill="#c6c6c6"></circle>
               <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" fill="white"></path>
@@ -92,7 +93,6 @@
           </div>
 
           <div class="my_orders_box_wrap"> <!-- 주문내역 전체 내역 -->
-            <input type="hidden" id="isOrderEmptyInput" th:value="${isOrderEmpty}">
             <input type="hidden" id="mnoInput" th:value="${mno}">
             <input type="hidden" id="outerSizeInput" th:value="${orderDetailProductGroup.size}">
             <div class="my_orders_table outer-data-container" th:each="orderDetailProductList, outerStat: ${orderDetailProductGroup}"> <!-- 주문내역 반복 아이템 -->

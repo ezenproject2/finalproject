@@ -17,6 +17,7 @@
     <select id="getOrnoList" resultType="String">
         select orno from orders
         where mno = #{mno}
+        order by order_at desc
     </select>
 
     <select id="getProduct" resultType="com.ezen.books.domain.ProductVO">

@@ -13,17 +13,19 @@ function displayPaymentInfo() {
     orderSize = parseInt(orderSize);
 
     for (let i=0; i<orderSize; i++) {
-        let originalPrice = document.querySelector(`#productDiscountInput[data-order-index="${i}"]`).value;
-        let salePrice = document.querySelector(`#orderDetailPriceInput[data-order-index="${i}"]`).value;
+        let originalPrice = document.querySelector(`.product-discount-input[data-order-index="${i}"]`).value;
+        let detailPrice = document.querySelector(`.order-detail-price-input[data-order-index="${i}"]`).value;
+        let bookQty = document.querySelector(`.book-qty-input[data-order-index="${i}"]`).value;
+        
         originalPrice = parseInt(originalPrice);
-        salePrice = parseInt(salePrice);
+        detailPrice = parseInt(detailPrice);
+        bookQty = parseInt(bookQty);
 
-        sumOriginalPrice += originalPrice;
-        sumSalePrice += salePrice;
-        sumSaleAmount += (originalPrice - salePrice);
+        sumOriginalPrice += originalPrice * bookQty;
+        sumSalePrice += detailPrice;
+        sumSaleAmount += (originalPrice * bookQty) - detailPrice;
     }
 
-    // .toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
     document.querySelector('.sum-sale-price').innerText = sumSalePrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     document.querySelector('.sum-original-price').innerText = sumOriginalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 

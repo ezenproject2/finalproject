@@ -125,17 +125,23 @@ public class MypageController {
 
         boolean isOrderEmpty = mypageOrderListService.isOrderEmpty(mno);
 
-        // 화면에 띄울 order_detail과 product의 정보를 가져옴.
-        List<List<OrderDetailProductDTO>> orderDetailProductGroup = mypageOrderListService.getOrderDetailProductGroup(mno);
-        // log.info("The orderDetailProductGroup: {}", orderDetailProductGroup);
-        log.info("orderDetailProductGroup is empty or not :{}", orderDetailProductGroup.isEmpty());
 
-        // 화면에 띄울 orders의 정보를 가져옴.
+        List<List<OrderDetailProductDTO>> orderDetailProductGroup = new ArrayList<>();
         List<OrdersVO> orderList = new ArrayList<>();
-        for(List<OrderDetailProductDTO> groupOfOneOrder : orderDetailProductGroup) {
-            String orno = groupOfOneOrder.get(0).getOrderDetailVO().getOrno();
-            OrdersVO order = mypageOrderListService.getOrder(orno);
-            orderList.add(order);
+        if (isOrderEmpty) {
+            //
+        } else {
+            // 화면에 띄울 order_detail과 product의 정보를 가져옴.
+            orderDetailProductGroup = mypageOrderListService.getOrderDetailProductGroup(mno);
+            // log.info("The orderDetailProductGroup: {}", orderDetailProductGroup);
+            log.info("orderDetailProductGroup is empty or not :{}", orderDetailProductGroup.isEmpty());
+
+            // 화면에 띄울 orders의 정보를 가져옴.
+            for(List<OrderDetailProductDTO> groupOfOneOrder : orderDetailProductGroup) {
+                String orno = groupOfOneOrder.get(0).getOrderDetailVO().getOrno();
+                OrdersVO order = mypageOrderListService.getOrder(orno);
+                orderList.add(order);
+            }
         }
 
         // 화면에 띄울 사용자 정보와 등급 정보를 가져옴.

@@ -7,12 +7,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if(isOrderEmptyBool) {
         // 주문 내역이 비었을 때 레이아웃 설정
-        document.querySelector('.my_orders_box_none').style = "display: block";
+        // document.querySelector('.my_orders_box_none').style = "display: block";
         document.querySelector('.my_orders_box_wrap').style = "display: none";
     } else {
         // 레이아웃 설정
         document.querySelector('.my_orders_box_none').style = "display: none";
-        document.querySelector('.my_orders_box_wrap').style = "display: block";
+        // document.querySelector('.my_orders_box_wrap').style = "display: block";
 
         // 첫 로딩 시 실행될 함수
         let outerSize = document.getElementById('outerSizeInput').value;
