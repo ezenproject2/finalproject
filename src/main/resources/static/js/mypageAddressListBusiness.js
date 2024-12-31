@@ -45,6 +45,7 @@ document.addEventListener('click', (e) => {
             let isAllFilled = validateAddr();
 
             if (isAllFilled) {
+                registerAddr();
                 preventRegister();
                 alert("등록 완료되었습니다.");
             } else {
@@ -181,7 +182,7 @@ async function modifyAddr(adnoData) {
     const recNameVal = document.querySelector('.addr-rec-name-input').value;
     const recPhoneVal = document.querySelector('.addr-rec-phone-input').value;
     const addrCodeVal = document.querySelector('.addr-postcode-input').value;
-    const addrVal = document.querySelector('.addr-input').value;
+    const addrVal = document.querySelector('.addr-addr-input').value;
     const addrDetailVal = document.querySelector('.addr-detail-input').value;
     let isDefaultVal = "";
 
@@ -216,6 +217,55 @@ async function modifyAddr(adnoData) {
     if(result == "1") {
         console.log("Delete addr: Succeeded.");
         alert("수정 완료되었습니다.");
+        window.location.href = "/mypage/address-list";
+    } else if (result == "0") {
+        console.log("Delete addr: Failed.");
+    } else {
+        console.log("Delete addr: Unknown.");
+    }
+}
+
+// 새로운 배송지 추가
+// AddressVO(adno=0, mno=0, recName=유한, recPhone=01073738282, addrCode=13536, addr=경기 성남시 분당구 판교역로 4 (백현동), addrDetail=콘트라베이스 12층, addrName=회사, isDefault=Y)
+// adno, mno를 제외한 모든 값을 서버로 보냄.
+async function registerAddr() {
+    const addrNameVal = document.querySelector('.addr-name-input').value;
+    const recNameVal = document.querySelector('.addr-rec-name-input').value;
+    const recPhoneVal = document.querySelector('.addr-rec-phone-input').value;
+    const addrCodeVal = document.querySelector('.addr-postcode-input').value;
+    const addrVal = document.querySelector('.addr-addr-input').value;
+    const addrDetailVal = document.querySelector('.addr-detail-input').value;
+    let isDefaultVal = "";
+
+    // 기본 배송지 등록 input이 checked 되어 있으면 isDefaultVal이 Y, 아니면 N
+    const isDefaultChecked = document.querySelector('.set-default-input').checked;
+    if(isDefaultChecked) {
+        isDefaultVal = "Y";
+    } else {
+        isDefaultVal = "N";
+    }
+
+    const url = "/mypage/address-list/register";
+
+    const config = {
+        method: "POST",
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        body: JSON.stringify({
+            addrName: addrNameVal,
+            recName: recNameVal,
+            recPhone: recPhoneVal,
+            addrCode: addrCodeVal,
+            addr: addrVal,
+            addrDetail: addrDetailVal,
+            isDefault: isDefaultVal
+        })
+    };
+    
+    const response = await fetch(url, config);
+    const result = await response.text();
+    if(result == "1") {
+        console.log("Delete addr: Succeeded.");
+        alert("등록 완료되었습니다.");
         window.location.href = "/mypage/address-list";
     } else if (result == "0") {
         console.log("Delete addr: Failed.");
