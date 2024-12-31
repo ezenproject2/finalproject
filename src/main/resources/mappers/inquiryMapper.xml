@@ -25,6 +25,11 @@
         </where>
         order by reg_at desc
     </select>
+    <select id="getLoginId" resultType="String">
+        select m.login_id from member m
+        join inquiry i ON m.mno = i.mno
+        where i.ino = #{ino}
+    </select>
 
     <select id="getInquiryByIno" resultType="com.ezen.books.domain.InquiryVO">
         select * from inquiry

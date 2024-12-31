@@ -196,3 +196,18 @@ textarea {
     height: 80px;
     resize: none;
 }
+
+.my_orders_title {
+    font-size: 1.7rem;
+    font-weight: 700;
+    margin-top: 30px;
+}
+
+.inquriy_loginId{
+    font-size: 14px;
+    color: #497248;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 15ch;
+}

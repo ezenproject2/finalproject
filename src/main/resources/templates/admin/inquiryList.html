@@ -11,12 +11,19 @@
 </head>
 
 <main layout:fragment="main">
-  <div class="myPage_inner inner">
+  <div class="myPage_inner inner" style="margin-top: 50px;">
     <div class="myPage_right">
+      <h1 class="my_orders_title" style="margin-bottom: 30px;">1:1 문의 내역</h1>
       <div class="list_menu">
-        <div class="list_menu_item tap"><a href="/admin/inquiryList">전체</a></div>
-        <div class="list_menu_item"><a href="/admin/inquiryList?status=답변 대기">답변 대기</a></div>
-        <div class="list_menu_item"><a href="/admin/inquiryList?status=답변 완료">답변 완료</a></div>
+        <div class="list_menu_item tap">
+          <a href="/admin/inquiryList">전체</a>
+        </div>
+        <div class="list_menu_item" data-status="답변 대기">
+          <a href="/admin/inquiryList?status=답변 대기">답변 대기</a>
+        </div>
+        <div class="list_menu_item" data-status="답변 완료">
+          <a href="/admin/inquiryList?status=답변 완료">답변 완료</a>
+        </div>
       </div>
 
       <div class="inquiry-list">
@@ -24,6 +31,7 @@
           <!-- 문의 목록 반복 -->
           <li class="inquriy_item" th:each="inquiry : ${inquiryList}">
             <div class="inquriy_item_wrap">
+              <span class="inquriy_loginId">작성자 : [[${inquiry.loginId}]]</span>
               <div class="inquiry-header">
                   <span class="inquriy_state"
                         th:classappend="${inquiry.status == '답변 대기'} ? 'stay' : 'completion'">

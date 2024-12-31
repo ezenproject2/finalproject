@@ -115,8 +115,7 @@ input[type="submit"]:hover {
     margin: 260px auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 30%;
-    height: 230px;
+    width: 28%;
     border-radius: 12px;
 }
 .modal-content h2{
@@ -173,4 +172,20 @@ input[type="submit"]:hover {
 #emailAuthButton:hover,
 #verifyAuthCode:hove{
     background-color: #39553F;
+}
+
+.find_wrap{
+    width: 500px;
+    margin: 50px auto;
+    border: 1px solid #C6C6C6;
+    border-radius: 12px;
+    height: 450px;
+    padding: 24px;
+    padding-top: 40px;
+}
+
+h2 {
+    font-size: 22px;
+    margin-bottom: 40px;
+    text-align: center;
 }

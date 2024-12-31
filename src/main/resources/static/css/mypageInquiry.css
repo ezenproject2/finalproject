@@ -226,3 +226,9 @@
 .inquiry_submit_btn:hover {
     background-color: #ABBC86;
 }
+.my_orders_title {
+    font-size: 1.7rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    margin-top: 30px
+}

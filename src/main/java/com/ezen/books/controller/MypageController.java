@@ -30,6 +30,7 @@ public class MypageController {
     private final GradeService gradeService;
     private final FileHandler fileHandler;
     private final InquiryService inquiryService;
+    private final ProductService productService;
 
     // 준희 담당 마이페이지를 위해 추가한 코드.
     private final AddressListService addressListService;
@@ -55,10 +56,13 @@ public class MypageController {
         int pointsBalance = pointService.getBalance(mno);
         List<CouponLogVO> couponList = couponService.findMemberCoupons(mno);
 
-        // 모델에 데이터 추가
         model.addAttribute("gradeVO", gradeVO);
         model.addAttribute("pointsBalance", pointsBalance);
         model.addAttribute("coupons", couponList);
+
+        /*---------서재-----------*/
+        List<OrderDetailProductDTO> odpDTO = memberService.getRecentBooks(mno);
+        model.addAttribute("odpDTO", odpDTO);
 
         return "/mypage/main";
     }
@@ -74,11 +78,9 @@ public class MypageController {
         long mno = memberVO.getMno();
 
         List<InquiryVO> inquiryVOList = inquiryService.getInquiriesByMno(mno);
-        List<InquiryVO> inquiryVOAllList = inquiryService.getAllInquiries(status);
 
         model.addAttribute("inquiryList", inquiryVOList);
 
-        model.addAttribute("inquiryList", inquiryVOAllList);
         model.addAttribute("stautus", status);
 
         return "/mypage/inquiryList";
@@ -168,11 +170,11 @@ public class MypageController {
 
     // 준희 담당 마이페이지를 위해 추가한 코드.
     @GetMapping("/order-list")
-    public String showOrderList(Model model) {
+    public String showOrderList(Model model, Authentication authentication) {
+        myPageLeft(model, authentication);
         log.info(" >>> MypageController: showOrderList start.");
 
         // mno를 얻기 위해 myPageMain의 있던 코드를 가져옴
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String loginId = authentication.getName();
 
         MemberVO memberVO = memberService.getMemberByInfo(loginId);
@@ -208,11 +210,11 @@ public class MypageController {
     }
 
     @GetMapping("/address-list")
-    public String showAddressList(Model model) {
+    public String showAddressList(Model model, Authentication authentication) {
+        myPageLeft(model, authentication);
         log.info(" >>> MypageController: showAddressList start.");
 
         // mno를 얻기 위해 myPageMain의 있던 코드를 가져옴
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String loginId = authentication.getName();
 
         MemberVO memberVO = memberService.getMemberByInfo(loginId);

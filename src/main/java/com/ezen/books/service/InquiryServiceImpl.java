@@ -28,7 +28,15 @@ public class InquiryServiceImpl implements InquiryService{
 
     @Override
     public List<InquiryVO> getAllInquiries(String status) {
-        return inquiryMapper.getAllInquiries(status);
+
+        List<InquiryVO> inquiryVOList = inquiryMapper.getAllInquiries(status);
+
+        for(InquiryVO inquiryVO : inquiryVOList){
+            String loginId = inquiryMapper.getLoginId(inquiryVO.getIno());
+            inquiryVO.setLoginId(loginId);
+        }
+
+        return inquiryVOList;
     }
 
     @Override

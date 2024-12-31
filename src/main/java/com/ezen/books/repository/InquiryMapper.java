@@ -16,4 +16,6 @@ public interface InquiryMapper {
     InquiryVO getInquiryByIno(long ino);
 
     int updateInquiry(InquiryVO inquiryVO);
+
+    String getLoginId(long ino);
 }

@@ -17,8 +17,8 @@
         <div th:replace="~{mypage/myPage_left :: myPage_left}"></div>
         <div class="myPage_right">
             <div class="list_menu">
-                <div class="list_menu_item"><a href="">통합 포인트</a></div>
-                <div class="list_menu_item tap"><a href="">쿠폰</a></div>
+                <div class="list_menu_item tap"><a th:href="@{/mypage/point}">통합 포인트</a></div>
+                <div class="list_menu_item"><a th:href="@{/mypage/coupon}">쿠폰</a></div>
                 <div class="list_menu_item"><a href="">기프트카드</a></div>
             </div>
             <div class="coupon_info">
@@ -48,7 +48,7 @@
                     <thead>
                     <tr>
                         <th>일자</th>
-                        <th>내용</th>
+                        <th style="width: 60%;">내용</th>
                         <th>적립/사용</th>
                     </tr>
                     </thead>

@@ -164,7 +164,7 @@
                 }-->
                 <div class="book_shelf">
                     <!-- 사용자가 책을 한 권도 구매하지 않았을 경우 -->
-                    <div class="book_none">
+                    <div class="book_none" th:if="${#lists.isEmpty(odpDTO)}">
                         <span class="book_none_title">좋아하는 책들로 나만의 서재를 만들어보세요!</span>
                         <span class="book_none_content">지금 바로 시작해볼까요?</span>
                         <a href="" class="btn">
@@ -174,32 +174,27 @@
 
                     <!-- 책 리스트 -->
                     <!-- 사용자가 책을 한 권 이상 구매한 경우 -->
-                    <div class="book_list"  style="display:none;">
-                        <figure class='book'>
+                    <div class="book_list" th:if="${odpDTO} != null" style="display:flex;">
+                        <figure class='book' th:each="book : ${odpDTO}">
                             <!-- Front -->
                             <ul class='hardcover_front'>
                                 <li>
                                     <div class="coverDesign">
-                                        <img src="https://cdn.ypbooks.co.kr/image/product/202410/06f4de7c-b904-4e43-b64f-5c7e20c459df.jpg" alt="">
+                                        <img th:src="${book.productVO.image}">
                                         <div class="effect"></div>
                                         <div class="light"></div>
                                     </div>
                                 </li>
-                                <li></li>
                             </ul>
 
                             <!-- Pages -->
                             <ul class='page'>
-                                <li></li>
                                 <li>
                                     <div class="page_btn">
-                                        <a class="btn book_btn1" href="#">주문 내역 보기 &#8594</a>
-                                        <a class="btn book_btn2" href="#">책 상세 보기 &#8594</a>
+                                        <a class="btn book_btn1" th:href="@{/mypage/order-list(orno=${book.orderDetailVO.orno})}">주문 내역 보기 &#8594</a>
+                                        <a class="btn book_btn2" th:href="@{/product/detail(isbn=${book.productVO.isbn})}">책 상세 보기 &#8594</a>
                                     </div>
                                 </li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
                             </ul>
 
                             <!-- Back -->

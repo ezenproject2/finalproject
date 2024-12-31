@@ -14,4 +14,29 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     });
+
+
+    const menuItems = document.querySelectorAll(".list_menu_item");
+
+    function setTapMenu() {
+        const currentUrl = window.location.href;
+        let tapStatus = null;
+
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has("status")) {
+            tapStatus = urlParams.get("status");
+        }
+
+        menuItems.forEach(item => {
+            const status = item.getAttribute("data-status");
+
+            if (status === tapStatus || (tapStatus === null && !status)) {
+                item.classList.add("tap");
+            } else {
+                item.classList.remove("tap");
+            }
+        });
+    }
+
+    setTapMenu();
 })

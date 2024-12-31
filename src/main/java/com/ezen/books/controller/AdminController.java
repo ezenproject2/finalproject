@@ -39,9 +39,10 @@ public class AdminController {
                               @RequestParam(value = "status", required = false) String status) {
 
         List<InquiryVO> inquiryVOAllList = inquiryService.getAllInquiries(status);
-
         model.addAttribute("inquiryList", inquiryVOAllList);
         model.addAttribute("stautus", status);
+
+
         return "/admin/inquiryList";
     }
 

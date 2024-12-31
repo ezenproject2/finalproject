@@ -191,5 +191,10 @@ public class MemberServiceImpl implements MemberService{
         return memberMapper.getList();
     }
 
+    @Override
+    public List<OrderDetailProductDTO> getRecentBooks(long mno) {
+        return memberMapper.getRecentBooks(mno);
+    }
+
 
 }

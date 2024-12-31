@@ -154,4 +154,32 @@
         select nick_name from member where mno = #{mno}
     </select>
 
+
+    <resultMap id="OrderDetailProductResultMap" type="com.ezen.books.domain.OrderDetailProductDTO">
+        <association property="orderDetailVO" javaType="com.ezen.books.domain.OrderDetailVO">
+            <id property="orno" column="orno" />
+            <result property="prno" column="prno" />
+        </association>
+        <association property="productVO" javaType="com.ezen.books.domain.ProductVO">
+            <id property="prno" column="prno" />
+            <result property="isbn" column="isbn" />
+            <result property="title" column="title" />
+            <result property="link" column="link" />
+            <result property="image" column="image" />
+            <result property="description" column="description" />
+        </association>
+    </resultMap>
+    <select id="getRecentBooks" resultMap="OrderDetailProductResultMap">
+        select
+        p.prno AS prno, p.isbn AS isbn, p.title AS title,
+        p.link AS link, p.image AS image, p.description AS description,
+        max(o.orno) AS orno, max(o.order_at) AS order_at
+        from orders o
+        join order_detail od ON o.orno = od.orno
+        join product p ON od.prno = p.prno
+        where o.mno = #{mno}
+        group by p.prno, p.isbn, p.title, p.link, p.image, p.description
+        order by MAX(o.order_at) desc limit 3
+    </select>
+
 </mapper>

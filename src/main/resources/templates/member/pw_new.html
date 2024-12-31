@@ -9,25 +9,29 @@
   <link rel="stylesheet" href="/css/memberPwNew.css"/>
 </head>
 <main layout:fragment="main">
-  <form action="pw_new.me" method="POST" class="content">
-    <div class="textbox">
-      <input id="pw" name="password" type="password" placeholder="새 비밀번호" maxlength="16" required>
-      <div class="error">
-        <span th:if="${error == 'weak_password'}">비밀번호는 최소 8자 이상이어야 합니다.</span>
-      </div>
+  <div class="inner">
+    <div class="find_wrap">
+      <h2> 비밀번호 변경 </h2>
+      <form action="pw_new.me" method="POST" class="content">
+        <div class="textbox">
+          <input id="pw" name="password" type="password" placeholder="새 비밀번호" maxlength="16" required>
+          <div class="error">
+            <span th:if="${error == 'weak_password'}">비밀번호는 최소 8자 이상이어야 합니다.</span>
+          </div>
+        </div>
+
+        <div class="textbox">
+          <input id="pwCheck" name="passwordCheck" type="password" placeholder="새 비밀번호 확인" maxlength="16" required oninput="checkPasswordMatch();">
+          <div class="error">
+            <span id="errorMessage"></span>
+          </div>
+        </div>
+
+        <span id="same" style="display:none; color: red;"></span> <!-- 오류 메시지 -->
+
+        <input type="submit" id="check" value="비밀번호변경">
+      </form>
     </div>
-
-    <div class="textbox">
-      <input id="pwCheck" name="passwordCheck" type="password" placeholder="새 비밀번호 확인" maxlength="16" required oninput="checkPasswordMatch();">
-      <div class="error">
-        <span id="errorMessage"></span>
-      </div>
-    </div>
-
-    <span id="same" style="display:none; color: red;"></span> <!-- 오류 메시지 -->
-
-    <input type="submit" id="check" value="비밀번호변경">
-  </form>
-
+  </div>
   <script src="/js/memberPwNew.js"></script>
 </main>

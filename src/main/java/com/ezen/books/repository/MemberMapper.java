@@ -64,4 +64,6 @@ public interface MemberMapper {
     long getMemberGrade(long mno);
 
     String getNickName(long mno);
+
+    List<OrderDetailProductDTO> getRecentBooks(long mno);
 }

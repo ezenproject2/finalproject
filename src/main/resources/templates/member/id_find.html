@@ -11,6 +11,7 @@
 <main layout:fragment="main">
   <div class="inner">
     <div class="find_wrap">
+      <h2> 아이디 찾기 </h2>
       <form action="/member/id_find" method="POST" class="content">
         <div class="textbox">
           <input id="email" name="email" type="email" placeholder="이메일" required>
@@ -22,8 +23,8 @@
       </form>
       <br>
       <div th:if="${foundId != null}">
-        <h2>찾은 아이디</h2><br>
-        <p>회원님의 아이디는 <strong th:text="${foundId}"></strong> 입니다.</p>
+        <br>
+        <p style="font-size: 18px;">회원님의 아이디는 <strong th:text="${foundId}"></strong> 입니다.</p>
         <br>
         <div th:if="${error != null}">
           <p style="color: #f27370;" th:text="${error}"></p>
