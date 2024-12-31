@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function jehoInitializeTotalOriginalPrice() {
     const index = document.querySelector(`[data-list-total="listTotal"]`).innerText;
     let indexNum = parseInt(index);
-    console.log("The index: " + indexNum);
+    // console.log("The index: " + indexNum);
 
     let totalPrice = 0;
     for (let i = 0; i < indexNum; i++) {
@@ -28,7 +28,7 @@ function jehoInitializeTotalOriginalPrice() {
         totalPrice += parseInt(originalPrice) * parseInt(bookQty);
         // console.log("The total price: " + totalPrice);
     }
-    console.log("totalPrice" + totalPrice);
+    // console.log("totalPrice" + totalPrice);
 
     document.querySelector(`.total-original-price`).dataset.totalOriginalPrice = totalPrice;
     document.querySelector(`.total-original-price`).innerText = totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -38,7 +38,7 @@ function jehoInitializeTotalOriginalPrice() {
 function jehoInitializeTotalDiscountAmount() {
     const index = document.querySelector(`[data-list-total="listTotal"]`).innerText;
     let indexNum = parseInt(index);
-    console.log("The index: " + indexNum);
+    // console.log("The index: " + indexNum);
 
     let totalAmount = 0;
     for (let i = 0; i < indexNum; i++) {
@@ -55,7 +55,7 @@ function jehoInitializeTotalDiscountAmount() {
         totalAmount += discountAmount;
         // console.log("The total price: " + totalAmount);
     }
-    console.log("totalAmount" + totalAmount);
+    // console.log("totalAmount" + totalAmount);
 
     document.querySelector(`.discount-amount`).dataset.discountAmount = totalAmount;
     document.querySelector(`.discount-amount`).innerText = '- ' + totalAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -81,8 +81,7 @@ function jehoCalculateTotalPrice() {
     }
     // console.log("totalPrice" + totalPrice);
 
-    // 포인트, 쿠폰, 배송비 반영
-    totalPrice = applyPointCoupon(totalPrice);
+    // totalPrice = applyPointCoupon(totalPrice);
 
     // 배송비 설정
     let deliveryFee = 0;
@@ -102,29 +101,29 @@ function jehoCalculateTotalPrice() {
 }
 
 // 최종 결제 금액에 포인트, 쿠폰, 배송비 반영
-function applyPointCoupon(totalPrice) {
-    let pointVal = document.querySelector('.discount-point').dataset.discountPoint;
-    let couponVal = document.querySelector('.discount-coupon').dataset.discountCoupon;
-    // let deliveryFeeVal = document.querySelector('.delivery-fee').dataset.deliveryFee;
-    console.log("The pointVal from applyPointCoupon: ", pointVal);
-    console.log("The couponVal from applyPointCoupon: ", couponVal);
+// function applyPointCoupon(totalPrice) {
+//     let pointVal = document.querySelector('.discount-point').dataset.discountPoint;
+//     let couponVal = document.querySelector('.discount-coupon').dataset.discountCoupon;
+//     // let deliveryFeeVal = document.querySelector('.delivery-fee').dataset.deliveryFee;
+//     // console.log("The pointVal from applyPointCoupon: ", pointVal);
+//     // console.log("The couponVal from applyPointCoupon: ", couponVal);
 
-    // 포인트의 값이 없으면("") 포인트를 0으로 할당
-    if(pointVal == "") {
-        pointVal = 0;
-    } else {
-        pointVal = parseInt(pointVal);
-        console.log("The result of parseInt: ", pointVal);
-    }
+//     // 포인트의 값이 없으면("") 포인트를 0으로 할당
+//     if(pointVal == "") {
+//         pointVal = 0;
+//     } else {
+//         pointVal = parseInt(pointVal);
+//         console.log("The result of parseInt: ", pointVal);
+//     }
 
-    couponVal = parseInt(couponVal);
-    // deliveryFeeVal = parseInt(deliveryFeeVal);
+//     couponVal = parseInt(couponVal);
+//     // deliveryFeeVal = parseInt(deliveryFeeVal);
 
-    totalPrice = (totalPrice - pointVal - couponVal);
-    console.log("total price: ", totalPrice);
+//     totalPrice = (totalPrice - pointVal - couponVal);
+//     console.log("total price: ", totalPrice);
 
-    return totalPrice;
-}
+//     return totalPrice;
+// }
 //// 사용자의 입력으로 .point_input의 value가 변화하면 즉시 포인트 액수를 저장하고 ,를 찍음
 //document.querySelector('.point_input').addEventListener('input', (e) => {
 //    // console.log("The target: ", e.target);

@@ -17,6 +17,7 @@ let pgData = {
 document.addEventListener('click', (e) => {
 
     if(e.target.id == "registerAddrBtn") {
+        console.log("register addr btn clicked.");
         // 배송지 정보를 모두 채웠는지 확인
         const addrInputs = document.querySelectorAll('.address-input');
         let isAllFilled = true;
