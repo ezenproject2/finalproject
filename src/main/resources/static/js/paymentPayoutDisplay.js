@@ -81,7 +81,7 @@ function jehoCalculateTotalPrice() {
     }
     // console.log("totalPrice" + totalPrice);
 
-    // totalPrice = applyPointCoupon(totalPrice);
+    totalPrice = applyPointCoupon(totalPrice);
 
     // 배송비 설정
     let deliveryFee = 0;
@@ -100,30 +100,30 @@ function jehoCalculateTotalPrice() {
     document.querySelector(`.total-price`).innerText = totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-// 최종 결제 금액에 포인트, 쿠폰, 배송비 반영
-// function applyPointCoupon(totalPrice) {
-//     let pointVal = document.querySelector('.discount-point').dataset.discountPoint;
-//     let couponVal = document.querySelector('.discount-coupon').dataset.discountCoupon;
-//     // let deliveryFeeVal = document.querySelector('.delivery-fee').dataset.deliveryFee;
-//     // console.log("The pointVal from applyPointCoupon: ", pointVal);
-//     // console.log("The couponVal from applyPointCoupon: ", couponVal);
+// 최종 결제 금액에 포인트, 쿠폰 반영
+function applyPointCoupon(totalPrice) {
+    let pointVal = document.querySelector('.discount-point').dataset.discountPoint;
+    let couponVal = document.querySelector('.discount-coupon').dataset.discountCoupon;
+    // let deliveryFeeVal = document.querySelector('.delivery-fee').dataset.deliveryFee;
+    // console.log("The pointVal from applyPointCoupon: ", pointVal);
+    // console.log("The couponVal from applyPointCoupon: ", couponVal);
 
-//     // 포인트의 값이 없으면("") 포인트를 0으로 할당
-//     if(pointVal == "") {
-//         pointVal = 0;
-//     } else {
-//         pointVal = parseInt(pointVal);
-//         console.log("The result of parseInt: ", pointVal);
-//     }
+    // 포인트의 값이 없으면("") 포인트를 0으로 할당
+    if(pointVal == "") {
+        pointVal = 0;
+    } else {
+        pointVal = parseInt(pointVal);
+        console.log("The result of parseInt: ", pointVal);
+    }
 
-//     couponVal = parseInt(couponVal);
-//     // deliveryFeeVal = parseInt(deliveryFeeVal);
+    couponVal = parseInt(couponVal);
+    // deliveryFeeVal = parseInt(deliveryFeeVal);
 
-//     totalPrice = (totalPrice - pointVal - couponVal);
-//     console.log("total price: ", totalPrice);
+    totalPrice = (totalPrice - pointVal - couponVal);
+    console.log("total price: ", totalPrice);
 
-//     return totalPrice;
-// }
+    return totalPrice;
+}
 //// 사용자의 입력으로 .point_input의 value가 변화하면 즉시 포인트 액수를 저장하고 ,를 찍음
 //document.querySelector('.point_input').addEventListener('input', (e) => {
 //    // console.log("The target: ", e.target);
@@ -247,6 +247,7 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch(error => {
                 console.error("Error:", error);
+                console.error("Stack trace:", error.stack);
                 alert("에러가 발생했습니다. 다시 시도해주세요.(Point)");
             });
         });

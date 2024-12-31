@@ -111,6 +111,8 @@ function selectPg(targetClassList) {
         pgVal = "kakaopay";
     } else if (targetClassList.contains('tosspay-btn')) {
         pgVal = "tosspay_v2";
+    } else if (targetClassList.contains('payco-btn')) {
+        pgVal = "payco";
     } else {
         console.log(`It's not a valid button.`);
     }
