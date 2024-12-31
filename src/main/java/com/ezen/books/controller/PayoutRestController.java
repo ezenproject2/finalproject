@@ -270,6 +270,10 @@ public class PayoutRestController {
                 channelKey = "iamport_payco_payment_channel_key";
                 payMethod = "card";
                 break;
+            case "html5_inicis":
+                channelKey = "iamport_kginicis_general_payment_channel_key";
+                payMethod = "card";
+                break;
             default:
                 channelKey = "Unknown channelKey";
                 payMethod = "Unknown payMethod";
