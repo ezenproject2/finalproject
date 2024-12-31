@@ -239,7 +239,7 @@ async function payWithIamport() {
 
     IMP.init('imp73014361'); // iamport_customer_verification_code의 값이다.
     IMP.request_pay(paymentData, function (impResponse) {
-        console.log("Payment completed.");
+        // console.log("Payment completed.");
         if(impResponse.success) {
             console.log("The result of the payment: " + JSON.stringify(impResponse));
             console.log("Start payment information verification.");
