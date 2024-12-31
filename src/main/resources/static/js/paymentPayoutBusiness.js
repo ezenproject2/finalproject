@@ -17,6 +17,7 @@ let pgData = {
 document.addEventListener('click', (e) => {
 
     if(e.target.id == "registerAddrBtn") {
+        console.log("register addr btn clicked.");
         // 배송지 정보를 모두 채웠는지 확인
         const addrInputs = document.querySelectorAll('.address-input');
         let isAllFilled = true;
@@ -110,6 +111,8 @@ function selectPg(targetClassList) {
         pgVal = "kakaopay";
     } else if (targetClassList.contains('tosspay-btn')) {
         pgVal = "tosspay_v2";
+    } else if (targetClassList.contains('payco-btn')) {
+        pgVal = "payco";
     } else {
         console.log(`It's not a valid button.`);
     }
@@ -378,18 +381,15 @@ async function preserveOrderDetailToServer(impResponse) {
             status: ""
         }
 
-        // orderDetail.prno = document.querySelector(`[data-list-book-prno="${i}"]`).value;
-        // orderDetail.bookQty = document.querySelector(`[data-list-book-qty="${i}"]`).innerText;
-        // orderDetail.price = document.querySelector(`[data-list-book-price="${i}"]`).innerText;
         orderDetail.prno = document.querySelector(`[data-payout="${i}"].list-data-storage`).dataset.listBookPrno;
-        orderDetail.bookQty = document.querySelector(`[data-payout="${i}"].book-qty`).innerText;
-        let bookPriceVal = document.querySelector(`[data-payout="${i}"].book-price`).dataset.bookOriginalPrice;
         
-        orderDetail.status = selectStatus(impResponse.status);
+        let bookQtyVal = document.querySelector(`[data-payout="${i}"].book-qty`).innerText;
+        orderDetail.bookQty = bookQtyVal;
 
-        // bookPriceVal이 숫자+원 임. "원"을 제거하고 숫자만 추출한 후에 문자열을 int로 전환.
-        let onlyPriceVal = bookPriceVal.match(/\d+/);
-        orderDetail.price = parseInt(onlyPriceVal);
+        let bookPriceVal = document.querySelector(`[data-payout="${i}"].book-price`).dataset.salePrice;
+        orderDetail.price = parseInt(bookPriceVal) * parseInt(bookQtyVal);
+
+        orderDetail.status = selectStatus(impResponse.status);
         
         orderDetailArr.push(orderDetail);
     }

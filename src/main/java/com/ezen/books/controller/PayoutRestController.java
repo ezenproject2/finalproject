@@ -250,8 +250,8 @@ public class PayoutRestController {
     }
 
     private Map<String, String> getChannelKeyAndMethod(String pgVal) {
-        String channelKey = null;
-        String payMethod = null;
+        String channelKey = "";
+        String payMethod = "";
 
         switch (pgVal) {
             case "kakaopay":
@@ -265,6 +265,10 @@ public class PayoutRestController {
             case "tosspay_v2":
                 channelKey = "iamport_tosspay_v2_general_payment_channel_key";
                 payMethod = "tosspay";
+                break;
+            case "payco":
+                channelKey = "iamport_payco_payment_channel_key";
+                payMethod = "card";
                 break;
             default:
                 channelKey = "Unknown channelKey";

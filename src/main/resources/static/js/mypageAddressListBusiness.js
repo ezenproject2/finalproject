@@ -1,4 +1,4 @@
-console.log("addressListBusiness.js recognized.");
+console.log("mypageAddressListBusiness.js recognized.");
 
 document.addEventListener('DOMContentLoaded', () => {
     preventRegister();

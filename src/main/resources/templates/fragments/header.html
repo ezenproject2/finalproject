@@ -11,7 +11,7 @@
         <div class="header_above">
             <div class="inner">
                 <div class="header_top_left">
-                    <a th:href="@{/notice/list(category=notice, qty=10)}" class="link"> 고객센터 </a>
+                    <a th:href="@{/notice/list(pageNo=1, qty=10, category='notice')}" class="link"> 고객센터 </a>
                     <a th:href="@{/store}" class="link"> 매장안내 </a>
                     <a href="" class="link"> 회원혜택 </a>
                 </div>
@@ -476,7 +476,7 @@
                                             </a>
                                         </li>
                                         <li class="category3_list_item">
-                                            <a href="">
+                                            <a th:href="@{/notice/list(pageNo=1, qty=10, category='notice')}">
                                                 <i class="ic category3-img custom"></i>
                                                 <span> 고객센터 </span>
                                             </a>

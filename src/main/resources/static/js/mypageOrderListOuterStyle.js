@@ -1,5 +1,5 @@
 // NOTE: myPageMain.js를 가져온 뒤 공통 스타일링을 제외한 부분을 주석처리함.
-console.log("myPageOrderListStyle.js recognized.");
+console.log("myPageOrderListOuterStyle.js recognized.");
 
 document.addEventListener("DOMContentLoaded", () => {
     // > switchBtn을 인식할 수 없어 주석처리함.
@@ -63,43 +63,44 @@ document.addEventListener("DOMContentLoaded", () => {
     //     const translateX = -(currentIndex * itemWidth); // 아이템 1개의 너비만큼 이동
     //     slide.style.transform = `translateX(${translateX}px)`;
     // }
-    const slide = document.querySelector(".banner_slide");
-    const leftBtn = document.querySelector(".ic_left");
-    const rightBtn = document.querySelector(".ic_right");
-    const bannerItems = document.querySelectorAll(".banner_item");
+    // const slide = document.querySelector(".banner_slide");
+    // const leftBtn = document.querySelector(".ic_left");
+    // const rightBtn = document.querySelector(".ic_right");
+    // > .banner_item이 없는 것을 확인 후 주석처리함.
+    // const bannerItems = document.querySelectorAll(".banner_item");
 
-    let itemWidth = bannerItems[0].offsetWidth + 25; // 초기값 설정
-    const totalItems = bannerItems.length;
-    let maxIndex = totalItems - 3; // 한 번에 보이는 아이템 수(3)
+    // let itemWidth = bannerItems[0].offsetWidth + 25; // 초기값 설정
+    // const totalItems = bannerItems.length;
+    // let maxIndex = totalItems - 3; // 한 번에 보이는 아이템 수(3)
 
     let currentIndex = 0;
 
     // 슬라이드 위치 업데이트
-    function updateSlidePosition() {
-        const translateX = -(currentIndex * itemWidth);
-        slide.style.transform = `translateX(${translateX}px)`;
-    }
+    // function updateSlidePosition() {
+    //     const translateX = -(currentIndex * itemWidth);
+    //     slide.style.transform = `translateX(${translateX}px)`;
+    // }
 
     // 오른쪽 버튼 클릭
-    rightBtn.addEventListener("click", () => {
-        if (currentIndex < maxIndex) {
-            currentIndex++;
-            updateSlidePosition();
-        }
-    });
+    // rightBtn.addEventListener("click", () => {
+    //     if (currentIndex < maxIndex) {
+    //         currentIndex++;
+    //         updateSlidePosition();
+    //     }
+    // });
 
     // 왼쪽 버튼 클릭
-    leftBtn.addEventListener("click", () => {
-        if (currentIndex > 0) {
-            currentIndex--;
-            updateSlidePosition();
-        }
-    });
+    // leftBtn.addEventListener("click", () => {
+    //     if (currentIndex > 0) {
+    //         currentIndex--;
+    //         updateSlidePosition();
+    //     }
+    // });
 
     // 화면 리사이즈 이벤트: 아이템 너비 재계산
     window.addEventListener("resize", () => {
-        itemWidth = bannerItems[0].offsetWidth + 25; // 리사이즈 시 재계산
-        maxIndex = totalItems - 3; // 필요하면 maxIndex도 재조정
+        // itemWidth = bannerItems[0].offsetWidth + 25; // 리사이즈 시 재계산
+        // maxIndex = totalItems - 3; // 필요하면 maxIndex도 재조정
         updateSlidePosition(); // 현재 위치 반영
     });
 

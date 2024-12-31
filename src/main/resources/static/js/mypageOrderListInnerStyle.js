@@ -1,3 +1,5 @@
+console.log("myPageOrderListInnerStyle.js recognized.");
+
 document.addEventListener("DOMContentLoaded", () => {
     const openModalBtns = document.querySelectorAll('.review_btn'); // 버튼들 모두 선택
     const closeModalBtn = document.getElementById("closeModal");

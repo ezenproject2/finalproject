@@ -7,14 +7,87 @@
 
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/noticeNormal.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/noticeList.css}"/>
 </head>
 
 <main layout:fragment="main">
+    <div class="inner">
 
+        <!--/* 카테고리 영역 */-->
+        <section class="breadcrumb_wrap">
+            <ul class="breadcrumb_list">
+                <li class="breadcrumb_item">
+                    <a href="/"><i class="ic ic_home"></i></a>
+                </li>
+                <li class="breadcrumb_item">
+                    <a th:href="@{/notice/list(pageNo=1, category='notice', qty=10)}" class="primary_ctg">고객센터</a>
+                </li>
+                <li class="breadcrumb_item">
+                    <a class="secondary_ctg">목록</a>
+                </li>
+            </ul>
+        </section>
 
-  <a th:href="@{/notice/register?category=notice}" class="link"> 글쓰기 </a>
+        <!--/* 소제목 */-->
+        <div class="page_title">
+            <h3>공지사항 목록</h3>
+            <a th:href="@{/notice/register?category=notice}" class="link" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">(관리자) 공지사항 작성하기</a>
+        </div>
 
+        <!--/* 본문 */-->
+        <div class="tbl_col_wrap">
+            <table class="tbl_col_line">
+                <caption>공지사항 목록</caption>
+                <colgroup>
+                    <col style="width: 75px;">
+                    <col style="width: auto;">
+                    <col style="width: 130px;">
+                    <col style="width: 124px;">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th scope="col">NO</th>
+                    <th scope="col">공지제목</th>
+                    <th scope="col">작성자</th>
+                    <th scope="col">날짜</th>
+                </tr>
+                </thead>
+                <tbody class="notice_tbody" id="notice_body">
+                <tr th:each="noticeVO:${list}" class="table_tr">
+                    <td class="fc_light_gray">[[${noticeVO.ntno}]]</td>
+                    <td class="align_left">
+                        <a th:href="@{/notice/detail(ntno=${noticeVO.ntno})}" class="btn_text_link ellipsis">
+                            <span class="text">[[${noticeVO.title}]]</span>
+                        </a>
+                    </td>
+                    <td class="fc_light_gray">관리자</td>
+                    <td class="fc_light_gray">
+                        [[${noticeVO.regAt.substring(0, 10).replace('-', '.')}]]
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
+        <!--/* 페이징 */-->
+        <div class="pagenation_area">
+            <div class="pagenation">
+                <a th:href="@{/notice/list(pageNo=${ph.startPage-1}, category='notice', qty=10)}" th:classappend="${!ph.prev} ? ' disabled' : ''"><i class="ic ic_carousel_left_white"></i></a>
+                <ul class="pagenation_num">
+                    <th:block th:if="${ph.endPage eq 0}">
+                        <li class="disabled"><a href="javascript:void(0);">0</a></li>
+                    </th:block>
 
+                    <th:block th:if="${ph.endPage ne 0}" th:each="i:${#numbers.sequence(ph.startPage, ph.endPage)}">
+                        <li th:classappend="${ph.pgvo.pageNo == i} ? ' present' : ''">
+                            <a th:href="@{/notice/list(pageNo=${i}, category='notice', qty=10)}">[[${i}]]</a>
+                        </li>
+                    </th:block>
+                </ul>
+                <a th:href="@{/notice/list(pageNo=${ph.endPage+1}, category='notice', qty=10)}" th:classappend="${!ph.next} ? ' disabled' : ''"><i class="ic ic_carousel_right_white"></i></a>
+            </div>
+        </div>
 
+    </div>
 </main>

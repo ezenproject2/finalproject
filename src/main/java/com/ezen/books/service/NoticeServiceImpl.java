@@ -78,4 +78,33 @@ public class NoticeServiceImpl implements NoticeService{
     public List<NoticeVO> getList(PagingVO pagingVO) {
         return noticeMapper.getList(pagingVO);
     }
+
+    @Override
+    public NoticeVO getDetail(long ntno) {
+        return noticeMapper.getDetail(ntno);
+    }
+
+    @Override
+    public int update(NoticeVO noticeVO, List<String> fileAddrList) {
+        int isOk = noticeMapper.update(noticeVO);
+
+        if(isOk>0 && !fileAddrList.isEmpty()){
+            long ntno = noticeVO.getNtno();
+
+            for(String fileAddr : fileAddrList){
+                NoticeTempFileVO noticeTempFileVO = noticeMapper.findTempByAddr(fileAddr);
+                if(noticeTempFileVO != null){
+                    NoticeFileVO noticeFileVO = NoticeFileVO.builder()
+                            .ntno(ntno)
+                            .fileAddr(fileAddr)
+                            .build();
+                    // 최종 선택된 파일 경로만 저장
+                    isOk *= noticeMapper.registerFile(noticeFileVO);
+                    // 임시 파일은 삭제
+                    noticeMapper.deleteTempFile(noticeTempFileVO.getFino());
+                }
+            }
+        }
+        return isOk;
+    }
 }

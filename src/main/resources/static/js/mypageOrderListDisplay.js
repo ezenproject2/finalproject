@@ -1,4 +1,4 @@
-console.log("orderListDisplay.js recognized.");
+console.log("mypageOrderListDisplay.js recognized.");
 
 document.addEventListener('DOMContentLoaded', () => {
     const isOrderEmpty = document.getElementById('isOrderEmptyInput').value;
@@ -7,12 +7,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if(isOrderEmptyBool) {
         // 주문 내역이 비었을 때 레이아웃 설정
-        document.querySelector('.my_orders_box_none').style = "display: block";
+        // document.querySelector('.my_orders_box_none').style = "display: block";
         document.querySelector('.my_orders_box_wrap').style = "display: none";
     } else {
         // 레이아웃 설정
         document.querySelector('.my_orders_box_none').style = "display: none";
-        document.querySelector('.my_orders_box_wrap').style = "display: block";
+        // document.querySelector('.my_orders_box_wrap').style = "display: block";
 
         // 첫 로딩 시 실행될 함수
         let outerSize = document.getElementById('outerSizeInput').value;
@@ -35,7 +35,6 @@ function trimOrderDate(outerSize) {
 }
 
 // order_detail의 영문 status를 화면에 한글 status로 바꿔 띄움.
-// TODO: 왜 화면에 status가 개판으로 나오는지 확인하고 고칠 것!!!
 function showStatusInKorean(outerSize) {
     for(let i=0; i < outerSize; i++) {
         let innerSize = document.querySelector(`.inner-data-container[data-outer-index="${i}"]`).dataset.innerSize;

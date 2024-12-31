@@ -2,6 +2,7 @@ package com.ezen.books.controller;
 
 import com.ezen.books.domain.*;
 import com.ezen.books.handler.FileHandler;
+import com.ezen.books.handler.PagingHandler;
 import com.ezen.books.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,10 +13,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -33,8 +34,9 @@ public class MypageController {
     private final ProductService productService;
 
     // 준희 담당 마이페이지를 위해 추가한 코드.
-    private final AddressListService addressListService;
-    private final OrderListService orderListService;
+    private final MypageAddressListService mypageAddressListService;
+    private final MypageOrderListService mypageOrderListService;
+    private final PayoutService payoutService;
 
     /*-- 마이페이지 --*/
     @GetMapping("/main")
@@ -174,38 +176,46 @@ public class MypageController {
         myPageLeft(model, authentication);
         log.info(" >>> MypageController: showOrderList start.");
 
-        // mno를 얻기 위해 myPageMain의 있던 코드를 가져옴
-        String loginId = authentication.getName();
+        // 로그인 한 사용자의 mno 얻기
+        long mno = fetchUserMno();
 
-        MemberVO memberVO = memberService.getMemberByInfo(loginId);
-        long mno = memberVO.getMno();
+        boolean isOrderEmpty = mypageOrderListService.isOrderEmpty(mno);
 
-        boolean isOrderEmpty = orderListService.isOrderEmpty(mno);
 
-        // 화면에 띄울 order_detail과 product의 정보를 가져옴.
-        List<List<OrderDetailProductDTO>> orderDetailProductGroup = orderListService.getOrderDetailProductList(mno);
-//        log.info("The orderDetailProductGroup: {}", orderDetailProductGroup);
-        log.info("orderDetailProductGroup is empty or not :{}", orderDetailProductGroup.isEmpty());
+        List<List<OrderDetailProductDTO>> orderDetailProductGroup = new ArrayList<>();
+        List<OrdersVO> orderList = new ArrayList<>();
+        if (isOrderEmpty) {
+            //
+        } else {
+            // 화면에 띄울 order_detail과 product의 정보를 가져옴.
+            orderDetailProductGroup = mypageOrderListService.getOrderDetailProductGroup(mno);
+            // log.info("The orderDetailProductGroup: {}", orderDetailProductGroup);
+            log.info("orderDetailProductGroup is empty or not :{}", orderDetailProductGroup.isEmpty());
 
-        // 화면에 띄울 orders의 주문 날짜들을 가져옴.
-        List<LocalDateTime> orderDateList = new ArrayList<>();
-        for(List<OrderDetailProductDTO> groupOfOneOrder : orderDetailProductGroup) {
-            String orno = groupOfOneOrder.get(0).getOrderDetailVO().getOrno();
-            LocalDateTime orderDate = orderListService.getOrderDate(orno);
-            orderDateList.add(orderDate);
+            // 화면에 띄울 orders의 정보를 가져옴.
+            for(List<OrderDetailProductDTO> groupOfOneOrder : orderDetailProductGroup) {
+                String orno = groupOfOneOrder.get(0).getOrderDetailVO().getOrno();
+                OrdersVO order = mypageOrderListService.getOrder(orno);
+                orderList.add(order);
+            }
         }
-        log.info("The orderDateList: {}", orderDateList);
 
         // 화면에 띄울 사용자 정보와 등급 정보를 가져옴.
-        MemberVO memberInfo = orderListService.getMember(mno);
-        GradeVO memberGrade = orderListService.getMemberGrade(memberInfo.getGno());
+        MemberVO memberInfo = mypageOrderListService.getMember(mno);
+        GradeVO memberGrade = mypageOrderListService.getMemberGrade(memberInfo.getGno());
+
+        // 페이지네이션
+        int totalCount = payoutService.getTotalCount(pagingVO, mno);
+        PagingHandler ph = new PagingHandler(pagingVO, totalCount);
+        log.info("The ph: {}", ph);
 
         model.addAttribute("mno", mno);
         model.addAttribute("isOrderEmpty", isOrderEmpty);
         model.addAttribute("orderDetailProductGroup", orderDetailProductGroup);
-        model.addAttribute("orderDateList", orderDateList);
+        model.addAttribute("orderList", orderList);
         model.addAttribute("memberInfo", memberInfo);
         model.addAttribute("memberGrade", memberGrade);
+        model.addAttribute("ph", ph);
         return "/mypage/order_list";
     }
 
@@ -222,14 +232,14 @@ public class MypageController {
         log.info("mno: {}", mno);
 
         // 화면에 띄울 List<AddressVO>를 가져옴.
-        List<AddressVO> addrList =  addressListService.getAllAddr(mno);
+        List<AddressVO> addrList =  mypageAddressListService.getAllAddr(mno);
         log.info("addrList: {}", addrList);
 
         boolean isAddrEmpty = addrList.isEmpty();
 
         // 화면에 띄울 사용자 정보와 등급 정보를 가져옴.
-        MemberVO memberInfo = addressListService.getMember(mno);
-        GradeVO memberGrade = addressListService.getMemberGrade(memberInfo.getGno());
+        MemberVO memberInfo = mypageAddressListService.getMember(mno);
+        GradeVO memberGrade = mypageAddressListService.getMemberGrade(memberInfo.getGno());
         log.info("memberInfo: {}", memberInfo);
         log.info("memberGrade: {}", memberGrade);
 
@@ -239,6 +249,61 @@ public class MypageController {
         model.addAttribute("memberInfo", memberInfo);
         model.addAttribute("memberGrade", memberGrade);
         return "/mypage/address_list";
+    }
+
+    @GetMapping("order-detail")
+    public String showOrderDetail(@RequestParam("orno") String orno, Model model) {
+        log.info(" >>> MypageController: showOrderDetail start.");
+        log.info("The orno: {}", orno);
+        Map<String, Object> modelAttrs = new HashMap<>();
+
+        long mno = fetchUserMno();
+        log.info("The mno: {}", mno);
+//        modelAttrs.put("mno", mno);
+
+        OrdersVO order = mypageOrderListService.getOrder(orno);
+        log.info("The order: {}", order);
+        modelAttrs.put("order", order);
+        modelAttrs.put("order isPickup", order.getIsPickup());
+
+        List<OrderDetailProductDTO> detailProductList = mypageOrderListService.getOrderDetailProductList(orno);
+        log.info("The detailProductList: {}", detailProductList);
+        modelAttrs.put("detailProductList", detailProductList);
+
+        if(order.getIsPickup().equals("N")) {
+            DeliveryVO delivery = mypageOrderListService.getDelivery(orno);
+            log.info("The delivery: {}", delivery);
+            modelAttrs.put("delivery", delivery);
+            modelAttrs.put("pickUp", "none");
+            modelAttrs.put("offlineStore", "none");
+        } else if (order.getIsPickup().equals("Y")) {
+            PickUpVO pickUp = mypageOrderListService.getPickUp(orno);
+            OfflineStoreVO offlineStore = mypageOrderListService.getOfflineStore(pickUp.getOsno());
+            modelAttrs.put("delivery", "none");
+            log.info("The pickUp: {}", pickUp);
+            log.info("The offlineStore: {}", offlineStore);
+            modelAttrs.put("pickUp", pickUp);
+            modelAttrs.put("offlineStore", offlineStore);
+        }
+
+        boolean isPickUpNone = (modelAttrs.get("pickUp").equals("none")) ? true : false;
+        modelAttrs.put("isPickUpNone", isPickUpNone);
+
+        PaymentVO payment = mypageOrderListService.getPayment(orno);
+        modelAttrs.put("payment", payment);
+
+        model.addAllAttributes(modelAttrs);
+        return "mypage/order_detail";
+    }
+
+    private long fetchUserMno() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loginId = authentication.getName();
+
+        MemberVO memberVO = memberService.getMemberByInfo(loginId);
+        long mno = memberVO.getMno();
+        log.info("mno: {}", mno);
+        return mno;
     }
 
 }

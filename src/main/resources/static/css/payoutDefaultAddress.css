@@ -1,0 +1,153 @@
+.join_content {
+    margin : 50px 0;
+}
+em {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #E7B343;
+}
+.essential {
+    font-weight: 700;
+}
+.join_data_box {
+    width: 100%;
+    position: relative;
+    display: flex;
+}
+.join_title {
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #C6C6C6;
+    padding: 0;
+}
+.join_data_wrap {
+    width: 80%;
+    padding: 10px 0 10px 10px;
+}
+.form_table {
+    width: 100%;
+}
+.form_table tr {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 0;
+}
+.form_table td {
+    text-align :start;
+    height: 70px;
+}
+.form_table_label {
+    width: 20%;
+}
+.form_id_wrap {
+    width: 500px;
+}
+.form_data {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.form_data.id {
+    display: flex;
+    flex-direction: row;
+    align-items :center;
+    justify-content: space-between;
+}
+.id_check, .addrBtn {
+    width: 80px;
+    height: 30px;
+    background: #39553F;
+    border-radius: 6px;
+    color: white;
+    margin: auto 15px;
+}
+.form_item {
+    display: flex;
+    align-items: center;
+    position: relative;
+    box-sizing: border-box;
+    max-width: 500px;
+    min-height: 45px;
+    padding: 0 10px 0 45px;
+    border: 1px solid #C6C6C6;
+    border-radius: 6px;
+}
+.form_item:focus {
+    border: 2px solid #717171;
+}
+.form_table input {
+    flex: 1 1 auto;
+    width: 100%;
+    font-size: 16px;
+    line-height: 22px;
+    color: #222;
+}
+.btn_view, .btn_view.hide {
+    margin-left: 4px;
+    vertical-align: middle;
+}
+.ic_view, .ic_view.hide {
+    width: 30px;
+    height: 30px;
+}
+.btn-area {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.join_btn {
+    width: 50%;
+    display: block;
+    padding: 10px 20px;
+    border-radius: 8px;
+    background-color: #4972487c;
+    margin: 10px 0 10px 0;
+    
+}
+.join_btn .btn_text {
+    font-size: 17px;
+    line-height: 24px;
+    letter-spacing: -.4px;
+    color: #fff;
+}
+.form_item:focus-within {
+    border: 2px solid #717171;
+}
+.form_item.error {
+    border: 2px solid #EB003B;
+}
+.ic_error {
+    width: 15px;
+    height: 15px;
+    margin-right: 3px;
+}
+.error_message {
+    color: #EB003B;
+    display: none;
+    font-size: 0.8rem;
+    align-items: center;
+}
+
+.form_data.address {
+    height: auto;
+    gap: 10px;
+}
+.form_data.address .form_item {
+    padding: 0 20px;
+}
+.form_addr1, .form_addr2 {
+    display: flex;
+    flex-direction: row;
+}
+.form_addr2 {
+    justify-content: space-between;
+}
+.form_item.addr1 {
+    width: 241px;
+    margin-right: 10px;
+}
+.form_addr2 .addr2 {
+    width: 60%;
+}

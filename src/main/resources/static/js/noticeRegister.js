@@ -3,6 +3,7 @@ console.log("공지사항 등록 js in!!");
 var noticeBox = new FroalaEditor('#noticeBox', {
   // 한글 패치
   language: 'ko',
+  zIndex: 2000, // 필요에 따라 조정
 
   toolbarButtons: {
     'moreText': {
@@ -17,7 +18,7 @@ var noticeBox = new FroalaEditor('#noticeBox', {
   },
 
   height: 450,   // 높이 설정 (px 단위)
-  width: 1280, // 너비 설정 (백분율로 설정 가능)
+  width: 1060, // 너비 설정 (백분율로 설정 가능)
 
   // 이미지 업로드 처리
   imageUploadURL: '/notice/upload',

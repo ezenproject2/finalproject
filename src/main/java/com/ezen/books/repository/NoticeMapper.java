@@ -35,4 +35,8 @@ public interface NoticeMapper {
     int getTotalCount(PagingVO pagingVO);
 
     List<NoticeVO> getList(PagingVO pagingVO);
+
+    NoticeVO getDetail(long ntno);
+
+    int update(NoticeVO noticeVO);
 }

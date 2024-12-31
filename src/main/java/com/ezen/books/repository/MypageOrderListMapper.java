@@ -4,11 +4,10 @@ import com.ezen.books.domain.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper
-public interface OrderListMapper {
+public interface MypageOrderListMapper {
     List<OrdersVO> getAllOrderList(long mno);
 
     List<OrderDetailVO> getOrderDetailList(String orno);
@@ -27,5 +26,17 @@ public interface OrderListMapper {
 
     GradeVO getMemberGrade(Long gno);
 
-    LocalDateTime getOrderDate(String orno);
+    OrdersVO getOrder(String orno);
+
+    List<Long> getOdnoList(String orno);
+
+    OrderDetailVO findOrderDetail(Long odno);
+
+    DeliveryVO getDelivery(String orno);
+
+    PickUpVO getPickUp(String orno);
+
+    OfflineStoreVO getOfflineStore(long osno);
+
+    PaymentVO getPayment(String orno);
 }

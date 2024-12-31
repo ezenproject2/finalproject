@@ -1,4 +1,4 @@
-console.log("orderListBusiness.js recognized.");
+console.log("mypageOrderListBusiness.js recognized.");
 
 // NOTE: 한꺼번에 환불하는 게 가능한 경우를 염두하고 짠 코드.
 // 맨 위에 nav bar를 만들어서 거기에 환불하기 버튼을 뒀었음.
@@ -18,15 +18,15 @@ console.log("orderListBusiness.js recognized.");
 //     }
 // })
 
-const refundBtns = document.querySelectorAll('.refund-btn');
+const refundBtns = document.querySelectorAll('.refund_btn');
 refundBtns.forEach(refundBtn => {
     refundBtn.addEventListener('click', (e) => {
-        let innerIndex = e.target.dataset.orderDetail;
-        let outerIndex = e.target.closest('.cart_list').dataset.orderList;
+        let innerIndexVal = e.target.dataset.innerIndex;
+        let outerIndexVal = e.target.closest('.inner-data-container').dataset.outerIndex;
 
-        let odno = document.querySelector(`.cart_list[data-order-list="${outerIndex}"] .product_info[data-order-detail="${innerIndex}"]`).dataset.odno;
-        let orno = document.querySelector(`.cart_list[data-order-list="${outerIndex}"] .product_info[data-order-detail="${innerIndex}"]`).dataset.orno;
-        let qtyPrice= document.querySelector(`.cart_list[data-order-list="${outerIndex}"] .qty-price[data-order-detail="${innerIndex}"]`).innerText;
+        let odno = document.querySelector(`.inner-data-container[data-outer-index="${outerIndexVal}"] #odnoInput[data-inner-index="${innerIndexVal}"]`).value;
+        let orno = document.querySelector(`.inner-data-container[data-outer-index="${outerIndexVal}"] #ornoInput[data-inner-index="${innerIndexVal}"]`).value;
+        let qtyPrice= document.querySelector(`.inner-data-container[data-outer-index="${outerIndexVal}"] .order-detail-price[data-inner-index="${innerIndexVal}"]`).innerText.replace(/,/g, "");
 
         console.log("odno: " + odno);
         console.log("orno: " + orno);
@@ -40,7 +40,7 @@ async function processRefund(odnoVal, ornoVal, qtyPriceVal) {
 
     await sendRefundDataToServer(odnoVal, ornoVal, qtyPriceVal);
     alert("환불이 완료되었습니다.");
-    window.location.href = "/mypage/order-list/go-to-index";
+    window.location.href = "/mypage/order-list";
 }
 
 async function sendRefundDataToServer(odnoVal, ornoVal, qtyPriceVal) {

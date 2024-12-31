@@ -1,0 +1,38 @@
+/* 공통 스타일 */
+.inner {
+  width: 1060px;
+  margin: 0 auto;
+}
+
+.breadcrumb_wrap, .breadcrumb_list, .breadcrumb_item {
+    position: relative;
+    z-index: 10;
+    display: inline-block;
+    vertical-align: top;
+}
+.breadcrumb_wrap {
+    width: 100%;
+    position: relative;
+    padding-top: 20px;
+}
+.breadcrumb_wrap a {
+    color: #555;
+    position: relative;
+    padding-bottom: 8px;
+    line-height: 20px;
+}
+.ic_home {
+    width: 20px;
+    height: 20px;
+}
+.breadcrumb_wrap .ic_carousel_up_white, .breadcrumb_wrap .ic_carousel_down_white, .breadcrumb_wrap .ic_carousel_up_white  {
+    width: 15px;
+    height: 15px;
+    padding: auto;
+}
+.breadcrumb_item:nth-child(n+2):before {
+    content: "/";
+    color: #c6c6c6;
+    margin: 0 10px;
+}
+
