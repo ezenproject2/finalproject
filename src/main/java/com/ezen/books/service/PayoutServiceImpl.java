@@ -76,7 +76,7 @@ public class PayoutServiceImpl implements PayoutService {
             notificationMapper.insertNotification(notificationVO);
 
             // 생성된 알림을 컨트롤러에 전달하여 실시간 전송
-//            notificationController.sendNotificationToClient(ordersVO.getMno(), notificationVO);
+            notificationController.sendNotificationToClient(ordersVO.getMno(), notificationVO);
         }
 
         return isOk;
@@ -173,7 +173,7 @@ public class PayoutServiceImpl implements PayoutService {
             notificationMapper.insertNotification(notificationVO);
 
             // 생성된 알림을 컨트롤러에 전달하여 실시간 전송
-//            notificationController.sendNotificationToClient(ordersVO.getMno(), notificationVO);
+            notificationController.sendNotificationToClient(notificationVO.getMno(), notificationVO);
         }
 
         return isOk;

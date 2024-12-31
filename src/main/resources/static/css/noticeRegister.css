@@ -1,0 +1,59 @@
+/* 제목 입력 필드 스타일 */
+.editor-title {
+  width: 1060px;
+  margin-top: 60px;
+  padding: 5px 12px 5px 22px;
+  box-sizing: border-box;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* 플로라 에디터 컨테이너 */
+.editor-container {
+  width: 1060px;
+  min-height: 300px;
+}
+
+#noticeBox {
+  border: none !important; /* 외곽선 제거 */
+  outline: none !important; /* 포커스 시 외곽선 제거 */
+}
+
+#noticeBox .fr-desktop{
+  /* border-top-right-radius: 0%;
+  border-top-left-radius: 0%; */
+  border: none;
+}
+
+#noticeBox .fr-second-toolbar{
+  /* border-bottom-right-radius: 0%;
+  border-bottom-left-radius: 0%; */
+  border: none;
+}
+
+#noticeBox .fr-wrapper {
+  overflow: hidden;
+  border: none;
+}
+
+/* 저장 버튼 스타일 */
+.register_btn {
+  margin-top: 5px;
+  margin-right: 10px;
+  padding: 12px 20px;
+  background-color: #497248;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.register_btn:hover {
+  background-color: #39553f;
+}
+
+.bntBox{
+  display: flex;
+  justify-content: flex-end;
+}
