@@ -32,4 +32,9 @@
         AND LAST_DAY(CURDATE())
     </select>
 
+    <select id="getPointAmount" resultType="java.lang.Integer">
+        select used from points
+        where orno = #{orno} and used != 0
+    </select>
+
 </mapper>

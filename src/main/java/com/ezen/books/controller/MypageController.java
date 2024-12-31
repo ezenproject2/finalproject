@@ -172,7 +172,7 @@ public class MypageController {
 
     // 준희 담당 마이페이지를 위해 추가한 코드.
     @GetMapping("/order-list")
-    public String showOrderList(Model model, Authentication authentication) {
+    public String showOrderList(Model model, Authentication authentication, PagingVO pagingVO) {
         myPageLeft(model, authentication);
         log.info(" >>> MypageController: showOrderList start.");
 
@@ -252,7 +252,8 @@ public class MypageController {
     }
 
     @GetMapping("order-detail")
-    public String showOrderDetail(@RequestParam("orno") String orno, Model model) {
+    public String showOrderDetail(@RequestParam("orno") String orno, Model model, Authentication authentication) {
+        myPageLeft(model, authentication);
         log.info(" >>> MypageController: showOrderDetail start.");
         log.info("The orno: {}", orno);
         Map<String, Object> modelAttrs = new HashMap<>();
@@ -293,6 +294,16 @@ public class MypageController {
         modelAttrs.put("payment", payment);
 
         model.addAllAttributes(modelAttrs);
+
+        /* yh-------------- */
+        int usedCouponAmount = couponService.getCouponAmount(orno);
+        int usedPointAmount = pointService.getPointAmount(orno);
+        int totalAmount = usedCouponAmount + usedPointAmount;
+        model.addAttribute("coupon", usedCouponAmount);
+        model.addAttribute("point", usedPointAmount);
+        model.addAttribute("total", totalAmount);
+        /* ---------------- */
+
         return "mypage/order_detail";
     }
 

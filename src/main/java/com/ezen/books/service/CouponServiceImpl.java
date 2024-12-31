@@ -57,4 +57,10 @@ public class CouponServiceImpl implements CouponService{
         return couponMapper.getExpiringCouponsThisMonth(mno, firstDay, lastDay);
     }
 
+    @Override
+    public int getCouponAmount(String orno) {
+        Integer amount = couponMapper.getCouponAmount(orno);
+        return (amount != null) ? amount : 0;
+    }
+
 }

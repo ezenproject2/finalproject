@@ -20,4 +20,6 @@ public interface CouponService {
     List<CouponLogVO> findMemberAllCoupons(Long mno);
 
     List<CouponLogVO> getExpiringCouponsThisMonth(long mno);
+
+    int getCouponAmount(String orno);
 }

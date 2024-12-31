@@ -58,4 +58,24 @@
         where cl.mno = #{mno}
     </select>
 
+    <select id="getCouponAmount" resultType="java.lang.Integer">
+        select
+        case
+            when status = '사용 완료' then
+                case
+                    when cno = 1 then 1000
+                    when cno = 2 then 2000
+                    when cno = 3 then 1000
+                    when cno = 4 then 2000
+                    when cno = 5 then 3000
+                    when cno = 6 then 2000
+                    when cno = 7 then 3000
+                    when cno = 8 then 4000
+                    else 0
+                end
+            else 0
+        end as coupon_amount
+        from coupon_log
+        where orno = #{orno}
+    </select>
 </mapper>

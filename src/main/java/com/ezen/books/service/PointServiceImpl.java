@@ -35,7 +35,13 @@ public class PointServiceImpl implements PointService{
     @Override
     public int getExpiringPoints() {
         Integer points = pointMapper.getExpiringPoints();
-        return points != null ? points : 0;  // null이면 0으로 처리
+        return points != null ? points : 0;
+    }
+
+    @Override
+    public int getPointAmount(String orno) {
+        Integer amount = pointMapper.getPointAmount(orno);
+        return (amount != null) ? amount : 0;
     }
 
 }

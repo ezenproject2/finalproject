@@ -15,4 +15,6 @@ public interface PointMapper {
     List<PointsVO> getPointsHistory(long mno);
 
     Integer getExpiringPoints();
+
+    Integer getPointAmount(String orno);
 }
