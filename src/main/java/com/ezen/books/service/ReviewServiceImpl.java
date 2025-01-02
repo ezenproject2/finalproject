@@ -70,7 +70,7 @@ public class ReviewServiceImpl implements ReviewService{
             long writerMno = reviewMapper.getMnoByRno(rno);
             NotificationVO notificationVO = NotificationVO.builder()
                     .mno(writerMno)
-                    .message("회원님의 리뷰에 누군가 좋아요를 눌렀습니다!")
+                    .message("누군가 회원님의 리뷰에 [좋아요]를 남겼어요!")
                     .type("리뷰")
                     .rno(rno)
                     .build();

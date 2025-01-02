@@ -181,13 +181,13 @@ document.addEventListener('DOMContentLoaded', function () {
             let customHref = "";
             if (notificationVO.type == "주문") {
                 typeClassName = "ic_noti_delivery";
-                customHref = "/mypage/main";
+                customHref = "/mypage/order-list";
             } else if (notificationVO.type == "픽업") {
                 typeClassName = "ic_noti_pickup";
-                customHref = "/mypage/main";
+                customHref = "/mypage/order-list";
             } else if (notificationVO.type == "쿠폰") {
                 typeClassName = "ic_noti_coupon";
-                customHref = "/mypage/main";
+                customHref = "/mypage/coupon";
             } else if (notificationVO.type == "회원") {
                 typeClassName = "ic_noti_grade";
                 customHref = "/mypage/main";

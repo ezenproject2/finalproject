@@ -1,9 +1,11 @@
 package com.ezen.books.service;
 
+import com.ezen.books.controller.NotificationController;
 import com.ezen.books.domain.*;
 import com.ezen.books.repository.CouponMapper;
 import com.ezen.books.repository.GradeMapper;
 import com.ezen.books.repository.MemberMapper;
+import com.ezen.books.repository.NotificationMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,8 @@ import java.util.List;
 public class MemberServiceImpl implements MemberService{
 
     private final MemberMapper memberMapper;
+    private final NotificationMapper notificationMapper;
+    private final NotificationController notificationController;
 
     @Override
     public boolean checkLoginIdDuplicate(String loginId) {
@@ -80,6 +84,30 @@ public class MemberServiceImpl implements MemberService{
             memberMapper.updateMemberGrade(mno, gno);
             log.info("Successfully updated grade for mno=" + mno + " to gno=" + gno);
 
+            // (차민주) 등급 업데이트 시 알림 전송
+            String name = "";
+            if(gno == 1){
+                name = "새싹";
+            }else if(gno == 2){
+                name = "실버";
+            }else if(gno == 3){
+                name = "골드";
+            }else if(gno == 4){
+                name = "플래티넘";
+            }
+
+            NotificationVO notificationVO = NotificationVO.builder()
+                    .mno(mno)
+                    .message("회원님의 등급이 변경되었어요. 현재 [" + name + "] 등급입니다! 축하드려요!")
+                    .type("회원")
+                    .build();
+
+            // 알림 저장
+            notificationMapper.insertNotification(notificationVO);
+
+            // 생성된 알림을 컨트롤러에 전달하여 실시간 전송
+            notificationController.sendNotificationToClient(mno, notificationVO);
+
             expireOldCoupons(mno);  // 기존 쿠폰 만료 처리
             giveCouponToMember(mno, gno);  // 새로운 등급에 맞는 쿠폰 지급
 
@@ -118,6 +146,19 @@ public class MemberServiceImpl implements MemberService{
 
                     memberMapper.insertCouponLog(couponLogVO);  // 쿠폰 로그에 추가
                     log.info("쿠폰 지급 완료: mno=" + mno + ", coupon=" + coupon.getCno());
+
+                    // (차민주) 쿠폰 발부 시 알림 전송
+                    NotificationVO notificationVO = NotificationVO.builder()
+                            .mno(mno)
+                            .message("똑똑! 회원님에게 새로운 쿠폰이 배달왔어요!")
+                            .type("쿠폰")
+                            .build();
+
+                    // 알림 저장
+                    notificationMapper.insertNotification(notificationVO);
+
+                    // 생성된 알림을 컨트롤러에 전달하여 실시간 전송
+                    notificationController.sendNotificationToClient(mno, notificationVO);
                 }
             }
         } catch (Exception e) {

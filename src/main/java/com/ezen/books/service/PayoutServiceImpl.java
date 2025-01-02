@@ -69,7 +69,7 @@ public class PayoutServiceImpl implements PayoutService {
         if(isOk>0 && ordersVO.getIsPickup().equals("N")){
             NotificationVO notificationVO = NotificationVO.builder()
                     .mno(ordersVO.getMno())
-                    .message("상품 주문이 완료되었습니다! 감사합니다!")
+                    .message("상품 주문이 완료되었습니다! 감사합니다 :)")
                     .type("주문")
                     .build();
             // 알림 저장
@@ -166,7 +166,7 @@ public class PayoutServiceImpl implements PayoutService {
 
             NotificationVO notificationVO = NotificationVO.builder()
                     .mno(mno)
-                    .message("픽업 주문이 완료되었습니다! [" + storeName + "]에서 기다리고있어요 :)")
+                    .message("픽업 주문이 완료되었습니다! [" + storeName + "] 에서 회원님을 기다리고있어요 :)")
                     .type("픽업")
                     .build();
             // 알림 저장

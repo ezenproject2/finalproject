@@ -71,6 +71,18 @@ userMessage.addEventListener('input', () => {
     }
 });
 
+// 채팅창이 열려 있을 때 엔터키 입력 시 전송 버튼 클릭과 동일한 동작을 하도록 이벤트 추가
+userMessage.addEventListener('keydown', (event) => {
+    // 엔터키를 눌렀을 때 (키코드 13은 엔터키)
+    if (event.key === 'Enter' && userMessage.value.trim().length > 0) {
+        // 엔터키 기본 동작 방지 (줄바꿈 방지)
+        event.preventDefault();
+        
+        // 전송 버튼 클릭 이벤트 발동
+        sendButton.click();
+    }
+});
+
 sendButton.disabled = true; // 초기 상태 설정 (비활성화)
 
 // 사용자가 보낸 질문을 화면에 표시
