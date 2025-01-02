@@ -7,7 +7,39 @@
 
     <insert id="insert" parameterType="com.ezen.books.domain.InquiryVO">
         insert into inquiry (mno, title, type, content, file_addr, status, reg_at)
-        values (#{mno}, #{title}, #{type}, #{content}, #{fileAddr}, '접수', now())
+        values (#{mno}, #{title}, #{type}, #{content}, #{fileAddr}, '답변 대기', now())
     </insert>
+
+    <select id="getInquiriesByMno" resultType="com.ezen.books.domain.InquiryVO">
+        select * from inquiry
+        where mno = #{mno}
+        order by reg_at desc
+    </select>
+
+    <select id="getAllInquiries" resultType="com.ezen.books.domain.InquiryVO">
+        select * from inquiry
+        <where>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+        order by reg_at desc
+    </select>
+    <select id="getLoginId" resultType="String">
+        select m.login_id from member m
+        join inquiry i ON m.mno = i.mno
+        where i.ino = #{ino}
+    </select>
+
+    <select id="getInquiryByIno" resultType="com.ezen.books.domain.InquiryVO">
+        select * from inquiry
+        where ino = #{ino}
+    </select>
+
+    <update id="updateInquiry">
+        update inquiry
+        set response = #{response}, status = '답변 완료', mod_at = now()
+        where ino = #{ino}
+    </update>
 
 </mapper>

@@ -207,10 +207,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-    // -----------------------------------------------------------------
-    // 서버쪽
+// yh-----------------------------------------------------------------
 
-   // ID 중복 체크 - 여기서부터 다시!!!
+    let isIdChecked = false;
+    // ID 중복 체크
     document.querySelector('.id_check').addEventListener('click', function() {
         const loginId = document.querySelector('[name="loginId"]').value;
 
@@ -227,6 +227,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     alert("이미 사용 중인 아이디입니다.");
                 } else {
                     alert("사용 가능한 아이디입니다.");
+                    isIdChecked = true;
                 }
             })
             .catch(error => {
@@ -235,4 +236,13 @@ document.addEventListener("DOMContentLoaded", () => {
             });
     });
 
-  });
+});
+
+// 회원가입 폼 제출 시, 아이디 중복 확인 상태 체크
+document.querySelector('form').addEventListener('submit', function(event) {
+    if (!isIdChecked) {
+        alert("아이디 중복 확인을 해주세요.");
+        event.preventDefault();  // 폼 제출을 막음
+    }
+});
+

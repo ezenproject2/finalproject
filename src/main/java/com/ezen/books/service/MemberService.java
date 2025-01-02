@@ -2,7 +2,10 @@ package com.ezen.books.service;
 
 import com.ezen.books.domain.AddressVO;
 import com.ezen.books.domain.MemberVO;
+import com.ezen.books.domain.OrderDetailProductDTO;
 import jakarta.validation.constraints.NotBlank;
+
+import java.util.List;
 
 public interface MemberService {
     
@@ -37,4 +40,14 @@ public interface MemberService {
     int saveAddressToServer(AddressVO addressVO);
 
     void updateAllMemberGrades();
+
+    MemberVO selectMember(String email, String name);
+
+    MemberVO selectMemberByEmail(String email);
+
+    int pwUpdate(MemberVO memberVO);
+
+    List<MemberVO> getList();
+
+    List<OrderDetailProductDTO> getRecentBooks(long mno);
 }

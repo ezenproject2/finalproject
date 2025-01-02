@@ -22,4 +22,7 @@ public class InquiryVO {
     private Date regAt;  // 작성일
     private Date modAt;  // 답변일
 
+    // sql 구문 외
+    private String loginId;
+
 }

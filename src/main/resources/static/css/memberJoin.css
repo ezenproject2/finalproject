@@ -178,6 +178,14 @@ em {
     color: white;
     margin: auto 15px;
 }
+.email_check {
+    width: 95px;
+    height: 30px;
+    background: #39553F;
+    border-radius: 6px;
+    color: white;
+    margin: auto 15px;
+}
 .form_item {
     display: flex;
     align-items: center;

@@ -7,107 +7,142 @@
 <head>
   <title> 이젠문고 </title>
   <meta charset="UTF-8"/>
-  <style>
-    h1 {
-    text-align: center;
-    color: #333;
-    }
-
-    /* 테이블 스타일 */
-    table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    }
-
-    th, td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-    }
-
-    th {
-    background-color: #3498db;
-    color: white;
-    }
-
-    td {
-    background-color: #fff;
-    }
-
-    /* 쿠폰 이름 */
-    td:first-child {
-    font-weight: bold;
-    }
-
-    /* 사용 가능한 쿠폰 버튼 */
-    .btn {
-    padding: 8px 15px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-    font-size: 14px;
-    }
-
-    .btn:hover {
-    background-color: #218838;
-    }
-
-    /* 사용 불가 상태 */
-    .unavailable {
-    color: #e74c3c;
-    font-weight: bold;
-    }
-
-    /* 반응형 테이블 */
-    @media (max-width: 768px) {
-    .coupon_table {
-    width: 100%;
-    font-size: 12px;
-    }
-
-    th, td {
-    padding: 8px;
-    }
-
-    .btn {
-    font-size: 12px;
-    }
-    }
-
-  </style>
+  <link rel="stylesheet" href="/css/mypageMain.css"/>
+  <link rel="stylesheet" href="/css/mypageCoupon.css"/>
 </head>
 
 <main layout:fragment="main">
-  <h1>쿠폰 선택</h1>
-  <div class="container">
-    <h1>사용 가능한 쿠폰</h1>
-    <input type="hidden" name="mno" th:value="${mno}"/>
-    <table class="coupon_table">
-      <thead>
-      <tr>
-        <th>쿠폰 번호</th>
-        <th>최소 구매 금액</th>
-        <th>할인 금액</th>
-        <th>유효 기간</th>
-        <th>상태</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="coupon : ${coupons}">
-        <td th:text="${coupon.cno}"></td>
-        <td th:text="${coupon.minPrice}"></td>
-        <td th:text="${coupon.disAmount}"></td>
-        <td th:text="${#dates.format(coupon.expAt, 'yyyy-MM-dd')}"></td>
-        <td th:text="${coupon.status}"></td>
-      </tr>
-      </tbody>
-    </table>
+    <div class="myPage_inner inner">
+      <div th:replace="~{mypage/myPage_left :: myPage_left}"></div>
+      <div class="myPage_right">
+        <div class="list_menu">
+          <div class="list_menu_item"><a th:href="@{/mypage/point}">통합 포인트</a></div>
+          <div class="list_menu_item tap"><a th:href="@{/mypage/coupon}">쿠폰</a></div>
+          <div class="list_menu_item"><a href="">기프트카드</a></div>
+        </div>
 
-  </div>
+        <div class="coupon_info">
+          <div>
+            <span class="inline-flex">
+              <i class="ic ic_coupon2"></i>
+              <span>
+                사용 가능 쿠폰
+                <strong>[[${availableCoupons}]]</strong>
+                장
+              </span>
+            </span>
+          </div>
+          <div>
+            <span>
+              이번 달 소멸 예정 쿠폰
+              <strong>[[${expiringCoupons.size()}]]</strong>
+              장
+            </span>
+          </div>
+        </div>
 
+        <div class="coupon_list_menu">
+          <ul>
+            <li class="select"> 사용 가능 쿠폰 </li>
+            <li> 사용된 쿠폰 </li>
+          </ul>
+
+          <div class="available_coupon"> <!-- 사용 가능 쿠폰 -->
+            <ul class="available_coupon_list">
+              <li th:each="coupon : ${coupons}" th:if="${coupon.status == '사용 가능'}">
+                <div class="coupon">
+                  <div class="coupon_left">
+                    <div class="coupon_top">
+                      <strong th:text="${coupon.disAmount}">원 할인 </strong>
+                      <p th:text="${coupon.title}"></p>
+                    </div>
+                    <div class="coupon_bottom">
+                      <span class="coupon_date" >
+                        <span class="startDate"></span> ~
+                        <span class="expDate" th:text="${#dates.format(coupon.expAt, 'yyyy.MM.dd')}"></span>
+                        <strong class="dDay"></strong>
+                      </span>
+                      <span class="coupon_price_condition"  th:text="${coupon.minPrice} + '만원 이상 주문시'"></span>
+                    </div>
+                  </div>
+                  <div class="coupon_right"> <span>COUPON</span> </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="disappear_coupon"> <!-- 사용된 쿠폰 -->
+            <ul class="disappear_coupon_list">
+              <li th:each="coupon : ${coupons}" th:if="${coupon.status == '사용 완료'}">
+                <div class="coupon">
+                  <div class="coupon_left">
+                    <div class="coupon_top">
+                      <strong th:text="${coupon.disAmount}">원 할인 </strong>
+                      <p th:text="${coupon.title}"></p>
+                    </div>
+                    <div class="coupon_bottom">
+                      <span class="coupon_date">
+                        <span> 사용일 </span>
+                        <span th:text="${#dates.format(coupon.usedAt, 'yyyy.MM.dd')}"></span>
+                      </span>
+                      <span class="coupon_price_condition">[[${coupon.minPrice}]] 만원 이상 주문시</span>
+                    </div>
+                  </div>
+                  <div class="coupon_right"> <span>COUPON</span> </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="/js/mypageCoupon.js"></script>
+
+  <script>
+    // 만료일에서 특정 개월 수를 빼는 함수
+function subtractMonths(dateStr, months) {
+  let date = new Date(dateStr);  // "yyyy.MM.dd" 형식의 문자열을 Date 객체로 변환
+  date.setMonth(date.getMonth() - months);  // 월을 빼기
+  return date;
+}
+
+// D-Day 계산을 위한 함수
+function calculateDDay(expDateStr) {
+  const today = new Date();  // 오늘 날짜
+  const expDate = new Date(expDateStr);  // expDate는 "yyyy.MM.dd" 형식의 문자열로 제공됨
+  const diffTime = expDate - today;  // 두 날짜의 차이 (밀리초)
+  const diffDays = Math.ceil(diffTime / (1000 * 3600 * 24));  // 밀리초를 일수로 변환
+
+  return diffDays >= 0 ? `D-${diffDays}` : 'Expired';  // D-0 혹은 만료된 경우 "Expired"
+}
+
+// 모든 사용 가능 쿠폰에 대해 D-Day 및 startDate 업데이트
+document.querySelectorAll('.coupon').forEach(function(couponElement) {
+  const expDateElement = couponElement.querySelector('.expDate');
+  const startDateElement = couponElement.querySelector('.startDate');
+  const dDayElement = couponElement.querySelector('.dDay');
+
+  // 만약 expDate가 없으면 D-Day 계산을 건너뜀
+  if (expDateElement) {
+    const expDateStr = expDateElement.textContent.trim();
+    const dDayText = calculateDDay(expDateStr);  // D-Day 계산
+    dDayElement.textContent = dDayText;  // D-Day를 HTML에 표시
+
+    // 3개월 전 날짜 계산
+    const newDate = subtractMonths(expDateStr, 3);  // 3개월 전 날짜
+    const formattedDate = newDate.getFullYear() + "." +
+                          ("0" + (newDate.getMonth() + 1)).slice(-2) + "." +
+                          ("0" + newDate.getDate()).slice(-2);  // yyyy.MM.dd 형식으로 변환
+
+    // 3개월 전 날짜를 HTML에 표시
+    startDateElement.textContent = formattedDate;  // 3개월 전 날짜를 표시
+  }
+});
+
+  </script>
 
 
 </main>
+
+
+

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+  <title> 이젠문고 </title>
+  <meta charset="UTF-8"/>
+  <link rel="stylesheet" href="/css/memberPwFind.css"/>
+</head>
+<main layout:fragment="main">
+  <div class="inner">
+    <div class="find_wrap">
+      <h2> 아이디 찾기 </h2>
+      <form action="/member/id_find" method="POST" class="content">
+        <div class="textbox">
+          <input id="email" name="email" type="email" placeholder="이메일" required>
+        </div>
+        <div class="textbox">
+          <input id="name" name="name" type="text" placeholder="이름" required>
+        </div>
+        <input type="submit" value="아이디 찾기">
+      </form>
+      <br>
+      <div th:if="${foundId != null}">
+        <br>
+        <p style="font-size: 18px;">회원님의 아이디는 <strong th:text="${foundId}"></strong> 입니다.</p>
+        <br>
+        <div th:if="${error != null}">
+          <p style="color: #f27370;" th:text="${error}"></p>
+        </div>
+        <a th:href="@{/member/login}"><input type="submit" id="check" value="OK"></a>
+      </div>
+    </div>
+  </div>
+</main>

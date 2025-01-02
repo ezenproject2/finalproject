@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Slf4j
@@ -17,18 +19,6 @@ public class CouponServiceImpl implements CouponService{
 
     private final MemberService memberService;
     private final CouponMapper couponMapper;
-
-    @Override
-    public List<CouponVO> getMemberCoupons(long mno) {
-        MemberVO memberVO = memberService.getMemberById(mno);
-        // memberVO가 null인 경우 예외 처리 또는 다른 처리
-        if (memberVO == null) {
-            // 예외를 던지거나, 빈 리스트를 반환
-            throw new RuntimeException("회원 정보를 찾을 수 없습니다. mno: " + mno);
-        }
-        return couponMapper.getCouponsForGrade(memberVO.getGno());
-    }
-
 
     @Override
     public List<CouponLogVO> findMemberCoupons(long mno) {
@@ -54,4 +44,23 @@ public class CouponServiceImpl implements CouponService{
     public List<CouponLogVO> findMemberAllCoupons(Long mno) {
         return couponMapper.findMemberAllCoupons(mno);
     }
+
+    @Override
+    public List<CouponLogVO> getExpiringCouponsThisMonth(long mno) {
+        LocalDate firstDayOfMonth = LocalDate.now().withDayOfMonth(1);
+        LocalDate lastDayOfMonth = firstDayOfMonth.withDayOfMonth(firstDayOfMonth.lengthOfMonth());
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String firstDay = firstDayOfMonth.format(formatter);
+        String lastDay = lastDayOfMonth.format(formatter);
+
+        return couponMapper.getExpiringCouponsThisMonth(mno, firstDay, lastDay);
+    }
+
+    @Override
+    public int getCouponAmount(String orno) {
+        Integer amount = couponMapper.getCouponAmount(orno);
+        return (amount != null) ? amount : 0;
+    }
+
 }

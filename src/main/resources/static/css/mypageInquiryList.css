@@ -165,8 +165,49 @@
 }
 .inquriy {
     margin-bottom: 24px;
+    margin-right: 70%;
 }
 .inquiry_answer {
     border-top: 1px solid #c6c6c6;
     padding-top: 24px;
+    width: 100%;
+    margin-right: 5%;
+}
+
+.inquriy_item_content_wrap {
+    display: flex;
+    flex-direction: column;
+    align-content: flex-start;
+}
+
+.answerBtn {
+    width: 7%;
+    background-color: #497248;
+    color: #fff;
+    padding: 3px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    margin-top: 15px;
+}
+
+textarea {
+    width: 100%;
+    height: 80px;
+    resize: none;
+}
+
+.my_orders_title {
+    font-size: 1.7rem;
+    font-weight: 700;
+    margin-top: 30px;
+}
+
+.inquriy_loginId{
+    font-size: 14px;
+    color: #497248;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 15ch;
 }

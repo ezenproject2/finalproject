@@ -4,19 +4,6 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ezen.books.repository.PointMapper">
-    <!-- 포인트 삽입 -->
-    <insert id="insertPoint">
-        insert into points (mno, orno, earned, used, balance, reg_at)
-        values (#{mno}, #{orno}, #{earned}, #{used}, #{balance}, now())
-    </insert>
-
-    <!-- 포인트 잔액 업데이트 **-->
-    <update id="updateBalance">
-        update points
-        set balance = #{balance}
-        where mno = #{mno}
-    </update>
-
     <!-- 마지막 포인트 내역 조회 -->
     <select id="getLastPointByMember" resultType="com.ezen.books.domain.PointsVO">
         select * from points
@@ -25,17 +12,29 @@
         limit 1
     </select>
 
-    <!-- 포인트 내역 조회 -->
-    <select id="getPointByMember" resultType="com.ezen.books.domain.PointsVO">
-        select * from points
-        where mno = #{mno}
-        order by reg_at desc
-    </select>
-
     <insert id="savePoints">
         insert into points (mno,orno, earned, used, balance, reg_at)
         values (#{mno}, #{orno}, #{earned}, #{used}, #{balance}, now())
     </insert>
 
+    <!-- 포인트 내역 조회 -->
+    <select id="getPointsHistory" resultType="com.ezen.books.domain.PointsVO">
+        select * from points
+        where mno = #{mno}
+        order by reg_at desc
+    </select>
+
+    <select id="getExpiringPoints" resultType="int">
+        SELECT COALESCE(SUM(earned), 0)
+        FROM points
+        WHERE DATE_ADD(reg_at, INTERVAL 3 MONTH)
+        BETWEEN DATE_FORMAT(CURDATE(), '%Y-%m-01')
+        AND LAST_DAY(CURDATE())
+    </select>
+
+    <select id="getPointAmount" resultType="java.lang.Integer">
+        select used from points
+        where orno = #{orno} and used != 0
+    </select>
 
 </mapper>

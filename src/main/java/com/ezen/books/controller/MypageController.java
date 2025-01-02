@@ -31,6 +31,7 @@ public class MypageController {
     private final GradeService gradeService;
     private final FileHandler fileHandler;
     private final InquiryService inquiryService;
+    private final ProductService productService;
 
     // 준희 담당 마이페이지를 위해 추가한 코드.
     private final MypageAddressListService mypageAddressListService;
@@ -56,24 +57,46 @@ public class MypageController {
         log.info(">>> GradeInfo > {}", gradeVO);
         int pointsBalance = pointService.getBalance(mno);
         List<CouponLogVO> couponList = couponService.findMemberCoupons(mno);
-        model.addAttribute("coupons", couponList);
 
-        // 모델에 데이터 추가
         model.addAttribute("gradeVO", gradeVO);
         model.addAttribute("pointsBalance", pointsBalance);
         model.addAttribute("coupons", couponList);
 
+        /*---------서재-----------*/
+        List<OrderDetailProductDTO> odpDTO = memberService.getRecentBooks(mno);
+        model.addAttribute("odpDTO", odpDTO);
+
         return "/mypage/main";
     }
 
+    @GetMapping("/inquiryList")
+    public String inquiryList(Model model, Authentication authentication,
+                              @RequestParam(value = "status", required = false) String status){
+        myPageLeft(model, authentication);
+
+        String loginId = authentication.getName();
+
+        MemberVO memberVO = memberService.getMemberByInfo(loginId);
+        long mno = memberVO.getMno();
+
+        List<InquiryVO> inquiryVOList = inquiryService.getInquiriesByMno(mno);
+
+        model.addAttribute("inquiryList", inquiryVOList);
+
+        model.addAttribute("stautus", status);
+
+        return "/mypage/inquiryList";
+    }
+
     @GetMapping("/inquiry")
-    public void inquiry(){}
+    public void inquiry(Model model, Authentication authentication){
+        myPageLeft(model, authentication);
+    }
 
     @PostMapping("/inquiry")
     public String inquiry(InquiryVO inquiryVO,
                           @RequestParam(name="files", required = false)MultipartFile file,
-                          Model model){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                          Model model, Authentication authentication){
         String loginId = authentication.getName();  // 로그인한 사용자 이름 (아이디)
 
         MemberVO memberVO = memberService.getMemberByInfo(loginId);  // 사용자 정보 조회
@@ -82,9 +105,6 @@ public class MypageController {
 
         log.info("|| inquiryVO {}", inquiryVO);
         log.info("|| file > {}", file);
-
-        GradeVO gradeVO = gradeService.getGradeByGno(memberVO.getGno());  // grade 정보 조회
-        model.addAttribute("gradeVO", gradeVO);
 
         inquiryVO.setMno(mno);
 
@@ -99,25 +119,61 @@ public class MypageController {
     }
 
     @GetMapping("/coupon")
-    public String memberCoupons(Model model){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    public String memberCoupons(Model model, Authentication authentication){
+        myPageLeft(model, authentication);
+
         String loginId = authentication.getName();
         MemberVO memberVO = memberService.getMemberByInfo(loginId);
         long mno = memberVO.getMno();
         model.addAttribute("mno", mno);
 
-        // 사용자 쿠폰 목록 조회
-        List<CouponLogVO> couponList = couponService.findMemberCoupons(mno);
+        List<CouponLogVO> couponList = couponService.findMemberAllCoupons(mno);
         model.addAttribute("coupons", couponList);
+
+        long availableCoupons = couponList.stream()
+                .filter(c -> "사용 가능".equals(c.getStatus()))
+                .count();
+        model.addAttribute("availableCoupons", availableCoupons);
+
+        List<CouponLogVO> expiringCoupons = couponService.getExpiringCouponsThisMonth(mno);
+        model.addAttribute("expiringCoupons", expiringCoupons);
 
         return "/mypage/coupon";
     }
 
+    @GetMapping("/point")
+    public String pointsHistory(Model model, Authentication authentication){
+        myPageLeft(model, authentication);
+
+        String loginId = authentication.getName();
+        MemberVO memberVO = memberService.getMemberByInfo(loginId);
+        long mno = memberVO.getMno();
+
+        List<PointsVO> pointsHistory = pointService.getPointsHistory(mno);
+        model.addAttribute("points", pointsHistory);
+
+        int expiringPoints = pointService.getExpiringPoints();
+        model.addAttribute("expiringPoints", expiringPoints);
+
+        return "/mypage/point";
+    }
+
+    private void myPageLeft(Model model, Authentication authentication){
+        String loginId = authentication.getName();
+        MemberVO memberVO = memberService.getMemberByInfo(loginId);
+        GradeVO gradeVO = gradeService.getGradeByGno(memberVO.getGno());
+        int pointsBalance = pointService.getBalance(memberVO.getMno());
+
+        model.addAttribute("memberVO", memberVO);
+        model.addAttribute("gradeVO", gradeVO);
+        model.addAttribute("pointsBalance", pointsBalance);
+    }
 
 
     // 준희 담당 마이페이지를 위해 추가한 코드.
     @GetMapping("/order-list")
-    public String showOrderList(PagingVO pagingVO, Model model) {
+    public String showOrderList(Model model, Authentication authentication, PagingVO pagingVO) {
+        myPageLeft(model, authentication);
         log.info(" >>> MypageController: showOrderList start.");
 
         // 로그인 한 사용자의 mno 얻기
@@ -164,11 +220,16 @@ public class MypageController {
     }
 
     @GetMapping("/address-list")
-    public String showAddressList(Model model) {
+    public String showAddressList(Model model, Authentication authentication) {
+        myPageLeft(model, authentication);
         log.info(" >>> MypageController: showAddressList start.");
 
-        // 로그인 한 사용자의 mno 얻기
-        long mno = fetchUserMno();
+        // mno를 얻기 위해 myPageMain의 있던 코드를 가져옴
+        String loginId = authentication.getName();
+
+        MemberVO memberVO = memberService.getMemberByInfo(loginId);
+        long mno = memberVO.getMno();
+        log.info("mno: {}", mno);
 
         // 화면에 띄울 List<AddressVO>를 가져옴.
         List<AddressVO> addrList =  mypageAddressListService.getAllAddr(mno);
@@ -191,7 +252,8 @@ public class MypageController {
     }
 
     @GetMapping("order-detail")
-    public String showOrderDetail(@RequestParam("orno") String orno, Model model) {
+    public String showOrderDetail(@RequestParam("orno") String orno, Model model, Authentication authentication) {
+        myPageLeft(model, authentication);
         log.info(" >>> MypageController: showOrderDetail start.");
         log.info("The orno: {}", orno);
         Map<String, Object> modelAttrs = new HashMap<>();
@@ -232,6 +294,16 @@ public class MypageController {
         modelAttrs.put("payment", payment);
 
         model.addAllAttributes(modelAttrs);
+
+        /* yh-------------- */
+        int usedCouponAmount = couponService.getCouponAmount(orno);
+        int usedPointAmount = pointService.getPointAmount(orno);
+        int totalAmount = usedCouponAmount + usedPointAmount;
+        model.addAttribute("coupon", usedCouponAmount);
+        model.addAttribute("point", usedPointAmount);
+        model.addAttribute("total", totalAmount);
+        /* ---------------- */
+
         return "mypage/order_detail";
     }
 

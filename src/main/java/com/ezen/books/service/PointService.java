@@ -10,4 +10,9 @@ public interface PointService {
 
     void savePoint(PointsVO pointsVO);
 
+    List<PointsVO> getPointsHistory(long mno);
+
+    int getExpiringPoints();
+
+    int getPointAmount(String orno);
 }

@@ -53,5 +53,17 @@ public interface MemberMapper {
 
     int saveAddressToServer(AddressVO addressVO);
 
+    MemberVO selectMember(@Param("email") String email, @Param("name") String name);
+
+    MemberVO selectMemberByEmail(String email);
+
+    int pwUpdate(MemberVO memberVO);
+
+    List<MemberVO> getList();
+
+    long getMemberGrade(long mno);
+
     String getNickName(long mno);
+
+    List<OrderDetailProductDTO> getRecentBooks(long mno);
 }

@@ -30,7 +30,7 @@
         where login_id = #{memberLoginId}
     </select>
 
-    <insert id="saveTokens" parameterType="com.ezen.books.domain.MemberVO">
+    <insert id="saveTokens" useGeneratedKeys="true" keyProperty="mno">
         insert into member (login_id, password, email, name, phone_number, nick_name, auth, gno, provider, provider_id)
         values (#{loginId}, #{password}, #{email}, #{name}, #{phoneNumber}, #{nickName}, 'ROLE_USER' , '1' ,#{provider}, #{providerId})
     </insert>
@@ -81,8 +81,8 @@
     </select>
     <!-- coupon_log에 쿠폰 기록 -->
     <insert id="insertCouponLog">
-        insert into coupon_log (mno, cno, status, used_at, exp_at)
-        values (#{mno}, #{cno}, '사용 가능', NULL, #{expAt})
+        insert into coupon_log (mno, cno, status, used_at, exp_at, title)
+        values (#{mno}, #{cno}, '사용 가능', NULL, #{expAt}, #{title})
     </insert>
     <!-- 기존 쿠폰 상태를 '만료'로 변경 -->
     <update id="updateCouponStatusToExpired">
@@ -128,8 +128,58 @@
         (#{mno}, #{recName}, #{recPhone}, #{addrCode}, #{addr}, #{addrDetail}, #{addrName}, #{isDefault})
     </insert>
 
+    <select id="selectMemberByEmail" parameterType="String" resultType="com.ezen.books.domain.MemberVO">
+        select * from member
+        where email = #{email}
+    </select>
+
+    <update id="pwUpdate" parameterType="com.ezen.books.domain.MemberVO">
+        update member
+        set password = #{password}
+        where email = #{email}
+    </update>
+
+    <select id="selectMember" resultType="com.ezen.books.domain.MemberVO">
+        select * from member
+        where email = #{email}
+        and name = #{name}
+    </select>
+
+    <select id="getList" resultType="com.ezen.books.domain.MemberVO">
+        select * from member
+        where auth = 'ROLE_USER'
+    </select>
+
     <select id="getNickName" resultType="String">
         select nick_name from member where mno = #{mno}
+    </select>
+
+
+    <resultMap id="OrderDetailProductResultMap" type="com.ezen.books.domain.OrderDetailProductDTO">
+        <association property="orderDetailVO" javaType="com.ezen.books.domain.OrderDetailVO">
+            <id property="orno" column="orno" />
+            <result property="prno" column="prno" />
+        </association>
+        <association property="productVO" javaType="com.ezen.books.domain.ProductVO">
+            <id property="prno" column="prno" />
+            <result property="isbn" column="isbn" />
+            <result property="title" column="title" />
+            <result property="link" column="link" />
+            <result property="image" column="image" />
+            <result property="description" column="description" />
+        </association>
+    </resultMap>
+    <select id="getRecentBooks" resultMap="OrderDetailProductResultMap">
+        select
+        p.prno AS prno, p.isbn AS isbn, p.title AS title,
+        p.link AS link, p.image AS image, p.description AS description,
+        max(o.orno) AS orno, max(o.order_at) AS order_at
+        from orders o
+        join order_detail od ON o.orno = od.orno
+        join product p ON od.prno = p.prno
+        where o.mno = #{mno}
+        group by p.prno, p.isbn, p.title, p.link, p.image, p.description
+        order by MAX(o.order_at) desc limit 3
     </select>
 
 </mapper>

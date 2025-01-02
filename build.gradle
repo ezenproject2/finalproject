@@ -52,6 +52,9 @@ dependencies {
 	implementation 'com.squareup.okhttp3:okhttp:4.11.0'
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2' // JSON 파싱
 	implementation 'org.json:json:20210307'
+	/* 메일 관련 (아래 2) */
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'jakarta.mail:jakarta.mail:2.1.0'
 	compileOnly 'org.projectlombok:lombok'
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<head>
+  <title> 이젠문고 </title>
+  <meta charset="UTF-8"/>
+  <link rel="stylesheet" href="/css/mypageInquiryList.css"/>
+</head>
+
+<main layout:fragment="main">
+  <div class="myPage_inner inner" style="margin-top: 50px;">
+    <div class="myPage_right">
+      <h1 class="my_orders_title" style="margin-bottom: 30px;">1:1 문의 내역</h1>
+      <div class="list_menu">
+        <div class="list_menu_item tap">
+          <a href="/admin/inquiryList">전체</a>
+        </div>
+        <div class="list_menu_item" data-status="답변 대기">
+          <a href="/admin/inquiryList?status=답변 대기">답변 대기</a>
+        </div>
+        <div class="list_menu_item" data-status="답변 완료">
+          <a href="/admin/inquiryList?status=답변 완료">답변 완료</a>
+        </div>
+      </div>
+
+      <div class="inquiry-list">
+        <ul>
+          <!-- 문의 목록 반복 -->
+          <li class="inquriy_item" th:each="inquiry : ${inquiryList}">
+            <div class="inquriy_item_wrap">
+              <span class="inquriy_loginId">작성자 : [[${inquiry.loginId}]]</span>
+              <div class="inquiry-header">
+                  <span class="inquriy_state"
+                        th:classappend="${inquiry.status == '답변 대기'} ? 'stay' : 'completion'">
+                          [[${inquiry.status}]]
+                  </span>
+                <span class="inquiry_type" th:text="${inquiry.type}">문의 유형</span>
+              </div>
+
+              <div class="inquriy_item_title_wrap">
+                <span class="inquiry-title" th:text="${inquiry.title}">문의 제목</span>
+                <span>
+                    <span class="inquiry_date" th:text="${#dates.format(inquiry.regAt, 'yyyy/MM/dd')}"></span>
+                    <i class="ic ic_arrow_down"></i>
+                  </span>
+              </div>
+
+              <div class="inquriy_item_content_wrap">
+                <div class="inquriy">
+                  <img th:src="@{/upload/{fileAddr}(fileAddr=${inquiry.fileAddr})}" alt="사진"
+                       th:if="${inquiry.fileAddr != null}" />
+                  <strong>질문 > </strong>
+                  <span th:text="${inquiry.content}">문의 내용</span>
+                </div>
+                <div class="inquiry_answer" th:if="${inquiry.status == '답변 대기'}">
+                  <form action="/admin/inquiry/answer" method="post">
+                    <input type="hidden" name="ino" th:value="${inquiry.ino}" />
+                    <textarea name="response" placeholder="답변을 입력해 주세요." required></textarea>
+                    <button class="answerBtn" type="submit">답변 등록</button>
+                  </form>
+                </div>
+                <hr>
+                <div class="inquiry_answer" th:if="${inquiry.status == '답변 완료'}">
+                  <strong>답변 > </strong>
+                  <span th:text="${inquiry.response}">답변 내용</span>
+                  <br>
+                  <button class="answerBtn" type="button" disabled>답변 완료</button>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <script src="/js/mypageInquiryList.js"></script>
+</main>

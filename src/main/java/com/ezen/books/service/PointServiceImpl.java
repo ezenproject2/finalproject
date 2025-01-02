@@ -27,4 +27,21 @@ public class PointServiceImpl implements PointService{
         pointMapper.savePoints(pointsVO);
     }
 
+    @Override
+    public List<PointsVO> getPointsHistory(long mno) {
+        return pointMapper.getPointsHistory(mno);
+    }
+
+    @Override
+    public int getExpiringPoints() {
+        Integer points = pointMapper.getExpiringPoints();
+        return points != null ? points : 0;
+    }
+
+    @Override
+    public int getPointAmount(String orno) {
+        Integer amount = pointMapper.getPointAmount(orno);
+        return (amount != null) ? amount : 0;
+    }
+
 }

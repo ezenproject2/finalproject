@@ -1,0 +1,191 @@
+main h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Textbox container */
+.textbox {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+/* Input field */
+.textbox input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s;
+}
+
+.textbox input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Label */
+.textbox label {
+    position: absolute;
+    left: 12px;
+    top: 8px;
+    font-size: 16px;
+    color: #888;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Error messages */
+.error {
+    color: #D50136;
+    font-size: 14px;
+    display: none; /* Hidden by default */
+}
+
+.textbox input:invalid ~ .error {
+    display: block;
+}
+
+.textbox input:focus ~ .error {
+    display: none;
+}
+
+/* Submit button */
+input[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #497248;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+input[type="submit"]:hover {
+    background-color: #39553F;
+}
+
+/* Input focus */
+.textbox input:focus {
+    border-color: #007bff;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 500px) {
+    main {
+        width: 90%;
+    }
+
+    .textbox input, input[type="submit"] {
+        font-size: 14px;
+    }
+
+    .textbox label {
+        font-size: 14px;
+    }
+}
+
+.find_wrap{
+    width: 500px;
+    margin: 50px auto;
+    border: 1px solid #C6C6C6;
+    border-radius: 12px;
+    height: 400px;
+    padding: 24px;
+    padding-top: 40px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 260px auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 28%;
+    border-radius: 12px;
+}
+.modal-content h2{
+    font-weight: bold;
+    font-size: 1.15rem;
+    color: #39553F;
+    margin-top: 7px;
+}
+.modal-content .textbox input{
+    width: 90%;
+    margin-left: 4%;
+    margin-top: 20px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.error_message {
+    color: #f27370;
+    font-size: 14px;
+}
+
+
+#emailAuthButton,
+#verifyAuthCode {
+    width: 100%;
+    padding: 12px;
+    background-color: #497248;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+#verifyAuthCode{
+    width: 56px;
+    margin-left: 85%;
+    margin-top: -7px;
+}
+
+#emailAuthButton:hover,
+#verifyAuthCode:hove{
+    background-color: #39553F;
+}
+
+.find_wrap{
+    width: 500px;
+    margin: 50px auto;
+    border: 1px solid #C6C6C6;
+    border-radius: 12px;
+    height: 450px;
+    padding: 24px;
+    padding-top: 40px;
+}
+
+h2 {
+    font-size: 22px;
+    margin-bottom: 40px;
+    text-align: center;
+}
