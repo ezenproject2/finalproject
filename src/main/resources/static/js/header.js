@@ -100,16 +100,19 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // 헤더 스크롤 이벤트 *************************************************************
     let lastScrollY = 0; // 마지막 스크롤 위치
     let ticking = false; // 애니메이션 프레임 동작 여부 플래그
 
     // 스크롤 이벤트 추가
     window.addEventListener("scroll", function () {
         lastScrollY = window.scrollY; // 현재 스크롤 위치 저장
+        console.log("Scroll position updated:", lastScrollY); // 디버깅용
 
         // requestAnimationFrame이 진행 중이 아닐 때만 실행
         if (!ticking) {
             window.requestAnimationFrame(function () {
+                console.log("Handling scroll for:", lastScrollY); // 디버깅용
                 handleScroll(lastScrollY); // 스크롤 위치에 따른 처리
                 ticking = false; // requestAnimationFrame 완료 후 플래그 해제
             });
@@ -136,6 +139,17 @@ document.addEventListener('DOMContentLoaded', function () {
             header.classList.add("default-header");
         }
     }
+
+    if (container) {
+        container.addEventListener("scroll", function () {
+            const scrollY = container.scrollTop; // container의 스크롤 위치
+            console.log('스크롤 이벤트 트리거됨'); // 스크롤 이벤트 확인용
+            handleScroll(scrollY);
+        });
+    } else {
+        console.error('container 요소를 찾을 수 없음');
+    }
+    // 헤더 스크롤 이벤트 *************************************************************
 
     //----[알림]-------------------------------------------------------------------------------------------------------------
     const eventSource = new EventSource('/notification/subscribe/' + mnoData);
