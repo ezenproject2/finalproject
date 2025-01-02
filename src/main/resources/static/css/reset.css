@@ -1,21 +1,32 @@
 /* reset.css */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
 
 *, *::after, *::before {
     -webkit-font-smoothing: antialiased;
     box-sizing: border-box;
-    font-family: 'Noto Sans', sans-serif;
+    font-family: 'Noto Sans KR', sans-serif;
     scroll-behavior: smooth;
 }
 html {
     width: 100%;
     height: 100%;
+    position: relative;
+}
+body {
+    width: 100%;
+    height: 100%;
+    font-display: swap;
+    font-size: 1rem;
+    line-height: 1;
+}
+html, body {
+    overflow: hidden;
 }
 .container {
     min-width: 1280px;
     height: 100%;
     position: relative;
-    overflow: visible;
+    overflow:visible;
     overflow-x: hidden;
 }
 
@@ -47,14 +58,6 @@ footer, header, hgroup, menu, nav, section {
     display: block;
     width: 100%;
 }
-body {
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-    font-display: swap;
-    font-size: 1rem;
-    line-height: 1;
-}
 ol, ul {
     list-style: none;
 }
@@ -84,7 +87,6 @@ main {
 }
 .inner {
     width: 1250px;
-    max-width: 1280px;
     margin: 0 auto;
 }
 
@@ -107,18 +109,26 @@ button, input, select, textarea {
 }
 
 .btn {
+    cursor: pointer;
     display: inline-flex;
     justify-content: center;
     align-items: center;
     transition: 0.2s;
     overflow: visible;
     background-color: transparent;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .ic {
     display: inline-block;
     background-size: contain;
     background-repeat: no-repeat;
+    background-position: center;
+}
+.ic_real_arrow_up {
+    background-image: url("/image/svg/real-arrow-up.svg");
 }
 .ic_arrow_right {
     background-image: url("/image/svg/arrow-right-24.svg");
@@ -131,6 +141,7 @@ button, input, select, textarea {
 }
 .ic_delete {
     background-image: url("/image/svg/x.svg");
+    cursor: pointer;
 }
 .ic_search {
     background-image: url("/image/svg/search.svg");
@@ -167,6 +178,20 @@ button, input, select, textarea {
 }
 .ic_question {
     background-image: url("/image/svg/question.svg");
+}
+.ic_exclamation {
+    background-image: url("/image/svg/exclamation.svg");
+}
+.ic_exclamation_c6 {
+    background-image: url("/image/svg/exclamation_c6.svg");
+}
+.ic_plus {
+    background-image: url("/image/svg/plus.svg");
+}
+.ic_coupon2 { background-image: url("/image/svg/coupon2.svg");}
+
+.ic_minus {
+    background-image: url("/image/svg/minus.svg");
 }
 strong {
     font-weight: 700;

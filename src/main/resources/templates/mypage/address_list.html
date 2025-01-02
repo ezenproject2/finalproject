@@ -41,14 +41,6 @@
               새 배송지 등록
             </button>
 
-            <div class="address_recautions">
-              <p>배송지 등록 유의사항</p>
-              <ul>
-                <li>기본 배송지는 삭제 및 수정 불가합니다. 먼저 다른 배송지를 기본 배송지로 설정해주세요.</li>
-                <li>배송지 이름을 제외한 모든 배송지 항목은 필수입니다. 빠짐 없이 정확하게 기입해주시기 바랍니다.</li>
-                <li>배송지는 최대 10개 까지 저장할 수 있습니다.</li>
-              </ul>
-            </div>
 
             <table class="address_table" th:each="addrInfo, addrStat: ${addrList}" th:data-list-size="${addrList.size}">
               <input type="hidden" class="addr-adno-input" th:value="${addrInfo.adno}" th:data-addr-index="${addrStat.index}">
@@ -82,10 +74,16 @@
             </table>
           </div>
         </div>
-
+      </div>
+      <div class="address_recautions">
+        <p>배송지 등록 유의사항</p>
+        <ul>
+          <li>기본 배송지는 삭제 및 수정 불가합니다. 먼저 다른 배송지를 기본 배송지로 설정해주세요.</li>
+          <li>배송지 이름을 제외한 모든 배송지 항목은 필수입니다. 빠짐 없이 정확하게 기입해주시기 바랍니다.</li>
+          <li>배송지는 최대 10개 까지 저장할 수 있습니다.</li>
+        </ul>
       </div>
     </div>
-  </div>
   </div>
 
   <div class="modal_overlay" data-is-register-or-modify="0" data-index-for-modify="0">

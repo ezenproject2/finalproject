@@ -23,6 +23,7 @@
                     <a th:href="@{/member/modify}" class="link" sec:authorize="isAuthenticated()">회원수정</a>
                     <a th:href="@{/admin/userList}" class="link" sec:authorize="hasAnyAuthority('ROLE_ADMIN')"> 회원리스트 </a>
                     <a th:href="@{/admin/inquiryList}" class="link" sec:authorize="hasAnyAuthority('ROLE_ADMIN')"> 문의하기 답변 </a>
+                    <a th:href="@{/product/register}" class="link" sec:authorize="hasAnyAuthority('ROLE_ADMIN')"> 상품 등록 </a>
                     <a th:href="@{/member/logout}" class="link" sec:authorize="isAuthenticated()"> 로그아웃 </a>
                 </div>
             </div>

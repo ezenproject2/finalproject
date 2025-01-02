@@ -136,15 +136,16 @@ textarea.addEventListener('input', () => {
 
     // 1. credit-card-btn 버튼을 눌렀을 때 select_credit_card 보이기
     payButtons.forEach((button) => {
-        button.addEventListener('click', function () {
+        button.addEventListener('click', function (event) {
+            event.stopPropagation();
             // 다른 버튼의 선택 스타일 초기화
             payButtons.forEach((btn) => btn.classList.remove('pushed'));
 
-            if (this.classList.contains('credit-card-btn')) {
-                selectCreditCard.style.display = 'block'; // select_credit_card 보이기
-            } else {
-                selectCreditCard.style.display = 'none'; // 숨기기
-            }
+            // if (this.classList.contains('credit-card-btn')) {
+            //     selectCreditCard.style.display = 'block'; // select_credit_card 보이기
+            // } else {
+            //     selectCreditCard.style.display = 'none'; // 숨기기
+            // }
 
             // 현재 버튼 스타일 활성화
             this.classList.add('pushed');
@@ -152,15 +153,15 @@ textarea.addEventListener('input', () => {
     });
 
     // 3. 셀렉트 외 영역 클릭 시 select_credit_card 숨기기
-    document.addEventListener('click', (e) => {
-        const isInsidePayBtnContainer = e.target.closest('.pay_btn_container');
-        const isInsideSelectCard = e.target.closest('.select_credit_card');
-
-        if (!isInsidePayBtnContainer && !isInsideSelectCard) {
-            selectCreditCard.style.display = 'none'; // select_credit_card 숨기기
-            payButtons.forEach((btn) => btn.classList.remove('pushed')); // 모든 버튼 스타일 초기화
-        }
-    });
+    // document.addEventListener('click', (e) => {
+    //     const isInsidePayBtnContainer = e.target.closest('.pay_btn_container');
+    //     const isInsideSelectCard = e.target.closest('.select_credit_card');
+    //
+    //     if (!isInsidePayBtnContainer && !isInsideSelectCard) {
+    //         selectCreditCard.style.display = 'none'; // select_credit_card 숨기기
+    //         payButtons.forEach((btn) => btn.classList.remove('pushed')); // 모든 버튼 스타일 초기화
+    //     }
+    // });
 });
 
 document.addEventListener('scroll', () => {

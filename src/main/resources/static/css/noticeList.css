@@ -55,7 +55,7 @@
 
 .tbl_col_line th,
 .tbl_col_line td {
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #c6c6c6;
   text-align: center;
 }
 
@@ -68,8 +68,8 @@
 }
 
 .tbl_col_line th {
-  background-color: #f8f9fa;
-  color: #575757;
+  background-color: #f0f0f0;
+  color: #555555;
   font-weight: bold;
 }
 
