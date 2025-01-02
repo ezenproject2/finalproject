@@ -11,14 +11,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const detailAddressInput = document.getElementById("detailAddress");
     const nickNameInput = document.getElementById("nickName");
     const joinBtn = document.querySelector(".join_btn");
-  
+
     // 주소 입력 필드
     const addressInputs = [
       postcodeInput,
       homeAddressInput,
       detailAddressInput,
     ];
-  
+
     // 전체 입력 필드
     const inputs = [
       idInput,
@@ -30,10 +30,10 @@ document.addEventListener("DOMContentLoaded", () => {
       ...addressInputs,
       nickNameInput,
     ];
-  
+
     // 비밀번호 보기/숨기기 버튼
     const pwViewButtons = document.querySelectorAll(".btn_view");
-  
+
     // 체크박스 관련 DOM 요소
     const allCheckbox = document.querySelector(".input_check.all");
     const checkboxes = document.querySelectorAll(".essential_check");
@@ -41,14 +41,14 @@ document.addEventListener("DOMContentLoaded", () => {
       ".join_terms_item input[type='checkbox']:not(.all):not(:last-child)"
     );
     const termsButtons = document.querySelectorAll(".join_terms_ex");
-  
+
     // 유효성 검사 정규식
     const validateId = (value) => /^[a-z0-9_-]{5,20}$/.test(value);
     const validatePw = (value) =>
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,16}$/.test(value);
     const validateNumber = (value) => /^\d{10,11}$/.test(value);
     const validateEmail = (value) => value.includes("@");
-  
+
     // 에러 메시지 표시
     const showError = (input, message) => {
       const formData = input.closest(".form_data");
@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
         errorSpan.style.display = "inline-flex";
       }
     };
-  
+
     // 에러 메시지 제거
     const clearError = (input) => {
       const formData = input.closest(".form_data");
@@ -71,14 +71,14 @@ document.addEventListener("DOMContentLoaded", () => {
         errorSpan.style.display = "none";
       }
     };
-  
+
     // 비밀번호 보기/숨기기 기능
     pwViewButtons.forEach((button) => {
       button.addEventListener("click", () => {
         const input = button.previousElementSibling; // 이전 형제 요소(input)
         const icon = button.querySelector("i");
         const isPasswordVisible = input.type === "text";
-  
+
         if (isPasswordVisible) {
           input.type = "password"; // input 타입 변경
           icon.className = "ic ic_view hide"; // 클래스 업데이트
@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
     });
-  
+
     // 비밀번호와 비밀번호 확인 일치 여부 검사
     const checkPasswordMatch = () => {
       if (pwInput.value !== pwCheckInput.value) {
@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
         clearError(pwCheckInput);
       }
     };
-  
+
     // 모든 약관 동의 체크박스 동작
     if (allCheckbox) {
       allCheckbox.addEventListener("change", () => {
@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       console.error("allCheckbox 요소를 찾을 수 없습니다.");
     }
-  
+
     // 개별 약관 버튼 클릭 시 모달창 열기
     termsButtons.forEach((button, index) => {
       button.addEventListener("click", () => {
@@ -119,7 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
           "약관 내용",
           `width=600,height=600,scrollbars=yes`
         );
-  
+
         if (modalWindow) {
           modalWindow.name = index; // window.name에 인덱스 값 저장
         } else {
@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
     });
-  
+
     // 외부에서 체크박스 업데이트를 위한 함수
     window.confirmCheckbox = (index) => {
       if (typeof index === "number") {
@@ -136,7 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("올바른 인덱스 값이 전달되지 않았습니다.");
       }
     };
-  
+
     // 약관 동의 여부 확인
     const validateTerms = () => {
       for (const checkbox of requiredCheckboxes) {
@@ -148,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       return true;
     };
-  
+
     // 버튼 상태 업데이트
     const updateJoinButtonState = () => {
       const areAllFilled = inputs.every((input) => input.value.trim() !== "");
@@ -156,8 +156,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const isPwValid = validatePw(pwInput.value);
       const isNumberValid = validateNumber(numberInput.value);
       const isEmailValid = validateEmail(emailInput.value);
-  
-      if (areAllFilled && isIdValid && isPwValid && isNumberValid && isEmailValid) {
+
+      if (areAllFilled && isIdValid && isPwValid && isNumberValid && isEmailValid && isIdChecked) {
         joinBtn.style.backgroundColor = "#497248";
         joinBtn.disabled = false; // 버튼 활성화
       } else {
@@ -165,14 +165,19 @@ document.addEventListener("DOMContentLoaded", () => {
         joinBtn.disabled = true; // 버튼 비활성화
       }
     };
-  
+
     // 버튼 클릭 시 약관 검증 및 폼 제출 처리
     joinBtn.addEventListener("click", (event) => {
+      if (!isIdChecked) {
+        alert("아이디 중복 체크를 해주세요.");
+        event.preventDefault(); // 폼 제출 막기
+        return;
+      }
       if (!validateTerms()) {
         event.preventDefault(); // 폼 제출 막기
       }
     });
-  
+
     // 개별 입력 필드 유효성 검사
     inputs.forEach((input) => {
       input.addEventListener("blur", () => {
@@ -193,24 +198,17 @@ document.addEventListener("DOMContentLoaded", () => {
         updateJoinButtonState();
       });
     });
-  
+
     // 비밀번호 확인창 blur 이벤트 추가
     pwCheckInput.addEventListener("blur", checkPasswordMatch);
-  
+
     // 입력 필드 포커스 시 에러 제거
     inputs.forEach((input) => {
       input.addEventListener("focus", () => clearError(input));
     });
 
-
-
-
-
-
-// yh-----------------------------------------------------------------
-
-    let isIdChecked = false;
     // ID 중복 체크
+    let isIdChecked = false;
     document.querySelector('.id_check').addEventListener('click', function() {
         const loginId = document.querySelector('[name="loginId"]').value;
 
@@ -227,7 +225,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     alert("이미 사용 중인 아이디입니다.");
                 } else {
                     alert("사용 가능한 아이디입니다.");
-                    isIdChecked = true;
+                    isIdChecked = true; // ID 중복 체크 완료
                 }
             })
             .catch(error => {
@@ -237,12 +235,3 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 });
-
-// 회원가입 폼 제출 시, 아이디 중복 확인 상태 체크
-document.querySelector('form').addEventListener('submit', function(event) {
-    if (!isIdChecked) {
-        alert("아이디 중복 확인을 해주세요.");
-        event.preventDefault();  // 폼 제출을 막음
-    }
-});
-
