@@ -38,6 +38,7 @@ public class PaymentController {
     private final PointService pointService;
     private final MemberService memberService;
     private final CouponService couponService;
+    private final GradeService gradeService;
 
     @PostMapping("/header-cart")
     @ResponseBody
@@ -114,11 +115,17 @@ public class PaymentController {
         } else {
             isCartEmpty = false;
         }
-
         model.addAttribute("mno", mno);
         model.addAttribute("cartProductList", cartProductList);
         model.addAttribute("isCartEmpty", isCartEmpty);
         model.addAttribute("ph", ph);
+
+        /* yh-------------- */
+        GradeVO gradeVO = gradeService.getGradeByGno(memberVO.getGno());
+        double pointRate = gradeVO.getPointRate();
+        model.addAttribute("pointRate", pointRate);
+        /* ---------------- */
+
         return "/payment/cart";
     }
 
@@ -219,15 +226,19 @@ public class PaymentController {
         /* yh-------------- */
         int balancePoint = pointService.getBalance(mno);
         model.addAttribute("balancePoint", balancePoint);
-        /* ---------------- */
 
-        /* yh-------------- */
         model.addAttribute("mno", mno);
 
-        // 사용자 쿠폰 목록 조회
         List<CouponLogVO> couponList = couponService.findMemberCoupons(mno);
         model.addAttribute("coupons", couponList);
         log.info("쿠폰들 {}", couponList);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loginId = authentication.getName();
+        MemberVO memberVO = memberService.getMemberByInfo(loginId);
+        GradeVO gradeVO = gradeService.getGradeByGno(memberVO.getGno());
+        double pointRate = gradeVO.getPointRate();
+        model.addAttribute("pointRate", pointRate);
         /* ---------------- */
 
         return "/payment/payout";

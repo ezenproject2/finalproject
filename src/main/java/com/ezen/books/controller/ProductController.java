@@ -138,8 +138,9 @@ public class ProductController {
             GradeVO gradeVO = gradeService.getGradeByGno(memberVO.getGno());
             pointRate = gradeVO.getPointRate();
         }
-        double points = (int) productVO.getRealPrice() * pointRate;
-        model.addAttribute("points", points);
+        double points = productVO.getRealPrice() * pointRate;
+        int point = (int) Math.floor(points);
+        model.addAttribute("point", point);
         /* ---------------- */
     }
 

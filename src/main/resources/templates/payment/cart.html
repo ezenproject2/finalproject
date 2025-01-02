@@ -12,6 +12,7 @@
 
 <main layout:fragment="main">
   <div class="cart_inner inner" id="dataContainer" th:data-mno="${mno}" th:data-is-cart-empty="${isCartEmpty}">
+    <input type="hidden" id="pointRate" th:data-point-rate="${pointRate}">
     <!--/* <div id="dataContainer" th:data-mno="${mno}" th:data-is-cart-empty="${isCartEmpty}"></div> */--> <!--/* 레이아웃이 깨져서 없앰. */-->
     <div class="cart_list">
       <div class="cart_title_area">

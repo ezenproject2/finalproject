@@ -98,6 +98,13 @@ function jehoCalculateTotalPrice() {
 
     document.querySelector(`.total-price`).dataset.totalPrice = totalPrice;
     document.querySelector(`.total-price`).innerText = totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+    let pointRate = document.getElementById('pointRate').dataset.pointRate;
+    pointRate = parseFloat(pointRate);
+    let points = Math.round(totalPrice * pointRate);
+    document.querySelector(`.estimated-point-amount`).innerText = `${points}`;
+
+
 }
 
 // 최종 결제 금액에 포인트, 쿠폰 반영
@@ -302,13 +309,13 @@ document.addEventListener("DOMContentLoaded", function () {
             document.querySelector('.discount-coupon').innerText = "- " + formatWithComma(couponDiscount);
         } else {
             document.querySelector('.discount-coupon').dataset.discountCoupon = 0;
+            couponDiscount = 0;
         }
 
         jehoCalculateTotalPrice();
     });
 
     orderBtn.addEventListener("click", function () {
-
         if (couponCno === 0) {
             couponCno = null;
         }

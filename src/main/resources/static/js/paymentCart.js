@@ -107,8 +107,13 @@ function calculateReceipt() {
 
     // 배송비에 따라 최종 결제 예상 금액 설정
     document.querySelector(`.estimated-payment-amount`).innerText = `${sumSalePrice + deliveryFee}`.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+
     // NOTE: 포인트는 일괄적으로 300P 적용.
-    document.querySelector(`.estimated-point-amount`).innerText = 300;
+    let pointRate = document.getElementById('pointRate').dataset.pointRate;
+    pointRate = parseFloat(pointRate);
+    let points = Math.round((sumSalePrice + deliveryFee) * pointRate);
+    document.querySelector(`.estimated-point-amount`).innerText = `${points}`;
 }
 
 // 재고 + 버튼에 맞춰 가격 변동

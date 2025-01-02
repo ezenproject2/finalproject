@@ -15,6 +15,7 @@
 
 <main layout:fragment="main">
   <input type="hidden" name="mno" th:value="${mno}"/>
+  <input type="hidden" id="pointRate" th:data-point-rate="${pointRate}">
   <!--/* <div id="dataContainer" th:data-mno="${mno}" th:data-cart-product-list="${cartProductList}" th:data-is-pickup="${isPickup}"></div>의 어트리뷰트를 class="cart_inner inner"에 넣음 */-->
   <div class="cart_inner inner" id="dataContainer" th:data-mno="${mno}" th:data-cart-product-list="${cartProductList}" th:data-is-pickup="${isPickup}" th:data-is-default-addr-null="${isDefaultAddrNull}">
     <div class="cart_list">
@@ -305,7 +306,7 @@
             </div>
             <div class="cart_aside_bottom">
               <p><strong>최종 결제 금액</strong> <span><strong class="total-price" data-total-price="10"></strong>원</span></p>
-              <p><span>적립 예정 포인트 <i class="ic ic_question"></i></span><span>P</span></p>
+              <p><span>적립 예정 포인트 <i class="ic ic_question"></i></span> <span><span class="estimated-point-amount"></span>P</span> </p>
             </div>
             <div class="cart_order_btn">
               <p><button type="button" id="orderBtn" >결제하기</button></p>

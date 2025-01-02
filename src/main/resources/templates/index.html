@@ -770,7 +770,7 @@
             <strong>공지사항</strong>
             <div class="notice_slide_wrap">
                 <div class="swiper notice_swiper">
-                    <div class="notice_slide swiper-wrapper">
+                    <div class="notice_slide swiper-wrapper" id="noticeBox">
                         <div class="swiper-slide"><a href="">[공지사항] 공지사항1입니다.</a></div>
                         <div class="swiper-slide"><a href="">[공지사항] 공지사항2입니다.</a></div>
                         <div class="swiper-slide"><a href="">[공지사항] 공지사항3입니다.</a></div>
@@ -779,7 +779,7 @@
                     <div class="swiper-pagination"></div>
                 </div>
             </div>
-            <a href="">
+            <a th:href="@{/notice/list(pageNo=1, qty=10, category='notice')}">
                 <i class="ic ic_arrow_right"></i>
             </a>
         </div>
