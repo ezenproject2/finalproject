@@ -24,7 +24,7 @@
     </select>
 
     <select id="getProductInfo" resultType="com.ezen.books.domain.ProductVO">
-        select prno, title, link, image, author, publisher, discount, discount_rate from product
+        select * from product
         where prno = #{prno} and is_del = "N"
     </select>
 
