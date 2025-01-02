@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 customHref = "/mypage/coupon";
             } else if (notificationVO.type == "회원") {
                 typeClassName = "ic_noti_grade";
-                customHref = "/mypage/main";
+                customHref = "/benefit";
             } else if (notificationVO.type == "리뷰") {
                 typeClassName = "ic_noti_review";
                 customHref = "/product/detail?isbn=" + notificationVO.isbn;
