@@ -125,8 +125,7 @@ input[type="submit"]:hover {
     margin-top: 7px;
 }
 .modal-content .textbox input{
-    width: 90%;
-    margin-left: 4%;
+    width: 100%;
     margin-top: 20px;
 }
 

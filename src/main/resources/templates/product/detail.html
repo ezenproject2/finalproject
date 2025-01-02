@@ -127,8 +127,7 @@
                       i 태그 클래스명 예시 : <i th:class="'ic ic_star star-' + ${book.score.toString().replace('.', '_')}"></i>
                       이런 식으로 별점을 문자열로 변환, 소수점을 언더바로 바꿔서 클래스명에 넣어야 이미지가 바뀜!
                   -->
-                  <span class="book_rating" >  [[${productVO.reviewAvg}]] <span class="book_review_count">(리뷰
-                          [[${productVO.reviewCnt}]]개)</span></span>
+                  <span class="book_rating" >  [[${productVO.reviewAvg}]] <span class="book_review_count">(리뷰 [[${productVO.reviewCnt}]]개)</span></span>
                 </p>
               </div>
             </div>
@@ -181,8 +180,7 @@
               <div class="book_detail_title"><span>배송 안내</span></div>
               <div class="book_delivery_list">
                 <div class="book_delivery_title"><span>배송비<i class="ic ic_question"></i></span></div>
-                <div class="book_delivery_content"><span
-                        class="delivery_free">무료 (해외배송의 경우 지역에 따라 상이)</span></div>
+                <div class="book_delivery_content"><span class="delivery_free">무료 (해외배송의 경우 지역에 따라 상이)</span></div>
               </div>
               <button class="btn store_btn" id="openModal"><span>매장 재고 · 위치</span></button>
             </div>
@@ -216,38 +214,30 @@
               </div>
             </div>
             <div class="page">
-              <div class="page-inner">
-                <p class="book_detail_title">4 페이지~</p>
-                <p class="book_detail_content">4 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
-                  페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
-                  페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
-                  페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
-                  페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
-                  페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
-                  페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
-                  페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
-                  페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
-                  페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
-                  페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
-                  페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~</p>
+              <div class="page-inner" style="height: 600px">
+                <p class="book_detail_title" style="margin: 5px;">이 달의 이벤트</p>
+                <div class="event_banners">
+                  <a href="" class="event_banner">
+                    <img src="https://contents.kyobobook.co.kr/pmtn/2024/event/c9b3182eefe240d28e5c78c5e2894f11.jpg" alt="" class="event_img">
+                  </a>
 
-              </div>
-              <div class="page-inner">
-                <p class="book_detail_title">4-2 페이지~</p>
-                <p class="book_detail_content">4 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
-                  페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
-                  페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
-                  페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
-                  페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
-                  페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
-                  페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
-                  페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2
-                  페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~2 페이지~</p>
+                  <a href="" class="event_banner">
+                    <img src="https://contents.kyobobook.co.kr/pmtn/2024/event/6b229da97bc94adba7791c785d2e88a5.png" alt="" class="event_img">
+                  </a>
+
+                  <a href="" class="event_banner kakao_banner">
+                    <img src="/image/event/kakao.png" alt="kakao" class="kakao_img">
+                    <div class="kakao_info">
+                      <span> 이젠문고 카카오톡 채널 추가하고 </span>
+                      <strong>할인정보 + 혜택 받자!</strong>
+                    </div>
+                  </a>
+                </div>
               </div>
             </div>
             <div class="page">
               <div class="page-inner" style="border: none;">
-                <p class="book_detail_title" style="margin: 5px;">이 달의 이벤트</p>
+                <!--<p class="book_detail_title" style="margin: 5px;">이 달의 이벤트</p>-->
                 <div class="stickers">
                   <a href="">
                     <div class="sticker sticker1"></div>
