@@ -5,10 +5,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const header = document.querySelector('header'); // 헤더 요소 선택
 
     const modal = document.querySelector('.modal_main_menu');
-    const body = document.querySelector('header');
     const overlay = document.createElement('div'); // 오버레이 생성
     overlay.classList.add('overlay'); // 오버레이에 클래스 추가
-    body.appendChild(overlay);
+    header.appendChild(overlay);
 
     const openModal = () => {
         iconMenu.style.display = 'none';
@@ -38,8 +37,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     btnNav.addEventListener('click', function () {
         const isMenuVisible = iconMenu.style.display !== 'none';
-        if (isMenuVisible) { openModal(); }
-        else { closeModal(); }
+        if (isMenuVisible) {
+            openModal();
+        } else {
+            closeModal();
+        }
     });
 
     // 오버레이 클릭 시 모달 닫기
@@ -98,16 +100,19 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // 헤더 스크롤 이벤트 *************************************************************
     let lastScrollY = 0; // 마지막 스크롤 위치
     let ticking = false; // 애니메이션 프레임 동작 여부 플래그
 
     // 스크롤 이벤트 추가
     window.addEventListener("scroll", function () {
         lastScrollY = window.scrollY; // 현재 스크롤 위치 저장
+        console.log("Scroll position updated:", lastScrollY); // 디버깅용
 
         // requestAnimationFrame이 진행 중이 아닐 때만 실행
         if (!ticking) {
             window.requestAnimationFrame(function () {
+                console.log("Handling scroll for:", lastScrollY); // 디버깅용
                 handleScroll(lastScrollY); // 스크롤 위치에 따른 처리
                 ticking = false; // requestAnimationFrame 완료 후 플래그 해제
             });
@@ -116,11 +121,17 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // 스크롤 위치에 따른 클래스 처리 함수
-    function handleScroll(scrollY) {
-        const header = document.querySelector("header"); // 헤더 요소 선택
-        if (!header) return; // 헤더 요소가 없을 경우 종료
+    const container = document.querySelector('.container'); // 스크롤 영역인 div
 
-        if (scrollY > 100) {
+    function handleScroll(scrollY) {
+        if (!header) {
+            console.error('헤더 요소를 찾을 수 없음');
+            return;
+        }
+        console.log('스크롤 위치:', scrollY); // 스크롤 값 확인
+        console.log('현재 헤더 클래스:', header.className); // 현재 클래스 확인
+
+        if (scrollY > 250) {
             header.classList.remove("default-header");
             header.classList.add("sticky-header");
         } else {
@@ -128,6 +139,17 @@ document.addEventListener('DOMContentLoaded', function () {
             header.classList.add("default-header");
         }
     }
+
+    if (container) {
+        container.addEventListener("scroll", function () {
+            const scrollY = container.scrollTop; // container의 스크롤 위치
+            console.log('스크롤 이벤트 트리거됨'); // 스크롤 이벤트 확인용
+            handleScroll(scrollY);
+        });
+    } else {
+        console.error('container 요소를 찾을 수 없음');
+    }
+    // 헤더 스크롤 이벤트 *************************************************************
 
     //----[알림]-------------------------------------------------------------------------------------------------------------
     const eventSource = new EventSource('/notification/subscribe/' + mnoData);
@@ -190,7 +212,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 customHref = "/mypage/coupon";
             } else if (notificationVO.type == "회원") {
                 typeClassName = "ic_noti_grade";
-                customHref = "/mypage/main";
+                customHref = "/benefit";
             } else if (notificationVO.type == "리뷰") {
                 typeClassName = "ic_noti_review";
                 customHref = "/product/detail?isbn=" + notificationVO.isbn;
@@ -279,8 +301,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
-    bell.addEventListener('click', () => {
-        if(mnoData == -1){return;}
+    // bell 클릭 이벤트
+    bell.addEventListener('click', (event) => {
+        event.stopPropagation(); // 이벤트 전파 차단
         toggleNotificationList();
     });
 
@@ -301,7 +324,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // 바깥 클릭 이벤트
     document.addEventListener('click', closeNotificationList);
 
-    // 알림창 관련
     const notificationItems = document.querySelectorAll('.notification_menu');
 
     // notification_list_content 안의 콘텐츠 가져오기
