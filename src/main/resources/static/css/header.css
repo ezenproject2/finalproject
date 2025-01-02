@@ -16,10 +16,12 @@ header.z-index-active {
     top: 0;
     left: 0;
     padding: 0;
+    z-index: 200;
 }
 .sticky-header .header_above {
     display: none;
 }
+
 header .inner {
     width: 1060px;
     max-width: 1280px;
@@ -242,7 +244,7 @@ header .inner {
     width: 1060px;
     max-width: 1280px;
     height: 80vh;
-    max-height: 700px;
+    max-height: 600px;
     z-index: 1000;
     margin-top: 5px;
 
@@ -489,6 +491,7 @@ header .ic_arrow_right {
     top: 0;
     left: 25%;
     padding: 0;
+    margin: 7.5px 0;
 }
 .sticky-header .header_center .inner {
     width: 1000px;
@@ -512,13 +515,8 @@ header .ic_arrow_right {
 .sticky-header .ic_menu_close {
     background-image: url("../image/svg/menu_close_green.svg");
 }
-.sticky-header .ic_logo {
+.sticky-header .ic_logo, .sticky-header .header_logo {
     width: 100px;
-    margin-left: 10px;
-}
-.sticky-header .header_logo{
-    width: 100px;
-    padding-top: 17px;
 }
 .sticky-header .nav_all {
     padding-top: 10px;
@@ -587,7 +585,7 @@ header .ic_arrow_right {
     height: 60px;
     padding: 20px;
     background-color: #fff;
-    border-bottom: 1px solid #C6C6C6;
+    border-bottom: 1px solid #c6c6c6;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
 }
@@ -703,7 +701,6 @@ header .ic_arrow_right {
     font-size: 0.9rem;
 }
 .notification_content_content > span {
-    font-size: 0.85rem;
     line-height: 1.3rem;
 }
 .notification_content.read {
@@ -741,53 +738,4 @@ header .ic_arrow_right {
 }
 .noti_benefit_content {
     font-size: 0.8rem;
-}
-
-.category3_list {
-    justify-content: space-evenly
-}
-
-
-.category3_list_item a {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-}
-
-.category3_list_item i{
-    width: 65px;
-    height: 65px;
-}
-
-.category3_list_item span{
-    line-height: 20px;
-    color: #555;
-    font-size: 15px;
-    text-align: center;
-}
-
-.pick {
-    background-image: url("../image/svg/menu_1.svg");
-}
-.attendance {
-    background-image: url("../image/svg/menu_2.svg");
-}
-.event {
-    background-image: url("../image/svg/menu_3.svg");
-}
-.review {
-    background-image: url("../image/svg/menu_4.svg");
-}
-.magazine {
-    background-image: url("../image/svg/menu_5.svg");
-}
-.sale {
-    background-image: url("../image/svg/menu_6.svg");
-}
-.store {
-    background-image: url("../image/svg/menu_7.svg");
-}
-.custom {
-    background-image: url("../image/svg/menu_8.svg");
 }
