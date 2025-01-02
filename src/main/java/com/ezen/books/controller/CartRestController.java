@@ -50,4 +50,16 @@ public class CartRestController {
                 new ResponseEntity<>("0", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @PostMapping("/delete-all")
+    public ResponseEntity<String> deleteAllCartToServer(@RequestBody long mnoVal) {
+        log.info(" >>> CartRestController: deleteAllCartToServer start.");
+        log.info("The mnoVal from the client: {}", mnoVal);
+
+        int isDone = cartService.deleteAllCartToServer(mnoVal);
+
+        return (isDone > 0) ?
+                new ResponseEntity<>("1", HttpStatus.OK) :
+                new ResponseEntity<>("0", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }

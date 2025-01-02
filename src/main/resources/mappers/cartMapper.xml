@@ -43,4 +43,9 @@
         delete from cart
         where mno = #{mno} and prno = #{prno}
     </delete>
+
+    <delete id="deleteAllCartToServer">
+        delete from cart
+        where mno = #{mno}
+    </delete>
 </mapper>

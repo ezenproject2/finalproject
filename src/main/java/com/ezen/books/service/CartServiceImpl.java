@@ -56,4 +56,15 @@ public class CartServiceImpl implements CartService {
     public int getCartAmount(long mno) {
         return cartMapper.getCartAmount(mno);
     }
+
+    @Override
+    public int deleteAllCartToServer(long mnoVal) {
+        try{
+            cartMapper.deleteAllCartToServer(mnoVal);
+            return 1;
+        } catch (Exception e) {
+            log.info("Error in deleteAllCartToServer. Content: {}", e);
+        }
+        return 0;
+    }
 }

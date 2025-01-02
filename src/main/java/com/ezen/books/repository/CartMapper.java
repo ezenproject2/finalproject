@@ -25,4 +25,6 @@ public interface CartMapper {
     void deleteCartToServer(@Param("mno") long mno, @Param("prno") long prno);
 
     int getCartAmount(long mno);
+
+    void deleteAllCartToServer(long mno);
 }
