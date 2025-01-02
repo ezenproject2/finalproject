@@ -56,7 +56,7 @@ spanUnderPayBtn.forEach(span => {
     span.addEventListener('click', () => {
         let payBtnClassList = span.parentElement.classList;
         pgData.pg = selectPg(payBtnClassList);
-        console.log("The selected pg is: " + pgData.pg);
+        // console.log("The selected pg is: " + pgData.pg);
     })
 })
 
@@ -72,26 +72,32 @@ document.getElementById('orderBtn').addEventListener('click', () => {
     } else if (isPickup == "N" && isDefaultAddrNull == "true") {
         alert("기본 배송지를 입력해주세요.");
     } else {
-        const pgObj = getPayDataFromServer(pgData.pg);
-        pgData.channelKey = pgObj.channelKey;
-        pgData.pay_method = pgObj.payMethod;
-        // pgData.merchant_uid = pgObj.merchantUid;
-        pgData.merchant_uid = document.querySelector('.list-data-storage').dataset.merchantUid;
-        // console.log("The merchant uid: ", document.querySelector('.list-data-storage').dataset.merchantUid);
+        getPayDataFromServer(pgData.pg).then(pgDataObj => {
+            pgData.channelKey = pgDataObj.channelKey;
+            pgData.pay_method = pgDataObj.payMethod;
+            // console.log("pgData.channelKey: ", pgData.channelKey);
+            // console.log("pgData.pay_method: ", pgData.pay_method);
 
-        pgData.amount = getTotalPrice();
-        // console.log("The total amount is: " + pgData.amount);
-
-        payWithIamport(pgObj);
-        // 결제 완료 후 pgData 초기화
-        pgData = {
-            channelKey: "",
-            pg: "",
-            pay_method: "",
-            merchant_uid: "",
-            name : "",
-            amount : 0
-        };
+            pgData.merchant_uid = document.querySelector('.list-data-storage').dataset.merchantUid;
+            // console.log("The merchant uid: ", document.querySelector('.list-data-storage').dataset.merchantUid);
+    
+            pgData.amount = getTotalPrice();
+            // console.log("The total amount is: " + pgData.amount);
+    
+            console.log("The pgData: ");
+            console.log(pgData);
+    
+            payWithIamport();
+            // 결제 완료 후 pgData 초기화
+            pgData = {
+                channelKey: "",
+                pg: "",
+                pay_method: "",
+                merchant_uid: "",
+                name : "",
+                amount : 0
+            };
+        });
     }
 })
 
@@ -215,7 +221,7 @@ async function getPayDataFromServer(selectedPg) {
     const result = await response.text();
     console.log("The result of getPayDataFromServer" + result);
 
-    const pgDataObj = JSON.parse(result);
+    let pgDataObj = JSON.parse(result);
     return pgDataObj;
 }
 
@@ -223,7 +229,7 @@ async function getPayDataFromServer(selectedPg) {
 async function payWithIamport() {
 
     // 결제 api 사용 시 필요한 파라미터들
-    const paymentData = {
+    let paymentData = {
         channelKey: pgData.channelKey,
         pg: pgData.pg, // pg provider
         pay_method: pgData.pay_method,

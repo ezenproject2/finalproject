@@ -67,4 +67,8 @@
     <select id="checkReviewd" resultType="int">
         select count(rno) from review where mno = #{mno} and prno = #{prno}
     </select>
+
+    <delete id="deleteLikes">
+        delete from likes where rno = #{rno};
+    </delete>
 </mapper>

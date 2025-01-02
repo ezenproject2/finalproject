@@ -39,4 +39,6 @@ public interface ReviewMapper {
     long getMnoByRno(long rno);
 
     int checkReviewd(@Param("mno") long mno, @Param("prno") long prno);
+
+    void deleteLikes(long rno);
 }

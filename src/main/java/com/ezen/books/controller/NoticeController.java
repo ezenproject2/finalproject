@@ -124,5 +124,20 @@ public class NoticeController {
         return isOk>0? "1" : "0";
     }
 
+    @GetMapping("/delete")
+    public String delete(Model model, @RequestParam("ntno") long ntno){
+        int isOk = noticeService.delete(ntno);
+
+        return "redirect:/notice/list?pageNo=1&category=notice&qty=10";
+    }
+
+    @ResponseBody
+    @GetMapping("/getMain")
+    public List<NoticeVO> getMain(){
+        List<NoticeVO> list = noticeService.getMain();
+
+        return list;
+    }
+
 
 }

@@ -201,6 +201,12 @@ document.addEventListener('click', (e) => {
     }
 })
 
+// 쓰레기통 버튼 누르면 모든 cart 내역 삭제
+document.querySelector('.wastebasket-btn').addEventListener('click', () => {
+    let mnoVal = document.getElementById('dataContainer').dataset.mno;
+
+    applyDeletionAll(mnoVal);
+})
 
 // 주문 버튼 누르면 CartDTO와 매핑할 JSON 생성
 document.getElementById('orderBtn').addEventListener('click', () => {
@@ -319,5 +325,36 @@ async function deleteCartToServer(mnoVal, prnoVal) {
         console.log("Delete cart: Failed.");
     } else {
         console.log("Delete cart: Unknown.");
+    }
+}
+
+// 쓰레기통 버튼 누르면 순서대로 서버에서 모든 cart의 데이터를 없애고 /cart를 다시 불러오는 함수
+async function applyDeletionAll(mnoVal) {
+    try {
+        await deleteAllCartToServer(mnoVal);
+        window.location.href = "/payment/cart?mno=" + mnoVal;
+    } catch (error) {
+        console.error("Error during applying deletion all. Content", error);
+    }   
+}
+
+// 쓰레기통 버튼 누르면 서버에 모든 장바구니 삭제 요청
+async function deleteAllCartToServer(mnoVal) {
+    const url = "/payment/cart/delete-all";
+
+    const config = {
+        method: "POST",
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        body: JSON.stringify(mnoVal)
+    };
+    
+    const response = await fetch(url, config);
+    const result = await response.text();
+    if(result == "1") {
+        console.log("Delete all: Succeeded.");
+    } else if (result == "0") {
+        console.log("Delete all: Failed.");
+    } else {
+        console.log("Delete all: Unknown.");
     }
 }

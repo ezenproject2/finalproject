@@ -21,4 +21,8 @@ public interface NoticeService {
     NoticeVO getDetail(long ntno);
 
     int update(NoticeVO noticeVO, List<String> fileAddrList);
+
+    List<NoticeVO> getMain();
+
+    int delete(long ntno);
 }

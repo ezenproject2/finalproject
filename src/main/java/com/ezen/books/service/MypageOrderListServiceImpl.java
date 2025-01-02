@@ -184,7 +184,7 @@ public class MypageOrderListServiceImpl implements MypageOrderListService {
 
                 // 한 orno 당 하나의 List<OrderDetailProductDTO>, 즉 detailProductList를 가져옴
                 List<OrderDetailVO> orderDetails = mypageOrderListMapper.getOrderDetailList(orno);
-                log.info("The orderDetails: {}", orderDetails);
+//                log.info("The orderDetails: {}", orderDetails);
 
                 // 한 orno에 대응하는 List<OrderDetailVO>의 OrderDetailVO마다 대응하는 ProductVO 가져오기
                 for (OrderDetailVO orderDetail : orderDetails) {
