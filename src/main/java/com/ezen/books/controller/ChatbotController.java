@@ -79,14 +79,16 @@ public class ChatbotController {
                 || userMessage.matches("(?i).*책 찾고.*")
                 || userMessage.matches("(?i).*책 찾는.*")
                 || userMessage.matches("(?i).*책 찾아.*")) {
-            answer.put("answer", "무슨 책을 찾고 싶어요? 책 제목만 입력해주세요 :)");
+            answer.put("answer", "무슨 책을 찾고 싶어요?<br>책 제목만 입력해주세요 :)");
             answer.put("classify", "b-type"); // 다음 질문은 b-type으로 분류
             return answer;
         }
 
         // "매장 안내" 관련 질문 처리
         if (userMessage.matches("(?i).*가까운 매장.*")
-                || userMessage.matches("(?i).*근처 매장.*")) {
+                || userMessage.matches("(?i).*근처 매장.*")
+                || userMessage.matches("(?i).*가까운매장.*")
+                || userMessage.matches("(?i).*근처매장.*")) {
             answer.put("answer", "가까운 매장을 찾아볼게요! 위치 정보를 받습니다!");
             answer.put("classify", "c-type"); // 다음 질문은 b-type으로 분류
             return answer;
@@ -95,14 +97,15 @@ public class ChatbotController {
         // 자연어에 대한 이젠문고 ver 답변
         if (userMessage.matches("(?i).*안녕.*")
                 || userMessage.matches("(?i).*하이.*")
-                || userMessage.matches("(?i).*헬로.*")) {// "안녕하세요"가 포함된 메시지
-            answer.put("answer", "안녕하세요!! 무엇을 도와드릴까요?");
+                || userMessage.matches("(?i).*헬로.*")
+                || userMessage.matches("(?i).*ㅎㅇ.*")) {// "안녕하세요"가 포함된 메시지
+            answer.put("answer", "만나서 반가워요 :)<br>무엇을 도와드릴까요?");
             answer.put("classify", "a-type");
             return answer;
         }
 
         if (userMessage.matches("(?i).*누구.*")) { // "날씨"가 포함된 메시지
-            answer.put("answer", "저는 이젠문고의 챗봇 알리미입니다! 반가워요 :) ");
+            answer.put("answer", "저는 이젠문고의 챗봇이에요! 만나서 반가워요 :) ");
             answer.put("classify", "a-type");
             return answer;
         }
@@ -117,11 +120,11 @@ public class ChatbotController {
 
         ProductVO productVO = chatbotService.chatGetProductVO(userMessage);
         if(productVO != null){
-            answer.put("answer", "현재 판매중인 상품이 있습니다. 이동하시겠어요? <a href='/product/detail?isbn=" + productVO.getIsbn() + "'>상품 페이지로 이동</a>");
+            answer.put("answer", "판매중인 상품이 있습니다!! <br><a href='/product/detail?isbn=" + productVO.getIsbn() + "'>[클릭] 이동하기</a>");
             answer.put("classify", "a-type");
             return answer;
         }else{
-            answer.put("answer", "죄송합니다. 해당 상품은 판매중이지 않아요!");
+            answer.put("answer", "죄송합니다. 입력하신 제목의 상품을 찾지 못했어요.");
             answer.put("classify", "a-type");
             return answer;
         }
@@ -134,7 +137,7 @@ public class ChatbotController {
         OfflineStoreVO offlineStoreVO = chatbotService.chatGetOfflineStoreVO(userMessage);
 
         if(offlineStoreVO !=  null){
-            answer.put("answer", "[매장 안내]<br>매장위치: " + offlineStoreVO.getAddress() + "<br>영업시간: " + offlineStoreVO.getHours());
+            answer.put("answer", "[" + offlineStoreVO.getName() + "]<br>매장위치:" + offlineStoreVO.getAddress() + "<br>영업시간:" + offlineStoreVO.getHours());
             answer.put("classify", "a-type");
             return answer;
         }else{
