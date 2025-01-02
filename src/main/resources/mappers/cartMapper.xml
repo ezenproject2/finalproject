@@ -24,7 +24,7 @@
     </select>
 
     <select id="getProductInfo" resultType="com.ezen.books.domain.ProductVO">
-        select prno, title, link, image, author, publisher, discount, discount_rate from product
+        select * from product
         where prno = #{prno} and is_del = "N"
     </select>
 
@@ -42,5 +42,10 @@
     <delete id="deleteCartToServer">
         delete from cart
         where mno = #{mno} and prno = #{prno}
+    </delete>
+
+    <delete id="deleteAllCartToServer">
+        delete from cart
+        where mno = #{mno}
     </delete>
 </mapper>
