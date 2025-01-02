@@ -62,4 +62,12 @@
         update notice set title = #{title}, content = #{content} where ntno = #{ntno}
     </update>
 
+    <select id="getMain" resultType="com.ezen.books.domain.NoticeVO">
+        SELECT * FROM notice WHERE is_del = 'N' ORDER BY ntno DESC LIMIT 5;
+    </select>
+
+    <update id="delete">
+        update notice set is_del = 'Y' where ntno = #{ntno}
+    </update>
+
 </mapper>

@@ -39,4 +39,8 @@ public interface NoticeMapper {
     NoticeVO getDetail(long ntno);
 
     int update(NoticeVO noticeVO);
+
+    List<NoticeVO> getMain();
+
+    int delete(long ntno);
 }

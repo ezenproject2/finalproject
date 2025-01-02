@@ -124,6 +124,7 @@ public class ReviewServiceImpl implements ReviewService{
             // 리뷰 삭제 후 상품 별점, 리뷰 수 업데이트
             productMapper.updateReviewAvg(prno);
             productMapper.updateReviewCnt(prno, -1);
+            reviewMapper.deleteLikes(rno);
         }
         return isOk;
     }
