@@ -304,13 +304,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
         console.log("선택한 쿠폰의 할인 금액: ", couponDiscount);
 
-        if (couponCno !== "0") {
-            document.querySelector('.discount-coupon').dataset.discountCoupon = couponDiscount;
-            document.querySelector('.discount-coupon').innerText = "- " + formatWithComma(couponDiscount);
-        } else {
-            document.querySelector('.discount-coupon').dataset.discountCoupon = 0;
-            couponDiscount = 0;
-        }
+        if (couponCno !== "0" && couponCno !== "") {
+                document.querySelector('.discount-coupon').dataset.discountCoupon = couponDiscount;
+                document.querySelector('.discount-coupon').innerText = "- " + formatWithComma(couponDiscount);
+            } else {
+                document.querySelector('.discount-coupon').dataset.discountCoupon = 0;
+                couponDiscount = 0;
+                document.querySelector('.discount-coupon').innerText = "";
+            }
 
         jehoCalculateTotalPrice();
     });
