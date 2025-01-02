@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // (차민주) SSE로 알림 수신
     eventSource.onmessage = function (event) {
         if(mnoData != -1){
-            console.log("데이터 수신 받음");
+            // console.log("데이터 수신 받음");
             const notification = JSON.parse(event.data);
             
             // 기존 알림 목록에 이미 해당 nfno가 있는지 확인
@@ -148,8 +148,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             unreadCount = dataList.filter(notification => notification.status === 'unread').length;
-            console.log(unreadCount);
-            console.log(dataList);
+            // console.log(unreadCount);
+            // console.log(dataList);
             // 알림박스에 데이터 추가하는 메서드 제작
             updateNotificationBox();
             document.getElementById("count_bell").innerText = unreadCount;
