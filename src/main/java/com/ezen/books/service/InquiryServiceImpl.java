@@ -27,6 +27,11 @@ public class InquiryServiceImpl implements InquiryService{
     }
 
     @Override
+    public List<InquiryVO> getInquiriesByMnoAndStats(long mno, String status) {
+        return inquiryMapper.getInquiriesByMnoAndStats(mno, status);
+    }
+
+    @Override
     public List<InquiryVO> getAllInquiries(String status) {
 
         List<InquiryVO> inquiryVOList = inquiryMapper.getAllInquiries(status);
@@ -48,4 +53,5 @@ public class InquiryServiceImpl implements InquiryService{
     public int updateInquiry(InquiryVO inquiryVO) {
         return inquiryMapper.updateInquiry(inquiryVO);
     }
+
 }

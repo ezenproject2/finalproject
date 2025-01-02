@@ -1,0 +1,427 @@
+.inner {
+  line-height: 1.6;
+}
+
+h2.title_heading {
+   font-size: 1.7rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    margin-top: 50px;
+}
+
+.title_wrap {
+  padding: 20px;
+  background-color: #fff;
+  margin-bottom: 20px;
+}
+
+/* 등급별 혜택 표 스타일 */
+.benefit_grade_wrap {
+  padding: 20px;
+  background-color: #fff;
+  margin-bottom: 40px;
+}
+
+.tbl_grade_wrap {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tbl_col {
+  width: 100%;
+  border-spacing: 0;
+}
+
+.tbl_col th, .tbl_col td {
+  padding: 15px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.tbl_col th {
+  background-color: #ABBC8610;
+  font-weight: bold;
+  padding: 30px 15px;
+}
+
+.tbl_col td.vertical_middle {
+  vertical-align: middle;
+}
+
+.tbl_col td.vertical_top {
+  vertical-align: top;
+}
+
+.tbl_col .grade_title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.tbl_col .grade_desc {
+  font-size: 1rem;
+  color: #777;
+}
+
+.tbl_col .val {
+  font-weight: bold;
+}
+
+.tbl_col .point_rate_list {
+  list-style: none;
+  padding: 0;
+}
+
+.tbl_col .point_rate_item {
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.tbl_col .extra_rate_text {
+  margin-top: 10px;
+  font-size: 1rem;
+  color: #3d5a80;
+}
+
+.tbl_col .extra_rate_text .ico_point_plus {
+  margin-right: 5px;
+}
+
+.tbl_col .coupon_list {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.tbl_col .coupon_item {
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.tbl_col .coupon_item .left_box {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.tbl_col .coupon_item .unit {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.tbl_col .coupon_item .coupon_info_box {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.tbl_col .coupon_item .bul_list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.tbl_col .coupon_item .bul_item_dot {
+  display: flex;
+  align-items: center;
+}
+
+.tbl_col .coupon_item .bul_item_dot:before {
+  content: "•";
+  color: #3d5a80;
+  margin-right: 8px;
+}
+
+.tbl_col .coupon_item .coupon_status_box {
+  background-color: #ff4d4d;
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 15px;
+  font-size: 0.9rem;
+}
+
+.tbl_col .coupon_item.voucher .left_box {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #3d5a80;
+}
+
+/* 등급 선정 기준 표 스타일 */
+.tbl_row_wrap {
+  padding: 20px;
+  background-color: #fff;
+}
+
+.tbl_row_wrap .tbl_row {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tbl_row_wrap th,
+.tbl_row_wrap td {
+  padding: 15px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.tbl_row_wrap th {
+  background-color: #ABBC8610;
+  font-weight: bold;
+}
+
+.tbl_row_wrap ul.bul_list {
+  list-style: none;
+  padding-left: 20px;
+}
+
+.tbl_row_wrap ul.bul_list .bul_item_dot:before {
+  content: "•";
+  color: #3d5a80;
+  margin-right: 8px;
+}
+
+.fc_black {
+  color: #333;
+}
+
+/* 작은 화면에서의 반응형 */
+@media (max-width: 768px) {
+  .tbl_col th,
+  .tbl_col td {
+    padding: 10px;
+  }
+
+  .tbl_col .grade_title,
+  .tbl_col .grade_desc,
+  .tbl_row_wrap th {
+    font-size: 0.9rem;
+  }
+
+  .tbl_row_wrap th,
+  .tbl_row_wrap td {
+    padding: 10px;
+  }
+
+  .tbl_col .coupon_item {
+    padding: 8px;
+  }
+
+  .tbl_row_wrap .bul_list {
+    padding-left: 15px;
+  }
+}
+
+.coupon_info {
+    width: 100%;
+    height: 120px;
+    background-color: #F8F8F8;
+    border-radius: 6px;
+    display: flex;
+    position: relative;
+}
+.coupon_info::before {
+    content: ""; /* 가상요소를 표시하기 위한 필수 설정 */
+    position: absolute; /* 위치 조정을 위해 absolute 사용 */
+    width: 1px; /* 막대의 너비 */
+    height : 10%; /* 막대의 높이 */
+    background-color: #c6c6c6; /* 막대의 색상 */
+    top: 50%; /* 부모 요소의 세로 중심 */
+    left: 50%; /* 부모 요소의 가로 중심 */
+    transform: translate(-50%, -50%); /* 정확한 가운데 위치 조정 */
+  }
+.coupon_info > div {
+    width: 50%;
+    text-align: center;
+    margin: auto;
+}
+.ic_coupon2 {
+    width: 1.75rem;
+    height: 1.75rem;
+}
+.coupon_info > div > span {
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+}
+.inline-flex {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.coupon_list_menu, .coupon_list_menu > ul {
+    margin-top: 24px;
+    width: 100%;
+}
+.coupon_list_menu > ul {
+    display: flex;
+    position: relative;
+    margin-bottom: 24px;
+}
+.coupon_list_menu > ul > li {
+    width: 50%;
+    text-align: center;
+    font-size: 1.15rem;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    padding-bottom: 24px;
+}
+.select {
+    font-weight: 600;
+}
+.coupon_list_menu .underline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 50%; /* 초기에는 첫 번째 li의 너비 */
+    background-color: #39553F; /* 밑줄 색상 */
+    transition: transform 0.3s ease; /* 밑줄 이동 애니메이션 */
+}
+
+.available_coupon_list, .disappear_coupon_list {
+    display: flex; /* 플렉스 박스 사용 */
+    flex-wrap: wrap; /* 줄 바꿈 허용 */
+    padding: 0;
+    list-style: none; /* 기본 li 스타일 제거 */
+    gap: 30px;
+}
+
+.available_coupon_list > li, .disappear_coupon_list > li {
+    flex: 0 0 calc(50% - 15px); /* 너비를 50%로 설정하고 간격 조정 */
+    display: flex;
+}
+
+.coupon {
+    position: relative;
+    width: 100%;
+    height: 170px;
+    padding: 15px 0;
+    display: flex;
+}
+.coupon_right {
+    position: relative;
+    width: 15%;
+    background-color: #E7B343;
+    z-index: 1;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 15px;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 15px;
+}
+.coupon_left, .coupon_right {
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+/* .coupon_right::before {
+    content: " ";
+    position: absolute;
+    top: 14%;
+    left: -1.6px;
+    width: 3px;
+    height: 70%;
+    border-left: 3px dotted #eb7a1d;
+} */
+.coupon_right > span {
+    display: inline-block;
+    font-size: 1.1rem;
+    height: 2rem;
+    transform: rotate(90deg);
+    margin: auto;
+    color: white;
+    font-weight: 600;
+    letter-spacing: 3px;
+}
+.coupon_left {
+    width: 85%;
+    border: 1px solid #c6c6c6;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    border-bottom-left-radius: 15px;
+    padding: 15px;
+    justify-content: space-between;
+}
+.coupon_left, .coupon_top, .coupon_bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    justify-content: center;
+}
+.coupon_top > strong {
+    font-size: 1.6rem;
+    line-height: 2.2rem;
+}
+.coupon_top > p {
+    font-size: 0.9rem;
+    color: #555;
+}
+.coupon_bottom {
+    font-size: 0.9rem;
+}
+.coupon_bottom span{
+    margin-top: 15px;
+}
+.coupon_date {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #717171;
+}
+.coupon_date > strong {
+    display: inline-flex;
+    font-size: 0.8rem;
+    padding: 5px 2px;
+    letter-spacing: 0.5px;
+    background-color: #E4E4E4;
+    border-radius: 100%;
+    border: 1px solid #c6c6c6;
+}
+
+.disappear_coupon_list .coupon {
+    filter: grayscale(100%);
+}
+
+.wrapper.member_info .container_wrapper
+.benefit_grade_wrap .tbl_grade_wrap
+.tbl_col th .img_box {
+    display: block;
+    margin-bottom: 6px;
+    text-align: center;
+    }
+.ico_grade_platinum{
+    display:inline-block;
+    width:90px;
+    height:90px;
+    background-size: cover;
+    background-image: url("../image/grade/platinum.png");
+}
+.ico_grade_gold{
+    display:inline-block;
+    width:90px;
+    height:90px;
+    background-size: cover;
+    background-image: url("../image/grade/gold.png");
+}
+.ico_grade_silver{
+    display:inline-block;
+    width:90px;
+    height:90px;
+    background-size: cover;
+    background-image: url("../image/grade/silver.png");
+}
+.ico_grade_friends{
+    display:inline-block;
+    width:90px;
+    height:90px;
+    background-size: cover;
+    background-image: url("../image/grade/friends.png");
+}
+.coupon_logo {
+    display: flex;
+    justify-content: flex-start;
+}
+.coupon_logo img{
+    width: 65px;
+    height: 16px;
+    margin-left: 10px;
+}

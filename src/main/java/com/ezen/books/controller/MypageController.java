@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static ch.qos.logback.core.joran.JoranConstants.NULL;
+
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/mypage/*")
@@ -75,14 +77,17 @@ public class MypageController {
         myPageLeft(model, authentication);
 
         String loginId = authentication.getName();
-
         MemberVO memberVO = memberService.getMemberByInfo(loginId);
         long mno = memberVO.getMno();
 
-        List<InquiryVO> inquiryVOList = inquiryService.getInquiriesByMno(mno);
+        List<InquiryVO> inquiryVOList;
+        if (status != null && !status.isEmpty()) {
+            inquiryVOList = inquiryService.getInquiriesByMnoAndStats(mno, status);
+        } else {
+            inquiryVOList = inquiryService.getInquiriesByMno(mno);
+        }
 
         model.addAttribute("inquiryList", inquiryVOList);
-
         model.addAttribute("stautus", status);
 
         return "/mypage/inquiryList";
@@ -108,14 +113,16 @@ public class MypageController {
 
         inquiryVO.setMno(mno);
 
-        if(file != null ){
-            String files = fileHandler.uploadInquiry(file);
-            log.info("|| fileAddr > {}", files);
-            inquiryVO.setFileAddr(files);
+        if (file != null && !file.isEmpty()) {
+            String fileAddr = fileHandler.uploadInquiry(file);
+            log.info("|| fileAddr > {}", fileAddr);
+            inquiryVO.setFileAddr(fileAddr);
+        } else {
+            inquiryVO.setFileAddr(null);
         }
         int isOk = inquiryService.insert(inquiryVO);
 
-        return isOk > 0 ? "/index" : "/mypage/inquiry";
+        return isOk > 0 ? "redirect:/mypage/inquiryList" : "redirect:/mypage/inquiry";
     }
 
     @GetMapping("/coupon")

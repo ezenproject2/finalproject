@@ -42,4 +42,10 @@
         where ino = #{ino}
     </update>
 
+    <select id="getInquiriesByMnoAndStats" resultType="com.ezen.books.domain.InquiryVO">
+        select * from inquiry
+        where mno = #{mno} and status = #{status}
+        order by reg_at desc
+    </select>
+
 </mapper>

@@ -165,7 +165,7 @@
 }
 .inquriy {
     margin-bottom: 24px;
-    margin-right: 70%;
+    /*margin-right: 90%;*/
 }
 .inquiry_answer {
     border-top: 1px solid #c6c6c6;
@@ -176,7 +176,7 @@
 
 .inquriy_item_content_wrap {
     display: flex;
-    flex-direction: column;
+    /*flex-direction: column;*/
     align-content: flex-start;
 }
 

@@ -2,6 +2,7 @@ package com.ezen.books.repository;
 
 import com.ezen.books.domain.InquiryVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -11,6 +12,8 @@ public interface InquiryMapper {
 
     List<InquiryVO> getInquiriesByMno(long mno);
 
+    List<InquiryVO> getInquiriesByMnoAndStats(@Param("mno") long mno, @Param("status") String status);
+
     List<InquiryVO> getAllInquiries(String status);
 
     InquiryVO getInquiryByIno(long ino);
@@ -18,4 +21,5 @@ public interface InquiryMapper {
     int updateInquiry(InquiryVO inquiryVO);
 
     String getLoginId(long ino);
+
 }
