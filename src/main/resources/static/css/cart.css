@@ -274,7 +274,7 @@
     background-color:#FAFAF9;
     margin-top: -5px;
     height: auto;
-    max-height: 500px;
+    max-height: 550px;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -294,9 +294,7 @@
     border-top: 1px dashed #497248;
     padding-top: 30px;
 }
-.cart_aside_bottom span strong {
-    font-size: 1.2rem;
-}
+.cart_aside_bottom span strong {font-size: 1.2rem;}
 
 .cart_order_btn button {
     width: 100%;
@@ -319,9 +317,7 @@
     opacity: 0.7;
 }
 
-#orderBtn {
-    margin-bottom: 15px;
-}
+#orderBtn {margin-bottom: 15px;}
 
 
 /* cart_list_none */
@@ -329,9 +325,7 @@
     padding: 60px 0;
     text-align: center;
 }
-.cart_list_none > svg {
-    margin-bottom: 15px;
-}
+.cart_list_none > svg { margin-bottom: 15px;}
 .cart_list_none > .title {
     font-size: 1.3rem;
     font-weight: 700;
@@ -355,8 +349,7 @@
     border: 1px solid #39553F;
     background-color: #39553F;
 }
-.ic_delete {
-cursor:pointer;}
+.ic_delete {cursor:pointer;}
 
 /* 페이지네이션을 위해 추가한 스타일. */
 .pagenation_area { /* 이 부분만 직접 짜고 나머지 아래 부분은 product/list의 스타일을 적용함. */
