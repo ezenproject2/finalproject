@@ -1,14 +1,18 @@
 const todayDateElement = document.querySelector(".today_date");
+
 if (todayDateElement) {
     const today = new Date();
     const year = String(today.getFullYear()).slice(2); // 연도 뒤 2자리
     const month = String(today.getMonth() + 1).padStart(2, "0"); // 월 (2자리)
     const date = String(today.getDate()).padStart(2, "0"); // 일 (2자리)
+
     // 날짜 형식: 24.01.01
     const formattedDate = `${year}.${month}.${date}`;
+
     // span에 날짜 삽입
     todayDateElement.textContent = formattedDate;
 }
+
 // Swiper 초기화
 var swiper = new Swiper(".mySwiper", {
     autoplay: { delay: 5500, },// 자동 재생 시간 설정
@@ -25,6 +29,7 @@ var swiper = new Swiper(".mySwiper", {
         slideChangeTransitionStart: function () {
             // 현재 활성 슬라이드 가져오기
             const activeSlide = document.querySelector(".swiper-slide-active");
+
             if (activeSlide.classList.contains("slide1")) {
                 var tl = gsap.timeline({ defaults: { duration: 1.5, ease: "power2.inOut" } });
                 tl.fromTo(".slide1-img",
@@ -76,8 +81,10 @@ var swiper = new Swiper(".mySwiper", {
                     { scale: 1, opacity: 1 }, 0.1 // 최종 상태
                 );
             }
+
             if (activeSlide.classList.contains("slide3")) {
                 var tl = gsap.timeline({ defaults: { duration: 1.5, ease: "bounce.inOut" } });
+
                 // .text_area > p 개별 텍스트 애니메이션
                 tl.fromTo(".text_area",
                     { opacity: 0, y: 1000 },
@@ -100,12 +107,15 @@ var swiper = new Swiper(".mySwiper", {
                     { opacity: 1, y: 0}, 0.7
                 );
             }
+
             if (activeSlide.classList.contains("slide4")) {
                 var tl = gsap.timeline({ defaults: { duration: 1.5, ease: "power2.out" } });
+
                 // 애니메이션 추가
                 tl.fromTo(".slide4 .center",
                     { x:"-50%", y:"-50%", scale: 1, opacity: 0 },
                     { opacity: 1 }, 0 )
+
                 // book 애니메이션 (공통 처리)
                 tl.fromTo(".slide4 .book", // 모든 책을 선택
                     { x: 0, y: 1000, opacity: 0.3 }, // 초기 상태
@@ -130,11 +140,14 @@ var swiper = new Swiper(".mySwiper", {
         },
     },
 });
+
 // 첫 번째 슬라이드 애니메이션 수동 실행
 document.addEventListener("DOMContentLoaded", function () {
     const firstSlide = document.querySelector(".swiper-slide-active");
+
     // 타임라인 객체 생성
     var tl = gsap.timeline({ defaults: { duration: 1.5, ease: "power2.inOut" } });
+
     if (firstSlide && firstSlide.classList.contains("slide1")) {
         tl.fromTo(".slide1-img",
             { x: 0, y: 100, opacity: 0.5 }, // 초기 상태
@@ -154,12 +167,14 @@ document.addEventListener("DOMContentLoaded", function () {
         );
     }
 });
+
 const books = document.querySelectorAll(".daily_pick_slide_book");
 const btn = document.querySelector(".slide_btn");
 const leftBookImg = document.querySelector(".daily_pick_book > img");
 const leftBookTitle = document.querySelector(".daily_pick_title");
 const leftBookInfo = document.querySelector(".daily_pick_info");
 const leftBookLink = document.querySelector(".daily_pick_left > a");
+
 // 초기 위치 설정 (12시, 3시, 6시, 9시 방향)
 const positions = [
     { top: "0%", left: "50%", transform: "translate(-50%, -0%)" }, // book_1
@@ -167,6 +182,7 @@ const positions = [
     { bottom: "0%", left: "50%", transform: "translate(-50%, 0%)" }, // book_3
     { top: "50%", left: "0%", transform: "translate(-0%, -50%)" }, // book_4
 ];
+
 // 책 정보 배열 (title, info, link)
 const bookDetails = [
     {
@@ -190,21 +206,26 @@ const bookDetails = [
         link: "https://example.com/book4",
     },
 ];
+
 let currentPositions = [...positions]; // 현재 위치 상태
+
 // 위치 업데이트 함수
 function updatePositions() {
     books.forEach((book, index) => {
         book.classList.remove("select"); // 모든 책에서 select 클래스 제거
         const pos = currentPositions[index];
+
         // 책의 위치를 갱신
         book.style.top = pos.top || "auto";
         book.style.bottom = pos.bottom || "auto";
         book.style.left = pos.left || "auto";
         book.style.right = pos.right || "auto";
         book.style.transform = pos.transform;
+
         // 9시 방향의 책에 select 클래스 추가
         if (pos.left === "0%" && pos.top === "50%") {
             book.classList.add("select");
+
             // 선택된 책의 데이터를 왼쪽에 반영
             const details = bookDetails[index];
             leftBookImg.src = book.querySelector("img").src;
@@ -214,20 +235,25 @@ function updatePositions() {
         }
     });
 }
+
 // 버튼 클릭 시 위치를 시계 방향으로 회전
 let rotationAngle = 0; // 초기 회전 각도
+
 btn.addEventListener("click", () => {
     // 회전 각도를 45도씩 증가
     rotationAngle += 45;
+
     // .daily_pick_slide에 스타일 적용
     const slide = document.querySelector(".daily_pick_slide");
     slide.style.setProperty("--rotation-angle", `${rotationAngle}deg`);
+
     // 위치 업데이트
     currentPositions.push(currentPositions.shift());
     updatePositions();
 });
 // 초기 위치 적용
 updatePositions();
+
 var swiper = new Swiper(".my-carousel__swiper", {
     loop: true,
     grabCursor: false,
@@ -255,8 +281,10 @@ var swiper = new Swiper(".my-carousel__swiper", {
         }
     }
 });
+
 const reviewTexts = document.querySelectorAll(".review-text"); // 모든 review-text 요소 선택
 const maxChars = 225; // 최대 글자 수
+
 reviewTexts.forEach((reviewText) => {
     if (reviewText.textContent.length > maxChars) {
         const truncatedText = reviewText.textContent.slice(0, maxChars).trim(); // 210글자까지 자름
@@ -264,12 +292,15 @@ reviewTexts.forEach((reviewText) => {
         reviewText.classList.add("truncated"); // 가상요소를 추가하기 위한 클래스 추가
     }
 });
+
 // GSAP와 ScrollTrigger 활성화
 gsap.registerPlugin(ScrollTrigger);
+
 // 모든 .section 요소를 순회하며 애니메이션 적용
 gsap.utils.toArray(".section").forEach((section) => {
     // 초기 상태 설정
     gsap.set(section, { opacity: 0 });
+
     // ScrollTrigger 애니메이션 설정
     gsap.to(section, {
         opacity: 1, // 투명도 1로 변경
@@ -285,11 +316,13 @@ gsap.utils.toArray(".section").forEach((section) => {
         },
     });
 });
-var swiper = new Swiper(".notice_swiper", {
-    direction: "vertical",
-    loop:true,
-    autoplay: { delay: 3000},
-});
+
+// var swiper = new Swiper(".notice_swiper", {
+//     direction: "vertical",
+//     loop:true,
+//     autoplay: { delay: 3000},
+// });
+
 var swiper = new Swiper(".new_book_swiper", {
     direction: "vertical",
     loop:true,
@@ -300,3 +333,41 @@ var swiper = new Swiper(".new_book_swiper", {
     },
     autoplay: { delay: 4000},
 });
+
+
+const noticeBox = document.getElementById("noticeBox");
+function updateNoticeBox(){
+    getNoticeFromServer().then(result=>{
+        console.log(result);
+        if(result != null){
+            noticeBox.innerHTML = "";
+            let str = "";
+            for(noticeVO of result){
+                str += `<div class="swiper-slide"><a href="/notice/detail?ntno=${noticeVO.ntno}">${noticeVO.title}</a></div>`;
+            }
+            
+            noticeBox.innerHTML = str;
+            console.log(noticeBox);
+            console.log(str);
+        }
+    });
+}
+
+updateNoticeBox();
+
+var swiper = new Swiper(".notice_swiper", {
+    direction: "vertical",
+    loop:true,
+    autoplay: { delay: 3000},
+});
+
+async function getNoticeFromServer() {
+    try{
+        const url = "/notice/getMain";
+        const resp = await fetch(url);
+        const result = await resp.json();
+        return result;
+    } catch (error) {
+        console.log(error);
+    }
+}

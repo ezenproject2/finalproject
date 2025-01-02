@@ -9,9 +9,12 @@ public interface InquiryService {
 
     List<InquiryVO> getInquiriesByMno(long mno);
 
+    List<InquiryVO> getInquiriesByMnoAndStats(long mno, String status);
+
     List<InquiryVO> getAllInquiries(String status);
 
     InquiryVO getInquiriesByIno(long ino);
 
     int updateInquiry(InquiryVO inquiryVO);
+
 }

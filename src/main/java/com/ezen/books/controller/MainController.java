@@ -27,4 +27,7 @@ public class MainController {
         // 주석이애용
     }
 
+    @GetMapping("/benefit")
+    public void benefit(){}
+
 }

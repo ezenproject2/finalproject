@@ -167,7 +167,7 @@
                     <div class="book_none" th:if="${#lists.isEmpty(odpDTO)}">
                         <span class="book_none_title">좋아하는 책들로 나만의 서재를 만들어보세요!</span>
                         <span class="book_none_content">지금 바로 시작해볼까요?</span>
-                        <a href="" class="btn">
+                        <a th:href="@{/product/specialList/best}" class="btn">
                             추천 도서 보러 가기 &#8594;
                         </a>
                     </div>

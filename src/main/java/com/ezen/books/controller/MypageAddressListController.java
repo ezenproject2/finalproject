@@ -1,9 +1,13 @@
 package com.ezen.books.controller;
 
 import com.ezen.books.domain.AddressVO;
+import com.ezen.books.domain.MemberVO;
+import com.ezen.books.service.MemberService;
 import com.ezen.books.service.MypageAddressListService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,17 +18,27 @@ import org.springframework.web.bind.annotation.*;
 public class MypageAddressListController {
 
     private final MypageAddressListService mypageAddressListService;
+    private final MemberService memberService;
 
     @PostMapping("/register")
-    public String registerAddr(AddressVO addressData,
-                               @RequestParam String mnoVal) {
+    public String registerAddr(AddressVO addressData) {
         log.info(" >>> AddressListController: registerAddr start.");
         // AddressVO(adno=0, mno=0, recName=유한, recPhone=01073738282, addrCode=13536, addr=경기 성남시 분당구 판교역로 4 (백현동), addrDetail=콘트라베이스 12층, addrName=회사, isDefault=Y)
         log.info("The addressData from the client: {}", addressData);
+
+        // mno 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loginId = authentication.getName();
+
+        MemberVO memberVO = memberService.getMemberByInfo(loginId);
+        long mnoVal = memberVO.getMno();
+        log.info("mnoVal: {}", mnoVal);
+
         log.info("The mnoVal: {}", mnoVal);
 
         // AddressVO의 mno는 long인데 들어오는 mno는 String이라서 따로 가져온 후 넣어줌.
-        addressData.setMno(Long.parseLong(mnoVal));
+        // addressData.setMno(Long.parseLong(mnoVal));
+        addressData.setMno(mnoVal);
 
         log.info("The isDefault is: {}", addressData.getIsDefault());
 

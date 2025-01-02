@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<head>
+    <title>회원 등급별 혜택</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="/css/benefit.css"/>
+</head>
+
+<main layout:fragment="main">
+    <div class="inner">
+        <h2 class="title_heading">등급별 혜택</h2>
+        <div class="benefit_grade_wrap">
+            <div class="tbl_grade_wrap">
+                <table class="tbl_col">
+                    <colgroup>
+                        <col style="width: 25%"/>
+                        <col style="width: 25%;"/>
+                        <col style="width: 25%;"/>
+                        <col style="width: auto;"/>
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th scope="col" class="active">
+                            <div class="img_box">
+                                <span class="ico_grade_platinum"></span>
+                            </div>
+                            <div class="grade_title">플래티넘</div>
+                            <div class="grade_desc">최근 3개월 순수구매액
+                                <span class="val">30만원 이상</span>
+                            </div>
+                        </th>
+                        <th scope="col">
+                            <div class="img_box">
+                                <span class="ico_grade_gold"></span>
+                            </div>
+                            <div class="grade_title">골드</div>
+                            <div class="grade_desc">최근 3개월 순수구매액
+                                <span class="val">20~30만원</span>
+                            </div>
+                        </th>
+                        <th scope="col">
+                            <div class="img_box">
+                                <span class="ico_grade_silver"></span>
+                            </div>
+                            <div class="grade_title">실버</div>
+                            <div class="grade_desc">최근 3개월 순수구매액
+                                <span class="val">10~20만원</span>
+                            </div>
+                        </th>
+                        <th scope="col">
+                            <div class="img_box">
+                                <span class="ico_grade_friends"></span>
+                            </div>
+                            <div class="grade_title">새싹</div>
+                            <div class="grade_desc">최근 3개월 순수구매액
+                                <span class="val">10만원 미만</span>
+                            </div>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="vertical_middle active">
+                            <ul class="point_rate_list">
+                                <li class="point_rate_item">
+                                    <span class="info_title">이젠 문고</span> 상품별 적립률
+                                </li>
+                            </ul>
+                            <div class="extra_rate_text">
+                                <span class="ico_point_plus"><span class="hidden">+</span></span>  <span class="val">6%</span>
+                            </div>
+                        </td>
+                        <td class="vertical_middle">
+                            <ul class="point_rate_list">
+                                <li class="point_rate_item">
+                                    <span class="info_title">이젠 문고</span> 상품별 적립률
+                                </li>
+                            </ul>
+                            <div class="extra_rate_text">
+                                <span class="ico_point_plus"><span class="hidden">+</span></span>  <span class="val">5%</span>
+                            </div>
+                        </td>
+                        <td class="vertical_middle">
+                            <ul class="point_rate_list">
+                                <li class="point_rate_item">
+                                    <span class="info_title">이젠 문고</span> 상품별 적립률
+                                </li>
+                            </ul>
+                            <div class="extra_rate_text">
+                                <span class="ico_point_plus"><span class="hidden">+</span></span>  <span class="val">4%</span>
+                            </div>
+                        </td>
+                        <td class="vertical_middle">
+                            <ul class="point_rate_list">
+                                <li class="point_rate_item">
+                                    <span class="info_title">이젠 문고</span> 상품별 적립률
+                                </li>
+                            </ul>
+                            <div class="extra_rate_text">
+                                <span class="ico_point_plus"><span class="hidden">+</span></span>  <span class="val">2%</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="vertical_top active">
+                            <ul class="coupon_list col1">
+                                <li class="coupon_item all size_sm">
+                                    <div class="coupon">
+                                        <div class="coupon_left">
+                                            <span class="coupon_logo">
+                                                <img src="../image/logo.png"/>
+                                            </span>
+                                            <div class="coupon_top">
+                                                <strong>4000 원 할인 </strong>
+                                            </div>
+                                            <div class="coupon_bottom">
+                                                <span class="coupon_price_condition">7 만원 이상 주문시</span>
+                                            </div>
+                                        </div>
+                                        <div class="coupon_right"> <span>COUPON</span> </div>
+                                    </div>
+                                </li>
+                                <li class="coupon_item all size_sm">
+                                    <div class="coupon">
+                                        <div class="coupon_left">
+                                            <span class="coupon_logo">
+                                                <img src="../image/logo.png"/>
+                                            </span>
+                                            <div class="coupon_top">
+                                                <strong>3000 원 할인 </strong>
+                                            </div>
+                                            <div class="coupon_bottom">
+                                                <span class="coupon_price_condition">5 만원 이상 주문시</span>
+                                            </div>
+                                        </div>
+                                        <div class="coupon_right"> <span>COUPON</span> </div>
+                                    </div>
+                                </li>
+                                <li class="coupon_item all size_sm">
+                                    <div class="coupon">
+                                        <div class="coupon_left">
+                                            <span class="coupon_logo">
+                                                <img src="../image/logo.png"/>
+                                            </span>
+                                            <div class="coupon_top">
+                                                <strong>2000 원 할인 </strong>
+                                            </div>
+                                            <div class="coupon_bottom">
+                                                <span class="coupon_price_condition">3 만원 이상 주문시</span>
+                                            </div>
+                                        </div>
+                                        <div class="coupon_right"> <span>COUPON</span> </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </td>
+                        <td class="vertical_top">
+                            <ul class="coupon_list col1">
+                                <li class="coupon_item all size_sm">
+                                    <div class="coupon">
+                                        <div class="coupon_left">
+                                            <span class="coupon_logo">
+                                                <img src="../image/logo.png"/>
+                                            </span>
+                                            <div class="coupon_top">
+                                                <strong>3000 원 할인 </strong>
+                                            </div>
+                                            <div class="coupon_bottom">
+                                                <span class="coupon_price_condition">7 만원 이상 주문시</span>
+                                            </div>
+                                        </div>
+                                        <div class="coupon_right"> <span>COUPON</span> </div>
+                                    </div>
+                                </li>
+                                <li class="coupon_item all size_sm">
+                                    <div class="coupon">
+                                        <div class="coupon_left">
+                                            <span class="coupon_logo">
+                                                <img src="../image/logo.png"/>
+                                            </span>
+                                            <div class="coupon_top">
+                                                <strong>2000 원 할인 </strong>
+                                            </div>
+                                            <div class="coupon_bottom">
+                                                <span class="coupon_price_condition">5 만원 이상 주문시</span>
+                                            </div>
+                                        </div>
+                                        <div class="coupon_right"> <span>COUPON</span> </div>
+                                    </div>
+                                </li>
+                                <li class="coupon_item all size_sm">
+                                    <div class="coupon">
+                                        <div class="coupon_left">
+                                            <span class="coupon_logo">
+                                                <img src="../image/logo.png"/>
+                                            </span>
+                                            <div class="coupon_top">
+                                                <strong>1000 원 할인 </strong>
+                                            </div>
+                                            <div class="coupon_bottom">
+                                                <span class="coupon_price_condition">3 만원 이상 주문시</span>
+                                            </div>
+                                        </div>
+                                        <div class="coupon_right"> <span>COUPON</span> </div>
+                                    </div>
+                                </li>
+                                </li>
+                            </ul>
+                        </td>
+                        <td class="vertical_top">
+                            <ul class="coupon_list col1">
+                                <li class="coupon_item all size_sm">
+                                    <div class="coupon">
+                                        <div class="coupon_left">
+                                            <span class="coupon_logo">
+                                                <img src="../image/logo.png"/>
+                                            </span>
+                                            <div class="coupon_top">
+                                                <strong>2000 원 할인 </strong>
+                                            </div>
+                                            <div class="coupon_bottom">
+                                                <span class="coupon_price_condition">5 만원 이상 주문시</span>
+                                            </div>
+                                        </div>
+                                        <div class="coupon_right"> <span>COUPON</span> </div>
+                                    </div>
+                                </li>
+                                <li class="coupon_item all size_sm">
+                                    <div class="coupon">
+                                        <div class="coupon_left">
+                                            <span class="coupon_logo">
+                                                <img src="../image/logo.png"/>
+                                            </span>
+                                            <div class="coupon_top">
+                                                <strong>1000 원 할인 </strong>
+                                            </div>
+                                            <div class="coupon_bottom">
+                                                <span class="coupon_price_condition">3 만원 이상 주문시</span>
+                                            </div>
+                                        </div>
+                                        <div class="coupon_right"> <span>COUPON</span> </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </td>
+                        <td class="vertical_top">
+                            <div class="coupon_list_title"></div>
+                            <ul class="coupon_list col1">
+                            </ul>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <h2 class="title_heading">등급 선정 기준</h2>
+        <div class="tbl_row_wrap">
+            <table class="tbl_row">
+                <colgroup>
+                    <col style="width: 12%;"/>
+                    <col style="width: auto;"/>
+                </colgroup>
+                <tbody>
+                <tr>
+                    <th scope="row">혜택기간</th>
+                    <td>
+                        <span class="fc_black">매월 1일(오전 9시)부터 3개월</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">선정기간</th>
+                    <td>
+                        <span class="fc_black">직전 3개월 순수구매액</span>
+                        <ul class="bul_list text_bottom">
+                            <li class="bul_item_dot font_size_xxs">온라인은 상품발송일 기준</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">순수구매액</th>
+                    <td>
+                        <span class="fc_black">교보문고 구매금액 합산</span>
+                        <ul class="bul_list text_bottom">
+                            <li class="bul_item_dot font_size_xxs">배송비, 포장봉투 및 쿠폰, 통합포인트, 마일리지, 교환권 등 제외</li>
+                            <li class="bul_item_dot font_size_xxs">교보라이프플래닛은 통합(제3자 정보제공 동의) 회원에 한해 기본납입보험료의 50%를 합산하여 반영 <br/>(예 : 5월의 경우 1~3월 기본납입보험료 기준)</li>
+                        </ul>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</main>

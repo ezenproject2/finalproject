@@ -50,11 +50,10 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authorize -> {
             authorize
                     .requestMatchers("/member/").authenticated()
-                    .requestMatchers("/manager/**").hasAnyRole("MANAGER", "ADMIN") // "MAMAGER" -> "MANAGER"
                     .requestMatchers("/admin/**").hasAnyRole("ADMIN")
-                    .requestMatchers("/login", "/member/join").permitAll()
+                    .requestMatchers("/member/login", "/member/join","/member/join_terms").permitAll()
                     .requestMatchers("/mypage/**", "/payment/**").authenticated()
-                    .anyRequest().permitAll();  // 그 외의 요청은 모두 접근 가능
+                    .anyRequest().permitAll();
         });
 
         // 로그인 설정

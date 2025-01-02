@@ -107,4 +107,16 @@ public class NoticeServiceImpl implements NoticeService{
         }
         return isOk;
     }
+
+    @Override
+    public List<NoticeVO> getMain() {
+        return noticeMapper.getMain();
+    }
+
+    @Override
+    public int delete(long ntno) {
+        return noticeMapper.delete(ntno);
+    }
+
+
 }

@@ -115,7 +115,17 @@ public class MemberController {
 
 
     @GetMapping("/modify")
-    public void modify(){}
+    public String modify(Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loginId = authentication.getName();
+        log.info(">>>>>> loginId > {}", loginId);
+        log.info(">>>> authentication {}",authentication);
+
+        MemberVO memberVO = memberService.getMemberByInfo(loginId);
+        model.addAttribute("memberVO", memberVO);
+
+        return "/member/modify";
+    }
 
     @PostMapping("/modify")
     public String modify(MemberVO memberVO, HttpServletRequest request, HttpServletResponse response,
@@ -169,7 +179,7 @@ public class MemberController {
     }
 
     // (cron="59 59 23 * * *") : 매일 23시59분59초에 실행
-    @Scheduled(cron="00 00 11 * * *")
+    @Scheduled(cron="00 06 13 * * *")
     public void updateAllMemberGrades() {
         try {
             memberService.updateAllMemberGrades(); // 모든 회원의 등급 갱신

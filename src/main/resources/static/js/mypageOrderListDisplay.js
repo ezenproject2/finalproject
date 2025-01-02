@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("The outer size: ", outerSize);
 
         trimOrderDate(outerSize);
+        displayOrderStatusList(outerSize);
         showStatusInKorean(outerSize);
     }
 })
@@ -33,6 +34,53 @@ function trimOrderDate(outerSize) {
         // console.log("The trimmed order date: ", orderDate.innerText);
     }
 }
+
+// my_orders_nav 안의 주문 상태 내역 값을 채움
+function displayOrderStatusList(outerSize) {
+    let preparing = 0;
+    let shipping = 0;
+    let completed = 0;
+    let canceled = 0;
+    let refunded = 0;
+
+    for(let i=0; i < outerSize; i++) {
+        let innerSize = document.querySelector(`.inner-data-container[data-outer-index="${i}"]`).dataset.innerSize;
+        innerSize = parseInt(innerSize);
+        console.log("The inner size: ", innerSize);
+
+        for(let j=0; j < innerSize; j++) {
+            let status = document.querySelector(`.inner-data-container[data-outer-index="${i}"] .order-detail-status[data-inner-index="${j}"]`);
+
+            switch (status.innerText) {
+                case "preparing":
+                    preparing += 1;
+                    break;
+                case "shipping":
+                    shipping += 1;
+                    break;
+                case "completed":
+                    completed += 1;
+                    break;
+                case "canceled":
+                    canceled += 1;
+                    break;
+                case "refunded":
+                    refunded += 1;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    // console.log("refunded", refunded);
+    // console.log("refunded" + refunded);
+    document.querySelector('.status-preparing').innerText = preparing;
+    document.querySelector('.status-shipping').innerText = shipping;
+    document.querySelector('.status-completed').innerText = completed;
+    document.querySelector('.status-canceled').innerText = canceled;
+    document.querySelector('.status-refunded').innerText = refunded;
+};
 
 // order_detail의 영문 status를 화면에 한글 status로 바꿔 띄움.
 function showStatusInKorean(outerSize) {

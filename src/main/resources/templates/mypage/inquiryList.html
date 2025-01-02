@@ -18,13 +18,13 @@
       <h1 class="my_orders_title">1:1 문의 내역</h1>
       <div class="list_menu">
         <div class="list_menu_item tap">
-          <a href="/mypage/inquiryList">전체</a>
+          <a th:href="@{/mypage/inquiryList}">전체</a>
         </div>
         <div class="list_menu_item" data-status="답변 대기">
-          <a href="/mypage/inquiryList?status=답변 대기">답변 대기</a>
+          <a th:href="@{/mypage/inquiryList(status='답변 대기')}">답변 대기</a>
         </div>
         <div class="list_menu_item" data-status="답변 완료">
-          <a href="/mypage/inquiryList?status=답변 완료">답변 완료</a>
+          <a th:href="@{/mypage/inquiryList(status='답변 완료')}">답변 완료</a>
         </div>
         <a href="/mypage/inquiry"><span>1:1 문의하기</span></a>
       </div>
@@ -52,8 +52,8 @@
 
               <div class="inquriy_item_content_wrap">
                 <div class="inquriy">
-                  <img th:src="@{/upload/{fileAddr}(fileAddr=${inquiry.fileAddr})}" alt="사진"
-                       th:if="${inquiry.fileAddr != null}" />
+                  <img th:if="${inquiry.fileAddr != null and inquiry.fileAddr != ''}"
+                       th:src="@{/upload/{fileAddr}(fileAddr=${inquiry.fileAddr})}">
                   <strong>질문 > </strong>
                   <span th:text="${inquiry.content}">문의 내용</span>
                 </div>

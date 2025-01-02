@@ -22,7 +22,7 @@
             <span>전체 선택</span>
           </div>
 
-          <button type="button"><i class="ic ic_wastebasket"></i></button>
+          <button type="button" class="wastebasket-btn"><i class="ic ic_wastebasket"></i></button>
         </div>
       </div>
 
@@ -33,7 +33,7 @@
         </svg>
         <p class="title">장바구니에 담긴 상품이 없습니다.</p>
         <p class="sub">마음에 드는 상품을 담아보세요!</p>
-        <a href="">계속 쇼핑하기</a> <!-- 메인 페이지로 이동 -->
+        <a th:href="@{/product/list}">계속 쇼핑하기</a> <!-- 메인 페이지로 이동 -->
       </div>
 
 
@@ -62,10 +62,10 @@
                   </label> <!--/* Extract duplicate id="allItemBtn" */-->
                   <div class="book_image_wrap">
                     <!--/* src="https://cdn.ypbooks.co.kr/image/product/202410/06f4de7c-b904-4e43-b64f-5c7e20c459df_100.jpg" */-->
-                    <a href=""><img th:src="${cartProduct.productVO.image}" alt=""></a>
+                    <a th:href="@{/product/detail(isbn=${cartProduct.productVO.isbn})}"><img th:src="${cartProduct.productVO.image}" alt=""></a>
                   </div>
                   <div class="book_info_wrap">
-                    <p class="book_title"><a href="">[[${cartProduct.productVO.title} ?: '도서 제목']]</a></p> <!--/* 원본 파일에서는 "소년이 온다"가 있었음 */-->
+                    <p class="book_title"><a th:href="@{/product/detail(isbn=${cartProduct.productVO.isbn})}">[[${cartProduct.productVO.title} ?: '도서 제목']]</a></p> <!--/* 원본 파일에서는 "소년이 온다"가 있었음 */-->
                     <p class="book_write">
                       <span class="book_author">[[${cartProduct.productVO.author} ?: '작가']]</span>
                       <span class="book_publisher">[[${cartProduct.productVO.publisher} ?: '출판사']]</span>

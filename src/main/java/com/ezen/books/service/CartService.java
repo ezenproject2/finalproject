@@ -16,4 +16,6 @@ public interface CartService {
     int deleteCartToServer(long mno, long prno);
 
     int getCartAmount(long mno);
+
+    int deleteAllCartToServer(long mnoVal);
 }

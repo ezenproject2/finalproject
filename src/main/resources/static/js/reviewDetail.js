@@ -175,7 +175,7 @@ document.addEventListener("click", (e) => {
         deleteReviewToServer(rno).then(result => {
             if(result == "1"){
                 alert("리뷰가 삭제되었습니다.");
-                printReviewBox(prno, 1, mno);
+                location.reload();
             }else{
                 alert("리뷰 삭제 과정중 오류가 발생했습니다.")
             }
