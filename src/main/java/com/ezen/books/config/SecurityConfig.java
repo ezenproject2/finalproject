@@ -50,9 +50,8 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authorize -> {
             authorize
                     .requestMatchers("/member/").authenticated()
-                    .requestMatchers("/manager/**").hasAnyRole("MANAGER", "ADMIN") // "MAMAGER" -> "MANAGER"
                     .requestMatchers("/admin/**").hasAnyRole("ADMIN")
-                    .requestMatchers("/login", "/member/join").permitAll()
+                    .requestMatchers("/member/login", "/member/join","/member/join_terms").permitAll()
                     .requestMatchers("/mypage/**", "/payment/**").authenticated()
                     .anyRequest().permitAll();
         });
