@@ -1,18 +1,20 @@
 package com.ezen.books.controller;
 
-import com.ezen.books.domain.BookInfo;
-import com.ezen.books.domain.ProductVO;
-import com.ezen.books.domain.PagingVO;
+import com.ezen.books.domain.*;
 import com.ezen.books.handler.BookAPIHandler;
 import com.ezen.books.handler.PagingHandler;
+import com.ezen.books.service.GradeService;
+import com.ezen.books.service.MemberService;
 import com.ezen.books.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.lang.reflect.Member;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +26,9 @@ public class ProductController {
 
     private final ProductService productService;
     private final BookAPIHandler bookAPIHandler;
+
+    private final MemberService memberService;
+    private final GradeService gradeService;
 
     @GetMapping("/register")
     public void register(){}
@@ -103,7 +108,7 @@ public class ProductController {
     }
 
     @GetMapping("/detail")
-    public void detail(Model model, @RequestParam("isbn") String isbn){
+    public void detail(Model model, @RequestParam("isbn") String isbn, Authentication authentication){
         // 상품 상세 페이지
         ProductVO productVO = productService.getDetail(isbn);
 
@@ -124,6 +129,18 @@ public class ProductController {
 //        }
         model.addAttribute("bookInfo", bookInfo);
         model.addAttribute("productVO", productVO);
+
+        /* yh-------------- */
+        double pointRate = 0.06;
+        if (authentication != null) {
+            String loginId = authentication.getName();
+            MemberVO memberVO = memberService.getMemberByInfo(loginId);
+            GradeVO gradeVO = gradeService.getGradeByGno(memberVO.getGno());
+            pointRate = gradeVO.getPointRate();
+        }
+        double points = (int) productVO.getRealPrice() * pointRate;
+        model.addAttribute("points", points);
+        /* ---------------- */
     }
 
     @ResponseBody
