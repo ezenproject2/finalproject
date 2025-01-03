@@ -6,22 +6,34 @@
 <head>
   <title> 이젠문고 </title>
   <meta charset="UTF-8"/>
-  <link rel="stylesheet" href="/css/memberPwAuth.css" />
+  <link rel="stylesheet" href="/css/memberLogin.css"/>
 </head>
 <main layout:fragment="main">
   <div class="inner">
-    <div class="find_wrap">
-      <h2> 이메일 인증하기 </h2>
-      <form action="pw_set.me" method="post">
-        <input type="hidden" name="email_injeung" value="${email}">
-        <div class="textbox">
-          <input type="text" name="num" placeholder="인증번호를 입력하세요">
-          <div th:if="${error != null}">
-            <p style="color: #f27370;" th:text="${error}"></p>
-          </div>
-        </div><br><br>
-        <input type="submit" id="check" value="확인">
-      </form>
+    <div class="id_find">
+      <div class="id_find_box">
+        <div class="id_find_box_left">
+          <span class="id_find_box_title">이메일 인증하기</span>
+        </div>
+        <div class="id_find_box_right">
+          <form action="/member/pw_set.me" method="post" class="id_find_form">
+            <input type="hidden" name="email_injeung" value="${email}">
+            <div id="input_item_id" class="input_item id">
+              <input type="text" name="num" class="input_id">
+              <label class="text_label" id="id_label">인증 번호</label>
+              <button type="button" class="btn btn_delete" id="id_clear">
+                <i class="ic ic_delete"></i>
+              </button>
+            </div>
+            <p th:if="${error != null}">
+                <i class="ic ic_error"></i>
+                <span style="color: #EB003B;" th:text="${error}"></span>
+            </p>
+            <button type="submit" id="check" class="btn id_find_btn">비밀번호 재설정</button>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
+  <script src="/js/memberLogin.js"></script>
 </main>

@@ -6,7 +6,7 @@
 <head>
     <title> 이젠문고 </title>
     <meta charset="UTF-8"/>
-    <link rel="stylesheet" href="/css/memberReset.css"/>
+<!--    <link rel="stylesheet" href="/css/memberReset.css"/>-->
     <link rel="stylesheet" href="/css/memberLogin.css"/>
 </head>
 
@@ -14,22 +14,6 @@
     <div class="inner">
         <div class="login_content">
             <div class="login_wrap">
-                <ul class="login_menu_wrap">
-                    <li class="login_menu_item">
-                        <div class="login_member on">
-                            <span class="menu_text">
-                                <span class="text"> 회원 로그인</span>
-                            </span>
-                        </div>
-                    </li>
-                    <li class="login_menu_item">
-                        <div class="login_non_member">
-                            <span class="menu_text">
-                                <span class="text"> 비회원 주문 확인</span>
-                            </span>
-                        </div>
-                    </li>
-                </ul>
                 <form action="/member/login" method="post" id="loginForm"> <!-- 회원 로그인 -->
                     <input type="hidden" id="is_del" name="isDel" value="${member.isDel}">
                     <ul class="panel_wrap">
@@ -71,7 +55,7 @@
                                     </div>
                                 </div>
                                     <div class="err_msg" th:if="${param.error}">
-                                        <i class="ic ic_error"></i> <span th:text="${param.err_msg}"></span>
+                                        <i class="ic ic_error"></i> <span th:text="${param.err_msg}" style="color: #EB003B; font-size: 13px;"></span>
                                     </div>
                                 <div class="login_btn_wrap">
                                     <button type="submit" class="btn btn_login"> <span class="btn_text">로 그 인</span></button>

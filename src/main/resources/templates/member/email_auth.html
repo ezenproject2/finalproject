@@ -6,19 +6,83 @@
 <head>
   <title> 이젠문고 </title>
   <meta charset="UTF-8"/>
-  <link rel="stylesheet" href="/css/memberPwFind.css"/>
+  <link rel="stylesheet" href="/css/memberLogin.css"/>
+  <style>
+    .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding-top: 60px;
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 260px auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 28%;
+        border-radius: 12px;
+    }
+    .modal-content h2{
+        font-weight: bold;
+        font-size: 1.15rem;
+        color: #39553F;
+        margin-top: 7px;
+    }
+    .modal-content .textbox input{
+        width: 100%
+        margin-top: 20px;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        margin-right: 10px;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+  </style>
 </head>
 <main layout:fragment="main">
   <div class="inner">
-    <div class="find_wrap">
-      <span>|회원 가입|</span><h2>이메일 인증하기</h2>
-      <form class="content" id="emailForm" action="/member/sendEmailAuth" method="post">
-        <div class="textbox">
-          <input type="email" id="email" name="email" required maxlength="50" placeholder="이메일">
-          <span class="error_message" id="emailErrorMessage"></span>
+    <div class="id_find">
+      <div class="id_find_box">
+        <div class="id_find_box_left">
+          <span class="id_find_box_title">회원가입 이메일 인증하기</span>
         </div>
-        <button type="button" id="emailAuthButton">이메일 확인</button>
-      </form>
+        <div class="id_find_box_right">
+          <form id="emailForm" action="/member/sendEmailAuth" method="post" class="id_find_form">
+            <input type="hidden" name="email_injeung" value="${email}">
+            <div id="input_item_id" class="input_item id">
+              <input type="email" id="email" name="email" class="input_id">
+              <label class="text_label" id="id_label">이메일</label>
+              <button type="button" class="btn btn_delete" id="id_clear">
+                <i class="ic ic_delete"></i>
+              </button>
+            </div>
+            <p>
+              <span class="error_message" id="emailErrorMessage" style="color: #EB003B;"></span>
+            </p>
+            <button type="button" id="emailAuthButton" class="btn id_find_btn">이메일 확인</button>
+          </form>
+          <input type="hidden" id="hiddenEmail" name="hiddenEmail" />
+        </div>
+      </div>
+    </div>
+  </div>
+
       <div id="emailAuthModal" class="modal">
         <div class="modal-content">
           <span id="closeModal" class="close">&times;</span>
@@ -32,9 +96,6 @@
           <br>
         </div>
       </div>
-    <input type="hidden" id="hiddenEmail" name="hiddenEmail" />
-    </div>
-  </div>
   <script>
     // 이메일 인증을 위한 처리
     document.getElementById('emailAuthButton').addEventListener('click', function() {
@@ -107,14 +168,6 @@
     document.getElementById('closeModal').addEventListener('click', function() {
       document.getElementById('emailAuthModal').style.display = 'none';
     });
-
-<!--    // 모달 외부 클릭 시 모달 닫기-->
-<!--    window.addEventListener('click', function (event) {-->
-<!--      if (event.target === document.getElementById('emailAuthModal')) {-->
-<!--        document.getElementById('emailAuthModal').style.display = 'none';-->
-<!--      }-->
-<!--    });-->
   </script>
-
-
+  <script src="/js/memberLogin.js"></script>
 </main>

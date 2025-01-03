@@ -1,9 +1,23 @@
-.login_content {
+.login_content, .id_find {
+    position: relative;
     margin : 50px 0;
+    display: flex;
+}
+.login_content {justify-content: space-between;}
+.id_find {justify-content: center; width: 100%;}
+.login_content::after {
+    content: "";
+    position: absolute;
+    width: 0.1px;
+    height: 80%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #C6C6C6;
 }
 
 .login_wrap, .join_wrap {
-    width: 500px;
+    width: 30%;
     margin: 50px auto;
 }
 
@@ -33,36 +47,16 @@
     z-index: 1;
 }
 
-.login_menu_item div.on {
-    background-color: #fff;
-    z-index: 6;
-}
-.login_member.on {
-    border-right: none;
-}
-.login_non_member.on {
-    border-left: none;
-}
-
-.login_content {
-    border-right: 0;
-    border-radius: 12px 0;
-}
-
 .panel_wrap {
     position: relative;
     z-index: 5;
     margin-top: -10px;
     background-color: #fff;
-    border: 1px solid #C6C6C6;
-    border-radius: 12px;
+    /* border: 1px solid #C6C6C6;
+    border-radius: 12px; */
 }
-.panel_inner {
-    padding: 24px;
-}
-.login_form {
-    position: relative;
-}
+.panel_inner {padding: 24px}
+.login_form {position: relative;}
 .input_item {
     position: relative;
     padding: 27px 15px 8px;
@@ -127,19 +121,13 @@
     z-index: 7;
 }
 
-.btn_delete, .btn_view {
-    display: none; /* 초기에는 숨김 */
-  }
-  .input_item.on .btn_delete,
-  .input_item.on .btn_view {
-    display: inline-block; /* on 클래스가 있을 때만 보임 */
-  }  
+.btn_delete, .btn_view {display: none;}
+.input_item.on .btn_delete, .input_item.on .btn_view {display: inline-block; }
 
-.input_item.id.focus::after {
-    border-radius: 8px 8px 0 0
-}
-.input_item.pw.focus::after {
-    border-radius: 0 0 8px 8px
+.input_item.id.focus::after {border-radius: 8px 8px 0 0}
+.input_item.pw.focus::after {border-radius: 0 0 8px 8px}
+.id_find_box_right .input_item.id.focus::after, .id_find_box_right .input_item.pw.focus::after {
+    border-radius: 8px;
 }
 .input_item.focus::after {
     content: '';
@@ -167,7 +155,6 @@
     position: relative;
     margin-top: 12px;
     display: flex;
-    justify-content: space-between;
 }
 
 .keep_check{
@@ -210,23 +197,25 @@
     display: flex;
     justify-content: center; /* 가운데 정렬 */
     align-items: center;
-  }
-  
-  .login_find a {
+}
+
+.login_find a {
     position: relative;
     padding: 0 7px; /* 텍스트 간격 조정 */
     color: #555; /* 글자색 */
     text-decoration: none; /* 밑줄 제거 */
-  }
-  
+}
+
   .login_find a:not(:last-child)::after {
     content: "";
     position: absolute;
-    right: 0; /* 선을 오른쪽에 추가 */
-    top: 0;
+    right: -0.5%;
+    top: 25%;
     bottom: 0;
     width: 1px;
-    background-color: #C6C6C6; /* 선 색상 */
+    height: 13px;
+    background-color: #c6c6c6;
+    border-radius: 50px;
   }
 
   .login_btn_wrap {
@@ -251,8 +240,6 @@
     color: #fff;
   }
 
-
-
 .sns_login_box {
     padding : 10px 0;
 }
@@ -273,7 +260,7 @@
     white-space: nowrap;
 }
 .sns_login_list {
-    margin-top: 20px;
+    margin-top: 40px;
     width: 100%;
     display: flex;
     justify-content: space-evenly;
@@ -290,68 +277,116 @@
     height: 65px;
 }
 
-.ic_naver {
-    background-image: url("/image/login/naver.png");
-}
-.ic_kakao {
-    background-image: url("/image/login/kakao.png");
-}
-.ic_google {
-    background-image: url("/image/login/google.png");
-}
+.ic_naver {background-image: url("/image/login/naver.png");}
+.ic_kakao {background-image: url("/image/login/kakao.png");}
+.ic_google {background-image: url("/image/login/google.png");}
 
 .join_wrap {
-    border-top: 1px solid #D8D8D8;
-    padding-top: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* border-right: 1px solid #C6C6C6; */
 }
-.join_text {
-    margin-bottom: 30px;
-}
+.join_text {margin-bottom: 30px;}
 .join_text p {
     text-align: center;
     line-height: 30px;
 }
-.join_title {
-    font-size: 1.2rem;
-}
+.join_title {font-size: 1.2rem;}
 
 .join_btn_box {
     margin-top: 20px;
-    width: 90%; /* 부모 컨테이너의 넓이 */
+    width: 50%; /* 부모 컨테이너의 넓이 */
     text-align: center; /* 버튼을 가운데 정렬 */
     margin: 0 auto; /* 수평 가운데 정렬 */
   }
-  
+
   .join_btn {
-    width: 90%; /* 버튼 넓이 */
-    padding: 20px 0; /* 버튼 높이 조정 */
+    width: 100%; /* 버튼 넓이 */
+    padding: 10px 0; /* 버튼 높이 조정 */
     text-align: center; /* 텍스트 가운데 정렬 */
     font-size: 16px; /* 글자 크기 */
     color: #39553F; /* 글자색 */
     background-color: #fff; /* 배경색 */
     border: 1.5px solid #39553F; /* 테두리 */
     border-radius: 5px; /* 모서리 둥글게 */
-    transition: all 0.3s ease; /* 부드러운 전환 효과 */
+    transition: all 0.5s ease; /* 부드러운 전환 효과 */
   }
-  
+
   .join_btn:hover {
     background-color: #39553F; /* 호버 시 배경색 */
     color: #fff !important; /* 호버 시 글자색 */
     border-color: #39553F; /* 호버 시 테두리 색상 */
   }
 
-  .login_error_wrap {
-    padding: 15px 10px 0 10px;
-    font-size: 15px;
-  }
-
-  .err_msg span{
-    color: #D50136;
-    font-size: 15px;
-  }
-
-  .ic_error {
-      width: 15px;
-      height: 15px;
-      margin-right: 3px;
-  }
+.id_find_box {
+    width: 100%;
+    margin: 50px auto;
+    padding: 30px;
+    display: flex;
+    border-radius: 28px;
+    border: 1px solid #c6c6c6;
+}
+.id_find_box_title {
+    font-size: 1.7rem;
+    font-weight: 600;
+}
+.id_find_box_left, .id_find_box_right {width: 50%;}
+.id_find_form > .input_item {
+    width: 100%;
+}
+.id_find_box_right, .id_find_box_right > form {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: end;
+    gap: 30px;
+}
+.id_find_box_right .input_item.pw {
+    border-top: 1px solid #D8D8D8;
+    border-radius : 8px
+}
+.id_find_box_right .input_item.id {border-radius : 8px}
+.id_find_btn_area {
+    display: flex;
+    align-items: end;
+    justify-content: end;
+    gap: 10px;
+}
+.id_find_box_right > p {
+    width: 80%;
+    display: flex;
+    align-items: center;
+}
+.found_id_null {
+    justify-content: space-between;
+}
+.id_find_box_right > p strong {font-size: 1.1rem;}
+.id_find_join_btn, .id_find_btn {
+    padding: 8px 10px;
+    border-radius: 8px;
+    transition: background-color 0.5s ease;
+}
+.id_find_join_btn {
+    background-color: transparent;
+    color: #39553F;
+}
+.id_find_btn {
+    background-color: #497248dc;
+    color: #f0f0f0;
+}
+.id_find_btn:hover {
+    background-color: #497248;
+}
+.id_find_join_btn:hover {
+    background-color: #49724848;
+}
+.login:hover {
+    text-decoration: underline;
+}
+.ic_error {
+    width: 15px;
+    height: 15px;
+    margin-right: 3px;
+}

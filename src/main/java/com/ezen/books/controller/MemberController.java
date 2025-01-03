@@ -179,7 +179,7 @@ public class MemberController {
     }
 
     // (cron="59 59 23 * * *") : 매일 23시59분59초에 실행
-    @Scheduled(cron="00 06 13 * * *")
+    @Scheduled(cron="30 20 14 * * *")
     public void updateAllMemberGrades() {
         try {
             memberService.updateAllMemberGrades(); // 모든 회원의 등급 갱신
@@ -223,12 +223,10 @@ public class MemberController {
 
         // 이메일과 이름 검증
         if (email == null || email.isEmpty() || !email.matches("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$")) {
-            model.addAttribute("error", "유효하지 않은 이메일주소 입니다.");
-            return new ModelAndView("redirect:/member/pw_find?error=invalid_email");
+            return new ModelAndView("redirect:/member/pw_find?error");
         }
         if (loginId == null || loginId.isEmpty()) {
-            model.addAttribute("error", "아이디를 입력하세요.");
-            return new ModelAndView("redirect:/member/pw_find?error=invalid_loginId");
+            return new ModelAndView("redirect:/member/pw_find?error");
         }
 
         MemberVO vo = memberService.selectMemberByEmail(email); // 회원 정보 조회
@@ -270,10 +268,10 @@ public class MemberController {
                 mv.addObject("num", numStr); // 인증 번호를 뷰로 전달
                 return mv;
             } else {
-                return new ModelAndView("redirect:/member/pw_find?error=loginId_mismatch");
+                return new ModelAndView("redirect:/member/pw_find?error");
             }
         } else {
-            return new ModelAndView("redirect:/member/pw_find?error=user_not_found");
+            return new ModelAndView("redirect:/member/pw_find?error");
         }
     }
 

@@ -1,3 +1,4 @@
+<!--
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
@@ -6,32 +7,92 @@
 <head>
   <title> 이젠문고 </title>
   <meta charset="UTF-8"/>
-  <link rel="stylesheet" href="/css/memberPwNew.css"/>
+  <link rel="stylesheet" href="/css/memberLogin.css"/>
 </head>
 <main layout:fragment="main">
   <div class="inner">
-    <div class="find_wrap">
-      <h2> 비밀번호 변경 </h2>
-      <form action="pw_new.me" method="POST" class="content">
-        <div class="textbox">
-          <input id="pw" name="password" type="password" placeholder="새 비밀번호" maxlength="16" required>
-          <div class="error">
-            <span th:if="${error == 'weak_password'}">비밀번호는 최소 8자 이상이어야 합니다.</span>
-          </div>
+    <div class="id_find">
+      <div class="id_find_box">
+        <div class="id_find_box_left">
+          <span class="id_find_box_title">비밀번호 재설정</span>
         </div>
 
-        <div class="textbox">
-          <input id="pwCheck" name="passwordCheck" type="password" placeholder="새 비밀번호 확인" maxlength="16" required oninput="checkPasswordMatch();">
-          <div class="error">
-            <span id="errorMessage"></span>
-          </div>
+        <div class="id_find_box_right">
+          <form action="/member/pw_new.me" method="POST" class="id_find_form">
+            <div id="input_item_id" class="input_item id">
+              <input type="password" name="password" class="input_id">
+              <label class="text_label" id="id_label">새비밀번호</label>
+              <button type="button" class="btn btn_delete" id="id_clear">
+                <i class="ic ic_delete"></i>
+              </button>
+            </div>
+            <div class="input_item pw">
+              <input type="password" name="passwordCheck" class="input_pw">
+              <label class="text_label" id="pw_label">새비밀번호 확인</label>
+              <button type="button" class="btn_delete" id="pw_clear">
+                <i class="ic ic_delete"></i>
+              </button>
+            </div>
+            <p>
+              <span style="color: #EB003B; display: none;"><i class="ic ic_error"></i>비밀번호가 일치하지 않습니다.</span>
+            </p>
+            <div class="id_find_btn_area">
+              <button type="submit" id="check" class="btn id_find_btn">비밀번호 변경</button>
+            </div>
+          </form>
         </div>
-
-        <span id="same" style="display:none; color: red;"></span> <!-- 오류 메시지 -->
-
-        <input type="submit" id="check" value="비밀번호변경">
-      </form>
+      </div>
     </div>
   </div>
+  <script src="/js/memberLogin.js"></script>
+
+</main>-->
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+  <title> 이젠문고 </title>
+  <meta charset="UTF-8"/>
+  <link rel="stylesheet" href="/css/memberLogin.css"/>
+</head>
+<main layout:fragment="main">
+  <div class="inner">
+    <div class="id_find">
+      <div class="id_find_box">
+        <div class="id_find_box_left">
+          <span class="id_find_box_title">비밀번호 재설정</span>
+        </div>
+
+        <div class="id_find_box_right">
+          <form action="/member/pw_new.me" method="POST" class="id_find_form">
+            <div id="input_item_id" class="input_item id">
+              <input type="password" name="password" class="input_id" id="pw">
+              <label class="text_label" id="id_label">새비밀번호</label>
+              <button type="button" class="btn btn_delete" id="id_clear">
+                <i class="ic ic_delete"></i>
+              </button>
+            </div>
+            <div class="input_item pw">
+              <input type="password" name="passwordCheck" class="input_pw" id="pwCheck">
+              <label class="text_label" id="pw_label">새비밀번호 확인</label>
+              <button type="button" class="btn_delete" id="pw_clear">
+                <i class="ic ic_delete"></i>
+              </button>
+            </div>
+            <p id="same" style="color: #EB003B; display: none;">
+              <i class="ic ic_error"></i> 비밀번호가 일치하지 않습니다.
+            </p>
+            <div class="id_find_btn_area">
+              <button type="submit" id="check" class="btn id_find_btn">비밀번호 변경</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="/js/memberLogin.js"></script>
   <script src="/js/memberPwNew.js"></script>
 </main>
+

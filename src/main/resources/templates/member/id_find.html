@@ -6,31 +6,48 @@
 <head>
   <title> 이젠문고 </title>
   <meta charset="UTF-8"/>
-  <link rel="stylesheet" href="/css/memberPwFind.css"/>
+  <link rel="stylesheet" href="/css/memberLogin.css"/>
 </head>
 <main layout:fragment="main">
   <div class="inner">
-    <div class="find_wrap">
-      <h2> 아이디 찾기 </h2>
-      <form action="/member/id_find" method="POST" class="content">
-        <div class="textbox">
-          <input id="email" name="email" type="email" placeholder="이메일" required>
+    <div class="id_find">
+      <div class="id_find_box">
+        <div class="id_find_box_left">
+          <span class="id_find_box_title">아이디 찾기</span>
         </div>
-        <div class="textbox">
-          <input id="name" name="name" type="text" placeholder="이름" required>
+
+        <div class="id_find_box_right">
+          <form action="/member/id_find" method="POST" class="id_find_form">
+            <div id="input_item_id" class="input_item id">
+              <input type="email" id="email" name="email" class="input_id">
+              <label for="id" class="text_label" id="id_label">이메일</label>
+              <button type="button" class="btn btn_delete" id="id_clear">
+                <i class="ic ic_delete"></i>
+              </button>
+            </div>
+            <div class="input_item pw">
+              <input type="text" name="name" id="name" class="input_pw">
+              <label for="pw" class="text_label" id="pw_label">이름</label>
+              <button type="button" class="btn_delete" id="pw_clear">
+                <i class="ic ic_delete"></i>
+              </button>
+            </div>
+          <p th:if="${foundId != null}" class="found_id_null">
+            <span>회원님의 아이디는 <strong th:text="${foundId}">foundId</strong> 입니다.</span>
+            <a th:href="@{/member/login}" style="font-size: 0.9rem;" class="login">로그인하시겠습니까?</a>
+          </p>
+          <p th:if="${error != null}">
+            <i class="ic ic_error"></i><span th:text="${error}" style="color: #EB003B"></span>
+          </p>
+          <div class="id_find_btn_area">
+            <a th:href="@{/member/join}" class="id_find_join_btn">계정 만들기</a>
+            <button type="submit" class="btn id_find_btn">아이디 찾기</button>
+          </div>
+          </form>
         </div>
-        <input type="submit" value="아이디 찾기">
-      </form>
-      <br>
-      <div th:if="${foundId != null}">
-        <br>
-        <p style="font-size: 18px;">회원님의 아이디는 <strong th:text="${foundId}"></strong> 입니다.</p>
-        <br>
-        <div th:if="${error != null}">
-          <p style="color: #f27370;" th:text="${error}"></p>
-        </div>
-        <a th:href="@{/member/login}"><input type="submit" id="check" value="OK"></a>
       </div>
     </div>
   </div>
+  <script src="/js/memberLogin.js"></script>
 </main>
+
