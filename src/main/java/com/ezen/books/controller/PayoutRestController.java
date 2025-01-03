@@ -61,7 +61,7 @@ public class PayoutRestController {
         this.iamportClient = new IamportClient(iamportApiKey, iamportApiSecret);
     }
 
-    @PostMapping("/payment/payout/register-address")
+    @PostMapping("/register-address")
     public String registerDefaultAddress(@RequestBody AddressVO addressData) {
         log.info(" >>> PaymentRestController: registerDefaultAddress start.");
         log.info("The address data from the client: {}", addressData);

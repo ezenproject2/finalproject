@@ -194,7 +194,7 @@ public class PaymentController {
             isPickup = "Y";
         }
 
-        // 기본 배송지가 있냐 없냐에 따라 보낼 값이 달라짐. defaultAddress가 null이면 /payout에서 에러 뜸.
+        // 기본 배송지가 있냐 없냐에 따라 보낼 값이 달라짐.
         Map<String, Object> modelAttrs = new HashMap<>();
         if(defaultAddress == null) {
             modelAttrs = Map.of(

@@ -45,7 +45,7 @@
                 <span>
                     <span class="inquiry_date" th:text="${#dates.format(inquiry.regAt, 'yyyy/MM/dd')}"></span>
                     <i class="ic ic_arrow_down"></i>
-                  </span>
+                </span>
               </div>
 
               <div class="inquriy_item_content_wrap">
@@ -64,8 +64,13 @@
                 </div>
                 <hr>
                 <div class="inquiry_answer" th:if="${inquiry.status == '답변 완료'}">
-                  <strong>답변 > </strong>
-                  <span th:text="${inquiry.response}">답변 내용</span>
+                  <div class="inquriy_item_title_wrap">
+                    <div>
+                      <strong>답변 > </strong>
+                      <span th:text="${inquiry.response}">답변 내용</span>
+                    </div>
+                    <span class="inquiry_date" th:text="${#dates.format(inquiry.modAt, 'yyyy/MM/dd')}"></span>
+                  </div>
                   <br>
                   <button class="answerBtn" type="button" disabled>답변 완료</button>
                 </div>
