@@ -89,11 +89,11 @@
 - #### 개발 도구 :
 <ul>
     <li style="display: flex; align-items: center; margin-bottom:10px;">
-        -<img src="https://img.shields.io/badge/VS%20Code-007ACC?style=flat&logo=visual-studio-code&logoColor=white" alt="VSCode Badge" style="margin : 0 5px 0 5px;"/>
+        <img src="https://img.shields.io/badge/VS%20Code-007ACC?style=flat&logo=visual-studio-code&logoColor=white" alt="VSCode Badge" style="margin : 0 5px 0 5px;"/>
         : 프로젝트 개발 및 디버깅
     </li>
     <li style="display: flex; align-items: center;">
-        -<img src="https://img.shields.io/badge/Figma-F24E1E?style=flat&logo=Figma&logoColor=white" alt="Figma Badge" style="margin : 0 5px 0 5px;"/>
+        <img src="https://img.shields.io/badge/Figma-F24E1E?style=flat&logo=Figma&logoColor=white" alt="Figma Badge" style="margin : 0 5px 0 5px;"/>
         : 사용자 인터페이스 설계, 디자인 프로토타입 제작, 프로젝트 발표 PPT 제작, 협업 도구
     </li>
 </ul>
@@ -101,20 +101,20 @@
 - #### 기술 스택 :
 <ul>
     <li style="display: flex; align-items: center; margin-bottom:10px;">
-        -<img src="https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white" alt="HTML5 Badge" style="margin : 0 0 0 5px;"/>
+        <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white" alt="HTML5 Badge" style="margin : 0 0 0 5px;"/>
         <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white" alt="CSS3 Badge" style="margin : 0 5px 0 5px;"/>
         : 웹 페이지 구조 및 스타일링
     </li>
     <li style="display: flex; align-items: center; margin-bottom:10px;">
-        -<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=JavaScript&logoColor=white" style="margin : 0 5px 0 5px;"/>
+        <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=JavaScript&logoColor=white" style="margin : 0 5px 0 5px;"/>
         : 동적 기능 구현
     </li>
     <li style="display: flex; align-items: center; margin-bottom:10px;">
-        -<img src="https://img.shields.io/badge/GSAP-88CE02?style=flat&logo=greensock&logoColor=white" alt="GSAP Badge" style="margin : 0 5px 0 5px;"/>
+        <img src="https://img.shields.io/badge/GSAP-88CE02?style=flat&logo=greensock&logoColor=white" alt="GSAP Badge" style="margin : 0 5px 0 5px;"/>
         : 메인 페이지 애니메이션 구현
     </li>
     <li style="display: flex; align-items: center; margin-bottom:10px;">
-        -<img src="https://img.shields.io/badge/Swiper-6332F6?style=flat&logo=swiper&logoColor=white" alt="Swiper Badge" style="margin : 0 5px 0 5px;"/>
+        <img src="https://img.shields.io/badge/Swiper-6332F6?style=flat&logo=swiper&logoColor=white" alt="Swiper Badge" style="margin : 0 5px 0 5px;"/>
         : 메인 페이지 슬라이드 구현
     </li>
 </ul> <br>
@@ -123,7 +123,7 @@
 - #### 개발 도구 :
 <ul>
     <li style="display: flex; align-items: center; margin-bottom:10px;">
-        -<img src="https://img.shields.io/badge/IntelliJ%20IDEA-000000?style=flat&logo=intellij-idea&logoColor=white" alt="IntelliJ IDEA Badge" style="margin : 0 5px 0 5px;"/>
+        <img src="https://img.shields.io/badge/IntelliJ%20IDEA-000000?style=flat&logo=intellij-idea&logoColor=white" alt="IntelliJ IDEA Badge" style="margin : 0 5px 0 5px;"/>
         : 프로젝트 개발 및 디버깅
     </li>
 </ul>
@@ -131,23 +131,23 @@
 - #### 기술 스택 :
 <ul>
     <li style="display: flex; align-items: center; margin-bottom:10px;">
-        -<img src="https://img.shields.io/badge/MyBatis-DC382D?style=flat&logo=databricks&logoColor=white" alt="MyBatis Badge" style="margin : 0 5px 0 5px;"/>
+        <img src="https://img.shields.io/badge/MyBatis-DC382D?style=flat&logo=databricks&logoColor=white" alt="MyBatis Badge" style="margin : 0 5px 0 5px;"/>
         : ORM 및 SQL 관리
     </li>
     <li style="display: flex; align-items: center; margin-bottom:10px;">
-        -<img src="https://img.shields.io/badge/Spring%20Boot-6DB33F?style=flat&logo=spring-boot&logoColor=white" alt="Spring Boot Badge" style="margin : 0 5px 0 5px;"/>
+        <img src="https://img.shields.io/badge/Spring%20Boot-6DB33F?style=flat&logo=spring-boot&logoColor=white" alt="Spring Boot Badge" style="margin : 0 5px 0 5px;"/>
         : 백엔드 프레임워크
     </li>
     <li style="display: flex; align-items: center; margin-bottom:10px;">
-        -<img src="https://img.shields.io/badge/Spring%20Security-6DB33F?style=flat&logo=spring-security&logoColor=white" alt="Spring Security Badge" style="margin : 0 5px 0 5px;"/>
+        <img src="https://img.shields.io/badge/Spring%20Security-6DB33F?style=flat&logo=spring-security&logoColor=white" alt="Spring Security Badge" style="margin : 0 5px 0 5px;"/>
         : 인증 및 권한 관리
     </li>
     <li style="display: flex; align-items: center; margin-bottom:10px;">
-        -<img src="https://img.shields.io/badge/Thymeleaf-005F0F?style=flat&logo=thymeleaf&logoColor=white" alt="Thymeleaf Badge" style="margin : 0 5px 0 5px;"/>
+        <img src="https://img.shields.io/badge/Thymeleaf-005F0F?style=flat&logo=thymeleaf&logoColor=white" alt="Thymeleaf Badge" style="margin : 0 5px 0 5px;"/>
         : 서버 사이드 템플릿 엔진
     </li>
     <li style="display: flex; align-items: center; margin-bottom:10px;">
-        -<img src="https://img.shields.io/badge/Jsoup-5A9?style=flat&logo=java&logoColor=white" alt="Jsoup Badge" style="margin : 0 5px 0 5px;"/>
+        <img src="https://img.shields.io/badge/Jsoup-5A9?style=flat&logo=java&logoColor=white" alt="Jsoup Badge" style="margin : 0 5px 0 5px;"/>
         : HTML 파싱 및 데이터 추출
     </li>
 </ul>
