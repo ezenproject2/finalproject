@@ -1,7 +1,5 @@
 ![header](https://capsule-render.vercel.app/api?type=venom&color=DEE4D1&height=300&section=header&text=이젠%20문고&fontSize=70&fontColor=497248)
 
-
-<img src="https://raw.githubusercontent.com/ezenproject2/finalproject/master/src/main/resources/static/image/logo.png" alt="로고 이미지">
 <br>
 
 <h2 style="display: flex; align-items: center;">
@@ -60,7 +58,7 @@
         <td style="border: 1px solid #c6c6c6; padding: 8px;">정슬빛</td>
         <td style="border: 1px solid #c6c6c6; padding: 8px;">팀원</td>
         <td style="border: 1px solid #c6c6c6; padding: 8px;">
-          <a href="https://github.com/seuljbit">
+          <a href="https://github.com/zomeong">
             <img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white" alt="GitHub">
           </a>
         </td>
@@ -77,9 +75,7 @@
   <span style="display: inline-block; width: 5px; height: 20px; background-color: #c6c6c6; margin-right: 10px;"></span>프로젝트 소개
 </h2>
 <br>
-<p>이 프로젝트는 국내 및 해외 도서에 대한 정보를 제공하고, 도서를 배송과 픽업 방식으로 판매하는 웹서비스입니다.<br>
-  직관적이고 간편한 UI와 RESTful API 기반의 반응형 화면을 통해 사용자의 경험을 극대화하였으며,<br> 
-  프론트엔드와 백엔드의 협업을 통해 시스템의 전반적인 성능과 사용성을 극대화했습니다.</p>
+<p>안녕하세요! 저희가 만든 웹 사이트는 서점 사이트입니다. 어쩌구저쩌구~~</p>
 <br><br><br>
 
 
@@ -91,11 +87,11 @@
 - #### 개발 도구 :
 <ul>
     <li style="display: flex; align-items: center; margin-bottom:10px;">
-        <img src="https://img.shields.io/badge/VS%20Code-007ACC?style=flat&logo=visual-studio-code&logoColor=white" alt="VSCode Badge" style="margin : 0 5px 0 5px;"/>
+        -<img src="https://img.shields.io/badge/VS%20Code-007ACC?style=flat&logo=visual-studio-code&logoColor=white" alt="VSCode Badge" style="margin : 0 5px 0 5px;"/>
         : 프로젝트 개발 및 디버깅
     </li>
     <li style="display: flex; align-items: center;">
-        <img src="https://img.shields.io/badge/Figma-F24E1E?style=flat&logo=Figma&logoColor=white" alt="Figma Badge" style="margin : 0 5px 0 5px;"/>
+        -<img src="https://img.shields.io/badge/Figma-F24E1E?style=flat&logo=Figma&logoColor=white" alt="Figma Badge" style="margin : 0 5px 0 5px;"/>
         : 사용자 인터페이스 설계, 디자인 프로토타입 제작, 프로젝트 발표 PPT 제작, 협업 도구
     </li>
 </ul>
@@ -103,20 +99,24 @@
 - #### 기술 스택 :
 <ul>
     <li style="display: flex; align-items: center; margin-bottom:10px;">
-        <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white" alt="HTML5 Badge" style="margin : 0 0 0 5px;"/>
+        -<img src="https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white" alt="HTML5 Badge" style="margin : 0 0 0 5px;"/>
         <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white" alt="CSS3 Badge" style="margin : 0 5px 0 5px;"/>
         : 웹 페이지 구조 및 스타일링
     </li>
     <li style="display: flex; align-items: center; margin-bottom:10px;">
-        <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=JavaScript&logoColor=white" style="margin : 0 5px 0 5px;"/>
+        -<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=JavaScript&logoColor=white" style="margin : 0 5px 0 5px;"/>
         : 동적 기능 구현
     </li>
     <li style="display: flex; align-items: center; margin-bottom:10px;">
-        <img src="https://img.shields.io/badge/GSAP-88CE02?style=flat&logo=greensock&logoColor=white" alt="GSAP Badge" style="margin : 0 5px 0 5px;"/>
+        -<img src="https://img.shields.io/badge/Ajax-0055AA?style=flat&logo=xml&logoColor=white" alt="Ajax Badge" style="margin : 0 5px 0 5px;"/>
+        : 비동기 데이터 처리
+    </li>
+    <li style="display: flex; align-items: center; margin-bottom:10px;">
+        -<img src="https://img.shields.io/badge/GSAP-88CE02?style=flat&logo=greensock&logoColor=white" alt="GSAP Badge" style="margin : 0 5px 0 5px;"/>
         : 메인 페이지 애니메이션 구현
     </li>
     <li style="display: flex; align-items: center; margin-bottom:10px;">
-        <img src="https://img.shields.io/badge/Swiper-6332F6?style=flat&logo=swiper&logoColor=white" alt="Swiper Badge" style="margin : 0 5px 0 5px;"/>
+        -<img src="https://img.shields.io/badge/Swiper-6332F6?style=flat&logo=swiper&logoColor=white" alt="Swiper Badge" style="margin : 0 5px 0 5px;"/>
         : 메인 페이지 슬라이드 구현
     </li>
 </ul> <br>
@@ -125,33 +125,76 @@
 - #### 개발 도구 :
 <ul>
     <li style="display: flex; align-items: center; margin-bottom:10px;">
-        <img src="https://img.shields.io/badge/IntelliJ%20IDEA-000000?style=flat&logo=intellij-idea&logoColor=white" alt="IntelliJ IDEA Badge" style="margin : 0 5px 0 5px;"/>
+        -<img src="https://img.shields.io/badge/IntelliJ%20IDEA-000000?style=flat&logo=intellij-idea&logoColor=white" alt="IntelliJ IDEA Badge" style="margin : 0 5px 0 5px;"/>
         : 프로젝트 개발 및 디버깅
     </li>
 </ul>
 
 - #### 기술 스택 :
 <ul>
+    <!-- 기술 스택 -->
     <li style="display: flex; align-items: center; margin-bottom:10px;">
-        <img src="https://img.shields.io/badge/MyBatis-DC382D?style=flat&logo=databricks&logoColor=white" alt="MyBatis Badge" style="margin : 0 5px 0 5px;"/>
+        -<img src="https://img.shields.io/badge/MyBatis-DC382D?style=flat&logo=databricks&logoColor=white" alt="MyBatis Badge" style="margin : 0 5px 0 5px;"/>
         : ORM 및 SQL 관리
     </li>
     <li style="display: flex; align-items: center; margin-bottom:10px;">
-        <img src="https://img.shields.io/badge/Spring%20Boot-6DB33F?style=flat&logo=spring-boot&logoColor=white" alt="Spring Boot Badge" style="margin : 0 5px 0 5px;"/>
+        -<img src="https://img.shields.io/badge/Spring%20Boot-6DB33F?style=flat&logo=spring-boot&logoColor=white" alt="Spring Boot Badge" style="margin : 0 5px 0 5px;"/>
         : 백엔드 프레임워크
     </li>
     <li style="display: flex; align-items: center; margin-bottom:10px;">
-        <img src="https://img.shields.io/badge/Spring%20Security-6DB33F?style=flat&logo=spring-security&logoColor=white" alt="Spring Security Badge" style="margin : 0 5px 0 5px;"/>
+        -<img src="https://img.shields.io/badge/Spring%20Security-6DB33F?style=flat&logo=spring-security&logoColor=white" alt="Spring Security Badge" style="margin : 0 5px 0 5px;"/>
         : 인증 및 권한 관리
     </li>
     <li style="display: flex; align-items: center; margin-bottom:10px;">
-        <img src="https://img.shields.io/badge/Thymeleaf-005F0F?style=flat&logo=thymeleaf&logoColor=white" alt="Thymeleaf Badge" style="margin : 0 5px 0 5px;"/>
+        -<img src="https://img.shields.io/badge/Thymeleaf-005F0F?style=flat&logo=thymeleaf&logoColor=white" alt="Thymeleaf Badge" style="margin : 0 5px 0 5px;"/>
         : 서버 사이드 템플릿 엔진
     </li>
     <li style="display: flex; align-items: center; margin-bottom:10px;">
-        <img src="https://img.shields.io/badge/Jsoup-5A9?style=flat&logo=java&logoColor=white" alt="Jsoup Badge" style="margin : 0 5px 0 5px;"/>
+        -<img src="https://img.shields.io/badge/Jsoup-5A9?style=flat&logo=java&logoColor=white" alt="Jsoup Badge" style="margin : 0 5px 0 5px;"/>
         : HTML 파싱 및 데이터 추출
     </li>
+</ul>
+
+- #### 사용 API :
+<ul>
+    <li style="display: flex; align-items: center; margin-bottom:10px;">
+        -<img src="https://img.shields.io/badge/Google%20Login-4285F4?style=flat&logo=google&logoColor=white" alt="Google Login Badge" style="margin : 0 5px 0 5px;"/>
+        <img src="https://img.shields.io/badge/Kakao%20Login-FFCD00?style=flat&logo=kakao&logoColor=black" alt="Kakao Login Badge" style="margin : 0 5px 0 5px;"/>
+        <img src="https://img.shields.io/badge/Naver%20Login-03C75A?style=flat&logo=naver&logoColor=white" alt="Naver Login Badge" style="margin : 0 5px 0 5px;"/>
+        : 소셜 로그인
+    </li>
+    <li style="display: flex; align-items: center; margin-bottom:10px;">
+        -<img src="https://img.shields.io/badge/KakaoMap-FFCD00?style=flat&logo=kakao&logoColor=black" alt="KakaoMap Badge" style="margin : 0 5px 0 5px;"/>
+        : 지도 API
+    </li>
+    <li style="display: flex; align-items: center; margin-bottom:10px;">
+        -<img src="https://img.shields.io/badge/OAuth-3F51B5?style=flat&logo=oauth&logoColor=white" alt="OAuth Badge" style="margin : 0 5px 0 5px;"/>
+        : 인증 API
+    </li>
+    <li style="display: flex; align-items: center; margin-bottom:10px;">
+        -<img src="https://img.shields.io/badge/PortOne-0099FF?style=flat&logo=payoneer&logoColor=white" alt="PortOne Badge" style="margin : 0 5px 0 5px;"/>
+        : 결제 처리 API
+    </li>
+    <li style="display: flex; align-items: center; margin-bottom:10px;">
+        -<img src="https://img.shields.io/badge/SMTP-FF6F00?style=flat&logo=mailgun&logoColor=white" alt="SMTP Badge" style="margin : 0 5px 0 5px;"/>
+        : 이메일 전송 API
+    </li>
+</ul>
+
+- #### 라이브러리 :
+<ul>
+  <li style="display: flex; align-items: center; margin-bottom:10px;">
+      -<img src="https://img.shields.io/badge/Lombok-65AADD?style=flat&logo=lombok&logoColor=white" alt="Lombok Badge" style="margin : 0 5px 0 5px;"/>
+      : 코드 간소화를 위한 라이브러리
+  </li>
+  <li style="display: flex; align-items: center; margin-bottom:10px;">
+    - <img src="https://img.shields.io/badge/Jackson-6DB33F?style=flat&logo=json&logoColor=white" alt="Jackson Badge" style="margin : 0 5px 0 5px;"/>
+    : JSON 데이터 처리
+  </li>
+  <li style="display: flex; align-items: center; margin-bottom:10px;">
+    -<img src="https://img.shields.io/badge/Logback-007396?style=flat&logo=logstash&logoColor=white" alt="Logback Badge" style="margin : 0 5px 0 5px;"/>
+      : 로그 관리
+  </li>
 </ul>
 
 <br><br><br>
