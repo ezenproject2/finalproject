@@ -75,7 +75,8 @@
   <span style="display: inline-block; width: 5px; height: 20px; background-color: #c6c6c6; margin-right: 10px;"></span>프로젝트 소개
 </h2>
 <br>
-<p>안녕하세요! 저희가 만든 웹 사이트는 서점 사이트입니다. 어쩌구저쩌구~~</p>
+<p>이 프로젝트는 국내 및 해외 도서에 대한 정보를 제공하고 도서를 배송과 픽업의 방식으로 판매하는 웹서비스입니다.</p>
+<p>직관적이고 간편한 UI와 RESTful API 기반의 반응형 화면으로 사용자의 경험을 극대화 하였습니다.</p>
 <br><br><br>
 
 
