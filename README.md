@@ -60,7 +60,7 @@
         <td style="border: 1px solid #c6c6c6; padding: 8px;">정슬빛</td>
         <td style="border: 1px solid #c6c6c6; padding: 8px;">팀원</td>
         <td style="border: 1px solid #c6c6c6; padding: 8px;">
-          <a href="https://github.com/zomeong">
+          <a href="https://github.com/seuljbit">
             <img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white" alt="GitHub">
           </a>
         </td>
