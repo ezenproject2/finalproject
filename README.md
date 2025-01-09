@@ -311,7 +311,7 @@
 - 1:1 문의 답변 : 관리자가 사용자의 1:1 문의에 답변할 수 있는 기능.
 - 공지사항 CRUD : 관리자가 공지사항을 생성, 수정, 삭제할 수 있도록 Froala 에디터를 적용하여 구현.
 
-<img src="https://github.com/user-attachments/assets/a00e1494-8ff2-4c1f-a801-58d9b5f71986>
+<img src="https://github.com/user-attachments/assets/a00e1494-8ff2-4c1f-a801-58d9b5f71986">
 <img src="https://github.com/user-attachments/assets/bee1f2fb-b2ad-4d65-ae58-bc61aa0eaea0">
 
 </details>
