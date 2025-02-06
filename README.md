@@ -27,7 +27,7 @@
           </a>
         </td>
         <td style="border: 1px solid #c6c6c6; padding: 8px;">
-          <a href="https://blog.naver.com/momonocha">https://blog.naver.com/momonocha</a>
+          <a href="https://velog.io/@chacha232/최종-프로젝트-후기-이젠문고">최종 프로젝트 후기 '📚 이젠문고'</a>
         </td>
       </tr>
       <tr>
