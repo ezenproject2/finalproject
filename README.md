@@ -3,6 +3,12 @@
 <br>
 
 <h2 style="display: flex; align-items: center;">
+  <span style="display: inline-block; width: 5px; height: 20px; background-color: #c6c6c6; margin-right: 10px;"></span>메인 화면 미리보기
+</h2>
+<image src="https://velog.velcdn.com/images/chacha232/post/7369bd65-c889-433d-ae7c-894c9f2276f8/image.gif"/>
+<br>
+
+<h2 style="display: flex; align-items: center;">
   <span style="display: inline-block; width: 5px; height: 20px; background-color: #c6c6c6; margin-right: 10px;"></span>팀 소개
 </h2>
 
