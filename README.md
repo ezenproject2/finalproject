@@ -45,7 +45,7 @@
           </a>
         </td>
         <td style="border: 1px solid #c6c6c6; padding: 8px;">
-          <a href="/">##</a>
+          <a href="/">https://atlantic-cannon-0d5.notion.site/_-1b93a64417ac81718b46d130877d457c?pvs=4</a>
         </td>
       </tr>
       <tr>
