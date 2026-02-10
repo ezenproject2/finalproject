@@ -57,7 +57,7 @@
           </a>
         </td>
         <td style="border: 1px solid #c6c6c6; padding: 8px;">
-          <a href="/">##</a>
+          <a href="https://parkjunhee9327.github.io/">GitHub 블로그 주소</a>
         </td>
       </tr>
       <tr>
